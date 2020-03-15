@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
-import { InputsModule, InputUtilitiesModule, WavesModule, ButtonsModule, ModalModule,TableModule } from 'angular-bootstrap-md';
+import { InputsModule, InputUtilitiesModule, WavesModule, ButtonsModule, ModalModule,TableModule,ChartsModule } from 'angular-bootstrap-md';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuModule } from '@angular/material/menu';
@@ -106,6 +106,7 @@ import { SalesGraphComponent } from './components/dashboard/graphs/sales-graph/s
     TableModule,
     MatTableModule,
     MatPaginatorModule,
+    ChartsModule
 
   ],
   schemas: [NO_ERRORS_SCHEMA],

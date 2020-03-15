@@ -33,7 +33,10 @@ export class BookingsComponent implements OnInit {
       { id: '1', name: 'chiran', progress: '10', color: 'red' },
       { id: '2', name: 'kamal', progress: '10', color: 'red' },
       { id: '3', name: 'namal', progress: '10', color: 'red' },
-      { id: '4', name: 'bingo', progress: '10', color: 'red' }
+      { id: '4', name: 'bingo', progress: '10', color: 'red' },
+      { id: '5', name: 'bingo', progress: '10', color: 'red' },
+      { id: '6', name: 'bingo', progress: '10', color: 'red' },
+      { id: '7', name: 'bingo', progress: '10', color: 'red' }
     ];
 
     // Assign the data to the data source for the table to render

@@ -7,9 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SignupSelectComponent implements OnInit {
 
+  routerVal = true;
+
   constructor() { }
 
   ngOnInit() {
+  }
+  navigateUser() {
+    this.routerVal = true;
+  }
+
+  navigateMerchant() {
+    this.routerVal = false;
   }
 
 }

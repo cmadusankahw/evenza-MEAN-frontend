@@ -1,5 +1,5 @@
 <!--Navbar-->
-<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark purple" [containerInside]="false">
+<mdb-navbar SideClass="navbar navbar-expand-lg sticky-top navbar-dark purple scrolling-navbar" [containerInside]="false">
 
   <!-- Navbar brand -->
   <mdb-navbar-brand><a class="navbar-brand" routerLink="/">
@@ -11,23 +11,35 @@
   <!-- Collapsible content -->
   <links>
 
-    <!-- Links -->
-    <!-- Links -->
-
-    <ul class="navbar-nav ml-auto nav-flex-icons">
+    <ul class="navbar-nav ml-auto ">
       <li class="nav-item">
-        <a class="nav-link" routerLink="/login">
+        <a mdbWavesEffect class="nav-link" routerLink="/">
+          Find Events
+        </a>
+      </li>
+      <li class="nav-item">
+        <a  mdbWavesEffect class="nav-link" routerLink="/">
+          Our Services
+        </a>
+      </li>
+      <li class="nav-item">
+        <a mdbWavesEffect class="nav-link" routerLink="/">
+          About Us
+        </a>
+      </li>
+      <li class="nav-item">
+        <a mdbWavesEffect class="nav-link" routerLink="/login" routerLinkActive="purple darken-3">
           <mdb-icon fas icon="sign-in-alt" ></mdb-icon>
           Log In
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/register">
+        <a mdbWavesEffect class="nav-link"  routerLink="/register" routerLinkActive="purple darken-3">
           <mdb-icon fas icon="user-plus"></mdb-icon>
           Sign Up
         </a>
       </li>
-      <li class="nav-item">
+      <!--<li class="nav-item">
         <a class="nav-link" >
           <div class="btn-group" mdbDropdown>
             <mdb-icon fas icon="user-circle" mdbDropdownToggle></mdb-icon>
@@ -40,7 +52,7 @@
             </div>
           </div>
         </a>
-      </li>
+      </li>-->
     </ul>
   </links>
   <!-- Collapsible content -->

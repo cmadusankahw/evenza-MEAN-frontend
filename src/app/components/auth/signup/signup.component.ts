@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -8,11 +9,21 @@ import { FormGroup } from '@angular/forms';
 })
 export class SignupComponent implements OnInit {
 
-  signupForm: FormGroup;
+  routerVal = false;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+
+
+
+  simpleNavigate(routeVal) {
+    if (routeVal) {
+      alert('User signed Up successfully!');
+    } else {
+      this.router.navigate(['/register/merchant']);
+    }
   }
 
 }

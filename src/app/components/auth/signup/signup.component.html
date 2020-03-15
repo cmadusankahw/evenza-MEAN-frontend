@@ -2,21 +2,25 @@
 <mdb-card>
 
   <mdb-card-header class="purple white-text text-center py-4">
-    <h5>
-      <strong>Join Evenza Today!</strong>
-    </h5>
+    <h4>
+      <b>Join Evenza Today!</b>
+    </h4>
   </mdb-card-header>
 
   <!--Card content-->
   <mdb-card-body class="px-lg-5 pt-0">
 
       <!-- Form -->
-      <form class="text-center" style="color: #757575;"  [formGroup]="signupForm">
+      <form  style="color: #757575;"  >
+        <div class="text-center p-md-3">
+          <p>Reach out the most by signing up today..</p>
+          </div>
 
           <div class="form-row">
               <div class="col">
                   <!-- First name -->
                   <div class="md-form">
+                    <mdb-icon fas icon="user" class="prefix"></mdb-icon>
                       <input mdbInput mdbValidate type="text" id="materialRegisterFormFirstName" class="form-control">
                       <label for="materialRegisterFormFirstName">First name</label>
                   </div>
@@ -32,12 +36,14 @@
 
           <!-- E-mail -->
           <div class="md-form mt-0">
+            <mdb-icon fas icon="envelope" class="prefix"></mdb-icon>
               <input mdbInput mdbValidate type="email" id="materialRegisterFormEmail" class="form-control">
               <label for="materialRegisterFormEmail">E-mail</label>
           </div>
 
           <!-- Password -->
           <div class="md-form">
+            <mdb-icon fas icon="key" class="prefix"></mdb-icon>
               <input mdbInput mdbValidate type="password" id="materialRegisterFormPassword" class="form-control" aria-describedby="materialRegisterFormPasswordHelpBlock">
               <label for="materialRegisterFormPassword">Password</label>
               <small id="materialRegisterFormPasswordHelpBlock" class="form-text text-muted mb-4">
@@ -47,21 +53,23 @@
 
           <!-- Phone number -->
           <div class="md-form">
+            <mdb-icon fas icon="mobile" class="prefix"></mdb-icon>
               <input mdbInput mdbValidate type="password" id="materialRegisterFormPhone" class="form-control" aria-describedby="materialRegisterFormPhoneHelpBlock">
               <label for="materialRegisterFormPhone">Phone number</label>
 
           </div>
 
           <!-- Newsletter -->
-          <div class="form-check">
+          <div class="form-check text-center">
               <input type="checkbox" class="form-check-input" id="materialRegisterFormNewsletter">
               <label class="form-check-label" for="materialRegisterFormNewsletter">Subscribe to our newsletter</label>
           </div>
 
           <!-- Sign up button -->
           <button mdbBtn color="purple" outline="true" rounded="true" block="true" class="my-4 waves-effect z-depth-0" mdbWavesEffect
-        type="submit">Sign Up</button>
+         type="submit" (click)="simpleNavigate(this.routerVal)">Sign Up</button>
 
+          <div class="text-center">
           <!-- Social register -->
           <p>or sign up with:</p>
 
@@ -85,6 +93,7 @@
               <em>Sign up</em> you agree to our
               <a href="" target="_blank">terms of service</a>
 
+            </div>
       </form>
       <!-- Form -->
 

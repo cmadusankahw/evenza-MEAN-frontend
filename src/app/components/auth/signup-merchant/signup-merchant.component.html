@@ -1,0 +1,122 @@
+
+  <mdb-card>
+  <mdb-card-header class="purple white-text text-center py-4 ">
+    <h2>
+      You are Almost Done!
+    </h2>
+  </mdb-card-header>
+
+  <!--Card content-->
+  <mdb-card-body class="px-lg-5 pt-0">
+    <!-- Form -->
+    <form style="color: #757575;">
+      <br />
+      <div class="text-center p-md-3">
+        <p>Fill below details to continue Sign Up as a Merchant..</p>
+      </div>
+
+      <div class="text-center">
+        <mat-form-field class="mfield">
+          <mat-label>Your Business Type</mat-label>
+          <mat-select required>
+            <mat-option value="option1">
+              <mat-icon aria-label="">emoji_people</mat-icon>
+              Service Provider</mat-option
+            >
+            <mat-option value="option2">
+              <mat-icon aria-label="">cake</mat-icon>
+              Product Seller</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="mfield">
+          <input matInput placeholder="Your NIC" required />
+        </mat-form-field>
+
+        <mat-form-field class="mfield">
+          <mat-label>Your Gender</mat-label>
+          <mat-select required>
+            <mat-option value="option1">Male</mat-option>
+            <mat-option value="option2">Female</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="mfield">
+          <mat-label>Your BirthDay</mat-label>
+          <input matInput [matDatepicker]="picker" />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="mfield">
+          <textarea matInput rows="7" placeholder="Your Address"></textarea>
+        </mat-form-field>
+      </div>
+
+      <hr />
+      <!--file upload-->
+      <div class="text-center">
+        <mdb-card-title>
+          <h4>Verify Your Identity</h4>
+        </mdb-card-title>
+        <mdb-card-text
+          >To be eligible to Create Buniess Profile and add products or
+          services, you must verify your Identity first.<br />
+          You may verify your Identity now or later in the
+          <b>profile section</b>.</mdb-card-text
+        >
+        <button mdbBtn color="secondary" mdbWavesEffect outline="true" (click)="basicModal.show()">Verify Identity</button>
+      </div>
+      <hr />
+
+      <!-- Sign up complete button -->
+      <button
+        mdbBtn
+        color="purple"
+        rounded="true"
+        block="true"
+        class="my-4 waves-effect z-depth-0"
+        mdbWavesEffect
+        type="submit"
+      >
+        Complete Sign Up
+      </button>
+
+      <hr />
+      <div class="text-center">
+        <!-- Terms of service -->
+        <p>
+          By clicking <em>Sign up</em> you agree to our
+          <a href="" target="_blank">Merchants' terms of service</a>
+        </p>
+      </div>
+    </form>
+    <!-- Form -->
+  </mdb-card-body>
+</mdb-card>
+
+
+
+<!--Identity Verify Modal-->
+<div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel">Verify your Identity</h4>
+      </div>
+      <div class="modal-body">
+        <app-id-verify></app-id-verify>
+      </div>
+      <div class="modal-footer">
+        <button  mdbBtn color="link" (click)="basicModal.hide()" mdbWavesEffect>Close</button>
+      </div>
+    </div>
+  </div>
+</div>

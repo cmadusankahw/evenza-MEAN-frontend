@@ -1,0 +1,22 @@
+
+<mat-drawer-container class="dash-container" autosize>
+
+<!--SideBar-->
+  <mat-drawer #drawer class="dash-sidenav" mode="side">
+    <p>Auto-resizing sidenav</p>
+
+    <button (click)="showSubMenu = !showSubMenu" mat-raised-button>
+      Toggle extra text
+    </button>
+    <p *ngIf="showSubMenu">Sub Menu</p>
+
+  </mat-drawer>
+
+   <!--Sidebar Toggle Button-->
+    <button type="button" mat-button (click)="drawer.toggle()">
+      Toggle sidenav
+    </button>
+
+    <!--Dashboar Content-->
+
+</mat-drawer-container>

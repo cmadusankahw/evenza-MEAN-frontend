@@ -1,0 +1,188 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+
+    <!--profile pic-->
+    <div class="pd-img">
+      <img src="./assets/images/merchant/user.jpg" alt="Merchant Pic" class="img-thumbnail " style="border-radius:50%;">
+      <h4 class="txt-white pd-top-min text-center"> Admin </h4>
+    </div>
+
+    <mat-nav-list >
+        <a class="txt-white row active-nav" mat-list-item *ngIf="home" >
+            <div class="col-md-11 side-start " >
+              <mat-icon >home</mat-icon>
+              <span class="side-text">  Home</span>
+            </div>
+            <div class="ol-md-1 side-end">
+            <mat-icon >arrow_right</mat-icon>
+          </div>
+        </a>
+
+        <a class="txt-white row" mat-list-item  *ngIf="!home" (click)="onHome()">
+          <div class="col-md-11 side-start " >
+            <mat-icon >home</mat-icon>
+            <span class="side-text">  Home</span>
+          </div>
+          <div class="ol-md-1 side-end">
+          <mat-icon >arrow_right</mat-icon>
+        </div>
+      </a>
+
+      <a class="txt-white row active-nav" mat-list-item  (click)="showSubMenu = !showSubMenu" *ngIf="bProfile">
+        <div class="col-md-11 side-start">
+          <mat-icon >business_centert</mat-icon>
+          <span class="side-text">  Business Profile</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+      <a class="txt-white row" mat-list-item *ngIf="!bProfile" (click)="showSubMenu = !showSubMenu" (click)="onBprofile()">
+        <div class="col-md-11 side-start">
+          <mat-icon >business_centert</mat-icon>
+          <span class="side-text">  Business Profile</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+
+      <a class="txt-white side-end" mat-list-item *ngIf="showSubMenu">
+        <mat-icon>add</mat-icon>
+        Add New Service
+      </a>
+
+      <a class="txt-white row active-nav" mat-list-item  *ngIf="booking">
+        <div class="col-md-11 side-start">
+          <mat-icon >bookmarks</mat-icon>
+          <span class="side-text">  Bookings</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+      <a class="txt-white row" mat-list-item *ngIf="!booking" (click)="onBooking()">
+        <div class="col-md-11 side-start">
+          <mat-icon >bookmarks</mat-icon>
+          <span class="side-text">  Bookings</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+
+      <a class="txt-white row active-nav" mat-list-item  *ngIf="appointment">
+        <div class="col-md-11 side-start">
+          <mat-icon >phone_locked</mat-icon>
+          <span class="side-text">  Appointments</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+      <a class="txt-white row" mat-list-item *ngIf="!appointment" (click)="onAppointment()">
+        <div class="col-md-11 side-start">
+          <mat-icon >phone_locked</mat-icon>
+          <span class="side-text">  Appointments</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+      <a class="txt-white row active-nav" mat-list-item *ngIf="calendar">
+        <div class="col-md-11 side-start">
+          <mat-icon >calendar_today</mat-icon>
+          <span class="side-text">  Booking Calendar</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+      <a class="txt-white row" mat-list-item *ngIf="!calendar" (click)="onCalendar()">
+        <div class="col-md-11 side-start">
+          <mat-icon >calendar_today</mat-icon>
+          <span class="side-text">  Booking Calendar</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+      <a class="txt-white row active-nav" mat-list-item *ngIf="report">
+        <div class="col-md-11 side-start">
+          <mat-icon >library_books</mat-icon>
+          <span class="side-text">  Report Wizard</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+      <a class="txt-white row" mat-list-item *ngIf="!report" (click)="onReport()">
+        <div class="col-md-11 side-start">
+          <mat-icon >library_books</mat-icon>
+          <span class="side-text">  Report Wizard</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+      <a class="txt-white row active-nav" mat-list-item *ngIf="profile">
+        <div class="col-md-11 side-start">
+          <mat-icon >perm_identity</mat-icon>
+          <span class="side-text">  My Profile</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+
+      <a class="txt-white row" mat-list-item *ngIf="!profile" (click)="onProfile()">
+        <div class="col-md-11 side-start">
+          <mat-icon >perm_identity</mat-icon>
+          <span class="side-text">  My Profile</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+    </mat-nav-list>
+
+  </mat-sidenav>
+
+  <!--dashboard content-->
+  <mat-sidenav-content>
+    <mat-toolbar color="purple">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>Howday! Admin</span>
+    </mat-toolbar>
+
+    <!--dashboard content-->
+    <div class="container-fluid">
+
+      <app-dash-home *ngIf="home"></app-dash-home>
+      <app-dash-business-profile *ngIf="bProfile"></app-dash-business-profile>
+
+    </div>
+    <!--end dashboard content-->
+  </mat-sidenav-content>
+</mat-sidenav-container>

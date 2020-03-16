@@ -39,16 +39,33 @@ import { SignupMerchantComponent } from './components/auth/signup-merchant/signu
 import { CardDetailsComponent } from './components/profile/card-details/card-details.component';
 import { IdVerifyComponent } from './components/profile/id-verify/id-verify.component';
 import { EventNewsComponent } from './components/event/event-news/event-news.component';
-import { MerchantDashComponent } from './components/dashboard/merchant-dash/merchant-dash.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
-import { DashboardComponent } from './components/dashboard/dashboard/dashboard.component';
-import { ToastComponent } from './components/dashboard/toast/toast.component';
+import { DashboardComponent } from './components/merchantdash/dashboard/dashboard.component';
 import { BookingsComponent } from './components/merchant/bookings/bookings.component';
-import { DashStatComponent } from './components/dashboard/dash-stat/dash-stat.component';
-import { PayStatComponent } from './components/dashboard/pay-stat/pay-stat.component';
-import { SalesGraphComponent } from './components/dashboard/graphs/sales-graph/sales-graph.component';
+import { DashStatComponent } from './components/merchantdash/comps/dash-stat/dash-stat.component';
+import { PayStatComponent } from './components/merchantdash/comps/pay-stat/pay-stat.component';
+import { SalesGraphComponent } from './components/merchantdash/graphs/sales-graph/sales-graph.component';
+import { DashHomeComponent } from './components/merchantdash/pages/dash-home/dash-home.component';
+import { DashBusinessProfileComponent } from './components/merchantdash/pages/dash-business-profile/dash-business-profile.component';
+import { DashBookingsComponent } from './components/merchantdash/pages/dash-bookings/dash-bookings.component';
+import { DashAppointmentsComponent } from './components/merchantdash/pages/dash-appointments/dash-appointments.component';
+import { DashCreateServiceComponent } from './components/merchantdash/pages/dash-create-service/dash-create-service.component';
+import { DashReportsComponent } from './components/merchantdash/pages/dash-reports/dash-reports.component';
+import { DashProfileComponent } from './components/merchantdash/pages/dash-profile/dash-profile.component';
+import { BusinessVerifyComponent } from './components/profile/business-verify/business-verify.component';
+import { NoBprofileComponent } from './components/merchant/business-profile/no-bprofile/no-bprofile.component';
+import { BprofileComponent } from './components/merchant/business-profile/bprofile/bprofile.component';
+import { CustBprofileComponent } from './components/merchant/business-profile/cust-bprofile/cust-bprofile.component';
+import { ServiceCardComponent } from './components/service/service-card/service-card.component';
+import { EarningsComponent } from './components/merchant/earnings/earnings.component';
+import { ServiceDetailsComponent } from './components/service/service-details/service-details.component';
+import { BusinessStatComponent } from './components/merchantdash/comps/business-stat/business-stat.component';
+import { CustServiceDetailsComponent } from './components/service/cust-service-details/cust-service-details.component';
+import { CreateServiceComponent } from './components/service/create-service/create-service.component';
+import { CreateBprofileComponent } from './components/merchant/business-profile/create-bprofile/create-bprofile.component';
+import { BusinessOpenDaysComponent } from './components/merchant/business-profile/business-open-days/business-open-days.component';
 
 @NgModule({
   declarations: [
@@ -64,13 +81,31 @@ import { SalesGraphComponent } from './components/dashboard/graphs/sales-graph/s
     CardDetailsComponent,
     IdVerifyComponent,
     EventNewsComponent,
-    MerchantDashComponent,
     DashboardComponent,
-    ToastComponent,
     BookingsComponent,
     DashStatComponent,
     PayStatComponent,
     SalesGraphComponent,
+    DashHomeComponent,
+    DashBusinessProfileComponent,
+    DashBookingsComponent,
+    DashAppointmentsComponent,
+    DashCreateServiceComponent,
+    DashReportsComponent,
+    DashProfileComponent,
+    BusinessVerifyComponent,
+    NoBprofileComponent,
+    BprofileComponent,
+    CustBprofileComponent,
+    ServiceCardComponent,
+    EarningsComponent,
+    ServiceDetailsComponent,
+    BusinessStatComponent,
+    CustServiceDetailsComponent,
+    CreateServiceComponent,
+    CreateBprofileComponent,
+    BusinessOpenDaysComponent,
+
   ],
   imports: [
     BrowserModule,

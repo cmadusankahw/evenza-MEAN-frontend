@@ -1,1 +1,52 @@
-<p>id-verify works!</p>
+<div class="container-fluid text-center justify-content-center">
+  <p>Upload clear images of the <b>Front Side</b> and the <b>Back Side</b> seperate, of your <b>National Identity Card(NIC)</b> or
+    <b>Valid Driving License(DL)</b> or <b>Passport</b></p>
+    <hr>
+
+    <div class="row">
+      <mat-form-field class="mfield">
+        <mat-label >Select Idntity Card Type</mat-label>
+        <select matNativeControl required>
+          <option  value="nic">
+
+            National Identity Card(NIC)</option
+          >
+          <option  value="dl">
+
+            Driving License(DL)</option
+          >
+          <option   value="passport">
+
+            Passport</option
+          >
+        </select>
+      </mat-form-field>
+    </div>
+   <br>
+    <div class="row">
+      <div class="col-md-1"></div>
+      <div class="col">
+        <a role="button" mdbWavesEffect (click)="sidea.click()">
+          <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
+        </a>
+        <input type="file" hidden="true" id="sidea" #sidea>
+        <p><b>Side A</b></p>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col">
+        <a role="button" mdbWavesEffect (click)="sideb.click()">
+          <img src="./assets/images/merchant/nopic.png" alt="front side"  class="img-cls">
+        </a>
+        <input type="file" hidden="true" id="sideb" #sideb>
+        <p><b>Side B</b></p>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+ <br>
+    <div class="row">
+      <button class="btn btn-lg bt-center" mdbBtn role="button" color="secondary" mdbWavesEffect>
+        Submit for Verification
+      </button>
+    </div>
+
+</div>

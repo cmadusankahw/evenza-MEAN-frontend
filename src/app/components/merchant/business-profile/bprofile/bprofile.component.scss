@@ -1,7 +1,4 @@
 
-.sign-up-content{
-  padding-top:5%;
-}
 
 p{
   padding-left:10px;
@@ -21,4 +18,127 @@ p{
 
 .pd-top-min{
   padding-top:5%;
+}
+
+.logo-cls{
+  padding-top:10%;
+  z-index:10;
+}
+
+.txt-title{
+  line-height:400%;
+  font-weight:bold;
+  font-size:200%;
+  color:white;
+}
+
+.page-content{
+  padding-top:20px;
+}
+
+.f-image{
+  position:absolute;
+}
+
+.header-cls{
+  position:relative;
+}
+
+.feature-img{
+  width: 100%;
+}
+
+.logo-img{
+  width:150px;
+  border-radius:50%;
+}
+
+.cust-btn{
+  margin:0 auto;
+}
+
+.cust-row{
+  padding-top:20px;
+  line-height:40px;
+  padding-bottom:20px;
+  text-align:center;
+}
+
+.verify-stat{
+  font-size:18px;
+  font-weight:bold;
+  color:darkgreen;
+  text-align:right;
+}
+
+.map-container{
+  width:100%;
+}
+
+.content-title{
+  font-weight:bold;
+  font-size: 23px;
+  text-align:left;
+}
+
+.content-text{
+  text-align:justify;
+}
+
+.state-text{
+  font-weight:bold;
+}
+
+.open-state{
+  color:darkred;
+  font-weight:bold;
+}
+
+
+.stat-num{
+  background-color:darkmagenta;
+  color:white;
+}
+
+.stat-text{
+  text-align:center;
+  padding:16px;
+}
+
+.stat-num{
+  padding:16px;
+  vertical-align:middle;
+  text-align:center;
+}
+
+.stat-no{
+  font-size:19px;
+}
+
+.stat-title{
+  font-weight:bold;
+  font-size:14px;
+}
+
+.card-cls{
+  margin:0 auto;
+  margin-bottom:20px;
+  margin-left:15px;
+}
+
+
+@media only screen and (max-width: 600px){
+  .txt-title{
+    line-height:50px;
+    color:darkslategray;
+  }
+
+  .feature-img{
+    height:135px;
+    padding-right:10px;
+  }
+  .cust-row{
+    line-height:20px;
+  }
+
 }

@@ -1,46 +1,211 @@
-<div class="sign-up-content" >
+<div class="container-fluid" >
   <section class="px-md-5 mx-md-5 dark-grey-text">
 
     <!--customize profile section-->
-    <div class="container-fluid">
-      <div class="row">
-        Wanna cutomize?
+      <div class="row cust-row">
+              <div class="col-md-8">
+                <p>Need to change anything? Customize your Business Profile. </p>
+              </div>
+              <div class="col-md-4">
+                <a type="button" mdbBtn color="secondary" class="waves-light btn btn-md  cust-btn" mdbWavesEffect>Customize Profile
+                </a>
+              </div>
       </div>
-    </div>
+
 
     <!--profile header-->
-    <div class="container-fluid">
-      <div class="row">
-        featured image
+    <div class="container-fluid header-cls">
+      <div class="row f-image">
+        <img src="./assets/images/back/bprofile.jpg" alt="Merchant Cover" class="feature-img" >
       </div>
-      <div class="row">
-        <div class="col-md-3">
-            <img src="./assets/images/merchant/user.jpg" alt="Merchant Pic" class="img-thumbnail" height="80px" style="border-radius:50%;">
+      <div class="row logo-cls">
+        <div class="col-md-2">
+            <img src="./assets/images/merchant/business.jpg" alt="Merchant Pic" class="img-thumbnail logo-img">
         </div>
-        <div class="col-md-9">
-          <h2 class="txt-title"> Chiran's Business </h2>
+        <div class="col-md-10">
+          <h2 class="txt-title"> Creative Photography </h2>
         </div>
       </div>
-      <hr>
 
       <!-- profile content-->
-      <div class="container-fluid">
+      <div class="page-content">
         <div class="row">
 
           <!--left content-->
-          <div class="col-md-8">
-            left content
+          <div class="col-md-8 container-fluid ">
+            <div class="state-text">
+              <mdb-icon fas icon="building"> </mdb-icon> Photography Service at {{'Kelaniya, Sri Lanka'}}
+              <br>
+             <a mdbWavesEffect role="button" (click)="opendays.show()"> <span class="open-state">
+                <mdb-icon far icon="clock"> </mdb-icon> {{'Closed Now'}}</span> </a>
+
+            </div>
+            <br>
+            <div class="content-title">
+              Business Description
+              </div>
+              <hr>
+              <div class="content-text">
+                Creative Worth Photography Studio is a community based professional photography business given to
+                quality portraiture and full wedding coverage. Creative Worth seeks to provide a service to individuals, couples,
+                and families that emphasizes and enhances the quality of their relationships through photographic imaging.
+                <br>
+                Creative Worth Photography Studio is a community based professional photography business given to
+                quality portraiture and full wedding coverage. Creative Worth seeks to provide a service to individuals, couples,
+                and families that emphasizes and enhances the quality of their relationships through photographic imaging.
+              </div>
+              <br>
+                 <!--service cards-->
+                <div class="content-title page-content">
+                  Services
+                  </div>
+                  <hr>
+
+                  <!--service comps-->
+                  <div class="row">
+                    <div class="col">
+                      sample service
+                    </div>
+                    <div class="col">
+                      sample service
+                    </div>
+                    <div class="col">
+                      sample service
+                    </div>
+                    <div class="col">
+                      sample service
+                    </div>
+                  </div>
+
           </div>
 
           <!--right content-->
           <div class="col-md-4">
-            right content
+            <div class="verify-stat">
+                <mdb-icon far icon="check-circle"> </mdb-icon> Business Verified
+            </div>
+            <hr>
+              <div id=" row map-container-google-1" class="map-container page-content">
+                <iframe src="https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0"
+                  style="border:0" allowfullscreen></iframe>
+              </div>
+
+            <div class="content-title page-content">
+              Contact Details
+              </div>
+              <hr>
+
+                <div>
+                  <!--contact No-->
+                  <mdb-card class="card-cls">
+                    <div class="row rgba-white-slight waves-light" mdbWavesEffect>
+                      <!-- Card no -->
+                      <div class="col-md-2 stat-num">
+                        <span class="stat-no">
+                          <mdb-icon fas icon="phone"></mdb-icon>
+                        </span>
+                      </div>
+
+                      <div class="col-md-10 stat-text">
+                        <span class="stat-title">
+                          {{'(+94) 71 145 5034'}}
+                        </span>
+                      </div>
+                    </div>
+                  </mdb-card>
+
+                   <!--addresss-->
+                   <mdb-card class="card-cls">
+                    <div class="row rgba-white-slight waves-light" mdbWavesEffect>
+                      <!-- Card no -->
+                      <div class="col-md-2 stat-num">
+                        <span class="stat-no">
+                          <mdb-icon fas icon="home"></mdb-icon>
+                        </span>
+                      </div>
+
+                      <div class="col-md-10 stat-text">
+                        <span class="stat-title">
+                          {{'Main Street, Dalugama'}}
+                        </span>
+                      </div>
+                    </div>
+                  </mdb-card>
+
+                   <!--email-->
+                   <mdb-card class="card-cls">
+                    <div class="row rgba-white-slight waves-light" mdbWavesEffect>
+                      <!-- Card no -->
+                      <div class="col-md-2 stat-num">
+                        <span class="stat-no">
+                          <mdb-icon fas icon="envelope"></mdb-icon>
+                        </span>
+                      </div>
+
+                      <div class="col-md-10 stat-text">
+                        <span class="stat-title">
+                          {{'mophotography@gmail.com'}}
+                        </span>
+                      </div>
+                    </div>
+                  </mdb-card>
+                </div>
+
           </div>
         </div>
       </div>
 
     </div>
 
+ </section>
+</div>
 
-    </section>
+
+
+<!--open days Modal-->
+<div
+  mdbModal
+  #opendays="mdbModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered"
+    role="document"
+    style="overflow-y: initial !important"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="opendays.hide()"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel" >
+          Available Times
+        </h4>
+      </div>
+      <div class="modal-body " style="height: 400px; overflow-y: auto;" >
+         <app-business-open-days></app-business-open-days>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          mdbBtn
+          color="link"
+          (click)="opendays.hide()"
+          mdbWavesEffect
+        >
+          Close
+        </button>
+      </div>
+    </div>
   </div>
+</div>

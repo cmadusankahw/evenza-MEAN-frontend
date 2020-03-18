@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./business-open-days.component.scss']
 })
 export class BusinessOpenDaysComponent implements OnInit {
+  opendays = true;
 
   constructor() { }
 

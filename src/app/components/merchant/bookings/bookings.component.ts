@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { PageEvent } from '@angular/material/paginator';
 
 export interface UserData {
   id: string;
@@ -19,7 +18,7 @@ export interface UserData {
 })
 export class BookingsComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'name', 'progress', 'color','action'];
+  displayedColumns: string[] = ['id', 'name', 'progress', 'color', 'action'];
   dataSource: MatTableDataSource<UserData>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -28,7 +27,7 @@ export class BookingsComponent implements OnInit {
 
 
   constructor() {
-    // Create 100 users
+    // Create sample bookings
     const users = [
       { id: '1', name: 'chiran', progress: '10', color: 'red' },
       { id: '2', name: 'kamal', progress: '10', color: 'red' },

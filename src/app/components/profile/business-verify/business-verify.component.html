@@ -1,1 +1,69 @@
-<p>business-verify works!</p>
+<div class="container-fluid text-center justify-content-center">
+
+  <h5 class="pd-top-min">
+    <mat-icon>credit_card</mat-icon>
+   <b> Business registration(BR)</b>
+  </h5>
+  <hr>
+  <p>Upload clear images of the <b>Front Side</b> and the <b>Back Side</b> seperate, of the <b>Business registrattion(BA)</b></p>
+  <br>
+
+    <div class="row">
+      <div class="col-md-1"></div>
+      <div class="col">
+        <a role="button" mdbWavesEffect (click)="sidea.click()">
+          <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
+        </a>
+        <input type="file" hidden="true" id="sidea" #sidea>
+        <p><b>Side A</b></p>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col">
+        <a role="button" mdbWavesEffect (click)="sideb.click()">
+          <img src="./assets/images/merchant/nopic.png" alt="front side"  class="img-cls">
+        </a>
+        <input type="file" hidden="true" id="sideb" #sideb>
+        <p><b>Side B</b></p>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+ <br>
+ <h5 class="pd-top-min">
+  <mat-icon>library_books</mat-icon>
+ <b> Business Certifications </b>
+</h5>
+<hr>
+<p>Upload clear images of the <b>Valid Certifications related to your Business</b></p>
+ <p style="color:darkred;">*Scanned certifications need to be originl copies, issues by Repudated Certifiers. Acceptemce is done by manual verification.</p>
+   <br>
+
+   <!--add new certification-->
+   <div class="container-fluid">
+   <div class="row">
+     <div class="col-md-8">
+      <mat-form-field class="mfield">
+        <input matInput  id="certify_name" placeholder="Certification name" required>
+      </mat-form-field>
+      <br>
+      <mat-form-field class="mfield">
+        <input matInput  id="issued_org" placeholder="Issued Organization" required>
+      </mat-form-field>
+     </div>
+     <div class="col">
+      <a role="button" mdbWavesEffect (click)="sidea.click()">
+        <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
+      </a>
+      <input type="file" hidden="true" id="sidea" #sidea>
+      <p><b>Upload Image</b></p>
+    </div>
+   </div>
+  </div>
+
+<hr>
+ <div class="row">
+      <button class="btn btn-lg bt-center" mdbBtn role="button" color="secondary" mdbWavesEffect>
+        Submit for Verification
+      </button>
+    </div>
+
+</div>

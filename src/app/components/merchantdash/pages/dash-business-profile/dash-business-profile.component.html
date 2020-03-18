@@ -4,17 +4,18 @@
 
   <!--left component-->
   <div class="col-md-9">
-    left comp here
+    <app-no-bprofile *ngIf="!iscreated"></app-no-bprofile>
+    <app-bprofile *ngIf="iscreated"></app-bprofile>
   </div>
 
   <!--right component-->
   <div class="col-md-3">
 
-   right up omp here
+   <app-business-stat></app-business-stat>
 
   <br>
 
-  rigth down comp here
+  <app-pay-stat></app-pay-stat>
 
   </div>
 

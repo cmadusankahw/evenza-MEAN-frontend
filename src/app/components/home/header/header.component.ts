@@ -6,6 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  ismerchant = true;
+  iscommon = false;
+  isuser = false;
+  isadmin = false;
 
   constructor() { }
 

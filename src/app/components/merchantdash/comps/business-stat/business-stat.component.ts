@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./business-stat.component.scss']
 })
 export class BusinessStatComponent implements OnInit {
+  iscreated = true;
 
   constructor() { }
 

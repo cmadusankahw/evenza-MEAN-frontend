@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NoBprofileComponent implements OnInit {
 
+  idverified = true;
+
   constructor() { }
 
   ngOnInit() {

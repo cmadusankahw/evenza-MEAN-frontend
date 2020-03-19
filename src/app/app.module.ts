@@ -23,8 +23,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
-
-
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -143,7 +143,9 @@ import { BusinessOpenDaysComponent } from './components/merchant/business-profil
     MatTableModule,
     MatPaginatorModule,
     ChartsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    NgbModule,
+    MatCheckboxModule
 
   ],
   schemas: [NO_ERRORS_SCHEMA],

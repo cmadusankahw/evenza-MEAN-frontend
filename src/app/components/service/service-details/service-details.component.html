@@ -1,1 +1,221 @@
-<p>service-details works!</p>
+<div class="container-fluid" *ngIf="!editmode">
+
+  <div class="row f-image">
+    <img src={{serviceDetails[0].feature_img}} alt="Service Cover" class="feature-img" >
+  </div>
+    <div class="row">
+      <div class="col-md-7">
+        <div class="content-title">
+          {{serviceDetails[0].title}}
+        </div>
+        <div class="open-stat">
+          <a mdbWavesEffect role="button" (click)="opendays.show()">
+          <span><mdb-icon far icon="clock"> </mdb-icon> {{'Service is Available'}}</span>
+          </a>
+        </div>
+
+      </div>
+
+      <!--if editb=able by merchant-->
+      <div class="col-md-5 edit-cls" *ngIf="iseditable">
+          <a mdbBtn color="secondary" class="btn btn-md edit-btn" mdbWavesEffect
+          (click)="editmode = !editmode">Edit Details</a>
+      </div>
+
+      <!--if only shown to users-->
+      <div class="col-md-5 edit-cls" *ngIf="!iseditable">
+        <a mdbBtn color="secondary" outline="yes" class="btn btn-lg book-btn" mdbWavesEffect>Book Now</a>
+      </div>
+
+    </div>
+
+
+      <hr>
+      <div class="row">
+        <div class=" col-md-7 content-text">
+          {{serviceDetails[0].description}}
+          <br>
+          <div class="category">
+            <mdb-icon far icon="calendar-alt"></mdb-icon> Categry: {{serviceDetails[0].category}}
+          </div>
+          <div class="notify" *ngIf="iseditable">
+            <mdb-icon fas icon="bookmark"> </mdb-icon> {{serviceDetails[0].no_of_bookings}} Active Bookings
+            <br>
+            <mdb-icon far icon="calendar-check"> </mdb-icon> {{serviceDetails[0].no_of_appoints}} Active Appointments
+          </div>
+        </div>
+
+        <!--hourly rate-->
+        <div class="col-md-5">
+          <div class="hr-rate">
+            <span class="hr-price"> Rs. {{serviceDetails[0].rate}}</span>
+            <span class="hr-text"> {{serviceDetails[0].rate_type}}</span>
+          </div>
+          <hr>
+
+          <!--service ratings-->
+            <div class="rating">
+              <ngb-rating [(rate)]="currentRate" max="5">
+                <ng-template let-fill="fill" let-index="index">
+                  <span class="star" [class.filled]="fill === 100">&#9733;</span>
+                </ng-template>
+              </ngb-rating>
+              <br>
+              <span class="rating-txt">
+                {{'1247'}} Recommended
+              </span>
+            </div>
+
+        </div>
+      </div>
+
+      <hr>
+
+</div>
+
+<!--edit/add new service-->
+<div class="container-fluid text-center" *ngIf="editmode">
+  <div class="center-txt">
+    <p> You can change the details of service <b>{{serviceDetails[0].title}}</b> below.</p>
+  </div>
+  <br>
+    <form class="service-form">
+      <mat-form-field class="service-full-width">
+        <mat-label>Service Title</mat-label>
+        <input matInput placeholder="Service Title here" value="{{serviceDetails[0].title}}" required>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field class="service-full-width">
+        <mat-label >Select Service Category</mat-label>
+        <select matNativeControl required>
+          <option  value={{cat.id}} *ngFor="let cat of categories">
+            {{cat.val}}</option>
+        </select>
+      </mat-form-field>
+      <br>
+        <div class="check-cls">
+          <mat-label class="check-label">Service Availability</mat-label>
+          <mat-checkbox class="check-margin" >Available for Booking</mat-checkbox>
+          <mat-checkbox class="check-margin" >Available for Appointments</mat-checkbox>
+        </div>
+      <br>
+      <mat-form-field class="service-full-width">
+        <mat-label class="check-label">Service Description</mat-label>
+        <textarea matInput rows="7" placeholder="Service Description">
+          {{serviceDetails[0].description}}
+        </textarea>
+      </mat-form-field>
+      <br>
+
+      <div class="row">
+
+        <div class="col">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label >Service Rate Type</mat-label>
+            <select matNativeControl required>
+             <option  value={{serviceDetails.rate_type}} *ngFor="let serviced of serviceDetails">
+                {{serviced.rate_type}}</option>
+            </select>
+          </mat-form-field>
+        </div>
+
+        <div class="col">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label>Service Rate(Rs.)</mat-label>
+            <input matInput placeholder="Service Rate here" value="{{serviceDetails[0].rate}}" required>
+          </mat-form-field>
+        </div>
+      </div>
+      <hr>
+      <div class="enter-txt">
+        <p> Upload feature Images for service (480*800px or max)</p>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="sidea.click()">
+            <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="sidea" #sidea>
+          <p><b>Upload Image</b></p>
+        </div>
+
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="sideb.click()">
+            <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="sideb" #sidea>
+          <p><b>Upload Image</b></p>
+        </div>
+
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="sidec.click()">
+            <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="sidec" #sidea>
+          <p><b>Upload Image</b></p>
+        </div>
+      </div>
+
+    </form>
+    <hr>
+  <!--back button only if !addnew-->
+  <div class="btns">
+    <a mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
+  (click)="editmode = !editmode" *ngIf="!addnew">Save Changes</a>
+  <a mdbBtn color="secondary" class="btn btn-md edtbt" outline="yes" mdbWavesEffect
+  (click)="editmode = !editmode" *ngIf="!addnew">Discard</a>
+  </div>
+
+
+</div>
+
+
+
+<!--open days Modal-->
+<div
+  mdbModal
+  #opendays="mdbModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered"
+    role="document"
+    style="overflow-y: initial !important"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="opendays.hide()"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel" >
+          Available Times
+        </h4>
+      </div>
+      <div class="modal-body " style="height: 400px; overflow-y: auto;" >
+         <app-business-open-days></app-business-open-days>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          mdbBtn
+          color="link"
+          (click)="opendays.hide()"
+          mdbWavesEffect
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

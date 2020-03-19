@@ -1,7 +1,9 @@
 {
   "name": "evenza-mdb-frontend",
   "version": "0.0.0",
-  "author": {"name": "Chiran Hewawitharana"},
+  "author": {
+    "name": "Chiran Hewawitharana"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -24,6 +26,7 @@
     "@angular/platform-browser-dynamic": "~8.2.9",
     "@angular/router": "~8.2.9",
     "@fortawesome/fontawesome-free": "^5.12.1",
+    "@ng-bootstrap/ng-bootstrap": "^5.3.0",
     "@types/chart.js": "^2.9.15",
     "angular-bootstrap-md": "^8.10.1",
     "angular-cc-library": "^1.2.5",

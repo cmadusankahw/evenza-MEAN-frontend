@@ -60,7 +60,7 @@ p{
 .cust-row{
   padding-top:20px;
   line-height:40px;
-  padding-bottom:20px;
+  padding-bottom:10px;
   text-align:center;
 }
 
@@ -139,6 +139,10 @@ p{
   }
   .cust-row{
     line-height:20px;
+  }
+  .verify-stat{
+    text-align:center;
+    padding-top:20px;
   }
 
 }

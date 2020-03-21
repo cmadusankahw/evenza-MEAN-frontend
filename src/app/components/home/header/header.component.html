@@ -32,13 +32,13 @@
           About Us
         </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" *ngIf= "!onlogin">
         <a mdbWavesEffect class="nav-link txt-bold" routerLink="/login" routerLinkActive="purple darken-3">
           <mdb-icon fas icon="sign-in-alt" ></mdb-icon>
           Log In
         </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" *ngIf= "!onregister">
         <a mdbWavesEffect class="nav-link txt-bold"  routerLink="/register" routerLinkActive="purple darken-3">
           <mdb-icon fas icon="user-plus"></mdb-icon>
           Sign Up

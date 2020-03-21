@@ -3,11 +3,29 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-export interface UserData {
+export interface Booking {
   id: string;
-  name: string;
-  progress: string;
-  color: string;
+  service_id: string;
+  cust_id: string;
+  created_date: string;
+  created_time: string;
+  state: string;
+  rating: number;
+  review: string;
+  booking_type: string;
+  booked_date: string;
+  duration: number;
+  start_time: string;
+  end_time: string;
+  comment: string;
+  amount: number;
+  commission_due: number;
+  amount_paid: number;
+}
+
+export interface BookingState{
+  id: string;
+  val: string;
 }
 
 
@@ -19,27 +37,45 @@ export interface UserData {
 export class BookingsComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'name', 'progress', 'color', 'action'];
-  dataSource: MatTableDataSource<UserData>;
+  dataSource: MatTableDataSource<Booking>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+ // Create sample bookings
+ bookings: Booking[] = [
+  { 
+    id: 'B-01',
+    service_id: 'S-01',
+    cust_id: 'C-01',
+    created_date: '22/03/2020',
+    created_time: '14:25',
+    state: 'Approved',
+    rating: 3,
+    review : 'Good Service!',
+    booked_date: '30/03/2020',
+    booking_type: '/Hr',
+    duration: 4.5,
+    start_time: '08:00',
+    end_time: '16:00',
+    comment: 'please be on time',
+    amount: 215.30,
+    commission_due: 22.50,
+    amount_paid: 30.0
+   },
+
+];
+
+status: BookingState[] = [
+  {id: '1', val: 'Approved'},
+  {id: '1', val: 'Pending'},
+  {id: '1', val: 'Paid'},
+]
 
 
   constructor() {
-    // Create sample bookings
-    const users = [
-      { id: '1', name: 'chiran', progress: '10', color: 'red' },
-      { id: '2', name: 'kamal', progress: '10', color: 'red' },
-      { id: '3', name: 'namal', progress: '10', color: 'red' },
-      { id: '4', name: 'bingo', progress: '10', color: 'red' },
-      { id: '5', name: 'bingo', progress: '10', color: 'red' },
-      { id: '6', name: 'bingo', progress: '10', color: 'red' },
-      { id: '7', name: 'bingo', progress: '10', color: 'red' }
-    ];
-
     // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+    this.dataSource = new MatTableDataSource(this.bookings);
   }
 
   ngOnInit() {

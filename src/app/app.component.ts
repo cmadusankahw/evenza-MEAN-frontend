@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'evenza-mdb-frontend';
+  title = 'Evenza - Event Magement Made Eaze';
+
 }

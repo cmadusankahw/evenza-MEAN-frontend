@@ -38,6 +38,10 @@
           <div class="category">
             <mdb-icon far icon="calendar-alt"></mdb-icon> Categry: {{serviceDetails[0].category}}
           </div>
+          <div class="notify" >
+            <mdb-icon far icon="calendar-check"> </mdb-icon> {{serviceDetails[0].pay_on_meet ? 'Pay on Meet Available' : 'Payment on Booking Required'}}
+          </div>
+          <br>
           <div class="notify" *ngIf="iseditable">
             <mdb-icon fas icon="bookmark"> </mdb-icon> {{serviceDetails[0].no_of_bookings}} Active Bookings
             <br>
@@ -106,6 +110,15 @@
           <mat-checkbox class="check-margin" >Available for Booking</mat-checkbox>
           <mat-checkbox class="check-margin" >Available for Appointments</mat-checkbox>
         </div>
+        <br>
+        <div class="check-cls">
+          <mat-label class="check-label">Available Days and Times </mat-label>
+          <mat-checkbox class="check-margin"  [checked]="serviceDetails[0].open_days_as_business"
+          (change)="serviceDetails[0].open_days_as_business = !serviceDetails[0].open_days_as_business"> Same as Business </mat-checkbox>
+          <button mdbBtn color="secondary" class="btn btn-md" outline="yes" mdbWavesEffect
+          (click)="opendays.show()"  [disabled]="serviceDetails[0].open_days_as_business">Change Availability</button>
+        </div>
+
       <br>
       <mat-form-field class="service-full-width">
         <mat-label class="check-label">Service Description</mat-label>
@@ -121,8 +134,8 @@
           <mat-form-field class="service-full-width-sm">
             <mat-label >Service Rate Type</mat-label>
             <select matNativeControl required>
-             <option  value={{serviced.rate_type}} *ngFor="let serviced of serviceDetails">
-                {{serviced.rate_type}}</option>
+             <option  value={{rate.id}} *ngFor="let rate of rates">
+                {{rate.val}}</option>
             </select>
           </mat-form-field>
         </div>
@@ -133,6 +146,13 @@
             <input matInput placeholder="Service Rate here" value="{{serviceDetails[0].rate}}" required>
           </mat-form-field>
         </div>
+      </div>
+      <div class="check-cls">
+        <mat-checkbox class="check-margin" [checked]="serviceDetails[0].pay_on_meet"
+        (change)="serviceDetails[0].pay_on_meet = !serviceDetails[0].pay_on_meet"> Pay On Meet is Available</mat-checkbox>
+        <br><br>
+        <p> Note: If <b>Pay on Meet</b> is enabled, <b>no payment</b> will be charged on bookings by customer. Payment can be only collected manullay
+        at the service. If approved, <b>System will charge the due commission form you.</b></p>
       </div>
       <hr>
       <div class="enter-txt">
@@ -201,6 +221,14 @@
           <mat-checkbox class="check-margin" >Available for Booking</mat-checkbox>
           <mat-checkbox class="check-margin" >Available for Appointments</mat-checkbox>
         </div>
+        <br>
+        <div class="check-cls">
+          <mat-label class="check-label">Available Days and Times</mat-label>
+          <mat-checkbox class="check-margin" [checked]="temp_open"
+          (change)="temp_open = !temp_open">Same as Business</mat-checkbox>
+          <button mdbBtn color="secondary" class="btn btn-md" outline="yes" mdbWavesEffect
+          (click)="opendays.show()"  [disabled]="temp_open">Change Availability</button>
+        </div>
       <br>
       <mat-form-field class="service-full-width">
         <mat-label class="check-label">Service Description</mat-label>
@@ -215,8 +243,8 @@
           <mat-form-field class="service-full-width-sm">
             <mat-label >Service Rate Type</mat-label>
             <select matNativeControl required>
-             <option  value={{serviced.rate_type}} *ngFor="let serviced of serviceDetails">
-                {{serviced.rate_type}}</option>
+             <option  value={{rates.id}} *ngFor="let rate of rates">
+                {{rates.val}</option>
             </select>
           </mat-form-field>
         </div>
@@ -227,6 +255,13 @@
             <input matInput placeholder="0.00"  required>
           </mat-form-field>
         </div>
+      </div>
+      <div>
+        <mat-checkbox class="check-margin" [checked]="temp_pay_on_meet"
+        (change)="temp_pay_on_meet= !temp_pay_on_meet"> Pay On Meet is Available</mat-checkbox>
+        <br><br>
+        <p> Note: If <b>Pay on Meet</b> is enabled, <b>no payment</b> will be charged on bookings by customer. Payment can be only collected manullay
+        at the service. If approved, <b>System will charge the due commission form you.</b></p>
       </div>
       <hr>
       <div class="enter-txt">

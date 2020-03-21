@@ -18,6 +18,9 @@ export class DashboardComponent {
   report = false;
   profile = false;
 
+  //create new service
+  editmode = true;
+  addnew = true;
 
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)

@@ -1,4 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { StringifyOptions } from 'querystring';
+
+export interface Availability {
+  day: string;
+  isopened: boolean;
+  open_time: string;
+  close_time: string;
+}
 
 @Component({
   selector: 'app-business-open-days',
@@ -6,7 +14,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./business-open-days.component.scss']
 })
 export class BusinessOpenDaysComponent implements OnInit {
-  opendays = true;
+
+  //editable open times
+  editmode = false;
+
+ availability = [
+    { day: 'Monday', isopened: true, open_time: '08:00', close_time: '18:00' },
+    { day: 'Tuesday', isopened: true, open_time: '08:00', close_time: '18:00' },
+    { day: 'Wednesday', isopened: true, open_time: '08:00', close_time: '18:00' },
+    { day: 'Thursday', isopened: true, open_time: '08:00', close_time: '18:00' },
+    { day: 'Friday', isopened: true, open_time: '08:00', close_time: '18:00' },
+    { day: 'Saturday', isopened: true, open_time: '08:00', close_time: '18:00' },
+    { day: 'Sunday', isopened: false , open_time: '', close_time: '' },
+  ];
+
+  //timepicker
+  time = {hour: 13, minute: 30};
+  meridian = true;
 
   constructor() { }
 

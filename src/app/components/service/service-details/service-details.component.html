@@ -65,6 +65,13 @@
                 {{'1247'}} Recommended
               </span>
             </div>
+          <hr>
+          <div class="owner text-center" *ngIf="!iseditable">
+            <span>Owned by {{serviceDetails[0].business_name}}</span>
+            <br>
+            <a mdbBtn color="secondary" class="btn btn-md" outline="yes" mdbWavesEffect
+              (click)="showBprofile()" >View Business</a>
+          </div>
 
         </div>
       </div>
@@ -73,8 +80,8 @@
 
 </div>
 
-<!--edit/add new service-->
-<div class="container-fluid text-center" *ngIf="editmode">
+<!--editnew service-->
+<div class="container-fluid text-center" *ngIf="editmode && !addnew">
   <div class="center-txt">
     <p> You can change the details of service <b>{{serviceDetails[0].title}}</b> below.</p>
   </div>
@@ -102,7 +109,7 @@
       <br>
       <mat-form-field class="service-full-width">
         <mat-label class="check-label">Service Description</mat-label>
-        <textarea matInput rows="7" placeholder="Service Description">
+        <textarea matInput rows="5" placeholder="Service Description">
           {{serviceDetails[0].description}}
         </textarea>
       </mat-form-field>
@@ -114,7 +121,7 @@
           <mat-form-field class="service-full-width-sm">
             <mat-label >Service Rate Type</mat-label>
             <select matNativeControl required>
-             <option  value={{serviceDetails.rate_type}} *ngFor="let serviced of serviceDetails">
+             <option  value={{serviced.rate_type}} *ngFor="let serviced of serviceDetails">
                 {{serviced.rate_type}}</option>
             </select>
           </mat-form-field>
@@ -129,7 +136,7 @@
       </div>
       <hr>
       <div class="enter-txt">
-        <p> Upload feature Images for service (480*800px or max)</p>
+        <p> Upload new feature Images related to your service (up to 3 images *5MB Max)</p>
       </div>
       <div class="row">
         <div class="col-md-4">
@@ -137,23 +144,23 @@
             <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
           </a>
           <input type="file" hidden="true" id="sidea" #sidea>
-          <p><b>Upload Image</b></p>
+          <p><b>Image 01</b></p>
         </div>
 
         <div class="col-md-4">
           <a role="button" mdbWavesEffect (click)="sideb.click()">
             <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
           </a>
-          <input type="file" hidden="true" id="sideb" #sidea>
-          <p><b>Upload Image</b></p>
+          <input type="file" hidden="true" id="sideb" #sideb>
+          <p><b>Imag 02e</b></p>
         </div>
 
         <div class="col-md-4">
           <a role="button" mdbWavesEffect (click)="sidec.click()">
             <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
           </a>
-          <input type="file" hidden="true" id="sidec" #sidea>
-          <p><b>Upload Image</b></p>
+          <input type="file" hidden="true" id="sidec" #sidec>
+          <p><b>Image 03</b></p>
         </div>
       </div>
 
@@ -162,15 +169,103 @@
   <!--back button only if !addnew-->
   <div class="btns">
     <a mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
-  (click)="editmode = !editmode" *ngIf="!addnew">Save Changes</a>
+  (click)="editmode = !editmode" >Save Changes</a>
   <a mdbBtn color="secondary" class="btn btn-md edtbt" outline="yes" mdbWavesEffect
-  (click)="editmode = !editmode" *ngIf="!addnew">Discard</a>
+  (click)="editmode = !editmode" >Discard</a>
   </div>
-
-
 </div>
 
+<!--add new service-->
+<div class="container-fluid text-center" *ngIf="editmode && addnew">
+  <div class="center-txt">
+    <p> Crete your service with providing details below.</p>
+  </div>
+  <br>
+    <form class="service-form">
+      <mat-form-field class="service-full-width">
+        <mat-label>Service Title</mat-label>
+        <input matInput placeholder="Service Title here"  required>
+      </mat-form-field>
+      <br>
 
+      <mat-form-field class="service-full-width">
+        <mat-label >Select Service Category</mat-label>
+        <select matNativeControl required>
+          <option  value={{cat.id}} *ngFor="let cat of categories">
+            {{cat.val}}</option>
+        </select>
+      </mat-form-field>
+      <br>
+        <div class="check-cls">
+          <mat-label class="check-label">Service Availability</mat-label>
+          <mat-checkbox class="check-margin" >Available for Booking</mat-checkbox>
+          <mat-checkbox class="check-margin" >Available for Appointments</mat-checkbox>
+        </div>
+      <br>
+      <mat-form-field class="service-full-width">
+        <mat-label class="check-label">Service Description</mat-label>
+        <textarea matInput rows="5" placeholder="Service Description">
+        </textarea>
+      </mat-form-field>
+      <br>
+
+      <div class="row">
+
+        <div class="col">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label >Service Rate Type</mat-label>
+            <select matNativeControl required>
+             <option  value={{serviced.rate_type}} *ngFor="let serviced of serviceDetails">
+                {{serviced.rate_type}}</option>
+            </select>
+          </mat-form-field>
+        </div>
+
+        <div class="col">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label>Service Rate(Rs.)</mat-label>
+            <input matInput placeholder="0.00"  required>
+          </mat-form-field>
+        </div>
+      </div>
+      <hr>
+      <div class="enter-txt">
+        <p> Upload feature Images related to your service (up to 3 images *5MB Max)</p>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="sidea.click()">
+            <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="sidea" #sidea>
+          <p><b>Image 01</b></p>
+        </div>
+
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="sideb.click()">
+            <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="sideb" #sidea>
+          <p><b>Image 02</b></p>
+        </div>
+
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="sidec.click()">
+            <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="sidec" #sidea>
+          <p><b>Image 03</b></p>
+        </div>
+      </div>
+
+    </form>
+    <hr>
+  <!--back button only if !addnew-->
+  <div class="btns">
+    <a mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
+  (click)="createService()" >Create Service</a>
+  </div>
+</div>
 
 <!--open days Modal-->
 <div

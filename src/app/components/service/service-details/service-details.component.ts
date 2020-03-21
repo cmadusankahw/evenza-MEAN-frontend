@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 export interface Services {
   id: string;
@@ -9,6 +10,7 @@ export interface Services {
   no_of_appoints: number;
   rate: number;
   rate_type: string;
+  business_name: string;
   feature_img: string;
 }
 
@@ -25,7 +27,7 @@ export interface Categories {
 export class ServiceDetailsComponent implements OnInit {
 
   currentRate = 3;
-  iseditable = true;
+  iseditable = false;
 
   //edit mode
   editmode = false;
@@ -36,7 +38,7 @@ export class ServiceDetailsComponent implements OnInit {
   serviceDetails = [
     {
       id: '1', title: 'Dream Photography', description: `Creative Worth Photography Studio is a community based professional photography business given to quality portraiture and full wedding coverage. Creative Worth seeks to provide a service to individuals, couples, and families that emphasizes and enhances the quality of their relationships through photographic imaging.`,
-      no_of_bookings: 4, category: 'Photography', rate: 256.37, rate_type: '/Hr', no_of_appoints: 2,
+      category: 'Photography', no_of_bookings: 4, no_of_appoints: 2,  rate: 256.37, rate_type: '/Hr', business_name : 'Dream Business',
       feature_img: './assets/images/services/1.jpg'
     },
   ];
@@ -47,9 +49,17 @@ export class ServiceDetailsComponent implements OnInit {
     { id: '3', val: 'Transport' },
   ];
 
-  constructor() { }
+  constructor( private router: Router ) { }
 
   ngOnInit() {
+  }
+
+  createService(){
+    console.log('Service Created');
+  }
+
+  showBprofile() {
+    this.router.navigate(['/m/bprofile']);
   }
 
 }

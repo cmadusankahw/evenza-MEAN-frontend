@@ -58,14 +58,10 @@ import { DashProfileComponent } from './components/merchantdash/pages/dash-profi
 import { BusinessVerifyComponent } from './components/profile/business-verify/business-verify.component';
 import { NoBprofileComponent } from './components/merchant/business-profile/no-bprofile/no-bprofile.component';
 import { BprofileComponent } from './components/merchant/business-profile/bprofile/bprofile.component';
-import { CustBprofileComponent } from './components/merchant/business-profile/cust-bprofile/cust-bprofile.component';
 import { ServiceCardComponent } from './components/service/service-card/service-card.component';
 import { EarningsComponent } from './components/merchant/earnings/earnings.component';
 import { ServiceDetailsComponent } from './components/service/service-details/service-details.component';
 import { BusinessStatComponent } from './components/merchantdash/comps/business-stat/business-stat.component';
-import { CustServiceDetailsComponent } from './components/service/cust-service-details/cust-service-details.component';
-import { CreateServiceComponent } from './components/service/create-service/create-service.component';
-import { CreateBprofileComponent } from './components/merchant/business-profile/create-bprofile/create-bprofile.component';
 import { BusinessOpenDaysComponent } from './components/merchant/business-profile/business-open-days/business-open-days.component';
 
 @NgModule({
@@ -97,14 +93,10 @@ import { BusinessOpenDaysComponent } from './components/merchant/business-profil
     BusinessVerifyComponent,
     NoBprofileComponent,
     BprofileComponent,
-    CustBprofileComponent,
     ServiceCardComponent,
     EarningsComponent,
     ServiceDetailsComponent,
     BusinessStatComponent,
-    CustServiceDetailsComponent,
-    CreateServiceComponent,
-    CreateBprofileComponent,
     BusinessOpenDaysComponent,
 
   ],

@@ -9,6 +9,9 @@ export class NoBprofileComponent implements OnInit {
 
   idverified = true;
 
+  //create business profile
+  editmode = false;
+
   constructor() { }
 
   ngOnInit() {

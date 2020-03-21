@@ -1,13 +1,16 @@
-<div class="container-fluid" >
+
+<!--Business Profile View-->
+<div class="container-fluid" *ngIf="!editmode">
   <section class="px-md-5 mx-md-5 dark-grey-text">
 
     <!--customize profile section-->
-      <div class="row cust-row">
+      <div class="row cust-row" *ngIf="isowner">
               <div class="col-md-8">
                 <p>Need to change something? Customize your Business Profile. </p>
               </div>
               <div class="col-md-4">
-                <a type="button" mdbBtn color="secondary" class="waves-light btn btn-md  cust-btn" mdbWavesEffect>Customize Profile
+                <a type="button" mdbBtn color="secondary" class="waves-light btn btn-md  cust-btn"
+                (click)="editmode = !editmode" mdbWavesEffect>Customize Profile
                 </a>
               </div>
       </div>
@@ -34,7 +37,7 @@
           <!--left content-->
           <div class="col-md-8 container-fluid ">
             <div class="state-text">
-              <mdb-icon fas icon="building"> </mdb-icon> Photography Service at {{'Kelaniya, Sri Lanka'}}
+              <mdb-icon fas icon="building"> </mdb-icon> at {{'Kelaniya, Sri Lanka'}}
               <br>
              <a mdbWavesEffect role="button" (click)="opendays.show()"> <span class="open-state">
                 <mdb-icon far icon="clock"> </mdb-icon> {{'Closed Now'}}</span> </a>
@@ -148,6 +151,218 @@
 </div>
 
 
+    <!--customize profile section-->
+<div class="container-fluid" *ngIf="editmode">
+  <section class="px-md-5 mx-md-5 dark-grey-text">
+
+    <!--profile header-->
+      <div class="row f-image-edit">
+        <img src="./assets/images/back/bprofile.jpg" alt="Merchant Cover" class="feature-img" >
+      </div>
+      <div class="cust-div">
+        <a type="button" mdbBtn color="white"
+        class="btn btn-sm  cust-btn-circle" mdbWavesEffect outline="yes" >
+        <mdb-icon fas icon="pen"></mdb-icon> Change Cover
+        </a>
+      </div>
+
+      <!--edit content-->
+      <div class="edit-content text-center">
+
+        <div class="content-title" *ngIf="!addnew">
+          Edit Business Profile
+          </div>
+          <div class="content-title"  *ngIf="addnew">
+            Create Your Business Profile
+            </div>
+        <hr>
+        <p> <b>Edit the business profile content below</b></p>
+
+        <!--form-->
+       <form class="service-form pd-top-min">
+
+        <!--row1-->
+        <div class="row">
+
+          <div class="col-md-3 inst-text" *ngIf="!addnew">
+            <mdb-icon fas icon="award"></mdb-icon> <span> Change Logo:</span>
+          </div>
+
+          <div class="col-md-3 inst-text" *ngIf="addnew">
+            <mdb-icon fas icon="award"></mdb-icon> <span> Busiess Logo:</span>
+        </div>
+
+          <div class="col-md-2 text-center">
+            <a role="button" mdbWavesEffect (click)="sidea.click()">
+              <img src="./assets/images/merchant/business.jpg" alt="Business Logo" class="img-thumbnail logo-img-edit">
+            </a>
+            <input type="file" hidden="true" id="sidea" #sidea>
+            <p><b>Click to Upload</b></p>
+          </div>
+
+          <div class="col-md-3 inst-text">
+            <mdb-icon fas icon="file-signature"></mdb-icon> <span> Business title:</span>
+        </div>
+
+        <div class="col-md-4 text-center">
+            <mat-form-field class="service-full-width">
+              <mat-label>Business Title</mat-label>
+              <input matInput placeholder="Business Title here"  required>
+            </mat-form-field>
+          </div>
+        </div>
+
+         <!--row2-->
+         <div class="row">
+
+          <div class="col-md-3 inst-text">
+            <mdb-icon fas icon="swatchbook"></mdb-icon> <span> Describe Business:</span>
+          </div>
+
+          <div class="col-md-7 text-center">
+            <mat-form-field class="service-full-width">
+              <textarea matInput rows="5" placeholder="Business Description"></textarea>
+            </mat-form-field>
+          </div>
+         </div>
+
+          <!--row3-->
+          <div class="row page-content">
+
+            <div class="col-md-3 inst-text">
+              <mdb-icon fas icon="door-open"></mdb-icon> <span> Opened days:</span>
+            </div>
+
+            <div class="col-md-7 text-center">
+              <a type="button" mdbBtn color="secondary"
+              class="waves-light btn btn-md btn-edt" mdbWavesEffect outline="yes" (click)="opendays.show()">Set open Days</a>
+            </div>
+           </div>
+
+             <!--row4-->
+         <div class="row  page-content">
+
+          <div class="col-md-3 inst-text">
+            <mdb-icon fas icon="map-marker-alt"></mdb-icon> <span> Business Location:</span>
+          </div>
+
+          <div class="col-md-7 text-center">
+            <a type="button" mdbBtn color="secondary"
+            class="waves-light btn btn-md btn-edt" mdbWavesEffect outline="yes ">Change Business Location</a>
+            <div id=" row map-container-google-1" class="map-container page-content">
+              <iframe src="https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0"
+                style="border:0" allowfullscreen></iframe>
+            </div>
+
+          </div>
+         </div>
+
+           <!--row 4-->
+           <div class="row  page-content page-content" *ngIf="!addnew">
+
+            <div class="col-md-3 inst-text">
+              <mdb-icon fas icon="check-circle"></mdb-icon> <span> Verification Status:</span>
+              <br>
+              <p class="infotxt"> You can Add Business Certifications if any.</p>
+            </div>
+
+            <div class="col-md-7 text-center">
+              <div class="verify-stat text-center" *ngIf="isverified">
+                <mdb-icon far icon="check-circle"> </mdb-icon> Business Verified
+              </div>
+              <div class="verify-stat text-center" *ngIf="!isverified" style="color:darkred; ">
+                <mdb-icon far icon="times-circle"></mdb-icon> Business Not Verified
+              </div>
+              <a type="button" mdbBtn color="secondary" *ngIf="!isverified"
+              class="waves-light btn btn-md btn-edt" mdbWavesEffect outline="yes" (click)="businessverify.show()">
+              Verify Business</a>
+            </div>
+           </div>
+
+           <!--add new business only-->
+           <div class="row  page-content" *ngIf="addnew">
+            <div class="col-md-3 inst-text">
+              <mdb-icon fas icon="thumbs-up"></mdb-icon> <span> Verify your Business</span>
+              <br>
+              <p class="infotxt"> You can Add Business Certifications if any.</p>
+            </div>
+
+            <div class="col-md-7 text-center">
+              <a type="button" mdbBtn color="secondary" *ngIf="!isverified"
+              class="waves-light btn btn-md btn-edt" mdbWavesEffect outline="yes" (click)="businessverify.show()">
+              Verify Business</a>
+             </div>
+            </div>
+
+             <!--row 5-->
+             <div class="row  page-content">
+
+              <div class="col-md-3 inst-text">
+                <mdb-icon fas icon="envelope"></mdb-icon> <span> Business Email:</span>
+              </div>
+
+              <div class="col-md-7 text-center">
+                <mat-form-field class="service-full-width">
+                  <mat-label>Email address</mat-label>
+                  <input matInput placeholder="ex: youremail@abc.com "  required>
+                </mat-form-field>
+              </div>
+             </div>
+
+              <!--row 6-->
+              <div class="row  page-content">
+
+                <div class="col-md-3 inst-text">
+                  <mdb-icon fas icon="envelope"></mdb-icon> <span> Business Contant No:</span>
+                </div>
+
+                <div class="col-md-7 text-center">
+                  <mat-form-field class="service-full-width">
+                    <mat-label>Contact Number(s) </mat-label>
+                    <input matInput placeholder="ex: 7xxxxxxxx"  required>
+                  </mat-form-field>
+                </div>
+               </div>
+
+                 <!--row 6-->
+              <div class="row  page-content">
+
+                <div class="col-md-3 inst-text">
+                  <mdb-icon fas icon="envelope"></mdb-icon> <span> Permanant Address:</span>
+                  <p class="infotxt">Note: This address will be used to postal communication </p>
+                </div>
+
+                <div class="col-md-7 text-center">
+                  <mat-form-field class="service-full-width">
+                    <mat-label>Address Line 1 </mat-label>
+                    <input matInput  required>
+                  </mat-form-field>
+                  <mat-form-field class="service-full-width">
+                    <mat-label>Address Line 2 </mat-label>
+                    <input matInput >
+                  </mat-form-field >
+                 <mat-form-field class="service-full-width">
+                  <mat-label>Postal Code</mat-label>
+                  <input matInput  required>
+                  </mat-form-field>
+                </div>
+               </div>
+
+         </form>
+    </div>
+  </section>
+
+  <!--save buttons-->
+  <div class="text-center">
+    <a type="button" mdbBtn color="secondary"
+    class="waves-light btn btn-md  cust-btn btn-tab" mdbWavesEffect (click)="editmode = !editmode">Save Changes</a>
+    <a type="button" mdbBtn color="secondary"
+    class="waves-light btn btn-md  cust-btn btn-tab" mdbWavesEffect outline="yes" (click)="editmode = !editmode">Discard</a>
+    </div>
+</div>
+
+
+
 
 <!--open days Modal-->
 <div
@@ -188,6 +403,56 @@
           mdbBtn
           color="link"
           (click)="opendays.hide()"
+          mdbWavesEffect
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--verify business Modal-->
+<div
+  mdbModal
+  #businessverify="mdbModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered"
+    role="document"
+    style="overflow-y: initial !important"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="businessverify.hide()"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel" >
+          Available Times
+        </h4>
+      </div>
+      <div class="modal-body " style="height: 400px; overflow-y: auto;" >
+         <app-business-verify></app-business-verify>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          mdbBtn
+          color="link"
+          (click)="businessverify.hide()"
           mdbWavesEffect
         >
           Close

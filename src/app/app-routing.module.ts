@@ -7,6 +7,7 @@ import { SignupSelectComponent } from './components/auth/signup-select/signup-se
 import { SignupMerchantComponent } from './components/auth/signup-merchant/signup-merchant.component';
 import { CardDetailsComponent } from './components/profile/card-details/card-details.component';
 import { DashboardComponent } from './components/merchantdash/dashboard/dashboard.component';
+import { BprofileComponent } from './components/merchant/business-profile/bprofile/bprofile.component';
 
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path : 'register/merchant', component : SignupMerchantComponent},
   {path : 'profile/cards', component : CardDetailsComponent},
   {path : 'm/dash', component : DashboardComponent},
+  {path : 'm/bprofile', component : BprofileComponent},
   {path : '', component : HomeComponent}
 ];
 

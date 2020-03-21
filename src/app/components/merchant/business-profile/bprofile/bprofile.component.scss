@@ -38,6 +38,7 @@ p{
 
 .f-image{
   position:absolute;
+  z-index:-1;
 }
 
 .header-cls{
@@ -145,4 +146,76 @@ p{
     padding-top:20px;
   }
 
+}
+
+//edit mode css
+
+.cust-btn-circle{
+  z-index:100;
+}
+
+.cust-div{
+  padding-top: 10%;
+  text-align:right;
+  padding-right:10px;
+}
+
+.inst-text{
+  font-weight:bold;
+  color:darkslategray;
+  padding-left:5%;
+  padding-top:10px;
+  text-align:left;
+}
+
+.edit-content{
+  padding-top:18%;
+}
+
+
+.btn-tab{
+  margin-right:20px;
+}
+
+
+.logo-img-edit{
+  width:100px;
+  border-radius:5%;
+}
+
+
+.sevice-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.service-full-width {
+  width: 90%;
+}
+
+.service-full-width-sm {
+  width: 75%;
+}
+
+.f-image-edit{
+  position:absolute;
+  z-index:-1;
+  margin-right:6% !important;
+  margin-top:7%;
+}
+
+.pd-top-min{
+  padding-top:15px;
+}
+
+.btn-edt{
+  width:60%;
+}
+
+.infotxt{
+  font-weight:300 !important;
+  font-size:15px !important;
+  color:gray !important;
+  font-style:italic !important;
 }

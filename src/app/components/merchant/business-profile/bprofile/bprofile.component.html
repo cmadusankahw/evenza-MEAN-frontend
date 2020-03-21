@@ -19,14 +19,14 @@
     <!--profile header-->
     <div class="container-fluid header-cls">
       <div class="row f-image">
-        <img src="./assets/images/back/bprofile.jpg" alt="Merchant Cover" class="feature-img" >
+        <img src={{business[0].feature_img}} alt="Merchant Cover" class="feature-img" >
       </div>
       <div class="row logo-cls">
         <div class="col-md-2">
-            <img src="./assets/images/merchant/business.jpg" alt="Merchant Pic" class="img-thumbnail logo-img">
+            <img src={{business[0].logo}} alt="Merchant Pic" class="img-thumbnail logo-img">
         </div>
         <div class="col-md-10">
-          <h2 class="txt-title"> Creative Photography </h2>
+          <h2 class="txt-title"> {{business[0].title}} </h2>
         </div>
       </div>
 
@@ -37,25 +37,22 @@
           <!--left content-->
           <div class="col-md-8 container-fluid ">
             <div class="state-text">
-              <mdb-icon fas icon="building"> </mdb-icon> at {{'Kelaniya, Sri Lanka'}}
+              <mdb-icon fas icon="building"> </mdb-icon> at {{business[0].address_line2}}
               <br>
-             <a mdbWavesEffect role="button" (click)="opendays.show()"> <span class="open-state">
-                <mdb-icon far icon="clock"> </mdb-icon> {{'Closed Now'}}</span> </a>
+             <a mdbWavesEffect role="button" (click)="opendays.show()"> <span class="open-state" style="color:darkgreen;" *ngIf="business[0].isopened">
+                <mdb-icon far icon="clock"> </mdb-icon> Open Now</span> </a>
 
+            <a mdbWavesEffect role="button" (click)="opendays.show()"> <span class="open-state" *ngIf="!business[0].isopened">
+              <mdb-icon far icon="clock"> </mdb-icon> Closed Now </span> </a>
             </div>
+
             <br>
             <div class="content-title">
               Business Description
               </div>
               <hr>
               <div class="content-text">
-                Creative Worth Photography Studio is a community based professional photography business given to
-                quality portraiture and full wedding coverage. Creative Worth seeks to provide a service to individuals, couples,
-                and families that emphasizes and enhances the quality of their relationships through photographic imaging.
-                <br>
-                Creative Worth Photography Studio is a community based professional photography business given to
-                quality portraiture and full wedding coverage. Creative Worth seeks to provide a service to individuals, couples,
-                and families that emphasizes and enhances the quality of their relationships through photographic imaging.
+                {{business[0].description}}
               </div>
               <br>
                  <!--service cards-->
@@ -63,21 +60,26 @@
                   Services
                   </div>
                   <hr>
-
                   <!--service comps-->
                       <app-service-card></app-service-card>
-
           </div>
 
           <!--right content-->
           <div class="col-md-4">
-            <div class="verify-stat">
+            <div class="verify-stat" *ngIf= "business[0].isverified">
                 <mdb-icon far icon="check-circle"> </mdb-icon> Business Verified
             </div>
+
+            <div class="verify-stat" *ngIf= "!business[0].isverified" style="color:darkred; ">
+              <mdb-icon far icon="check-circle"> </mdb-icon> Business Not Verified
+          </div>
+
             <hr>
+
+             <!--map to modify-->
               <div id=" row map-container-google-1" class="map-container page-content">
                 <iframe src="https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0"
-                  style="border:0" allowfullscreen></iframe>
+                style="border:0" allowfullscreen></iframe>
               </div>
 
             <div class="content-title page-content">
@@ -98,7 +100,7 @@
 
                       <div class="col-md-10 stat-text">
                         <span class="stat-title">
-                          {{'(+94) 71 145 5034'}}
+                          {{business[0].contact_no}}
                         </span>
                       </div>
                     </div>
@@ -116,7 +118,7 @@
 
                       <div class="col-md-10 stat-text">
                         <span class="stat-title">
-                          {{'Main Street, Dalugama'}}
+                          {{business[0].address_line1}}, {{business[0].address_line2}}
                         </span>
                       </div>
                     </div>
@@ -134,7 +136,7 @@
 
                       <div class="col-md-10 stat-text">
                         <span class="stat-title">
-                          {{'mophotography@gmail.com'}}
+                          {{business[0].email}}
                         </span>
                       </div>
                     </div>
@@ -157,7 +159,7 @@
 
     <!--profile header-->
       <div class="row f-image-edit">
-        <img src="./assets/images/back/bprofile.jpg" alt="Merchant Cover" class="feature-img" >
+        <img src="{{!addnew ? business[0].feature_img : './assets/images/back/bprofile.jpg'}}" alt="Merchant Cover" class="feature-img" >
       </div>
       <div class="cust-div">
         <a type="button" mdbBtn color="white"
@@ -194,7 +196,7 @@
 
           <div class="col-md-2 text-center">
             <a role="button" mdbWavesEffect (click)="sidea.click()">
-              <img src="./assets/images/merchant/business.jpg" alt="Business Logo" class="img-thumbnail logo-img-edit">
+              <img src="{{!addnew ? business[0].logo : './assets/images/merchant/nopic.png'}}" alt="Business Logo" class="img-thumbnail logo-img-edit">
             </a>
             <input type="file" hidden="true" id="sidea" #sidea>
             <p><b>Click to Upload</b></p>
@@ -207,7 +209,7 @@
         <div class="col-md-4 text-center">
             <mat-form-field class="service-full-width">
               <mat-label>Business Title</mat-label>
-              <input matInput placeholder="Business Title here"  required>
+              <input matInput placeholder="Business Title here"  value="{{!addnew ? business[0].title : null }}" required>
             </mat-form-field>
           </div>
         </div>
@@ -221,7 +223,7 @@
 
           <div class="col-md-7 text-center">
             <mat-form-field class="service-full-width">
-              <textarea matInput rows="5" placeholder="Business Description"></textarea>
+              <textarea matInput rows="5" placeholder="Business Description" value="{{!addnew ? business[0].description : null }}"></textarea>
             </mat-form-field>
           </div>
          </div>
@@ -249,6 +251,8 @@
           <div class="col-md-7 text-center">
             <a type="button" mdbBtn color="secondary"
             class="waves-light btn btn-md btn-edt" mdbWavesEffect outline="yes ">Change Business Location</a>
+
+           <!--map to modified-->
             <div id=" row map-container-google-1" class="map-container page-content">
               <iframe src="https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0"
                 style="border:0" allowfullscreen></iframe>
@@ -267,15 +271,16 @@
             </div>
 
             <div class="col-md-7 text-center">
-              <div class="verify-stat text-center" *ngIf="isverified">
+              <div class="verify-stat text-center" *ngIf="business[0].isverified">
                 <mdb-icon far icon="check-circle"> </mdb-icon> Business Verified
               </div>
-              <div class="verify-stat text-center" *ngIf="!isverified" style="color:darkred; ">
+              <div class="verify-stat text-center" *ngIf="!business[0].isverified" style="color:darkred; ">
                 <mdb-icon far icon="times-circle"></mdb-icon> Business Not Verified
-              </div>
-              <a type="button" mdbBtn color="secondary" *ngIf="!isverified"
+                <br>
+              <a type="button" mdbBtn color="secondary"
               class="waves-light btn btn-md btn-edt" mdbWavesEffect outline="yes" (click)="businessverify.show()">
               Verify Business</a>
+            </div>
             </div>
            </div>
 
@@ -288,7 +293,7 @@
             </div>
 
             <div class="col-md-7 text-center">
-              <a type="button" mdbBtn color="secondary" *ngIf="!isverified"
+              <a type="button" mdbBtn color="secondary"
               class="waves-light btn btn-md btn-edt" mdbWavesEffect outline="yes" (click)="businessverify.show()">
               Verify Business</a>
              </div>
@@ -304,7 +309,7 @@
               <div class="col-md-7 text-center">
                 <mat-form-field class="service-full-width">
                   <mat-label>Email address</mat-label>
-                  <input matInput placeholder="ex: youremail@abc.com "  required>
+                  <input matInput placeholder="ex: youremail@abc.com " value="{{!addnew ? business[0].email : null }}" required>
                 </mat-form-field>
               </div>
              </div>
@@ -319,7 +324,7 @@
                 <div class="col-md-7 text-center">
                   <mat-form-field class="service-full-width">
                     <mat-label>Contact Number(s) </mat-label>
-                    <input matInput placeholder="ex: 7xxxxxxxx"  required>
+                    <input matInput placeholder="ex: 7xxxxxxxx" value="{{!addnew ? business[0].contact_no : null }}" required>
                   </mat-form-field>
                 </div>
                </div>
@@ -335,15 +340,15 @@
                 <div class="col-md-7 text-center">
                   <mat-form-field class="service-full-width">
                     <mat-label>Address Line 1 </mat-label>
-                    <input matInput  required>
+                    <input matInput value="{{!addnew ? business[0].address_line1 : null }}" required>
                   </mat-form-field>
                   <mat-form-field class="service-full-width">
                     <mat-label>Address Line 2 </mat-label>
-                    <input matInput >
+                    <input matInput value="{{!addnew ? business[0].address_line2 : null }}">
                   </mat-form-field >
                  <mat-form-field class="service-full-width">
                   <mat-label>Postal Code</mat-label>
-                  <input matInput  required>
+                  <input matInput value="{{!addnew ? business[0].postal_code : null }}" required>
                   </mat-form-field>
                 </div>
                </div>

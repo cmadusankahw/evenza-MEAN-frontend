@@ -1,0 +1,268 @@
+<div class="pd-top-min">
+
+  <h4 *ngIf="appointmentType == 1">
+    <mat-icon>library_books</mat-icon>
+   <b> Appointment Requests</b>
+  </h4>
+  <h4 *ngIf="appointmentType == 2">
+    <mat-icon>check_circle</mat-icon>
+   <b> Approved Appointments</b>
+  </h4>
+  <h4 *ngIf="appointmentType == 3" >
+    <mat-icon>block</mat-icon>
+   <b> Cancelled Appointments</b>
+  </h4>
+  <mat-form-field>
+
+    <mat-label>
+      <mat-icon>search</mat-icon>
+      Search Visit Appointments</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia">
+  </mat-form-field>
+
+  <div class="mat-elevation-z8">
+    <table class="table-responsive" mat-table [dataSource]="dataSource" matSort>
+
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Appointed ID </th>
+        <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+      </ng-container>
+
+      <!-- Progress Column -->
+      <ng-container matColumnDef="service_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Service Appointed </th>
+        <td mat-cell *matCellDef="let row"> {{row.service_name}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="appointed_date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Appointment Date </th>
+        <td mat-cell *matCellDef="let row"> {{row.appointed_date}} </td>
+      </ng-container>
+
+      <!-- Color Column -->
+      <ng-container matColumnDef="duration">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Visit Time Between </th>
+        <td mat-cell *matCellDef="let row" > {{row.pref_from_time}} to {{row.pref_to_time}} </td>
+      </ng-container>
+
+
+      <!-- Progress Column -->
+      <ng-container matColumnDef="customer_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Customer </th>
+        <td mat-cell *matCellDef="let row"> {{row.customer_name}} </td>
+      </ng-container>
+
+
+       <!-- Action Column -->
+       <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> ACTION </th>
+        <td mat-cell *matCellDef="let row">
+          <button mdbBtn color="purple" text="white" class="btn btn-sm text-center" (click)="bookingOptions.show()">
+            ACTION
+          </button>
+         </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
+  </div>
+
+  </div>
+
+
+
+  <!--View Details Modal-->
+  <div
+    mdbModal
+    #bookingOptions="mdbModal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myBasicModalLabel"
+    [config]="{ backdrop: false, ignoreBackdropClick: true }"
+    aria-hidden="true"
+
+  >
+    <div
+      class="modal-dialog modal-dialog-centered modal-lg"
+      role="document"
+      style="overflow-y: initial !important"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <button
+            type="button"
+            class="close pull-right"
+            aria-label="Close"
+            (click)="bookingOptions.hide()"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel" >
+            <mat-icon>service</mat-icon>Visit Appoinment {{recievedAppointments[0].id}} Details
+          </h4>
+        </div>
+
+        <div class="modal-body " style="height: 450px; overflow-y: auto;">
+
+              <!--more info-->
+              <div class="text-center">
+
+                <section class="text-center dark-grey-text">
+                  <!--booking info-->
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Boking ID
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{recievedAppointments[0].id}}">
+                    </div>
+                  </div>
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Service ID
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{recievedAppointments[0].service_id}}">
+                    </div>
+                  </div>
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Service Name
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{recievedAppointments[0].service_name}}">
+                    </div>
+                  </div>
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Customer
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{recievedAppointments[0].customer_name}}">
+                    </div>
+                  </div>
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Created Date & Time
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{recievedAppointments[0].created_date + recievedAppointments[0].created_time}}">
+                    </div>
+                  </div>
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Appointed Date
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{recievedAppointments[0].appointed_date}}">
+                    </div>
+                  </div>
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text-net">
+                      Visit Time Between
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{recievedAppointments[0].pref_from_time}} to {{recievedAppointments[0].pref_to_time}}">
+                    </div>
+                  </div>
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Comments
+                    </div>
+                    <div class="col info-input">
+                      <textarea type="text" matInput disabled value=" {{recievedAppointments[0].comment}}"></textarea>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row ">
+                    <div class="col-md-4 info-text-net">
+                      State
+                    </div>
+                    <div class="col info-input-net" style="color:darkmagenta;">
+                      <b><input type="text" matInput disabled value=" {{recievedAppointments[0].state}}"></b>
+                    </div>
+                  </div>
+
+                  <!--pending bookings -->
+                  <div class="info-top" *ngIf="recievedAppointments[0].state == 'Pending'" >
+                  <button mdbBtn color="purple" text="white" class="btn  btn-md text-center">
+                   <span > Approve Appointment </span>
+                  </button>
+
+                  <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center" >
+                    <span>Cancel Appointment </span>
+                  </button>
+                </div>
+
+                 <!--approved bookings -->
+                 <div class="info-top" *ngIf="recievedAppointments[0].state == 'Approved'">
+                  <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center" >
+                    <span >Send Cancel Request</span>
+                  </button>
+                </div>
+
+                </section>
+              </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            mdbBtn
+            color="link"
+            (click)="bookingOptions.hide()"
+            mdbWavesEffect
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--Success Modal-->
+  <div mdbModal #bookingSuccess="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+   [config]='{backdrop: false, ignoreBackdropClick: true}'   aria-hidden="true">
+   <div class="modal-dialog modal-notify modal-success modal-dialog-centered" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <p class="heading lead">Appointment Approved!</p>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="bookingSuccess.hide()">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <div class="text-center">
+          <mdb-icon fas icon="check" size="4x" class="mb-3 animated rotateIn"></mdb-icon>
+          <p>Service Provider has approved your Appointment!</p>
+        </div>
+      </div>
+
+      <!--Footer-->
+      <div class="modal-footer justify-content-center">
+        <a type="button" mdbBtn color="success" class="waves-effect" mdbWavesEffect (click)="bookingSuccess.hide()">Okay
+        </a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+  </div >

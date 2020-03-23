@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-export interface Booking {
+export interface Appointment {
   id: string;
   service_id: string;
   cust_id: string;
@@ -12,43 +12,34 @@ export interface Booking {
   created_date: string;
   created_time: string;
   state: string;
-  rating: number;
-  review: string;
-  booking_type: string;
-  booked_date: string;
-  duration: number;
-  start_time: string;
-  end_time: string;
+  appointed_date: string;
+  pref_from_time: string;
+  pref_to_time: string;
   comment: string;
-  pay_on_meet: boolean;
-  amount: number;
-  commission_due: number;
-  amount_paid: number;
 }
 
-export interface BookingState {
+export interface AppointmentState {
   id: string;
   val: string;
 }
 
-
 @Component({
-  selector: 'app-bookings',
-  templateUrl: './bookings.component.html',
-  styleUrls: ['./bookings.component.scss']
+  selector: 'app-appointments',
+  templateUrl: './appointments.component.html',
+  styleUrls: ['./appointments.component.scss']
 })
-export class BookingsComponent implements OnInit {
+export class AppointmentsComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'service_name', 'booked_date', 'duration', 'amount_paid', 'action'];
-  dataSource: MatTableDataSource<Booking>;
+  displayedColumns: string[] = ['id', 'service_name',  'appointed_date', 'duration', 'customer_name', 'action'];
+  dataSource: MatTableDataSource<Appointment>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   // Create sample bookings
-  bookings: Booking[] = [
+  appointments: Appointment[] = [
     {
-      id: 'B-01',
+      id: 'A-01',
       service_id: 'S-01',
       cust_id: 'C-01',
       service_name: 'Photography',
@@ -56,21 +47,13 @@ export class BookingsComponent implements OnInit {
       created_date: '22/03/2020',
       created_time: '14:25',
       state: 'Approved',
-      rating: 3,
-      review: 'Good Service!',
-      booked_date: '30/03/2020',
-      booking_type: '/Hr',
-      duration: 4.5,
-      start_time: '08:00',
-      end_time: '16:00',
+      appointed_date: '30/03/2020',
+      pref_from_time: '08:00',
+      pref_to_time: '16:00',
       comment: 'please be on time',
-      pay_on_meet: false,
-      amount: 215.30,
-      commission_due: 22.50,
-      amount_paid: 30.0
     },
     {
-      id: 'B-02',
+      id: 'A-02',
       service_id: 'S-01',
       cust_id: 'C-01',
       service_name: 'Photography',
@@ -78,21 +61,13 @@ export class BookingsComponent implements OnInit {
       created_date: '22/03/2020',
       created_time: '14:25',
       state: 'Pending',
-      rating: 3,
-      review: 'Good Service!',
-      booked_date: '30/03/2020',
-      booking_type: '/Hr',
-      duration: 4.5,
-      start_time: '08:00',
-      end_time: '16:00',
+      appointed_date: '30/03/2020',
+      pref_from_time: '08:00',
+      pref_to_time: '16:00',
       comment: 'please be on time',
-      pay_on_meet: false,
-      amount: 215.30,
-      commission_due: 22.50,
-      amount_paid: 30.0
     },
     {
-      id: 'B-03',
+      id: 'A-03',
       service_id: 'S-01',
       cust_id: 'C-01',
       service_name: 'Photography',
@@ -100,38 +75,29 @@ export class BookingsComponent implements OnInit {
       created_date: '22/03/2020',
       created_time: '14:25',
       state: 'Cancelled',
-      rating: 3,
-      review: 'Good Service!',
-      booked_date: '30/03/2020',
-      booking_type: '/Hr',
-      duration: 4.5,
-      start_time: '08:00',
-      end_time: '16:00',
+      appointed_date: '30/03/2020',
+      pref_from_time: '08:00',
+      pref_to_time: '16:00',
       comment: 'please be on time',
-      pay_on_meet: false,
-      amount: 215.30,
-      commission_due: 22.50,
-      amount_paid: 30.0
     },
 
   ];
 
-  status: BookingState[] = [
+  status: AppointmentState[] = [
     { id: '1', val: 'Approved' },
     { id: '2', val: 'Pending' },
     { id: '3', val: 'Cancelled' },
   ];
 
   //booking-states
-  @Input() bookingType = 1;
+  @Input() appointmentType = 1;
 
   //booking arrays
-  recievedBookings = [];
+  recievedAppointments = [];
 
 
   constructor() {
     // Assign the data to the data source for the table to render
-
   }
 
   ngOnInit() {
@@ -151,12 +117,12 @@ export class BookingsComponent implements OnInit {
   }
 
   initBookingType() {
-    if (this.bookingType === 1) {
-      this.dataSource = new MatTableDataSource(this.onPending(this.bookings));
-    } else if (this.bookingType === 2) {
-      this.dataSource = new MatTableDataSource(this.onApproved(this.bookings));
-    } else if (this.bookingType === 3) {
-      this.dataSource = new MatTableDataSource(this.onCancelled(this.bookings));
+    if (this.appointmentType === 1) {
+      this.dataSource = new MatTableDataSource(this.onPending(this.appointments));
+    } else if (this.appointmentType === 2) {
+      this.dataSource = new MatTableDataSource(this.onApproved(this.appointments));
+    } else if (this.appointmentType === 3) {
+      this.dataSource = new MatTableDataSource(this.onCancelled(this.appointments));
     }
   }
 
@@ -168,7 +134,7 @@ export class BookingsComponent implements OnInit {
         pedingBookings.push(Object.assign({}, val));
       }
     }
-    this.recievedBookings = [...pedingBookings];
+    this.recievedAppointments = [...pedingBookings];
     return pedingBookings;
   }
 
@@ -180,7 +146,7 @@ export class BookingsComponent implements OnInit {
         approvedBookings.push(Object.assign({}, val));
       }
     }
-    this.recievedBookings = [...approvedBookings];
+    this.recievedAppointments = [...approvedBookings];
     return approvedBookings;
   }
 
@@ -192,7 +158,7 @@ export class BookingsComponent implements OnInit {
         cancelledBookings.push(Object.assign({}, val));
       }
     }
-    this.recievedBookings = [...cancelledBookings];
+    this.recievedAppointments = [...cancelledBookings];
     return cancelledBookings;
   }
 

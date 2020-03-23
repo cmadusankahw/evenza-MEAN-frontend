@@ -25,6 +25,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -63,6 +64,10 @@ import { EarningsComponent } from './components/merchant/earnings/earnings.compo
 import { ServiceDetailsComponent } from './components/service/service-details/service-details.component';
 import { BusinessStatComponent } from './components/merchantdash/comps/business-stat/business-stat.component';
 import { BusinessOpenDaysComponent } from './components/merchant/business-profile/business-open-days/business-open-days.component';
+import { AppointmentsComponent } from './components/merchant/appointments/appointments.component';
+import { CalendarComponent } from './components/merchant/calendar/calendar.component';
+import { CalendarListComponent } from './components/merchant/calendar-list/calendar-list.component';
+import { DashCalendarComponent } from './components/merchantdash/pages/dash-calendar/dash-calendar.component';
 
 @NgModule({
   declarations: [
@@ -98,6 +103,11 @@ import { BusinessOpenDaysComponent } from './components/merchant/business-profil
     ServiceDetailsComponent,
     BusinessStatComponent,
     BusinessOpenDaysComponent,
+    AppointmentsComponent,
+    CalendarComponent,
+    CalendarListComponent,
+    DashCalendarComponent
+
 
   ],
   imports: [
@@ -137,7 +147,8 @@ import { BusinessOpenDaysComponent } from './components/merchant/business-profil
     ChartsModule,
     MatProgressBarModule,
     NgbModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    FullCalendarModule
 
   ],
   schemas: [NO_ERRORS_SCHEMA],

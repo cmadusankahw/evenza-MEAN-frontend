@@ -11,7 +11,7 @@ export interface Earnings {
   earned_date: string;
   earned_time: string;
   comments: string;
-  appointment: boolean;
+  pay_on_meet: boolean;
   commission_due: number;
   net_earning: number;
 }
@@ -33,15 +33,15 @@ export class EarningsComponent implements OnInit {
   moreinfo = false;
 
   earnings : Earnings[] = [
-    { id: 'E-01', booking_id: 'B-01', service_booked: 'Dream Photography', 
+    { id: 'E-01', booking_id: 'B-01', service_booked: 'Dream Photography',
     cust_name: 'Arjun', earned_date: '27/03/2020', earned_time: '13:55',
-    comments: 'need a good service', appointment: true, commission_due: 5.0, net_earning: 22.5 },
-    { id: 'E-02', booking_id: 'B-02', service_booked: 'Manjula Dressing', 
+    comments: 'need a good service', pay_on_meet: true, commission_due: 5.0, net_earning: 22.5 },
+    { id: 'E-02', booking_id: 'B-02', service_booked: 'Manjula Dressing',
     cust_name: 'Nimal', earned_date: '27/03/2020', earned_time: '13:55',
-    comments: 'need a good service', appointment: true, commission_due: 5.0, net_earning: 22.5 },
-    { id: 'E-03', booking_id: 'B-03', service_booked: 'Dream Photography', 
+    comments: 'need a good service', pay_on_meet: true, commission_due: 5.0, net_earning: 22.5 },
+    { id: 'E-03', booking_id: 'B-03', service_booked: 'Dream Photography',
     cust_name: 'Herath', earned_date: '27/03/2020', earned_time: '13:55',
-    comments: 'need a good service', appointment: true, commission_due: 5.0, net_earning: 22.5 },
+    comments: 'need a good service', pay_on_meet: true, commission_due: 5.0, net_earning: 22.5 },
   ];
 
   constructor() {

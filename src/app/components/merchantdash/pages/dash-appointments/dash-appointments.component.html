@@ -1,1 +1,21 @@
-<p>dash-appointments works!</p>
+
+
+  <!--left component-->
+  <div class="pd-t">
+       <app-appointments [appointmentType]="pending"></app-appointments>
+  </div>
+
+  <!--right component-->
+  <div class="pd-t">
+
+    <app-appointments [appointmentType]="approved"></app-appointments>
+
+</div>
+
+<div class="pd-t">
+
+  <app-appointments [appointmentType]="cancelled"></app-appointments>
+
+</div>
+<!--end component row-->
+

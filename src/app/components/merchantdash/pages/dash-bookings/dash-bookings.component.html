@@ -1,1 +1,22 @@
-<p>dash-bookings works!</p>
+
+
+
+  <!--left component-->
+  <div class="pd-t">
+       <app-bookings [bookingType]="pending"></app-bookings>
+  </div>
+
+  <!--right component-->
+  <div class="pd-t">
+
+    <app-bookings [bookingType]="conformed"></app-bookings>
+
+</div>
+
+<div class="pd-t">
+
+  <app-bookings [bookingType]="cancelled"></app-bookings>
+
+</div>
+<!--end component row-->
+

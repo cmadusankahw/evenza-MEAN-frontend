@@ -7,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashAppointmentsComponent implements OnInit {
 
+  pending = 1;
+  approved = 2;
+  cancelled = 3;
+
   constructor() { }
 
   ngOnInit() {

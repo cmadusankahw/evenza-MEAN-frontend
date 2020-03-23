@@ -1,8 +1,16 @@
 <div class="pd-top-min">
 
-<h4>
+<h4 *ngIf="bookingType == 1">
   <mat-icon>library_books</mat-icon>
- <b> Latest Bookings</b>
+ <b> Pending Bookings</b>
+</h4>
+<h4 *ngIf="bookingType == 2">
+  <mat-icon>check_circle</mat-icon>
+ <b> Confirmed Bookings</b>
+</h4>
+<h4 *ngIf="bookingType == 3" >
+  <mat-icon>block</mat-icon>
+ <b> Cancelled Bookings</b>
 </h4>
 <mat-form-field>
 
@@ -17,33 +25,40 @@
 
     <!-- ID Column -->
     <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header > Booking ID </th>
       <td mat-cell *matCellDef="let row"> {{row.id}} </td>
     </ng-container>
 
     <!-- Progress Column -->
-    <ng-container matColumnDef="progress">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Progress </th>
-      <td mat-cell *matCellDef="let row"> {{row.progress}}% </td>
+    <ng-container matColumnDef="service_name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header > Service Booked </th>
+      <td mat-cell *matCellDef="let row"> {{row.service_name}} </td>
     </ng-container>
 
     <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-      <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+    <ng-container matColumnDef="booked_date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header > Date Booked </th>
+      <td mat-cell *matCellDef="let row"> {{row.booked_date}} </td>
     </ng-container>
 
     <!-- Color Column -->
-    <ng-container matColumnDef="color">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Color </th>
-      <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.color}} </td>
+    <ng-container matColumnDef="duration">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header > Duration </th>
+      <td mat-cell *matCellDef="let row" > {{row.duration + row.booking_type}} </td>
     </ng-container>
+
+     <!-- Color Column -->
+     <ng-container matColumnDef="amount_paid">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header > Amount Paid </th>
+      <td mat-cell *matCellDef="let row" > {{row.amount_paid}}  </td>
+    </ng-container>
+
 
      <!-- Action Column -->
      <ng-container matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> ACTION </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> ACTION </th>
       <td mat-cell *matCellDef="let row">
-        <button mdbBtn color="purple" text="white" class="btn btn-sm text-center" (click)="basicModal.show()">
+        <button mdbBtn color="purple" text="white" class="btn btn-sm text-center" (click)="bookingOptions.show()">
           ACTION
         </button>
        </td>
@@ -61,17 +76,210 @@
 
 
 
-<!--Identity Verify Modal-->
-<div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+<!--View Details Modal-->
+<div
+  mdbModal
+  #bookingOptions="mdbModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-hidden="true"
+
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-lg"
+    role="document"
+    style="overflow-y: initial !important"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="bookingOptions.hide()"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel" >
+          <mat-icon>service</mat-icon>Booking {{recievedBookings[0].id}} Details
+        </h4>
+      </div>
+
+      <div class="modal-body " style="height: 450px; overflow-y: auto;">
+
+            <!--more info-->
+            <div class="text-center">
+
+              <section class="text-center dark-grey-text">
+                <!--booking info-->
+                <div class="row ">
+                  <div class="col-md-4 info-text">
+                    Boking ID
+                  </div>
+                  <div class="col info-input">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].id}}">
+                  </div>
+                </div>
+
+                <div class="row ">
+                  <div class="col-md-4 info-text">
+                    Service ID
+                  </div>
+                  <div class="col info-input">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].service_id}}">
+                  </div>
+                </div>
+
+                <div class="row ">
+                  <div class="col-md-4 info-text">
+                    Service Booked
+                  </div>
+                  <div class="col info-input">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].service_name}}">
+                  </div>
+                </div>
+
+                <div class="row ">
+                  <div class="col-md-4 info-text">
+                    Customer
+                  </div>
+                  <div class="col info-input">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].customer_name}}">
+                  </div>
+                </div>
+
+                <div class="row ">
+                  <div class="col-md-4 info-text">
+                    Created Date & Time
+                  </div>
+                  <div class="col info-input">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].created_date + recievedBookings[0].created_time}}">
+                  </div>
+                </div>
+
+                <div class="row ">
+                  <div class="col-md-4 info-text">
+                    Booked Date
+                  </div>
+                  <div class="col info-input">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].booked_date}}">
+                  </div>
+                </div>
+
+                <div class="row ">
+                  <div class="col-md-4 info-text-net">
+                    Booking Duration
+                  </div>
+                  <div class="col info-input">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].duration + recievedBookings[0].booking_type}}">
+                  </div>
+                </div>
+
+                <div class="row ">
+                  <div class="col-md-4 info-text">
+                    Comments
+                  </div>
+                  <div class="col info-input">
+                    <textarea type="text" matInput disabled value=" {{recievedBookings[0].comment}}"></textarea>
+                  </div>
+                </div>
+
+                <div class="row ">
+                  <div class="col-md-4 info-text">
+                    Pay on Meet Booking
+                  </div>
+                  <div class="col info-input">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].pay_on_meet ? 'YES' : 'NO'}}">
+                  </div>
+                </div>
+                <hr>
+                <div class="row ">
+                  <div class="col-md-4 info-text">
+                    Due Commission
+                  </div>
+                  <div class="col info-input-net">
+                    <input type="text" matInput disabled value=" Rs. {{recievedBookings[0].commission_due}}">
+                  </div>
+                </div>
+
+                <div class="row ">
+                  <div class="col-md-4 info-text-net">
+                    Total Amount
+                  </div>
+                  <div class="col info-input-net">
+                    <input type="text" matInput disabled value=" Rs. {{recievedBookings[0].amount}}">
+                  </div>
+                </div>
+
+                <div class="row ">
+                  <div class="col-md-4 info-text-net">
+                    Amount Paid
+                  </div>
+                  <div class="col info-input-net">
+                    <b><input type="text" matInput disabled value=" Rs. {{recievedBookings[0].amount_paid}}"></b>
+                  </div>
+                </div>
+                <hr>
+                <div class="row ">
+                  <div class="col-md-4 info-text-net">
+                    State
+                  </div>
+                  <div class="col info-input-net" style="color:darkmagenta;">
+                    <b><input type="text" matInput disabled value=" {{recievedBookings[0].state}}"></b>
+                  </div>
+                </div>
+
+                <!--pending bookings -->
+                <div class="info-top" *ngIf="recievedBookings[0].state == 'Pending'" >
+                <button mdbBtn color="purple" text="white" class="btn  btn-md text-center">
+                 <span > Approve Booking </span>
+                </button>
+
+                <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center" >
+                  <span>Cancel Booking </span>
+                </button>
+              </div>
+
+               <!--approved bookings -->
+               <div class="info-top" *ngIf="recievedBookings[0].state == 'Approved'">
+                <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center" >
+                  <span >Send Cancel Request</span>
+                </button>
+              </div>
+
+              </section>
+            </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          mdbBtn
+          color="link"
+          (click)="bookingOptions.hide()"
+          mdbWavesEffect
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--Success Modal-->
+<div mdbModal #bookingSuccess="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
  [config]='{backdrop: false, ignoreBackdropClick: true}'   aria-hidden="true">
  <div class="modal-dialog modal-notify modal-success modal-dialog-centered" role="document">
   <!--Content-->
   <div class="modal-content">
     <!--Header-->
     <div class="modal-header">
-      <p class="heading lead">Booking Added!</p>
+      <p class="heading lead">Booking Confirmed!</p>
 
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="basicModal.hide()">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="bookingSuccess.hide()">
         <span aria-hidden="true" class="white-text">&times;</span>
       </button>
     </div>
@@ -80,13 +288,13 @@
     <div class="modal-body">
       <div class="text-center">
         <mdb-icon fas icon="check" size="4x" class="mb-3 animated rotateIn"></mdb-icon>
-        <p>Booking was added Successfully!</p>
+        <p>Booking was confirmed Successfully!</p>
       </div>
     </div>
 
     <!--Footer-->
     <div class="modal-footer justify-content-center">
-      <a type="button" mdbBtn color="success" class="waves-effect" mdbWavesEffect (click)="basicModal.hide()">Okay
+      <a type="button" mdbBtn color="success" class="waves-effect" mdbWavesEffect (click)="bookingSuccess.hide()">Okay
       </a>
     </div>
   </div>

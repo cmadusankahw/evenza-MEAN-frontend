@@ -1,0 +1,28 @@
+<div class="container-fluid pd-top">
+  <h4>
+    <mat-icon>library_books</mat-icon>
+   <b> Booking Calendar</b>
+  </h4>
+  <hr>
+
+  <!--calendar-->
+  <div class="row">
+    <div class="col-md-8">
+      <full-calendar
+      #calendar
+      defaultView="dayGridMonth"
+      [header]="{
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      }"
+      [plugins]="calendarPlugins"
+      [weekends]="calendarWeekends"
+      [events]="calendarEvents"
+      (dateClick)="handleDateClick($event)"
+    ></full-calendar>
+    </div>
+  </div>
+
+</div>
+

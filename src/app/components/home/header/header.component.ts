@@ -25,11 +25,16 @@ export class HeaderComponent implements OnInit {
             this.iscommon = false;
             this.isuser = false;
             this.isadmin = false;
+            this.onlogin = false;
+            this.onregister = false;
+
         } else if (e.url === '/') {
           this.ismerchant = false;
           this.iscommon = true;
           this.isuser = false;
           this.isadmin = false;
+          this.onlogin = false;
+          this.onregister = false;
         }
 
         if (e.url === '/login') {

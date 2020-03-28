@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DashCreateServiceComponent } from './dash-create-service.component';
+import { PurchaseHistoryComponent } from './purchase-history.component';
 
-describe('DashCreateServiceComponent', () => {
-  let component: DashCreateServiceComponent;
-  let fixture: ComponentFixture<DashCreateServiceComponent>;
+describe('PurchaseHistoryComponent', () => {
+  let component: PurchaseHistoryComponent;
+  let fixture: ComponentFixture<PurchaseHistoryComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DashCreateServiceComponent ]
+      declarations: [ PurchaseHistoryComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DashCreateServiceComponent);
+    fixture = TestBed.createComponent(PurchaseHistoryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -53,7 +53,6 @@ import { DashHomeComponent } from './components/merchantdash/pages/dash-home/das
 import { DashBusinessProfileComponent } from './components/merchantdash/pages/dash-business-profile/dash-business-profile.component';
 import { DashBookingsComponent } from './components/merchantdash/pages/dash-bookings/dash-bookings.component';
 import { DashAppointmentsComponent } from './components/merchantdash/pages/dash-appointments/dash-appointments.component';
-import { DashCreateServiceComponent } from './components/merchantdash/pages/dash-create-service/dash-create-service.component';
 import { DashReportsComponent } from './components/merchantdash/pages/dash-reports/dash-reports.component';
 import { DashProfileComponent } from './components/merchantdash/pages/dash-profile/dash-profile.component';
 import { BusinessVerifyComponent } from './components/profile/business-verify/business-verify.component';
@@ -66,8 +65,14 @@ import { BusinessStatComponent } from './components/merchantdash/comps/business-
 import { BusinessOpenDaysComponent } from './components/merchant/business-profile/business-open-days/business-open-days.component';
 import { AppointmentsComponent } from './components/merchant/appointments/appointments.component';
 import { CalendarComponent } from './components/merchant/calendar/calendar.component';
-import { CalendarListComponent } from './components/merchant/calendar-list/calendar-list.component';
 import { DashCalendarComponent } from './components/merchantdash/pages/dash-calendar/dash-calendar.component';
+import { MerchantProfileComponent } from './components/merchant/merchant-profile/merchant-profile.component';
+import { ProductCardComponent } from './components/product/product-card/product-card.component';
+import { ProducDetailsComponent } from './components/product/produc-details/produc-details.component';
+import { PurchaseHistoryComponent } from './components/merchant/seller/purchase-history/purchase-history.component';
+import { DashPurchaseHistoryComponent } from './components/merchantdash/pages/dash-purchase-history/dash-purchase-history.component';
+import { InventoryComponent } from './components/merchant/seller/inventory/inventory.component';
+import { DashInventoryComponent } from './components/merchantdash/pages/dash-inventory/dash-inventory.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +97,6 @@ import { DashCalendarComponent } from './components/merchantdash/pages/dash-cale
     DashBusinessProfileComponent,
     DashBookingsComponent,
     DashAppointmentsComponent,
-    DashCreateServiceComponent,
     DashReportsComponent,
     DashProfileComponent,
     BusinessVerifyComponent,
@@ -105,8 +109,14 @@ import { DashCalendarComponent } from './components/merchantdash/pages/dash-cale
     BusinessOpenDaysComponent,
     AppointmentsComponent,
     CalendarComponent,
-    CalendarListComponent,
-    DashCalendarComponent
+    DashCalendarComponent,
+    MerchantProfileComponent,
+    ProductCardComponent,
+    ProducDetailsComponent,
+    PurchaseHistoryComponent,
+    DashPurchaseHistoryComponent,
+    InventoryComponent,
+    DashInventoryComponent
 
 
   ],

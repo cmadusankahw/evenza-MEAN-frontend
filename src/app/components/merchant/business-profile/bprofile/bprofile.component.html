@@ -57,11 +57,13 @@
               <br>
                  <!--service cards-->
                 <div class="content-title page-content">
-                  Services
+                  <span *ngIf="business[0].merchant_type == 'service_provider'">Services</span>
+                  <span *ngIf="business[0].merchant_type == 'product_seller'">Products</span>
                   </div>
                   <hr>
-                  <!--service comps-->
-                      <app-service-card></app-service-card>
+                  <!--service & product comps-->
+                  <app-service-card  *ngIf="business[0].merchant_type == 'service_provider'">  </app-service-card>
+                  <app-product-card  *ngIf="business[0].merchant_type == 'product_seller'"></app-product-card>
           </div>
 
           <!--right content-->
@@ -446,7 +448,7 @@
           <span aria-hidden="true">×</span>
         </button>
         <h4 class="modal-title w-100" id="myModalLabel" >
-          Available Times
+          Verify Business
         </h4>
       </div>
       <div class="modal-body " style="height: 400px; overflow-y: auto;" >

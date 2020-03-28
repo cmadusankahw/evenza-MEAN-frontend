@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 export interface Business {
   id: string;
+  merchant_type: string;
   title: string;
   description: string;
   email: string;
@@ -32,10 +33,10 @@ export class BprofileComponent implements OnInit {
   //enabling ctomization
   isowner = true;
 
-  //bprofile data binding
   business: Business[] = [
     {
       id: '1',
+      merchant_type: 'service_provider',
       title: 'Chiran \'s Business',
       description: 'sample description of chiran s business',
       email: 'chiran@cbusiness.com',
@@ -43,7 +44,7 @@ export class BprofileComponent implements OnInit {
       address_line1: 'Main Street',
       address_line2: 'Dalugama, Kelaniya',
       postal_code: '11300',
-      location: 'https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed', 
+      location: 'https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed',
       isverified: false,
       isopened: true,
       feature_img: './assets/images/back/bprofile.jpg',

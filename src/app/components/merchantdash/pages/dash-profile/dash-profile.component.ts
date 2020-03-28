@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashProfileComponent implements OnInit {
 
+  //check merchant type
+  isSeller = false;
+
   constructor() { }
 
   ngOnInit() {

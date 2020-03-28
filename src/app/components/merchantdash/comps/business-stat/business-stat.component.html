@@ -29,7 +29,7 @@
         Total Earnings:
       </div>
       <div class="col earn-amt">
-        $ {{'0.00'}}
+        Rs. {{businessStat[0].earnings}}
       </div>
     </div>
 
@@ -38,7 +38,7 @@
         Active Services:
       </div>
       <div class="col earn-serve">
-         {{'0'}}
+         {{businessStat[0].active_services}}
       </div>
     </div>
     <div class="row pd-top ">
@@ -53,10 +53,10 @@
       </div>
     </div>
       <div class="row pd-top container-fluid">
-        <mat-progress-bar mode="determinate" value="65"></mat-progress-bar>
+        <mat-progress-bar mode="determinate" value="{{businessStat[0].performance_value}}"></mat-progress-bar>
       </div>
       <div class="scroll-text pd-top">
-        3.5+ Good
+        {{businessValue(businessStat[0].performance_value)}}
       </div>
       <div class="row pd-top pd-top">
         <button mdbBtn mdbWavesEffect role="buton" class="btn btn-primary btn-md cnt-center ">

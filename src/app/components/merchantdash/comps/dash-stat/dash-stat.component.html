@@ -8,7 +8,7 @@
         <!-- Card no -->
         <div class="col-md-3 br-back stat-num">
           <span class="stat-no">
-            5
+            {{dashStat[0].pending_bookings}}
           </span>
         </div>
 
@@ -20,7 +20,7 @@
           <hr />
           Latest request on:
           <br />
-          <span class="date-text">27/03/2020</span>
+          <span class="date-text">{{dashStat[0].last_book_date}}</span>
         </div>
       </div>
     </mat-card-body>
@@ -36,7 +36,7 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 ar-back stat-num">
           <span class="stat-no">
-            3
+            {{dashStat[0].pending_appointments}}
           </span>
         </div>
 
@@ -47,7 +47,7 @@
           <hr />
           Latest reservation on:
           <br />
-          <span class="date-text">27/03/2020</span>
+          <span class="date-text">{{dashStat[0].last_appointment_date}}</span>
         </div>
       </div>
     </mdb-card>
@@ -62,7 +62,7 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 cb-back stat-num">
           <span class="stat-no">
-            8
+            {{dashStat[0].confirmed_bookings}}
           </span>
         </div>
 
@@ -73,7 +73,7 @@
           <hr />
           Latest booking on:
           <br />
-          <span class="date-text">27/03/2020</span>
+          <span class="date-text">{{dashStat[0].last__confirmed_book_date}}</span>
         </div>
       </div>
     </mdb-card>
@@ -88,18 +88,18 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 er-back stat-num">
           <span class="stat-no">
-            3
+            {{dashStat[0].approved_appointments}}
           </span>
         </div>
 
         <div class="col-md-9 stat-text">
           <span class="stat-title">
-            New Reviews
+            Approved Appoints
           </span>
           <hr />
-          Latest Review on:
+          Latest Approval on:
           <br />
-          <span class="date-text">27/03/2020</span>
+          <span class="date-text">{{dashStat[0].last_approved_appointment_date}}</span>
         </div>
       </div>
     </mdb-card>

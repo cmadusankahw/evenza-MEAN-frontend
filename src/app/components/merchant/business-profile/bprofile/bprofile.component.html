@@ -54,6 +54,16 @@
               <div class="content-text">
                 {{business[0].description}}
               </div>
+
+              <div class="verify-stat pd-top-min" *ngIf= "business[0].payment_verified" style="text-align:left;">
+                <mdb-icon far icon="check-circle"> </mdb-icon> Payment Method Added
+            </div>
+
+            <div class="verify-stat" *ngIf= "!business[0].payment_verified" style="color:darkred; text-align:left; ">
+              <mdb-icon far icon="check-circle"> </mdb-icon> Payment Method not Added
+           </div>
+
+
               <br>
                  <!--service cards-->
                 <div class="content-title page-content">
@@ -83,6 +93,10 @@
                 <iframe src="https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0"
                 style="border:0" allowfullscreen></iframe>
               </div>
+
+
+
+            <hr>
 
             <div class="content-title page-content">
               Contact Details
@@ -301,6 +315,49 @@
              </div>
             </div>
 
+            <hr>
+
+               <!--row 4-->
+           <div class="row  page-content page-content" *ngIf="!addnew">
+
+            <div class="col-md-3 inst-text">
+              <mdb-icon fas icon="check-circle"></mdb-icon> <span> Payment Methods:</span>
+              <br>
+              <p class="infotxt"><img src="./assets/images/other/pay.png" alt="pament methods" style="width:100%;"></p>
+
+            </div>
+
+            <div class="col-md-7 text-center">
+              <div class="verify-stat text-center" *ngIf="business[0].payment_verified">
+                <mdb-icon far icon="check-circle"> </mdb-icon> Payment Method Added : Visa/Master
+              </div>
+              <div class="verify-stat text-center" *ngIf="!business[0].payment_verified" style="color:darkred; ">
+                <mdb-icon far icon="times-circle"></mdb-icon> Payment Method Not Added
+                <br>
+              <a type="button" mdbBtn color="secondary"
+              class="waves-light btn btn-md btn-edt" mdbWavesEffect outline="yes" (click)="paymentVerify.show()">
+              Add Payment Methhod</a>
+            </div>
+            </div>
+           </div>
+
+           <!--add new business only-->
+           <div class="row  page-content" *ngIf="addnew">
+            <div class="col-md-3 inst-text">
+              <mdb-icon fas icon="thumbs-up"></mdb-icon> <span> Add Payment Method </span>
+              <br>
+              <p class="infotxt"><img src="./assets/images/other/pay.png" alt="pament methods" style="width:100%;"></p>
+            </div>
+
+            <div class="col-md-7 text-center">
+              <a type="button" mdbBtn color="secondary"
+              class="waves-light btn btn-md btn-edt" mdbWavesEffect outline="yes" (click)="paymentVerify.show()">
+             Add a Method </a>
+             </div>
+            </div>
+
+            <hr>
+
              <!--row 5-->
              <div class="row  page-content">
 
@@ -460,6 +517,56 @@
           mdbBtn
           color="link"
           (click)="businessverify.hide()"
+          mdbWavesEffect
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--add  payment method Modal-->
+<div
+  mdbModal
+  #paymentVerify="mdbModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered"
+    role="document"
+    style="overflow-y: initial !important"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="paymentVerify.hide()"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel" >
+          Payment Methods
+        </h4>
+      </div>
+      <div class="modal-body " style="height: 400px; overflow-y: auto;" >
+         <app-card-details></app-card-details>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          mdbBtn
+          color="link"
+          (click)="paymentVerify.hide()"
           mdbWavesEffect
         >
           Close

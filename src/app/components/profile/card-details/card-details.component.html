@@ -1,13 +1,27 @@
-<div class="container p-md-5">
+<div class="container p-md-2">
 
         <script src='https://js.stripe.com/v2/' type='text/javascript'></script>
         <form accept-charset="UTF-8" action="/" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="pk_bQQaTxnaZlzv4FnnuZ28LFHccVSaj" id="payment-form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓" /><input name="_method" type="hidden" value="PUT" /><input name="authenticity_token" type="hidden" value="qLZ9cScer7ZxqulsUWazw4x3cSEzv899SP/7ThPCOV8=" /></div>
           <div class='form-row'>
+
             <div class='col-md-12 form-group required'>
               <label class='control-label'>Name on Card</label>
               <input mdbInput class='form-control'  type='text'>
             </div>
           </div>
+          <div class='form-row'>
+
+            <div class='col-md-6 form-group required'>
+              <label class='control-label'>Bank </label>
+              <input mdbInput class='form-control'  type='text'>
+            </div>
+
+            <div class='col-md-6 form-group required'>
+              <label class='control-label'>Branch </label>
+              <input mdbInput class='form-control'  type='text'>
+            </div>
+          </div>
+          <hr>
           <div class='form-row'>
             <div class='col-md-12 form-group  required'>
               <label class='control-label' for="cardnum" >Card Number</label>
@@ -28,19 +42,24 @@
               <input mdbInput class='form-control card-expiry-year' id="yearDetails" placeholder='YYYY' size='4' type='text'>
             </div>
           </div>
-
+          <hr>
+          <div class="container">
+            <img src="./assets/images/other/pay.png" alt="pay methods">
+          </div>
+          <hr>
           <div class='form-row'>
             <div class='col-md-12 form-group text-center'>
               <button mdbBtn mdbWavesEffect class='btn btn-secondary' type='submit'>Save Changes</button>
             </div>
           </div>
-          <div class='form-row'>
+          <div class='form-row' >
             <div class='col-md-12 error form-group hide'>
               <div class='alert-danger alert'>
                 Please correct the errors and try again.
               </div>
             </div>
           </div>
+
         </form>
 
 

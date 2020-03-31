@@ -13,6 +13,7 @@ export interface Business {
   location: string;
   isverified: boolean;
   isopened: boolean;
+  payment_verified: boolean;
   feature_img: string;
   logo: string;
 }
@@ -47,6 +48,7 @@ export class BprofileComponent implements OnInit {
       location: 'https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed',
       isverified: false,
       isopened: true,
+      payment_verified: false,
       feature_img: './assets/images/back/bprofile.jpg',
       logo: './assets/images/merchant/business.jpg'
     }

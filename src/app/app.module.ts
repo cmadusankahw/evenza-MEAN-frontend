@@ -73,6 +73,9 @@ import { PurchaseHistoryComponent } from './components/merchant/seller/purchase-
 import { DashPurchaseHistoryComponent } from './components/merchantdash/pages/dash-purchase-history/dash-purchase-history.component';
 import { InventoryComponent } from './components/merchant/seller/inventory/inventory.component';
 import { DashInventoryComponent } from './components/merchantdash/pages/dash-inventory/dash-inventory.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
+import { ProductSearchComponent } from './product-search/product-search.component';
+import { ServiceSearchComponent } from './service-search/service-search.component';
 
 @NgModule({
   declarations: [
@@ -116,7 +119,10 @@ import { DashInventoryComponent } from './components/merchantdash/pages/dash-inv
     PurchaseHistoryComponent,
     DashPurchaseHistoryComponent,
     InventoryComponent,
-    DashInventoryComponent
+    DashInventoryComponent,
+    ContactUsComponent,
+    ProductSearchComponent,
+    ServiceSearchComponent
 
 
   ],

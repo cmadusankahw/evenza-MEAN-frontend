@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './components/home/home/home.component';
-import { LoginComponent } from './components/auth/login/login.component';
-import { SignupComponent } from './components/auth/signup/signup.component';
-import { SignupSelectComponent } from './components/auth/signup-select/signup-select.component';
-import { SignupMerchantComponent } from './components/auth/signup-merchant/signup-merchant.component';
-import { CardDetailsComponent } from './components/profile/card-details/card-details.component';
-import { DashboardComponent } from './components/merchantdash/dashboard/dashboard.component';
-import { BprofileComponent } from './components/merchant/business-profile/bprofile/bprofile.component';
+import { HomeComponent } from './modules/home/home/home.component';
+import { LoginComponent } from './modules/auth/login/login.component';
+import { SignupComponent } from './modules/auth/signup/signup.component';
+import { SignupSelectComponent } from './modules/auth/signup-select/signup-select.component';
+import { SignupMerchantComponent } from './modules/auth/signup-merchant/signup-merchant.component';
+import { DashboardComponent } from './modules/serviceprovider/serviceprovider-dash/dashboard/dashboard.component';
+import { BprofileComponent } from './modules/serviceprovider/business-profile/bprofile/bprofile.component';
 
 
 const routes: Routes = [
@@ -15,9 +14,8 @@ const routes: Routes = [
   {path : 'register', component : SignupSelectComponent},
   {path : 'register/common', component : SignupComponent},
   {path : 'register/merchant', component : SignupMerchantComponent},
-  {path : 'profile/cards', component : CardDetailsComponent},
-  {path : 'm/dash', component : DashboardComponent},
-  {path : 'm/bprofile', component : BprofileComponent},
+  {path : 'sp/dash', component : DashboardComponent},
+  {path : 'sp/bprofile', component : BprofileComponent},
   {path : '', component : HomeComponent}
 ];
 

@@ -1,0 +1,34 @@
+.pd-top{
+  padding-top:10%
+}
+
+.pd-top-min{
+  padding-top:5%
+}
+
+.pd-side{
+  padding-left:10px;
+  padding-right:10px;
+}
+
+.single-news{
+  border: 2px solid;
+  padding:20px;
+}
+
+.mg-top{
+  margin-top:10px;
+}
+
+.map-container {
+  height: 200px;
+  position: relative;
+}
+
+.map-container iframe {
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}

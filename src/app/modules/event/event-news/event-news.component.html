@@ -2,7 +2,7 @@
 <section class="magazine-section dark-grey-text ">
 
   <!-- Section heading -->
-  <h3 class="text-center font-weight-bold mb-4 pb-2">Events Happening Near You</h3>
+  <h3 class="text-center font-weight-bold mb-4 pb-2">Events Happening near You</h3>
   <!-- Section description -->
   <p class="text-center w-responsive mx-auto mb-5">Find the amazing events happening near you.
      They all are managed through Evenza, the smart event management and resourcing platform...</p>
@@ -18,7 +18,7 @@
 
         <!-- Image -->
         <div class="view overlay rounded z-depth-1-half mb-4">
-          <img mdbWavesEffect class="img-fluid" src="https://mdbootstrap.com/img/Photos/Slides/1.jpg" alt="Sample image">
+          <img mdbWavesEffect class="img-fluid" src="{{events[0].feature_img}}" alt="Sample image">
           <a>
             <div class="mask rgba-white-slight"></div>
           </a>
@@ -26,25 +26,19 @@
 
         <!-- Data -->
         <div class="news-data d-flex justify-content-between">
-          <a href="#!" class="purple-text">
-            <h6 class="font-weight-bold"><i class="fas fa-utensils pr-2"></i>Lunch Provided</h6>
-          </a>
-          <a href="#!" class="purple-text">
-            <h6 class="font-weight-bold"><i class="fas fa-tshirt pr-2"></i>T Shirts</h6>
+          <a href="#!" class="purple-text" *ngFor="let feature of events[0].features">
+            <h6 class="font-weight-bold"><i class="fas fa-utensils pr-2"></i>{{feature}}</h6>
           </a>
 
         </div>
 
         <!--Details -->
-        <h3 class="font-weight-bold dark-grey-text mb-3 pd-top-min"><a>Title of the news</a></h3>
+        <h3 class="font-weight-bold dark-grey-text mb-3 pd-top-min"><a>{{events[0].event_title}}</a></h3>
 
         <!--event date-->
-        <p class="font-weight-bold dark-grey-text"><i class="fas fa-clock pr-2"></i>27/02/2018</p>
+        <p class="font-weight-bold dark-grey-text"><i class="fas fa-clock pr-2"></i>{{events[0].date}}</p>
 
-        <p class="dark-grey-text">Sed ut perspiciatis unde voluptatem omnis iste natus
-          error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
-          inventore veritatis et quasi architecto beatae vitae explicabo. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat.</p>
+        <p class="dark-grey-text">{{events[0].description}}</p>
 
       </div>
       <!-- Featured news -->
@@ -58,6 +52,7 @@
 
 
       <!-- Small news -->
+      <div *ngFor="let event of events">
       <mdb-card class="mg-top">
         <mdb-card-body>
           <div mdbWavesEffect class=" single-news">
@@ -70,7 +65,7 @@
 
                 <!--Image-->
                 <div class="view overlay rounded z-depth-1 mb-4">
-                  <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Horizontal/Food/4-col/img%20(45).jpg"
+                  <img class="img-fluid" src="{{event.feature_img}}"
                     alt="Sample image">
                   <a>
                     <div class="mask rgba-white-slight"></div>
@@ -84,10 +79,10 @@
               <div class="col-md-9">
 
                 <!-- Excerpt -->
-                <p class="font-weight-bold dark-grey-text">25/02/2018</p>
+                <p class="font-weight-bold dark-grey-text">{{event.date}}</p>
                 <div class="d-flex justify-content-between">
                   <div class="col-11 text-truncate pl-0 mb-3">
-                    <h5 class="dark-grey-text">Sample Event 1</h5>
+                    <h5 class="dark-grey-text">{{event.event_title}}</h5>
                   </div>
                   <a><i class="fas fa-angle-double-right"></i></a>
                 </div>
@@ -102,104 +97,8 @@
           <!-- Small news -->
         </mdb-card-body>
       </mdb-card>
-
       <br>
-
-       <!-- Small news -->
-       <mdb-card class="mg-top">
-        <mdb-card-body>
-          <div mdbWavesEffect class=" single-news">
-
-            <!-- Grid row -->
-            <div class="row">
-
-              <!-- Grid column -->
-              <div class="col-md-3">
-
-                <!--Image-->
-                <div class="view overlay rounded z-depth-1 mb-4">
-                  <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Horizontal/Food/4-col/img%20(45).jpg"
-                    alt="Sample image">
-                  <a>
-                    <div class="mask rgba-white-slight"></div>
-                  </a>
-                </div>
-
-              </div>
-              <!-- Grid column -->
-
-              <!-- Grid column -->
-              <div class="col-md-9">
-
-                <!-- Excerpt -->
-                <p class="font-weight-bold dark-grey-text">25/02/2018</p>
-                <div class="d-flex justify-content-between">
-                  <div class="col-11 text-truncate pl-0 mb-3">
-                    <h5 class="dark-grey-text">Sample Event 1</h5>
-                  </div>
-                  <a><i class="fas fa-angle-double-right"></i></a>
-                </div>
-
-              </div>
-              <!-- Grid column -->
-
-            </div>
-            <!-- Grid row -->
-
-          </div>
-          <!-- Small news -->
-        </mdb-card-body>
-      </mdb-card>
-
-      <br>
-
-       <!-- Small news -->
-       <mdb-card class="mg-top">
-        <mdb-card-body>
-          <div mdbWavesEffect class=" single-news">
-
-            <!-- Grid row -->
-            <div class="row">
-
-              <!-- Grid column -->
-              <div class="col-md-3">
-
-                <!--Image-->
-                <div class="view overlay rounded z-depth-1 mb-4">
-                  <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Horizontal/Food/4-col/img%20(45).jpg"
-                    alt="Sample image">
-                  <a>
-                    <div class="mask rgba-white-slight"></div>
-                  </a>
-                </div>
-
-              </div>
-              <!-- Grid column -->
-
-              <!-- Grid column -->
-              <div class="col-md-9">
-
-                <!-- Excerpt -->
-                <p class="font-weight-bold dark-grey-text">25/02/2018</p>
-                <div class="d-flex justify-content-between">
-                  <div class="col-11 text-truncate pl-0 mb-3">
-                    <h5 class="dark-grey-text">Sample Event 1</h5>
-                  </div>
-                  <a><i class="fas fa-angle-double-right"></i></a>
-                </div>
-
-              </div>
-              <!-- Grid column -->
-
-            </div>
-            <!-- Grid row -->
-
-          </div>
-          <!-- Small news -->
-        </mdb-card-body>
-      </mdb-card>
-
-
+    </div>
 
 
 

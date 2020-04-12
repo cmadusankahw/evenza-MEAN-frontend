@@ -4,14 +4,14 @@
 
   <!--left component-->
   <div class="col-md-9">
-    <app-no-bprofile *ngIf="!iscreated"></app-no-bprofile>
-    <app-bprofile *ngIf="iscreated"></app-bprofile>
+    <app-no-bprofile *ngIf="!iscreated" [idverified]= idverified></app-no-bprofile>
+    <app-bprofile *ngIf="iscreated" [isowner]= isowner></app-bprofile>
   </div>
 
   <!--right component-->
   <div class="col-md-3">
 
-   <app-business-stat></app-business-stat>
+   <app-business-stat [iscreated] = "iscreated"></app-business-stat>
 
   <br>
 

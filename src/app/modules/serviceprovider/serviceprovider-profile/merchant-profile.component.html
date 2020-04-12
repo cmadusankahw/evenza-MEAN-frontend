@@ -23,10 +23,10 @@
       </div>
       <div class="row logo-cls">
         <div class="col-md-2">
-            <img src={{merchant[0].profile_pic}} alt="User Pic" class="img-thumbnail logo-img">
+            <img src={{serviceProvider[0].profile_pic}} alt="User Pic" class="img-thumbnail logo-img">
         </div>
         <div class="col-md-10">
-          <h2 class="txt-title"> {{merchant[0].first_name}}  {{merchant[0].last_name}} </h2>
+          <h2 class="txt-title"> {{serviceProvider[0].first_name}}  {{serviceProvider[0].last_name}} </h2>
         </div>
       </div>
 
@@ -46,7 +46,7 @@
               </div>
 
               <div class="col-md-7 profile-text">
-                  <span> {{merchant[0].email}}</span>
+                  <span> {{serviceProvider[0].email}}</span>
               </div>
             </div>
 
@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="col-md-7 profile-text">
-                    <span> {{merchant[0].contact_no}}</span>
+                    <span> {{serviceProvider[0].contact_no}}</span>
                 </div>
               </div>
 
@@ -70,7 +70,7 @@
                   </div>
 
                   <div class="col-md-7 profile-text">
-                      <span> {{merchant[0].gender}}</span>
+                      <span> {{serviceProvider[0].gender}}</span>
                   </div>
                 </div>
 
@@ -81,7 +81,7 @@
                     </div>
 
                     <div class="col-md-7 profile-text">
-                        <span> {{merchant[0].date_of_birth}}</span>
+                        <span> {{serviceProvider[0].date_of_birth}}</span>
                     </div>
                   </div>
 
@@ -90,13 +90,13 @@
                       <div class="col-md-5 inst-text">
                         <mdb-icon fas icon="home"></mdb-icon> <span> Postal Address </span>
                         <br>
-                        <p class="infotxt"> Provided address will b used for postal communications. </p>
+                        <p class="infotxt"> This address will be used for postal communications. </p>
                       </div>
 
                       <div class="col-md-7 profile-text">
-                          <span> {{merchant[0].address_line1}}</span>
+                          <span> {{serviceProvider[0].address_line1}}</span>
                           <br>
-                          <span> {{merchant[0].address_line2}}</span>
+                          <span> {{serviceProvider[0].address_line2}}</span>
                       </div>
                     </div>
                     <br>
@@ -111,7 +111,7 @@
                 </div>
 
                 <div class="col-md-7 profile-text">
-                    <span> {{merchant[0].merchant_type}}</span>
+                    <span> Service Provider </span>
                 </div>
               </div>
 
@@ -137,7 +137,7 @@
                 </div>
 
                 <div class="col-md-7 profile-text">
-                    <span> {{merchant[0].reg_date}}</span>
+                    <span> {{serviceProvider[0].reg_date}}</span>
                 </div>
               </div>
                 <hr>
@@ -172,7 +172,7 @@
 
           <div class="col-md-3 text-center">
             <a role="button" mdbWavesEffect (click)="sidea.click()">
-              <img src="{{merchant[0].profile_pic != null ? merchant[0].profile_pic : './assets/images/merchant/nopic.png'}}" alt="Profile Picture" class="img-thumbnail logo-img-edit">
+              <img src="{{serviceProvider[0].profile_pic != null ? serviceProvider[0].profile_pic : './assets/images/serviceProvider/nopic.png'}}" alt="Profile Picture" class="img-thumbnail logo-img-edit">
             </a>
             <input type="file" hidden="true" id="sidea" #sidea>
             <p><b>Click to Upload</b></p>
@@ -191,13 +191,13 @@
             <div class="col-md-6">
               <mat-form-field class="service-full-width">
                 <mat-label>First Name </mat-label>
-                <input matInput   value="{{ merchant[0].first_name }}" required>
+                <input matInput   value="{{ serviceProvider[0].first_name }}" required>
               </mat-form-field>
             </div>
             <div class="col-md-6">
               <mat-form-field class="service-full-width">
                 <mat-label>Last Name </mat-label>
-                <input matInput   value="{{ merchant[0].last_name }}" required>
+                <input matInput   value="{{ serviceProvider[0].last_name }}" required>
               </mat-form-field>
             </div>
           </div>
@@ -210,13 +210,13 @@
 
           <div class="col-md-3 inst-text">
             <mdb-icon fas icon="envelope"></mdb-icon> <span> Email Address:</span>
-            <p class="infotxt"> If changed, re-verification required</p>
+            <p class="infotxt"> If modified, re-verification required</p>
           </div>
 
           <div class="col-md-7 text-center">
             <mat-form-field class="service-full-width">
               <mat-label>Email Address here </mat-label>
-              <input matInput   value="{{ merchant[0].email }}" required>
+              <input matInput   value="{{ serviceProvider[0].email }}" required>
             </mat-form-field>
           </div>
          </div>
@@ -231,7 +231,7 @@
               <div class="col-md-7 text-center">
                 <mat-form-field class="service-full-width">
                   <mat-label>Select Gender</mat-label>
-                  <mat-select [value]="merchant[0].gender" required>
+                  <mat-select [value]="serviceProvider[0].gender" required>
                     <mat-option value="option1">Male</mat-option>
                     <mat-option value="option2">Female</mat-option>
                   </mat-select>
@@ -254,7 +254,7 @@
                 matSuffix
                 [for]="picker"
               ></mat-datepicker-toggle>
-              <mat-datepicker #picker [startAt]="convertDate(merchant[0].date_of_birth)"></mat-datepicker>
+              <mat-datepicker #picker [startAt]="convertDate(serviceProvider[0].date_of_birth)"></mat-datepicker>
             </mat-form-field>
           </div>
          </div>
@@ -270,11 +270,11 @@
               <div class="col-md-7 text-center">
                 <mat-form-field class="service-full-width">
                   <mat-label>Address Line 1 </mat-label>
-                  <input matInput value="{{merchant[0].address_line1}}" required>
+                  <input matInput value="{{serviceProvider[0].address_line1}}" required>
                 </mat-form-field>
                 <mat-form-field class="service-full-width">
                   <mat-label>Address Line 2 </mat-label>
-                  <input matInput value="{{merchant[0].address_line2}}">
+                  <input matInput value="{{serviceProvider[0].address_line2}}">
                 </mat-form-field >
               </div>
              </div>
@@ -296,10 +296,10 @@
             </div>
 
             <div class="col-md-7 text-center">
-              <div class="verify-stat text-center" *ngIf="merchant[0].isverified">
+              <div class="verify-stat text-center" *ngIf="serviceProvider[0].isverified">
                 <mdb-icon far icon="check-circle"> </mdb-icon> Identity Verified
               </div>
-              <div class="verify-stat text-center" *ngIf="!merchant[0].isverified" style="color:darkred; ">
+              <div class="verify-stat text-center" *ngIf="!serviceProvider[0].isverified" style="color:darkred; ">
                 <mdb-icon far icon="times-circle"></mdb-icon> Identity Not Verified
                 <br>
               <a type="button" mdbBtn color="secondary"

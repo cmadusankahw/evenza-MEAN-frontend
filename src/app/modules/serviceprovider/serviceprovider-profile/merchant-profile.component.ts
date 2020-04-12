@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
-export interface Merchant {
+export interface ServiceProvider {
   id: string;
   first_name: string;
   last_name: string;
   profile_pic: string;
-  merchant_type: string;
   email: string;
   password: string;
   contact_no: string;
@@ -29,16 +28,15 @@ export class MerchantProfileComponent implements OnInit {
   editmode = false;
 
   //enabling ctomization
-  isowner = true;
+  @Input() isowner;
 
   //bprofile data binding
-  merchant: Merchant[] = [
+  serviceProvider: ServiceProvider[] = [
     {
       id: 'U-01',
       first_name: 'Chiran',
       last_name: 'Hewawitharana',
       profile_pic: './assets/images/merchant/user.jpg',
-      merchant_type: 'service_provider',
       email: 'cmadusankahw@gmail.com',
       password: 'abcd1234',
       contact_no: '0711234567',

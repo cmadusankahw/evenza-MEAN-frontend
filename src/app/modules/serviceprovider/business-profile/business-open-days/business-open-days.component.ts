@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { StringifyOptions } from 'querystring';
+import { Component, OnInit, Input } from '@angular/core';
 
 export interface Availability {
   day: string;
@@ -16,7 +15,7 @@ export interface Availability {
 export class BusinessOpenDaysComponent implements OnInit {
 
   //editable open times
-  editmode = false;
+  @Input() editmode;
 
  availability = [
     { day: 'Monday', isopened: true, open_time: '08:00', close_time: '18:00' },

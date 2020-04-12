@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 export interface Business {
   id: string;
@@ -25,14 +25,18 @@ export interface Business {
 })
 export class BprofileComponent implements OnInit {
 
+  @Input() isowner;
+
   //edit profile mode
   editmode = false;
 
   //create new profile mode
   addnew = false;
 
-  //enabling ctomization
-  isowner = true;
+   //business-open-days edit mode
+   opendaysEditable = false;
+
+
 
   business: Business[] = [
     {
@@ -57,6 +61,7 @@ export class BprofileComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.isowner);
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 export interface BusinessStat {
   business_id: string;
@@ -16,7 +16,8 @@ export interface BusinessStat {
   styleUrls: ['./business-stat.component.scss']
 })
 export class BusinessStatComponent implements OnInit {
-  iscreated = true;
+
+  @Input() iscreated;
 
   businessStat: BusinessStat[] = [
     {

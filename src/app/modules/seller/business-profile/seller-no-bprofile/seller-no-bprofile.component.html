@@ -1,0 +1,117 @@
+<!--no business profile content-->
+<div class="sign-up-content" *ngIf="idverified">
+  <section class="text-center px-md-5 mx-md-5 dark-grey-text">
+    <div class="row mb-5">
+      <div class="col-md-4 mx-auto">
+        <img
+          src="./assets/images/vectors/business-profile.jpg"
+          class="img-fluid"
+          alt="Creat Business Profile"
+        />
+      </div>
+    </div>
+
+    <h3 class="font-weight-bold mb-4 pb-2">
+      You Don't have a Business Profile Yet!
+    </h3>
+
+    <p class="text-center mx-auto mb-2 pb-2">
+      Create a Business Profile Now and start your business with Evenza! All we need is a few more clicks!
+    </p>
+  </section>
+
+  <button
+    mbdBtn
+    mdbWavesEffect
+    type="button"
+    class="btn btn-secondary btn-lg"
+    (click)="editmode = !editmode"
+  >
+    get started
+  </button>
+</div>
+
+<!--no id verified content-->
+<div class="sign-up-content" *ngIf="!idverified">
+  <section class="text-center px-md-5 mx-md-5 dark-grey-text">
+    <div class="row mb-5">
+      <div class="col-md-4 mx-auto">
+        <img
+          src="./assets/images/vectors/call.png"
+          class="img-fluid"
+          alt="ID Not Verified"
+        />
+      </div>
+    </div>
+
+    <h3 class="font-weight-bold mb-4 pb-2">
+      You have not verified yourself Yet!
+    </h3>
+
+    <p class="text-center mx-auto mb-2 pb-2">
+      Unless you verify your Identity, you are not eligible to create a Business Profile and start your Business. Verify Your Identity Now..
+    </p>
+  </section>
+
+  <button
+    mbdBtn
+    mdbWavesEffect
+    type="button"
+    class="btn btn-danger btn-lg"
+    (click)="createBprofile.show()"
+  >
+    Verify Identity
+  </button>
+</div>
+
+
+<!--Create Business Profile Modal-->
+<div
+  mdbModal
+  #createBprofile="mdbModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered"
+    role="document"
+    style="overflow-y: initial !important"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="createBprofile.hide()"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel" >
+          Verify Identity
+        </h4>
+      </div>
+      <div class="modal-body " style="height: 500px; overflow-y: auto;">
+
+         <app-seller-id-verify></app-seller-id-verify>
+
+      </div>
+
+
+      <div class="modal-footer">
+        <button
+          mdbBtn
+          color="link"
+          (click)="createBprofile.hide()"
+          mdbWavesEffect
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

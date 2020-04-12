@@ -1,0 +1,227 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+
+    <!--profile pic-->
+    <div class="pd-img">
+      <img src="./assets/images/merchant/user.jpg" alt="Merchant Pic" class="img-thumbnail " style="border-radius:50%;">
+      <h5 class="txt-white pd-top-min text-center"> {{"Seller"}} </h5>
+    </div>
+
+    <mat-nav-list >
+        <a class="txt-white row active-nav" mat-list-item *ngIf="home" >
+            <div class="col-md-11 side-start " >
+              <mat-icon >home</mat-icon>
+              <span class="side-text">  Home</span>
+            </div>
+            <div class="ol-md-1 side-end">
+            <mat-icon >arrow_right</mat-icon>
+          </div>
+        </a>
+
+        <a class="txt-white row" mat-list-item  *ngIf="!home" (click)="onHome()" routerLink="/sel/dash">
+          <div class="col-md-11 side-start " >
+            <mat-icon >home</mat-icon>
+            <span class="side-text">  Home</span>
+          </div>
+          <div class="ol-md-1 side-end">
+          <mat-icon >arrow_right</mat-icon>
+        </div>
+      </a>
+
+      <a class="txt-white row active-nav" mat-list-item  *ngIf="bProfile"  (click)="showSubMenu = !showSubMenu" >
+        <div class="col-md-11 side-start">
+          <mat-icon >business_centert</mat-icon>
+          <span class="side-text">  Business Profile</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+      <a class="txt-white row" mat-list-item *ngIf="!bProfile" (click)="showSubMenu = !showSubMenu" (click)="onBprofile()" routerLink="/sel/dash/bprofile">
+        <div class="col-md-11 side-start">
+          <mat-icon >business_centert</mat-icon>
+          <span class="side-text">  Business Profile</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+
+      <a class="txt-white side-end" mat-list-item *ngIf="showSubMenu" (click)="productDetailsShow.show()">
+        <mat-icon>add</mat-icon>
+        Add New Poduct
+      </a>
+
+      <a class="txt-white row active-nav" mat-list-item  *ngIf="purchaseHistory"  >
+        <div class="col-md-11 side-start">
+          <mat-icon >bookmarks</mat-icon>
+          <span class="side-text">  Purchase history</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+      <a class="txt-white row" mat-list-item *ngIf="!purchaseHistory" (click)="onPurchaseHistory()" routerLink="/sel/dash/purchases">
+        <div class="col-md-11 side-start">
+          <mat-icon >bookmarks</mat-icon>
+          <span class="side-text">  Purchase History</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+
+      <a class="txt-white row active-nav" mat-list-item  *ngIf="inventory" >
+        <div class="col-md-11 side-start">
+          <mat-icon >phone_locked</mat-icon>
+          <span class="side-text">  Inventory</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+      <a class="txt-white row" mat-list-item *ngIf="!inventory" (click)="onInventory()" routerLink="/sel/dash/inventory">
+        <div class="col-md-11 side-start">
+          <mat-icon >phone_locked</mat-icon>
+          <span class="side-text">  Inventory</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+
+
+      <a class="txt-white row active-nav" mat-list-item *ngIf="report"  >
+        <div class="col-md-11 side-start">
+          <mat-icon >library_books</mat-icon>
+          <span class="side-text">  Report Wizard</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+      <a class="txt-white row" mat-list-item *ngIf="!report" (click)="onReport()" routerLink="/sel/dash/reports">
+        <div class="col-md-11 side-start">
+          <mat-icon >library_books</mat-icon>
+          <span class="side-text">  Report Wizard</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+      <a class="txt-white row active-nav" mat-list-item *ngIf="profile" >
+        <div class="col-md-11 side-start">
+          <mat-icon >perm_identity</mat-icon>
+          <span class="side-text">  My Profile</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+
+      <a class="txt-white row" mat-list-item *ngIf="!profile" (click)="onProfile()" routerLink="/sel/dash/profile">
+        <div class="col-md-11 side-start">
+          <mat-icon >perm_identity</mat-icon>
+          <span class="side-text">  My Profile</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+    </mat-nav-list>
+
+  </mat-sidenav>
+
+  <!--dashboard content-->
+  <mat-sidenav-content>
+    <mat-toolbar color="purple">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>Howday!{{" Seller"}}</span>
+    </mat-toolbar>
+
+    <!--dashboard content-->
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+      <!--<app-dash-home *ngIf="home"></app-dash-home>
+      <app-dash-business-profile *ngIf="bProfile"></app-dash-business-profile>
+      <app-dash-bookings *ngIf="booking"></app-dash-bookings>
+      <app-dash-appointments *ngIf="appointment"></app-dash-appointments>
+      <app-dash-calendar *ngIf="calendar"></app-dash-calendar>
+      <app-dash-reports *ngIf="report"></app-dash-reports>
+      <app-dash-profile *ngIf="profile"></app-dash-profile>-->
+    </div>
+    <!--end dashboard content-->
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+<!--View Product Modal-->
+<div
+  mdbModal
+  #productDetailsShow="mdbModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-hidden="true"
+
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-lg"
+    role="document"
+    style="overflow-y: initial !important"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="productDetailsShow.hide()"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel" >
+          <mat-icon>add</mat-icon> Create New Product
+        </h4>
+      </div>
+
+      <div class="modal-body " style="height: 450px; overflow-y: auto;">
+
+        <app-product-details [addnew]= "true"></app-product-details>
+
+      </div>
+
+      <div class="modal-footer">
+        <button
+          mdbBtn
+          color="link"
+          (click)="productDetailsShow.hide()"
+          mdbWavesEffect
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

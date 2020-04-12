@@ -39,10 +39,10 @@
             <div class="state-text">
               <mdb-icon fas icon="building"> </mdb-icon> at {{business[0].address_line2}}
               <br>
-             <a mdbWavesEffect role="button" (click)="opendays.show()"> <span class="open-state" style="color:darkgreen;" *ngIf="business[0].isopened">
+             <a mdbWavesEffect role="button" (click)="opendaysEditable = false" (click)="opendays.show()"> <span class="open-state" style="color:darkgreen;" *ngIf="business[0].isopened">
                 <mdb-icon far icon="clock"> </mdb-icon> Open Now</span> </a>
 
-            <a mdbWavesEffect role="button" (click)="opendays.show()"> <span class="open-state" *ngIf="!business[0].isopened">
+            <a mdbWavesEffect role="button" (click)="opendaysEditable = false" (click)="opendays.show()"> <span class="open-state" *ngIf="!business[0].isopened">
               <mdb-icon far icon="clock"> </mdb-icon> Closed Now </span> </a>
             </div>
 
@@ -67,13 +67,13 @@
               <br>
                  <!--service cards-->
                 <div class="content-title page-content">
-                  <span *ngIf="business[0].merchant_type == 'service_provider'">Services</span>
-                  <span *ngIf="business[0].merchant_type == 'product_seller'">Products</span>
+                  <span>Services</span>
+
                   </div>
                   <hr>
                   <!--service & product comps-->
-                  <app-service-card  *ngIf="business[0].merchant_type == 'service_provider'">  </app-service-card>
-                  <app-product-card  *ngIf="business[0].merchant_type == 'product_seller'"></app-product-card>
+                  <app-service-card>  </app-service-card>
+
           </div>
 
           <!--right content-->
@@ -253,7 +253,7 @@
 
             <div class="col-md-7 text-center">
               <a type="button" mdbBtn color="secondary"
-              class="waves-light btn btn-md btn-edt" mdbWavesEffect outline="yes" (click)="opendays.show()">Set open Days</a>
+              class="waves-light btn btn-md btn-edt" mdbWavesEffect outline="yes" (click)="opendaysEditable = true" (click)="opendays.show()" >Set open Days</a>
             </div>
            </div>
 
@@ -377,7 +377,7 @@
               <div class="row  page-content">
 
                 <div class="col-md-3 inst-text">
-                  <mdb-icon fas icon="envelope"></mdb-icon> <span> Business Contant No:</span>
+                  <mdb-icon fas icon="envelope"></mdb-icon> <span> Business Contact No:</span>
                 </div>
 
                 <div class="col-md-7 text-center">
@@ -459,7 +459,7 @@
         </h4>
       </div>
       <div class="modal-body " style="height: 400px; overflow-y: auto;" >
-         <app-business-open-days></app-business-open-days>
+         <app-business-open-days [editmode]= "opendaysEditable"></app-business-open-days>
       </div>
 
       <div class="modal-footer">

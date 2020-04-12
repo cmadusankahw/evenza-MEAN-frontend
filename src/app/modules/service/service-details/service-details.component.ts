@@ -40,7 +40,7 @@ export class ServiceDetailsComponent implements OnInit {
   iseditable = false;
 
   //edit mode
-  editmode = true;
+  editmode = false;
 
   //add new service mode
   addnew = false;

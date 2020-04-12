@@ -1,0 +1,21 @@
+
+
+  <h4>
+    <mat-icon>graphic_eq</mat-icon>
+    <b>
+    Sales Statistics
+  </b></h4>
+
+
+<div style="display: block">
+  <canvas mdbChart
+      [chartType]="chartType"
+      [datasets]="chartDatasets"
+      [labels]="chartLabels"
+      [colors]="chartColors"
+      [options]="chartOptions"
+      [legend]="true"
+      (chartHover)="chartHovered($event)"
+      (chartClick)="chartClicked($event)">
+  </canvas>
+</div>

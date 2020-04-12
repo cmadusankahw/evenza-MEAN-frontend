@@ -243,7 +243,7 @@
           <mat-form-field class="service-full-width-sm">
             <mat-label >Service Rate Type</mat-label>
             <select matNativeControl required>
-             <option  value={{rates.id}} *ngFor="let rate of rates">
+             <option  value={{rate.id}} *ngFor="let rate of rates">
                 {{rates.val}</option>
             </select>
           </mat-form-field>
@@ -333,7 +333,7 @@
         </h4>
       </div>
       <div class="modal-body " style="height: 400px; overflow-y: auto;" >
-         <app-business-open-days></app-business-open-days>
+         <app-business-open-days [editmode]="false"></app-business-open-days>
       </div>
 
       <div class="modal-footer">

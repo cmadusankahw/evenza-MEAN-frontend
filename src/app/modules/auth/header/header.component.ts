@@ -21,7 +21,14 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.router.events.subscribe( (e) => {
       if (e instanceof NavigationStart) {
-        if (e.url === '/sp/dash') {
+        if (e.url === '/sp/dash' ||
+            e.url === '/sp/dash/bprofile' ||
+            e.url === '/sp/dash/bookings' ||
+            e.url === '/sp/dash/appoints' ||
+            e.url === '/sp/dash/calendar' ||
+            e.url === '/sp/dash/reports' ||
+            e.url === '/sp/dash/profile'
+        ) {
             this.isServiceProvider = true;
             this.isSeller = false;
             this.isCommon = false;
@@ -30,10 +37,16 @@ export class HeaderComponent implements OnInit {
             this.onLogin = false;
             this.onRegister = false;
 
-        } else if (e.url === '/seller/dash') {
+        } else if (e.url === '/sel/dash' ||
+                  e.url === '/sel/dash/bprofile' ||
+                  e.url === '/sel/dash/purchases' ||
+                  e.url === '/sel/dash/inventory' ||
+                  e.url === '/sel/dash/reports' ||
+                  e.url === '/sel/dash/profile'
+        ) {
           this.isSeller = true;
           this.isServiceProvider = false;
-          this.isCommon = true;
+          this.isCommon = false;
           this.isPlanner = false;
           this.isAdmin = false;
           this.onLogin = false;

@@ -38,7 +38,7 @@ import { HomeComponent } from './modules/home/home/home.component';
 import { FooterComponent } from './modules/home/footer/footer.component';
 import { HomepageComponent } from './modules/home/homepage/homepage.component';
 import { SignupMerchantComponent } from './modules/auth/signup-merchant/signup-merchant.component';
-import { CardDetailsComponent } from './modules/serviceprovider/card-details/card-details.component';
+import { CardDetailsComponent } from './modules/auth/card-details/card-details.component';
 import { IdVerifyComponent } from './modules/serviceprovider/id-verify/id-verify.component';
 import { EventNewsComponent } from './modules/event/event-news/event-news.component';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -48,7 +48,7 @@ import { DashboardComponent } from './modules/serviceprovider/serviceprovider-da
 import { BookingsComponent } from './modules/serviceprovider/bookings/bookings.component';
 import { DashStatComponent } from './modules/serviceprovider/serviceprovider-dash/comps/dash-stat/dash-stat.component';
 import { PayStatComponent } from './modules/serviceprovider/serviceprovider-dash/comps/pay-stat/pay-stat.component';
-import { SalesGraphComponent } from './modules/serviceprovider/serviceprovider-dash/graphs/sales-graph/sales-graph.component';
+import { SalesGraphComponent } from './modules/seller/seller-dash/graphs/sales-graph/sales-graph.component';
 import { DashHomeComponent } from './modules/serviceprovider/serviceprovider-dash/pages/dash-home/dash-home.component';
 import { DashBusinessProfileComponent } from './modules/serviceprovider/serviceprovider-dash/pages/dash-business-profile/dash-business-profile.component';
 import { DashBookingsComponent } from './modules/serviceprovider/serviceprovider-dash/pages/dash-bookings/dash-bookings.component';
@@ -68,14 +68,32 @@ import { CalendarComponent } from './modules/serviceprovider/calendar/calendar.c
 import { DashCalendarComponent } from './modules/serviceprovider/serviceprovider-dash/pages/dash-calendar/dash-calendar.component';
 import { MerchantProfileComponent } from './modules/serviceprovider/serviceprovider-profile/merchant-profile.component';
 import { ProductCardComponent } from './modules/product/product-card/product-card.component';
-import { ProducDetailsComponent } from './modules/product/produc-details/produc-details.component';
 import { PurchaseHistoryComponent } from './modules/seller/purchase-history/purchase-history.component';
-import { DashPurchaseHistoryComponent } from './modules/serviceprovider/serviceprovider-dash/pages/dash-purchase-history/dash-purchase-history.component';
 import { InventoryComponent } from './modules/seller/inventory/inventory.component';
-import { DashInventoryComponent } from './modules/serviceprovider/serviceprovider-dash/pages/dash-inventory/dash-inventory.component';
 import { ContactUsComponent } from './modules/home/contact-us/contact-us.component';
 import { ProductSearchComponent } from './modules/product/product-search/product-search.component';
 import { ServiceSearchComponent } from './modules/service/service-search/service-search.component';
+import { SellerDashboardComponent } from './modules/seller/seller-dash/seller-dashboard/seller-dashboard.component';
+import { SellerBusinessStatComponent } from './modules/seller/seller-dash/comps/seller-business-stat/seller-business-stat.component';
+import { SellerDashStatComponent } from './modules/seller/seller-dash/comps/seller-dash-stat/seller-dash-stat.component';
+import { SellerPayStatComponent } from './modules/seller/seller-dash/comps/seller-pay-stat/seller-pay-stat.component';
+import { BookingsGraphComponent } from './modules/serviceprovider/serviceprovider-dash/graphs/bookings-graph/bookings-graph.component';
+import { SellerDashHomeComponent } from './modules/seller/seller-dash/pages/seller-dash-home/seller-dash-home.component';
+import { SellerDashBprofileComponent } from './modules/seller/seller-dash/pages/seller-dash-bprofile/seller-dash-bprofile.component';
+import { SellerDashPurchasesComponent } from './modules/seller/seller-dash/pages/seller-dash-purchases/seller-dash-purchases.component';
+import { SellerDashInventoryComponent } from './modules/seller/seller-dash/pages/seller-dash-inventory/seller-dash-inventory.component';
+import { SellerDashReportsComponent } from './modules/seller/seller-dash/pages/seller-dash-reports/seller-dash-reports.component';
+import { SellerDashProfileComponent } from './modules/seller/seller-dash/pages/seller-dash-profile/seller-dash-profile.component';
+import { SellerBprofileComponent } from './modules/seller/business-profile/seller-bprofile/seller-bprofile.component';
+import { SellerNoBprofileComponent } from './modules/seller/business-profile/seller-no-bprofile/seller-no-bprofile.component';
+import { SellerBusinessVerifyComponent } from './modules/seller/business-profile/seller-business-verify/seller-business-verify.component';
+import { SellerProfileComponent } from './modules/seller/seller-profile/seller-profile.component';
+import { SellerIdVerifyComponent } from './modules/seller/seller-id-verify/seller-id-verify.component';
+import { SellerEarningsComponent } from './modules/seller/seller-earnings/seller-earnings.component';
+import { SellerBusinessOpenDaysComponent } from './modules/seller/business-profile/seller-business-open-days/seller-business-open-days.component';
+import { ProductDetailsComponent } from './modules/product/product-details/product-details.component';
+import { NotFoundPageComponent } from './modules/home/not-found-page/not-found-page.component';
+
 
 @NgModule({
   declarations: [
@@ -115,14 +133,32 @@ import { ServiceSearchComponent } from './modules/service/service-search/service
     DashCalendarComponent,
     MerchantProfileComponent,
     ProductCardComponent,
-    ProducDetailsComponent,
     PurchaseHistoryComponent,
-    DashPurchaseHistoryComponent,
     InventoryComponent,
-    DashInventoryComponent,
     ContactUsComponent,
     ProductSearchComponent,
-    ServiceSearchComponent
+    ServiceSearchComponent,
+    SellerDashboardComponent,
+    SellerBusinessStatComponent,
+    SellerDashStatComponent,
+    SellerPayStatComponent,
+    BookingsGraphComponent,
+    SellerDashHomeComponent,
+    SellerDashBprofileComponent,
+    SellerDashPurchasesComponent,
+    SellerDashInventoryComponent,
+    SellerDashReportsComponent,
+    SellerDashProfileComponent,
+    SellerBprofileComponent,
+    SellerNoBprofileComponent,
+    SellerBusinessVerifyComponent,
+    SellerProfileComponent,
+    SellerIdVerifyComponent,
+    SellerEarningsComponent,
+    SellerBusinessOpenDaysComponent,
+    ProductDetailsComponent,
+    NotFoundPageComponent,
+
 
 
   ],

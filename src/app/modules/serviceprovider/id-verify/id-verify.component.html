@@ -27,17 +27,17 @@
       <div class="col-md-1"></div>
       <div class="col">
         <a role="button" mdbWavesEffect (click)="sidea.click()">
-          <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
+          <img src={{sideAUrl}} alt="front side" class="img-cls">
         </a>
-        <input type="file" hidden="true" id="sidea" #sidea>
+        <input type="file" hidden="true" id="sidea" #sidea (change)="onSideAUploaded($event)">
         <p><b>Side A</b></p>
       </div>
       <div class="col-md-1"></div>
       <div class="col">
         <a role="button" mdbWavesEffect (click)="sideb.click()">
-          <img src="./assets/images/merchant/nopic.png" alt="front side"  class="img-cls">
+          <img src={{sideBUrl}} alt="front side"  class="img-cls">
         </a>
-        <input type="file" hidden="true" id="sideb" #sideb>
+        <input type="file" hidden="true" id="sideb" #sideb (change)="onSideBUploaded($event)">
         <p><b>Side B</b></p>
       </div>
       <div class="col-md-1"></div>

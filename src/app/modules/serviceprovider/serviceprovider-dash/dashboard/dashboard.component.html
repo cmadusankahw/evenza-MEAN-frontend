@@ -7,7 +7,7 @@
     <!--profile pic-->
     <div class="pd-img">
       <img src="./assets/images/merchant/user.jpg" alt="Merchant Pic" class="img-thumbnail " style="border-radius:50%;">
-      <h4 class="txt-white pd-top-min text-center"> Admin </h4>
+      <h5 class="txt-white pd-top-min text-center"> {{"Service Provider"}} </h5>
     </div>
 
     <mat-nav-list >
@@ -173,7 +173,7 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>Howday! Admin</span>
+      <span>Howday! {{"Service Provider"}}</span>
     </mat-toolbar>
 
     <!--dashboard content-->
@@ -226,7 +226,7 @@
 
       <div class="modal-body " style="height: 450px; overflow-y: auto;">
 
-        <app-service-details></app-service-details>
+        <app-service-details [addnew] = "true"></app-service-details>
 
       </div>
 

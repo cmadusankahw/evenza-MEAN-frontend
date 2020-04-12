@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-no-bprofile',
@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NoBprofileComponent implements OnInit {
 
-  idverified = true;
+  @Input() idverified;
 
   //create business profile
   editmode = false;

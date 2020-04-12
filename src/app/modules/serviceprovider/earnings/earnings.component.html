@@ -5,7 +5,7 @@
     <mat-label>
       <mat-icon>search</mat-icon>
       Search Earnings</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia">
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Gunapala">
   </mat-form-field>
 
   <div class="mat-elevation-z8">
@@ -14,7 +14,7 @@
       <!-- ID Column -->
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Booking ID </th>
-        <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.booking_id}} </td>
       </ng-container>
 
       <!-- Progress Column -->
@@ -93,6 +93,15 @@
 
       <div class="row ">
         <div class="col-md-4 info-text">
+          Booked Duration
+        </div>
+        <div class="col info-input">
+          <input type="text" matInput disabled value="{{earnings[0].duration}}">
+        </div>
+      </div>
+
+      <div class="row ">
+        <div class="col-md-4 info-text">
           Customer
         </div>
         <div class="col info-input">
@@ -120,10 +129,10 @@
 
       <div class="row ">
         <div class="col-md-4 info-text">
-          Pay on Meet Booking
+          Payment Type
         </div>
         <div class="col info-input">
-          <input type="text" matInput disabled value="{{earnings[0].pay_on_meet ? 'YES' : 'NO'}}">
+          <input type="text" matInput disabled value="{{earnings[0].pay_type}}">
         </div>
       </div>
 

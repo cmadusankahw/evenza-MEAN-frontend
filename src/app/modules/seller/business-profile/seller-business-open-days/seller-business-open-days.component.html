@@ -1,0 +1,77 @@
+
+<!--more info-->
+<div class="text-center container-fluid" *ngIf="!editmode">
+  <!--title-->
+
+  <section class="text-center tb-spec dark-grey-text">
+
+    <!--weekday info-->
+    <div class="row" *ngFor="let a of availability">
+      <div class="col-md-5 info-text">
+        {{a.day}}
+      </div>
+      <div class="col-md-7 info-input" *ngIf="a.isopened">
+        <pre>{{a.open_time}}  to   {{a.close_time}}</pre>
+     </div>
+     <div class="col-md-7 info-input-closed" *ngIf="!a.isopened">
+      Closed
+    </div>
+    </div>
+
+    <br>
+  </section>
+</div>
+
+<!--more info-->
+<div class="text-center container-fluid" *ngIf="editmode">
+  <!--title-->
+
+  <section class="text-center tb-spec dark-grey-text">
+    <!--weekday info-->
+    <form class="service-form">
+    <div class="row pd-tp" *ngFor="let a of availability">
+      <div class="col-md-3 info-text">
+        {{a.day}}
+        <br>
+         <!--check box-->
+         <div class="closed-txt" >
+          <mat-checkbox [checked]="!a.isopened" (change)="a.isopened = !a.isopened">Closed</mat-checkbox>
+        </div>
+
+      </div>
+      <div class="col-md-9 info-input">
+
+       <div class="row">
+         <div class="col-md-6">
+          <label for="input">Opening time</label>
+          <input
+          type="time"
+          id="input"
+          class="form-control"
+          value={{a.open_time}}
+          [disabled]="!a.isopened"
+        />
+
+         </div>
+
+         <div class="col-md-6">
+          <label for="input">Closing time</label>
+          <input
+          type="time"
+          id="input"
+          class="form-control"
+          value={{a.close_time}}
+          [disabled]="!a.isopened"
+        />
+
+         </div>
+       </div>
+      </div>
+      <hr>
+     </div>
+
+  </form>
+    <br>
+  </section>
+</div>
+

@@ -1,0 +1,23 @@
+
+<!--component row-->
+<div class="row">
+
+  <!--left component-->
+  <div class="col-md-9">
+    <app-seller-no-bprofile *ngIf="!iscreated" [isverified] = idverified></app-seller-no-bprofile>
+    <app-seller-bprofile *ngIf="iscreated" [isowner] = isowner ></app-seller-bprofile>
+  </div>
+
+  <!--right component-->
+  <div class="col-md-3">
+
+   <app-seller-business-stat [iscreated] = "iscreated"></app-seller-business-stat>
+
+  <br>
+
+  <app-seller-pay-stat></app-seller-pay-stat>
+
+  </div>
+
+</div>
+<!--end component row-->

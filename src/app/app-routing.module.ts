@@ -15,27 +15,56 @@ import { DashReportsComponent } from './modules/serviceprovider/serviceprovider-
 import { DashProfileComponent } from './modules/serviceprovider/serviceprovider-dash/pages/dash-profile/dash-profile.component';
 import { DashHomeComponent } from './modules/serviceprovider/serviceprovider-dash/pages/dash-home/dash-home.component';
 import { ContactUsComponent } from './modules/home/contact-us/contact-us.component';
+import { SellerDashboardComponent } from './modules/seller/seller-dash/seller-dashboard/seller-dashboard.component';
+import { SellerDashHomeComponent } from './modules/seller/seller-dash/pages/seller-dash-home/seller-dash-home.component';
+import { SellerDashBprofileComponent } from './modules/seller/seller-dash/pages/seller-dash-bprofile/seller-dash-bprofile.component';
+import { SellerDashPurchasesComponent } from './modules/seller/seller-dash/pages/seller-dash-purchases/seller-dash-purchases.component';
+import { SellerDashInventoryComponent } from './modules/seller/seller-dash/pages/seller-dash-inventory/seller-dash-inventory.component';
+import { SellerDashReportsComponent } from './modules/seller/seller-dash/pages/seller-dash-reports/seller-dash-reports.component';
+import { SellerDashProfileComponent } from './modules/seller/seller-dash/pages/seller-dash-profile/seller-dash-profile.component';
+import { NotFoundPageComponent } from './modules/home/not-found-page/not-found-page.component';
+import { ServiceSearchComponent } from './modules/service/service-search/service-search.component';
+import { ProductSearchComponent } from './modules/product/product-search/product-search.component';
 
 
 const routes: Routes = [
-  {path : 'login', component : LoginComponent},
-  {path : 'register', component : SignupSelectComponent},
-  {path : 'register/common', component : SignupComponent},
-  {path : 'register/merchant', component : SignupMerchantComponent},
-  {path : 'sp/dash',
-   component : DashboardComponent ,
-   children : [
-      {path : '' , component : DashHomeComponent},
-      {path : 'bprofile' , component : DashBusinessProfileComponent},
-      {path : 'bookings' , component : DashBookingsComponent},
-      {path : 'appoints' , component : DashAppointmentsComponent},
-      {path : 'calendar' , component : DashCalendarComponent},
-      {path : 'reports' , component : DashReportsComponent},
-      {path : 'profile' , component : DashProfileComponent},
-    ]},
-  {path : 'sp/bprofile', component : BprofileComponent},
-  {path : 'contactus', component : ContactUsComponent},
-  {path : '', component : HomeComponent}
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: SignupSelectComponent },
+  { path: 'register/common', component: SignupComponent },
+  { path: 'register/merchant', component: SignupMerchantComponent },
+  { path: 'sp/bprofile', component: BprofileComponent },
+  { path: 'contactus', component: ContactUsComponent },
+  { path: 'services', component: ServiceSearchComponent },
+  { path: 'products', component: ProductSearchComponent },
+  {
+    path: 'sp/dash',
+    component: DashboardComponent,
+    children: [
+      { path: '', component: DashHomeComponent },
+      { path: 'bprofile', component: DashBusinessProfileComponent },
+      { path: 'bookings', component: DashBookingsComponent },
+      { path: 'appoints', component: DashAppointmentsComponent },
+      { path: 'calendar', component: DashCalendarComponent },
+      { path: 'reports', component: DashReportsComponent },
+      { path: 'profile', component: DashProfileComponent },
+      { path: '**', component: NotFoundPageComponent },
+    ]
+  },
+  {
+    path: 'sel/dash',
+    component: SellerDashboardComponent,
+    children: [
+      { path: '', component: SellerDashHomeComponent },
+      { path: 'bprofile', component: SellerDashBprofileComponent },
+      { path: 'purchases', component: SellerDashPurchasesComponent },
+      { path: 'inventory', component: SellerDashInventoryComponent },
+      { path: 'reports', component: SellerDashReportsComponent },
+      { path: 'profile', component: SellerDashProfileComponent },
+      { path: '**', component: NotFoundPageComponent },
+    ]
+  },
+  { path: '', component: HomeComponent },
+  { path: '**', component: NotFoundPageComponent }
 ];
 
 @NgModule({

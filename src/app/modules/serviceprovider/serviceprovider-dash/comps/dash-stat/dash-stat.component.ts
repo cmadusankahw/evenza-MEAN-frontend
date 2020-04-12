@@ -6,7 +6,7 @@ export interface DashStat {
   pending_bookings: number;
   last_book_date: string;
   confirmed_bookings: number;
-  last__confirmed_book_date: string;
+  last_confirmed_book_date: string;
   pending_appointments: number;
   last_appointment_date: string;
   approved_appointments: number;
@@ -26,7 +26,7 @@ export class DashStatComponent implements OnInit {
     pending_bookings: 3,
     last_book_date: '22/03/2020',
     confirmed_bookings: 5,
-    last__confirmed_book_date: '20/03/2020',
+    last_confirmed_book_date: '20/03/2020',
     pending_appointments:4,
     last_appointment_date: '11/02/2020',
     approved_appointments: 1,

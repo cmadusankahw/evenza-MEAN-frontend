@@ -1,0 +1,24 @@
+<div class="container-fluid pd-top-min">
+
+  <h4>
+    <mat-icon>money</mat-icon>
+    <b>
+    Due Payments
+  </b></h4>
+  <hr>
+  <div class="pay-amt">
+    Rs. {{payStat[0].pay_amount}}
+  </div>
+  <p class="overdue">{{payStat[0].overdue ? 'Payment is Overdue!!' : ''}}</p>
+  <div class="pay-text">
+    <span>Payment Due by </span>
+  <br>
+  <span class="pay-date"> {{payStat[0].pay_due_date}}</span>
+  </div>
+  <div class="pay-btn">
+    <button mdbBtn color="secondary" mdbWavesEffect class="btn btn-md" class="button">
+      Make Payment
+    </button>
+  </div>
+  <hr>
+</div>

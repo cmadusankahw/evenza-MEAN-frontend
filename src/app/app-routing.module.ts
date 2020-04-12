@@ -18,13 +18,13 @@ import { ContactUsComponent } from './modules/home/contact-us/contact-us.compone
 import { SellerDashboardComponent } from './modules/seller/seller-dash/seller-dashboard/seller-dashboard.component';
 import { SellerDashHomeComponent } from './modules/seller/seller-dash/pages/seller-dash-home/seller-dash-home.component';
 import { SellerDashBprofileComponent } from './modules/seller/seller-dash/pages/seller-dash-bprofile/seller-dash-bprofile.component';
-import { SellerDashPurchasesComponent } from './modules/seller/seller-dash/pages/seller-dash-purchases/seller-dash-purchases.component';
 import { SellerDashInventoryComponent } from './modules/seller/seller-dash/pages/seller-dash-inventory/seller-dash-inventory.component';
 import { SellerDashReportsComponent } from './modules/seller/seller-dash/pages/seller-dash-reports/seller-dash-reports.component';
 import { SellerDashProfileComponent } from './modules/seller/seller-dash/pages/seller-dash-profile/seller-dash-profile.component';
 import { NotFoundPageComponent } from './modules/home/not-found-page/not-found-page.component';
 import { ServiceSearchComponent } from './modules/service/service-search/service-search.component';
 import { ProductSearchComponent } from './modules/product/product-search/product-search.component';
+import { SellerDashOrdersComponent } from './modules/seller/seller-dash/pages/seller-dash-orders/seller-dash-orders.component';
 
 
 const routes: Routes = [
@@ -56,7 +56,7 @@ const routes: Routes = [
     children: [
       { path: '', component: SellerDashHomeComponent },
       { path: 'bprofile', component: SellerDashBprofileComponent },
-      { path: 'purchases', component: SellerDashPurchasesComponent },
+      { path: 'orders', component: SellerDashOrdersComponent },
       { path: 'inventory', component: SellerDashInventoryComponent },
       { path: 'reports', component: SellerDashReportsComponent },
       { path: 'profile', component: SellerDashProfileComponent },

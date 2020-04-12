@@ -21,7 +21,7 @@
           </div>
         </a>
 
-        <a class="txt-white row" mat-list-item  *ngIf="!home" (click)="onHome()" routerLink="/sp/dash">
+        <a class="txt-white row" mat-list-item  *ngIf="!home" routerLink="/sp/dash">
           <div class="col-md-11 side-start " >
             <mat-icon >home</mat-icon>
             <span class="side-text">  Home</span>
@@ -41,7 +41,7 @@
       </div>
       </a>
 
-      <a class="txt-white row" mat-list-item *ngIf="!bProfile" (click)="showSubMenu = !showSubMenu" (click)="onBprofile()" routerLink="/sp/dash/bprofile">
+      <a class="txt-white row" mat-list-item *ngIf="!bProfile" (click)="showSubMenu = !showSubMenu"  routerLink="/sp/dash/bprofile">
         <div class="col-md-11 side-start">
           <mat-icon >business_centert</mat-icon>
           <span class="side-text">  Business Profile</span>
@@ -67,7 +67,7 @@
       </div>
       </a>
 
-      <a class="txt-white row" mat-list-item *ngIf="!booking" (click)="onBooking()" routerLink="/sp/dash/bookings">
+      <a class="txt-white row" mat-list-item *ngIf="!booking"  routerLink="/sp/dash/bookings">
         <div class="col-md-11 side-start">
           <mat-icon >bookmarks</mat-icon>
           <span class="side-text">  Bookings</span>
@@ -88,7 +88,7 @@
       </div>
       </a>
 
-      <a class="txt-white row" mat-list-item *ngIf="!appointment" (click)="onAppointment()" routerLink="/sp/dash/appoints">
+      <a class="txt-white row" mat-list-item *ngIf="!appointment"  routerLink="/sp/dash/appoints">
         <div class="col-md-11 side-start">
           <mat-icon >phone_locked</mat-icon>
           <span class="side-text">  Appointments</span>
@@ -108,7 +108,7 @@
       </div>
       </a>
 
-      <a class="txt-white row" mat-list-item *ngIf="!calendar" (click)="onCalendar()" routerLink="/sp/dash/calendar">
+      <a class="txt-white row" mat-list-item *ngIf="!calendar" routerLink="/sp/dash/calendar">
         <div class="col-md-11 side-start">
           <mat-icon >calendar_today</mat-icon>
           <span class="side-text">  Booking Calendar</span>
@@ -128,7 +128,7 @@
       </div>
       </a>
 
-      <a class="txt-white row" mat-list-item *ngIf="!report" (click)="onReport()" routerLink="/sp/dash/reports">
+      <a class="txt-white row" mat-list-item *ngIf="!report"  routerLink="/sp/dash/reports">
         <div class="col-md-11 side-start">
           <mat-icon >library_books</mat-icon>
           <span class="side-text">  Report Wizard</span>
@@ -149,7 +149,7 @@
       </a>
 
 
-      <a class="txt-white row" mat-list-item *ngIf="!profile" (click)="onProfile()" routerLink="/sp/dash/profile">
+      <a class="txt-white row" mat-list-item *ngIf="!profile"  routerLink="/sp/dash/profile">
         <div class="col-md-11 side-start">
           <mat-icon >perm_identity</mat-icon>
           <span class="side-text">  My Profile</span>

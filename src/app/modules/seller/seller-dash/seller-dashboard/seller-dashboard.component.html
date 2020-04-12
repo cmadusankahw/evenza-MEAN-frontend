@@ -21,7 +21,7 @@
           </div>
         </a>
 
-        <a class="txt-white row" mat-list-item  *ngIf="!home" (click)="onHome()" routerLink="/sel/dash">
+        <a class="txt-white row" mat-list-item  *ngIf="!home"  routerLink="/sel/dash">
           <div class="col-md-11 side-start " >
             <mat-icon >home</mat-icon>
             <span class="side-text">  Home</span>
@@ -41,7 +41,7 @@
       </div>
       </a>
 
-      <a class="txt-white row" mat-list-item *ngIf="!bProfile" (click)="showSubMenu = !showSubMenu" (click)="onBprofile()" routerLink="/sel/dash/bprofile">
+      <a class="txt-white row" mat-list-item *ngIf="!bProfile" (click)="showSubMenu = !showSubMenu"  routerLink="/sel/dash/bprofile">
         <div class="col-md-11 side-start">
           <mat-icon >business_centert</mat-icon>
           <span class="side-text">  Business Profile</span>
@@ -57,20 +57,20 @@
         Add New Poduct
       </a>
 
-      <a class="txt-white row active-nav" mat-list-item  *ngIf="purchaseHistory"  >
+      <a class="txt-white row active-nav" mat-list-item  *ngIf="orders"  >
         <div class="col-md-11 side-start">
           <mat-icon >bookmarks</mat-icon>
-          <span class="side-text">  Purchase history</span>
+          <span class="side-text">  Orders</span>
         </div>
         <div class="ol-md-1 side-end">
         <mat-icon >arrow_right</mat-icon>
       </div>
       </a>
 
-      <a class="txt-white row" mat-list-item *ngIf="!purchaseHistory" (click)="onPurchaseHistory()" routerLink="/sel/dash/purchases">
+      <a class="txt-white row" mat-list-item *ngIf="!orders"  routerLink="/sel/dash/orders">
         <div class="col-md-11 side-start">
           <mat-icon >bookmarks</mat-icon>
-          <span class="side-text">  Purchase History</span>
+          <span class="side-text">  Orders</span>
         </div>
         <div class="ol-md-1 side-end">
         <mat-icon >arrow_right</mat-icon>
@@ -88,7 +88,7 @@
       </div>
       </a>
 
-      <a class="txt-white row" mat-list-item *ngIf="!inventory" (click)="onInventory()" routerLink="/sel/dash/inventory">
+      <a class="txt-white row" mat-list-item *ngIf="!inventory"  routerLink="/sel/dash/inventory">
         <div class="col-md-11 side-start">
           <mat-icon >phone_locked</mat-icon>
           <span class="side-text">  Inventory</span>
@@ -110,7 +110,7 @@
       </div>
       </a>
 
-      <a class="txt-white row" mat-list-item *ngIf="!report" (click)="onReport()" routerLink="/sel/dash/reports">
+      <a class="txt-white row" mat-list-item *ngIf="!report"  routerLink="/sel/dash/reports">
         <div class="col-md-11 side-start">
           <mat-icon >library_books</mat-icon>
           <span class="side-text">  Report Wizard</span>
@@ -131,7 +131,7 @@
       </a>
 
 
-      <a class="txt-white row" mat-list-item *ngIf="!profile" (click)="onProfile()" routerLink="/sel/dash/profile">
+      <a class="txt-white row" mat-list-item *ngIf="!profile"  routerLink="/sel/dash/profile">
         <div class="col-md-11 side-start">
           <mat-icon >perm_identity</mat-icon>
           <span class="side-text">  My Profile</span>

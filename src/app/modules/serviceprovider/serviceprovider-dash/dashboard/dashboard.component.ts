@@ -1,22 +1,24 @@
-import { Component} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { Router, Event, NavigationStart } from '@angular/router';
+
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   showSubMenu = false;
   home = true;
-  bProfile = false;
-  booking = false;
-  appointment = false;
-  calendar = false;
-  report = false;
-  profile = false;
+  bProfile;
+  booking;
+  appointment;
+  calendar;
+  report;
+  profile;
 
   //create new service
   editmode = true;
@@ -30,7 +32,33 @@ export class DashboardComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(private breakpointObserver: BreakpointObserver, private router: Router) { }
+
+  ngOnInit() {
+    this.routerEvents();
+  }
+
+  routerEvents() {
+    this.router.events.subscribe((e) => {
+      if (e instanceof NavigationStart) {
+        if (e.url === '/sp/dash') {
+          this.onHome();
+        } else if (e.url === '/sp/dash/bprofile') {
+          this.onBprofile();
+        } else if (e.url === '/sp/dash/bookings') {
+          this.onBooking();
+        } else if (e.url === '/sp/dash/appoints') {
+          this.onAppointment();
+        } else if (e.url === '/sp/dash/calendar') {
+          this.onCalendar();
+        } else if (e.url === '/sp/dash/reports') {
+          this.onReport();
+        } else if (e.url === '/sp/dash/profile') {
+          this.onProfile();
+        }
+      }
+    });
+  }
 
   onHome() {
     this.home = true;
@@ -114,5 +142,7 @@ export class DashboardComponent {
     this.profile = true;
 
   }
+
+
 
 }

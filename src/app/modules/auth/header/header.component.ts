@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit {
 
         } else if (e.url === '/sel/dash' ||
                   e.url === '/sel/dash/bprofile' ||
-                  e.url === '/sel/dash/purchases' ||
+                  e.url === '/sel/dash/orders' ||
                   e.url === '/sel/dash/inventory' ||
                   e.url === '/sel/dash/reports' ||
                   e.url === '/sel/dash/profile'

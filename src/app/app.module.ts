@@ -68,7 +68,6 @@ import { CalendarComponent } from './modules/serviceprovider/calendar/calendar.c
 import { DashCalendarComponent } from './modules/serviceprovider/serviceprovider-dash/pages/dash-calendar/dash-calendar.component';
 import { MerchantProfileComponent } from './modules/serviceprovider/serviceprovider-profile/merchant-profile.component';
 import { ProductCardComponent } from './modules/product/product-card/product-card.component';
-import { PurchaseHistoryComponent } from './modules/seller/purchase-history/purchase-history.component';
 import { InventoryComponent } from './modules/seller/inventory/inventory.component';
 import { ContactUsComponent } from './modules/home/contact-us/contact-us.component';
 import { ProductSearchComponent } from './modules/product/product-search/product-search.component';
@@ -80,7 +79,6 @@ import { SellerPayStatComponent } from './modules/seller/seller-dash/comps/selle
 import { BookingsGraphComponent } from './modules/serviceprovider/serviceprovider-dash/graphs/bookings-graph/bookings-graph.component';
 import { SellerDashHomeComponent } from './modules/seller/seller-dash/pages/seller-dash-home/seller-dash-home.component';
 import { SellerDashBprofileComponent } from './modules/seller/seller-dash/pages/seller-dash-bprofile/seller-dash-bprofile.component';
-import { SellerDashPurchasesComponent } from './modules/seller/seller-dash/pages/seller-dash-purchases/seller-dash-purchases.component';
 import { SellerDashInventoryComponent } from './modules/seller/seller-dash/pages/seller-dash-inventory/seller-dash-inventory.component';
 import { SellerDashReportsComponent } from './modules/seller/seller-dash/pages/seller-dash-reports/seller-dash-reports.component';
 import { SellerDashProfileComponent } from './modules/seller/seller-dash/pages/seller-dash-profile/seller-dash-profile.component';
@@ -93,6 +91,8 @@ import { SellerEarningsComponent } from './modules/seller/seller-earnings/seller
 import { SellerBusinessOpenDaysComponent } from './modules/seller/business-profile/seller-business-open-days/seller-business-open-days.component';
 import { ProductDetailsComponent } from './modules/product/product-details/product-details.component';
 import { NotFoundPageComponent } from './modules/home/not-found-page/not-found-page.component';
+import { SellerDashOrdersComponent } from './modules/seller/seller-dash/pages/seller-dash-orders/seller-dash-orders.component';
+import { SellerOrdersComponent } from './modules/seller/seller-orders/seller-orders.component';
 
 
 @NgModule({
@@ -133,7 +133,6 @@ import { NotFoundPageComponent } from './modules/home/not-found-page/not-found-p
     DashCalendarComponent,
     MerchantProfileComponent,
     ProductCardComponent,
-    PurchaseHistoryComponent,
     InventoryComponent,
     ContactUsComponent,
     ProductSearchComponent,
@@ -145,7 +144,6 @@ import { NotFoundPageComponent } from './modules/home/not-found-page/not-found-p
     BookingsGraphComponent,
     SellerDashHomeComponent,
     SellerDashBprofileComponent,
-    SellerDashPurchasesComponent,
     SellerDashInventoryComponent,
     SellerDashReportsComponent,
     SellerDashProfileComponent,
@@ -158,6 +156,8 @@ import { NotFoundPageComponent } from './modules/home/not-found-page/not-found-p
     SellerBusinessOpenDaysComponent,
     ProductDetailsComponent,
     NotFoundPageComponent,
+    SellerDashOrdersComponent,
+    SellerOrdersComponent,
 
 
 

@@ -1,20 +1,49 @@
 <div class="container-fluid" *ngIf="!editmode && !addnew">
 
   <div class="row f-image">
-    <img src={{serviceDetails[0].feature_img}} alt="Service Cover" class="feature-img" >
+
+    <mdb-carousel class="carousel slide carousel-fade" [animation]="'fade'">
+      <mdb-carousel-item>
+        <div class="view w-100" *ngIf="services[0].feature_img">
+          <img class="d-block w-100" src={{services[0].feature_img}} alt="Feature Image 1" class="feature-img">
+          <div class="mask rgba-black-light waves-light" mdbWavesEffect></div>
+        </div>
+      </mdb-carousel-item>
+      <mdb-carousel-item>
+        <div class="view w-100" *ngIf="services[0].image_01">
+          <img class="d-block w-100" src={{services[0].image_01}} alt="Feature Image 2" class="feature-img">
+          <div class="mask rgba-black-strong waves-light" mdbWavesEffect></div>
+        </div>
+      </mdb-carousel-item>
+      <mdb-carousel-item>
+        <div class="view w-100" *ngIf="services[0].image_02">
+          <img class="d-block w-100" src={{services[0].image_02}} alt="Feature Image 3" class="feature-img">
+          <div class="mask rgba-black-slight waves-light" mdbWavesEffect></div>
+        </div>
+      </mdb-carousel-item>
+      <mdb-carousel-item>
+        <div class="view w-100" *ngIf="services[0].image_03">
+          <img class="d-block w-100" src={{services[0].image_03}} alt="Feature Image 4" class="feature-img">
+          <div class="mask rgba-black-slight waves-light" mdbWavesEffect></div>
+        </div>
+      </mdb-carousel-item>
+    </mdb-carousel>
+
+
+
   </div>
     <div class="row">
       <div class="col-md-7">
         <div class="content-title">
-          {{serviceDetails[0].service_name}}
+          {{services[0].service_name}}
         </div>
-        <div class="open-stat" *ngIf="serviceDetails[0].available_booking">
+        <div class="open-stat" *ngIf="services[0].available_booking">
           <a mdbWavesEffect role="button" (click)="opendays.show()">
           <span><mdb-icon far icon="clock"> </mdb-icon> {{'Service is Available'}}</span>
           </a>
         </div>
 
-        <div class="open-stat" *ngIf="!serviceDetails[0].available_booking">
+        <div class="open-stat" *ngIf="!services[0].available_booking">
           <a mdbWavesEffect role="button" disabled >
           <span style="color:darkred;"><mdb-icon far icon="clock"> </mdb-icon> {{'Service not Available'}}</span>
           </a>
@@ -39,45 +68,45 @@
       <hr>
       <div class="row">
         <div class=" col-md-7 content-text">
-          {{serviceDetails[0].description}}
+          {{services[0].description}}
           <br>
           <div class="category">
-            <mdb-icon far icon="calendar-alt"></mdb-icon> Categry: {{serviceDetails[0].service_category}}
+            <mdb-icon far icon="calendar-alt"></mdb-icon> Categry: {{services[0].service_category}}
           </div>
           <div class="notify" >
-            <mdb-icon far icon="calendar-check"> </mdb-icon> {{(serviceDetails[0].payment_type == 'Pay on Meet') ? 'Pay on Meet Available' : 'Payment on Booking Required'}}
+            <mdb-icon far icon="calendar-check"> </mdb-icon> {{(services[0].payment_type == 'Pay on Meet') ? 'Pay on Meet Available' : 'Pay Online'}}
           </div>
           <br>
-          <div class="notify" *ngIf="iseditable">
-            <mdb-icon fas icon="bookmark"> </mdb-icon> {{serviceDetails[0].no_of_bookings}} Active Bookings
+          <div class="notify" *ngIf="isowner">
+            <mdb-icon fas icon="bookmark"> </mdb-icon> {{services[0].no_of_bookings}} Active Bookings
             <br>
-            <mdb-icon far icon="calendar-check"> </mdb-icon> {{serviceDetails[0].no_of_appoints}} Active Appointments
+            <mdb-icon far icon="calendar-check"> </mdb-icon> {{services[0].no_of_appoints}} Active Appointments
           </div>
         </div>
 
         <!--hourly rate-->
         <div class="col-md-5">
           <div class="hr-rate">
-            <span class="hr-price"> Rs. {{serviceDetails[0].rate}}</span>
-            <span class="hr-text"> {{serviceDetails[0].rate_type}}</span>
+            <span class="hr-price"> Rs. {{services[0].rate}}</span>
+            <span class="hr-text"> {{services[0].rate_type}}</span>
           </div>
           <hr>
 
           <!--service ratings-->
             <div class="rating">
-              <ngb-rating [(rate)]="serviceDetails[0].rating" max="5">
+              <ngb-rating [(rate)]="services[0].rating" max="5">
                 <ng-template let-fill="fill" let-index="index">
                   <span class="star" [class.filled]="fill === 100">&#9733;</span>
                 </ng-template>
               </ngb-rating>
               <br>
               <span class="rating-txt">
-                {{serviceDetails[0].no_of_ratings}} Recommended
+                {{services[0].no_of_ratings}} Recommended
               </span>
             </div>
           <hr>
           <div class="owner text-center" >
-            <span>Owned by {{serviceDetails[0].business_name}}</span>
+            <span>Owned by {{services[0].business_name}}</span>
             <br>
             <a mdbBtn color="secondary" class="btn btn-md" outline="yes" mdbWavesEffect *ngIf="!isowner"
               (click)="showBprofile()" >View Business</a>
@@ -93,13 +122,20 @@
 <!--editnew service-->
 <div class="container-fluid text-center" *ngIf="editmode">
   <div class="center-txt">
-    <p> You can change the details of service <b>{{serviceDetails[0].service_name}}</b> below.</p>
+    <div class="row">
+      <div class="col-md-8">
+        <p style="line-height:35px;"> You can change the details of <b>{{services[0].service_name}}</b> below.</p>
+      </div>
+      <div class="col-md-4">
+        <a role="button" mdbBtn class="btn btn-sm" color="red" text="white" (click)="removeService()"> Remove Service</a>
+      </div>
+    </div>
   </div>
   <br>
     <form class="service-form">
       <mat-form-field class="service-full-width">
         <mat-label>Service Title</mat-label>
-        <input matInput placeholder="Service Title here" value="{{serviceDetails[0].service_name}}" required>
+        <input matInput placeholder="Service Title here" value="{{services[0].service_name}}" required>
       </mat-form-field>
       <br>
 
@@ -119,17 +155,17 @@
         <br>
         <div class="check-cls">
           <mat-label class="check-label">Available Days and Times </mat-label>
-          <mat-checkbox class="check-margin"  [checked]="serviceDetails[0].open_days_as_business"
-          (change)="serviceDetails[0].open_days_as_business = !serviceDetails[0].open_days_as_business"> Same as Business </mat-checkbox>
+          <mat-checkbox class="check-margin"  [checked]="services[0].open_days_as_business"
+          (change)="services[0].open_days_as_business = !services[0].open_days_as_business"> Same as Business </mat-checkbox>
           <button mdbBtn color="secondary" class="btn btn-md" outline="yes" mdbWavesEffect
-          (click)="opendays.show()"  [disabled]="serviceDetails[0].open_days_as_business">Change Availability</button>
+          (click)="opendays.show()"  [disabled]="services[0].open_days_as_business">Change Availability</button>
         </div>
 
       <br>
       <mat-form-field class="service-full-width">
         <mat-label class="check-label">Service Description</mat-label>
         <textarea matInput rows="5" placeholder="Service Description">
-          {{serviceDetails[0].description}}
+          {{services[0].description}}
         </textarea>
       </mat-form-field>
       <br>
@@ -149,7 +185,7 @@
         <div class="col">
           <mat-form-field class="service-full-width-sm">
             <mat-label>Service Rate(Rs.)</mat-label>
-            <input matInput placeholder="Service Rate here" value="{{serviceDetails[0].rate}}" required>
+            <input matInput placeholder="Service Rate here" value="{{services[0].rate}}" required>
           </mat-form-field>
         </div>
       </div>
@@ -163,7 +199,7 @@
           </select>
         </mat-form-field>
         <br>
-        <p class="pay-on-meet"> Note: If <b>Pay on Meet</b> is selected, <b>no payment</b> will be charged on booking. Payment need to be collected manullay. However, <b>System will charge the due commission form you.</b></p>
+        <p class="pay-on-meet"> Note: If <b>Pay on Meet</b> is selected, <b>no payment</b> will be charged on booking. Payment need to be collected manullay. However, <b>system will charge the due commission form you.</b></p>
       </div>
 
       <hr>
@@ -173,7 +209,7 @@
       <div class="row">
         <div class="col-md-4">
           <a role="button" mdbWavesEffect (click)="sidea.click()">
-            <img src="{{serviceDetails[0].image_01}}" alt="front side" class="img-cls">
+            <img src="{{services[0].image_01}}" alt="front side" class="img-cls">
           </a>
           <input type="file" hidden="true" id="sidea" #sidea>
           <p><b>Image 01</b></p>
@@ -181,15 +217,15 @@
 
         <div class="col-md-4">
           <a role="button" mdbWavesEffect (click)="sideb.click()">
-            <img src="{{serviceDetails[0].image_02}}" alt="front side" class="img-cls">
+            <img src="{{services[0].image_02}}" alt="front side" class="img-cls">
           </a>
           <input type="file" hidden="true" id="sideb" #sideb>
-          <p><b>Imag 02e</b></p>
+          <p><b>Image 02</b></p>
         </div>
 
         <div class="col-md-4">
           <a role="button" mdbWavesEffect (click)="sidec.click()">
-            <img src="{{serviceDetails[0].image_03}}" alt="front side" class="img-cls">
+            <img src="{{services[0].image_03}}" alt="front side" class="img-cls">
           </a>
           <input type="file" hidden="true" id="sidec" #sidec>
           <p><b>Image 03</b></p>
@@ -256,7 +292,7 @@
             <mat-label >Service Rate Type</mat-label>
             <select matNativeControl required>
              <option  value={{rate.id}} *ngFor="let rate of rates">
-                {{rates.val}}</option>
+                {{rate.val}}</option>
             </select>
           </mat-form-field>
         </div>
@@ -278,7 +314,7 @@
             </select>
           </mat-form-field>
           <br>
-          <p class="pay-on-meet"> Note: If <b>Pay on Meet</b> is selected, <b>no payment</b> will be charged on booking. Payment need to be collected manullay. However, <b>System will charge the due commission form you.</b></p>
+          <p class="pay-on-meet"> Note: If <b>Pay on Meet</b> is selected, <b>no payment</b> will be charged on booking. Payment need to be collected manullay. However, <b>system will charge the due commission form you.</b></p>
         </div>
       <hr>
       <div class="enter-txt">

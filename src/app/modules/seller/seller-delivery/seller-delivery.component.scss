@@ -1,0 +1,78 @@
+
+table {
+  width: 100%;
+}
+
+th, td{
+  min-width:100px;
+  width: 25%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.pd-top-min{
+  margin-top:5%;
+  padding-top:20px;
+  margin:auto;
+}
+
+
+.info-text{
+  padding-left:5%;
+  text-align:left;
+  font-weight:bold;
+  color:darkslategray;
+  line-height:30px;
+}
+
+.info-input{
+  text-align:left;
+  font-weight:400;
+  line-height:30px;
+}
+
+.info-top{
+  padding-top:5%;
+}
+
+.info-text-net{
+  padding-left:5%;
+  text-align:left;
+  font-weight:bold;
+  color:darkslategray;
+  line-height:33px;
+}
+
+.info-input-net{
+  text-align:left;
+  font-weight:bold;
+  line-height:33px;
+  color:darkmagenta;
+}
+
+.service-full-width {
+  width: 90%;
+}
+
+.service-full-width-sm {
+  width: 75%;
+}
+
+
+.check-cls{
+  margin-top:20px;
+}
+
+.days-mid{
+  font-size:14px;
+  color:darkgray;
+  line-height:50px;
+}
+
+.add-service-p{
+  line-height: 45px;
+  text-align:right;
+}

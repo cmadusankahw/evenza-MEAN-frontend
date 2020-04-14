@@ -59,7 +59,7 @@ export class ServiceDetailsComponent implements OnInit {
   temp_open = false;
   temp_pay_on_meet = false;
 
-  serviceDetails: Service[] = [
+  services: Service[] = [
     {
       service_id: 'S-01',
       service_name: 'Dream Photography',
@@ -114,6 +114,10 @@ export class ServiceDetailsComponent implements OnInit {
 
   showBprofile() {
     this.router.navigate(['/sp/bprofile']);
+  }
+
+  removeService() {
+    console.log('Service Removed');
   }
 
 }

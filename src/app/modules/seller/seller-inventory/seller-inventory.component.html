@@ -160,7 +160,7 @@
                     </div>
                   </div>
 
-                  <div class="row " *ngIf="orderType != 3">
+                  <div class="row " >
                     <div class="col-md-4 info-text">
                       Delivery Service
                     </div>
@@ -174,7 +174,7 @@
                     <p><u><b>Update Product Inventory</b></u></p>
                   </div>
                   <br>
-                  <div class="row " *ngIf="orderType != 3">
+                  <div class="row ">
                     <div class="col-md-4 info-text">
                       Product Availability
                     </div>
@@ -183,15 +183,15 @@
                     (change)="products[0].availability = !products[0].availability">Available for Sale</mat-checkbox>
                     </div>
                   </div>
-
+                  <br>
                   <div class="row">
                     <div class="col-md-4 info-text">
                       Inventory On-hand
                     </div>
-                    <div class="col info-input" style="width:80%;">
-                      <mat-form-field>
+                    <div class="col info-input" >
+                      <mat-form-field style="width:200px;">
                       <input type="number" matInput placeholder="Set Inventory" value="{{products[0].inventory}}"
-                      [disabled]="!products[0].availability" min="0">
+                      [disabled]="!products[0].availability" min="0" >
                       </mat-form-field>
                     </div>
                   </div>

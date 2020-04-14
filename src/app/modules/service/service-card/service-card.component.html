@@ -27,10 +27,15 @@
         <div class="left-btn">
           <a mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect (click)="serviceDetailsShow.show()">More Details</a>
         </div>
-        <div class="right-notify">
+        <div class="right-notify" *ngIf="isowner">
           <mdb-icon fas icon="bookmark"> </mdb-icon>{{serviceDetail.no_of_bookings}}
           <mdb-icon far icon="calendar-check"> </mdb-icon>{{serviceDetail.no_of_appoints}}
         </div>
+
+        <div class="right-notify" *ngIf="!isowner">
+          <mdb-icon fas icon="star"> </mdb-icon>{{serviceDetail.rating}}
+        </div>
+
 
       </div>
 
@@ -73,9 +78,9 @@
         </h4>
       </div>
 
-      <div class="modal-body " style="height: 450px; overflow-y: auto;">
+      <div class="modal-body " style="height: 500px; overflow-y: auto;">
 
-        <app-service-details [editmode]= "false" [addnew]= "fasle" [isowner]="isowner"></app-service-details>
+        <app-service-details [editmode]= "false" [addnew]= "false" [isowner]="isowner"></app-service-details>
 
       </div>
 

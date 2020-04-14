@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
-import { InputsModule, InputUtilitiesModule, WavesModule, ButtonsModule, ModalModule, TableModule, ChartsModule } from 'angular-bootstrap-md';
+import { InputsModule, InputUtilitiesModule, WavesModule, ButtonsModule, ModalModule, TableModule, ChartsModule, CarouselModule } from 'angular-bootstrap-md';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuModule } from '@angular/material/menu';
@@ -202,7 +202,8 @@ import { SellerDeliveryComponent } from './modules/seller/seller-delivery/seller
     MatProgressBarModule,
     NgbModule,
     MatCheckboxModule,
-    FullCalendarModule
+    FullCalendarModule,
+    CarouselModule
 
   ],
   schemas: [NO_ERRORS_SCHEMA],

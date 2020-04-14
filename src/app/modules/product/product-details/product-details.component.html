@@ -1,1 +1,326 @@
-<p>product-details works!</p>
+<div class="container-fluid" *ngIf="!editmode && !addnew">
+
+  <div class="row f-image">
+
+    <mdb-carousel class="carousel slide carousel-fade" [animation]="'fade'">
+      <mdb-carousel-item>
+        <div class="view w-100">
+          <img class="d-block w-100" src={{products[0].feature_img}} alt="Feature Image 1" class="feature-img">
+          <div class="mask rgba-black-light waves-light" mdbWavesEffect></div>
+        </div>
+      </mdb-carousel-item>
+      <mdb-carousel-item>
+        <div class="view w-100" *ngIf="products[0].image_01">
+          <img class="d-block w-100" src={{products[0].image_01}} alt="Feature Image 2" class="feature-img">
+          <div class="mask rgba-black-strong waves-light" mdbWavesEffect></div>
+        </div>
+      </mdb-carousel-item>
+      <mdb-carousel-item>
+        <div class="view w-100" *ngIf="products[0].image_02">
+          <img class="d-block w-100" src={{products[0].image_02}} alt="Feature Image 3" class="feature-img">
+          <div class="mask rgba-black-slight waves-light" mdbWavesEffect></div>
+        </div>
+      </mdb-carousel-item>
+      <mdb-carousel-item>
+        <div class="view w-100" *ngIf="products[0].image_03">
+          <img class="d-block w-100" src={{products[0].image_03}} alt="Feature Image 4" class="feature-img">
+          <div class="mask rgba-black-slight waves-light" mdbWavesEffect></div>
+        </div>
+      </mdb-carousel-item>
+    </mdb-carousel>
+
+
+
+  </div>
+    <div class="row">
+      <div class="col-md-7">
+        <div class="content-title">
+          {{products[0].product}}
+        </div>
+        <div class="open-stat" *ngIf="products[0].availability">
+          <a mdbWavesEffect role="button" >
+          <span><mdb-icon far icon="clock"> </mdb-icon> {{'Available for purchase'}}</span>
+          </a>
+        </div>
+
+        <div class="open-stat" *ngIf="!products[0].availability">
+          <a mdbWavesEffect role="button" disabled >
+          <span style="color:darkred;"><mdb-icon far icon="clock"> </mdb-icon> {{'Not Available Now'}}</span>
+          </a>
+        </div>
+
+      </div>
+
+      <!--if editb=able by merchant-->
+      <div class="col-md-5 edit-cls" *ngIf="isowner">
+          <a mdbBtn color="secondary" class="btn btn-md edit-btn" mdbWavesEffect
+          (click)="editmode = !editmode">Edit Details</a>
+      </div>
+
+      <!--if only shown to users-->
+      <div class="col-md-5 edit-cls" *ngIf="!isowner">
+        <a mdbBtn color="secondary" outline="yes" class="btn btn-lg book-btn" mdbWavesEffect>Order Now</a>
+      </div>
+
+    </div>
+
+
+      <hr>
+      <div class="row">
+        <div class=" col-md-7 content-text">
+          {{products[0].description}}
+          <br>
+          <div class="category">
+            <mdb-icon far icon="calendar-alt"></mdb-icon> Categry: {{products[0].product_category}}
+          </div>
+          <div class="notify" >
+            <mdb-icon far icon="calendar-check"> </mdb-icon> {{(products[0].payment_type == 'Pay on Meet') ? 'Pay on Delivery' : 'Pay Online'}}
+          </div>
+          <br>
+          <div class="notify" *ngIf="isowner">
+            <mdb-icon fas icon="bookmark"> </mdb-icon> {{products[0].no_of_orders}} Orderes
+          </div>
+        </div>
+
+        <!--price-->
+        <div class="col-md-5">
+          <div class="hr-rate">
+            <span class="hr-price"> Rs. {{products[0].price}}</span>
+          </div>
+          <hr>
+
+          <!--product ratings-->
+            <div class="rating">
+              <ngb-rating [(rate)]="products[0].rating" max="5">
+                <ng-template let-fill="fill" let-index="index">
+                  <span class="star" [class.filled]="fill === 100">&#9733;</span>
+                </ng-template>
+              </ngb-rating>
+              <br>
+              <span class="rating-txt">
+                {{products[0].no_of_ratings}} Recommended
+              </span>
+            </div>
+          <hr>
+          <div class="owner text-center" >
+            <span>Owned by {{products[0].business_name}}</span>
+            <br>
+            <a mdbBtn color="secondary" class="btn btn-md" outline="yes" mdbWavesEffect *ngIf="!isowner"
+              (click)="showBprofile()" >View Business</a>
+          </div>
+
+        </div>
+      </div>
+
+      <hr>
+
+</div>
+
+<!--edit product-->
+<div class="container-fluid text-center" *ngIf="editmode">
+  <div class="center-txt">
+    <div class="row">
+      <div class="col-md-8">
+        <p style="line-height:35px;"> You can change the details of <b>{{products[0].product}}</b> below.</p>
+      </div>
+      <div class="col-md-4">
+        <a role="button" mdbBtn class="btn btn-sm" color="red" text="white" (click)="removeProduct()"> Remove Product</a>
+      </div>
+    </div>
+   </div>
+  <br>
+    <form class="service-form">
+      <mat-form-field class="service-full-width">
+        <mat-label>Product name</mat-label>
+        <input matInput placeholder="Product name here" value="{{products[0].product}}" required>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field class="service-full-width">
+        <mat-label >Select Product Category</mat-label>
+        <select matNativeControl required>
+          <option  value={{cat.val}} *ngFor="let cat of categories">
+            {{cat.val}}</option>
+        </select>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field class="service-full-width">
+        <mat-label class="check-label">Product Description</mat-label>
+        <textarea matInput rows="5" placeholder="Product Description">
+          {{products[0].description}}
+        </textarea>
+      </mat-form-field>
+      <br>
+
+      <div class="row">
+
+        <div class="col">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label >Quantity Type</mat-label>
+            <select matNativeControl required>
+             <option  value={{qty.val}} *ngFor="let qty of quantities">
+                {{qty.val}}</option>
+            </select>
+          </mat-form-field>
+        </div>
+
+        <div class="col">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label>Price(Rs.)</mat-label>
+            <input matInput placeholder="Unit Price here" value="{{products[0].price}}" required>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <mat-form-field class="service-full-width-sm">
+          <mat-label >Payment Type</mat-label>
+          <select matNativeControl required>
+           <option  value={{ptype.id}} *ngFor="let ptype of paymentTypes">
+              {{ptype.val}}</option>
+          </select>
+        </mat-form-field>
+        <br>
+        <p class="pay-on-meet"> Note: If <b>Pay on Deliver</b> is selected, <b>no payment</b> will be charged on order. Payment need to be collected manullay. However, <b>system will charge the due commission form you.</b></p>
+      </div>
+
+      <hr>
+      <div class="enter-txt">
+        <p> Upload images of the product (up to 3 images *5MB Max)</p>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="sidea.click()">
+            <img src="{{products[0].image_01}}" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="sidea" #sidea>
+          <p><b>Image 01</b></p>
+        </div>
+
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="sideb.click()">
+            <img src="{{products[0].image_02}}" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="sideb" #sideb>
+          <p><b>Image 02</b></p>
+        </div>
+
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="sidec.click()">
+            <img src="{{products[0].image_03}}" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="sidec" #sidec>
+          <p><b>Image 03</b></p>
+        </div>
+      </div>
+
+    </form>
+    <hr>
+  <!--back button only if !addnew-->
+  <div class="btns">
+    <a mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
+  (click)="editmode = !editmode" >Save Changes</a>
+  <a mdbBtn color="secondary" class="btn btn-md edtbt" outline="yes" mdbWavesEffect
+  (click)="editmode = !editmode" >Discard</a>
+  </div>
+</div>
+
+<!--add new service-->
+<div class="container-fluid text-center" *ngIf="addnew">
+  <div class="center-txt">
+    <p> To create a new product, fill details below...</p>
+  </div>
+  <br>
+    <form class="service-form">
+      <mat-form-field class="service-full-width">
+        <mat-label>Product Name</mat-label>
+        <input matInput placeholder="Product name here"  required>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field class="service-full-width">
+        <mat-label >Select Product Category</mat-label>
+        <select matNativeControl required>
+          <option  value={{cat.id}} *ngFor="let cat of categories">
+            {{cat.val}}</option>
+        </select>
+      </mat-form-field>
+      <br>
+      <mat-form-field class="service-full-width">
+        <mat-label class="check-label">Product Description</mat-label>
+        <textarea matInput rows="5" placeholder="Product Description">
+        </textarea>
+      </mat-form-field>
+      <br>
+
+      <div class="row">
+
+        <div class="col">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label >Quantity Type</mat-label>
+            <select matNativeControl required>
+             <option  value={{qty.id}} *ngFor="let qty of quantities">
+                {{qty.val}}</option>
+            </select>
+          </mat-form-field>
+        </div>
+
+        <div class="col">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label>Price(Rs.)</mat-label>
+            <input matInput placeholder="0.00"  required>
+          </mat-form-field>
+        </div>
+      </div>
+
+        <div class="text-center">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label >Payment Type</mat-label>
+            <select matNativeControl required>
+             <option  value={{ptype.id}} *ngFor="let ptype of paymentTypes">
+                {{ptype.val}}</option>
+            </select>
+          </mat-form-field>
+          <br>
+          <p class="pay-on-meet"> Note: If <b>Pay on Delivery</b> is selected, <b>no payment</b> will be charged on order. Payment need to be collected manullay. However, <b>system will charge the due commission form you.</b></p>
+        </div>
+      <hr>
+      <div class="enter-txt">
+        <p> Upload feature Images of the product (up to 3 images *5MB Max)</p>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="sidea.click()">
+            <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="sidea" #sidea>
+          <p><b>Image 01</b></p>
+        </div>
+
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="sideb.click()">
+            <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="sideb" #sidea>
+          <p><b>Image 02</b></p>
+        </div>
+
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="sidec.click()">
+            <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="sidec" #sidea>
+          <p><b>Image 03</b></p>
+        </div>
+      </div>
+
+    </form>
+    <hr>
+  <!--back button only if !addnew-->
+  <div class="btns">
+    <a mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
+  (click)="createProduct()" >Create Service</a>
+  </div>
+</div>
+

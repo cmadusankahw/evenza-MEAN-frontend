@@ -1,0 +1,17 @@
+Ratings & Reviews:
+they are included in bookings and orders
+
+once the booking -> approved || order -> delivered
+then, user is recieving a notification ->
+then, a popup/modal to rate/review relavant order/booking within that notification
+
+Product/ Service ratings -> total of order ratings/ booking ratings
+
+Business performance rate -> (total of product ratings/service ratings) + (no of sales/booking) / 100%
+
+
+Produc & Service Search Filters:
+name  type  qty_available(product only)   date_availabble/ duration_available (service only)
+ratings/popularity  price   location
+
+Each search result (product or service card) -> no_of_orders/ bookings   ratings  view_reviews(button)

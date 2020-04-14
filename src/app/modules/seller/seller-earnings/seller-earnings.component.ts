@@ -5,15 +5,16 @@ import { MatTableDataSource } from '@angular/material/table';
 
 
 export interface Earnings {
-  id: string;
+  transaction_id: string;
   order_id: string;
   product: string;
   quantity: number;
+  qty_type: string;
   cust_name: string;
   earned_date: string;
   earned_time: string;
   comments: string;
-  pay_type: string;
+  payment_type: string;
   commission_due: number;
   net_earning: number;
 }
@@ -37,19 +38,19 @@ export class SellerEarningsComponent implements OnInit {
 
   earnings: Earnings[] = [
     {
-      id: 'E-01', order_id: 'P-01', product: 'Wedding SettyBack', quantity: 1,
+      transaction_id: 'E-01', order_id: 'P-01', product: 'Wedding SettyBack', quantity: 1, qty_type: 'Units',
       cust_name: 'Arjun', earned_date: '27/03/2020', earned_time: '13:55',
-      comments: 'need a good service', pay_type: 'On Delivery', commission_due: 5.0, net_earning: 22.5
+      comments: 'need a good service', payment_type: 'On Delivery', commission_due: 5.0, net_earning: 22.5
     },
     {
-      id: 'E-02', order_id: 'P-02', product: 'Manjula Lunch Packs', quantity: 200,
+      transaction_id: 'E-02', order_id: 'P-02', product: 'Manjula Lunch Packs', quantity: 200, qty_type: 'Units',
       cust_name: 'Nimal', earned_date: '27/03/2020', earned_time: '13:55',
-      comments: 'need a good service', pay_type: 'Visa', commission_due: 5.0, net_earning: 22.5
+      comments: 'need a good service', payment_type: 'Visa', commission_due: 5.0, net_earning: 22.5
     },
     {
-      id: 'E-03', order_id: 'P-03', product: 'High Tea', quantity: 180,
+      transaction_id: 'E-03', order_id: 'P-03', product: 'High Tea', quantity: 180, qty_type:'Units',
       cust_name: 'Herath', earned_date: '27/03/2020', earned_time: '13:55',
-      comments: 'need a good service', pay_type: 'PayHere', commission_due: 5.0, net_earning: 22.5
+      comments: 'need a good service', payment_type: 'PayHere', commission_due: 5.0, net_earning: 22.5
     },
   ];
 

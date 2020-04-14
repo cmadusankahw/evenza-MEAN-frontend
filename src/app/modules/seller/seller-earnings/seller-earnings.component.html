@@ -69,7 +69,7 @@
           Transaction ID
         </div>
         <div class="col info-input">
-          <input type="text" matInput disabled value="{{earnings[0].id}}">
+          <input type="text" matInput disabled value="{{earnings[0].transaction_id}}">
         </div>
       </div>
 
@@ -93,10 +93,10 @@
 
       <div class="row ">
         <div class="col-md-4 info-text">
-          Quantity (Units/Kg/Ltr/m)
+          Quantity
         </div>
         <div class="col info-input">
-          <input type="text" matInput disabled value="{{earnings[0].quantity}}">
+          <input type="text" matInput disabled value="{{earnings[0].quantity}} {{earnings[0].qty_type}}">
         </div>
       </div>
 
@@ -133,7 +133,7 @@
           Payment Type
         </div>
         <div class="col info-input">
-          <input type="text" matInput disabled value="{{earnings[0].pay_type}}">
+          <input type="text" matInput disabled value="{{earnings[0].payment_type}}">
         </div>
       </div>
 

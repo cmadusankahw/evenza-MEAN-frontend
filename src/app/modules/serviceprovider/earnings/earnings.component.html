@@ -69,7 +69,7 @@
           Transaction ID
         </div>
         <div class="col info-input">
-          <input type="text" matInput disabled value="{{earnings[0].id}}">
+          <input type="text" matInput disabled value="{{earnings[0].transaction_id}}">
         </div>
       </div>
 
@@ -96,7 +96,7 @@
           Booked Duration
         </div>
         <div class="col info-input">
-          <input type="text" matInput disabled value="{{earnings[0].duration}}">
+          <input type="text" matInput disabled value="{{earnings[0].duration}} {{earnings[0].booking_type}}">
         </div>
       </div>
 
@@ -132,7 +132,7 @@
           Payment Type
         </div>
         <div class="col info-input">
-          <input type="text" matInput disabled value="{{earnings[0].pay_type}}">
+          <input type="text" matInput disabled value="{{earnings[0].payment_type}}">
         </div>
       </div>
 

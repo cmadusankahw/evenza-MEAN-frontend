@@ -4,15 +4,16 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 export interface Earnings {
-  id: string;
+  transaction_id: string;
   booking_id: string;
   service_booked: string;
-  duration: string;
+  duration: number;
+  booking_type: string;
   cust_name: string;
   earned_date: string;
   earned_time: string;
   comments: string;
-  pay_type: string;
+  payment_type: string;
   commission_due: number;
   net_earning: number;
 }
@@ -34,15 +35,15 @@ export class EarningsComponent implements OnInit {
   moreinfo = false;
 
   earnings : Earnings[] = [
-    { id: 'E-01', booking_id: 'B-01', service_booked: 'Dream Photography',duration: '2 Days',
+    { transaction_id: 'E-01', booking_id: 'B-01', service_booked: 'Dream Photography',duration: 2, booking_type: 'Days',
     cust_name: 'Arjun', earned_date: '27/03/2020', earned_time: '13:55',
-    comments: 'need a good service', pay_type: 'Pay on Meet', commission_due: 5.0, net_earning: 22.5 },
-    { id: 'E-02', booking_id: 'B-02', service_booked: 'Manjula Dressing',duration: '5 Hrs',
+    comments: 'need a good service', payment_type: 'Pay on Meet', commission_due: 5.0, net_earning: 22.5 },
+    { transaction_id: 'E-02', booking_id: 'B-02', service_booked: 'Manjula Dressing',duration: 5 , booking_type: 'Hrs',
     cust_name: 'Nimal', earned_date: '27/03/2020', earned_time: '13:55',
-    comments: 'need a good service', pay_type: 'Pay on Meet', commission_due: 5.0, net_earning: 22.5 },
-    { id: 'E-03', booking_id: 'B-03', service_booked: 'Dream Photography',duration: '1 Day',
+    comments: 'need a good service', payment_type: 'Pay on Meet', commission_due: 5.0, net_earning: 22.5 },
+    { transaction_id: 'E-03', booking_id: 'B-03', service_booked: 'Dream Photography',duration: 1, booking_type: 'Days',
     cust_name: 'Herath', earned_date: '27/03/2020', earned_time: '13:55',
-    comments: 'need a good service', pay_type: 'Visa', commission_due: 5.0, net_earning: 22.5 },
+    comments: 'need a good service', payment_type: 'Visa', commission_due: 5.0, net_earning: 22.5 },
   ];
 
   constructor() {

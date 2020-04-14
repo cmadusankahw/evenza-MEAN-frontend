@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 export interface Booking {
-  id: string;
+  booking_id: string;
   service_id: string;
   cust_id: string;
   service_name: string;
@@ -20,7 +20,7 @@ export interface Booking {
   start_time: string;
   end_time: string;
   comment: string;
-  pay_on_meet: boolean;
+  payment_type: string;
   amount: number;
   commission_due: number;
   amount_paid: number;
@@ -48,29 +48,7 @@ export class BookingsComponent implements OnInit {
   // Create sample bookings
   bookings: Booking[] = [
     {
-      id: 'B-01',
-      service_id: 'S-01',
-      cust_id: 'C-01',
-      service_name: 'Photography',
-      customer_name: 'Arjun',
-      created_date: '22/03/2020',
-      created_time: '14:25',
-      state: 'Approved',
-      rating: 3,
-      review: 'Good Service!',
-      booked_date: '30/03/2020',
-      booking_type: '/Hr',
-      duration: 4.5,
-      start_time: '08:00',
-      end_time: '16:00',
-      comment: 'please be on time',
-      pay_on_meet: false,
-      amount: 215.30,
-      commission_due: 22.50,
-      amount_paid: 30.0
-    },
-    {
-      id: 'B-02',
+      booking_id: 'B-01',
       service_id: 'S-01',
       cust_id: 'C-01',
       service_name: 'Photography',
@@ -86,13 +64,35 @@ export class BookingsComponent implements OnInit {
       start_time: '08:00',
       end_time: '16:00',
       comment: 'please be on time',
-      pay_on_meet: false,
+      payment_type: 'Visa',
       amount: 215.30,
       commission_due: 22.50,
       amount_paid: 30.0
     },
     {
-      id: 'B-03',
+      booking_id: 'B-02',
+      service_id: 'S-01',
+      cust_id: 'C-01',
+      service_name: 'Photography',
+      customer_name: 'Arjun',
+      created_date: '22/03/2020',
+      created_time: '14:25',
+      state: 'Pending',
+      rating: 3,
+      review: 'Good Service!',
+      booked_date: '30/03/2020',
+      booking_type: '/Hr',
+      duration: 4.5,
+      start_time: '08:00',
+      end_time: '16:00',
+      comment: 'please be on time',
+      payment_type: 'Pay on Meet',
+      amount: 215.30,
+      commission_due: 22.50,
+      amount_paid: 30.0
+    },
+    {
+      booking_id: 'B-03',
       service_id: 'S-01',
       cust_id: 'C-01',
       service_name: 'Photography',
@@ -108,7 +108,7 @@ export class BookingsComponent implements OnInit {
       start_time: '08:00',
       end_time: '16:00',
       comment: 'please be on time',
-      pay_on_meet: false,
+      payment_type: 'PayHere',
       amount: 215.30,
       commission_due: 22.50,
       amount_paid: 30.0
@@ -161,15 +161,15 @@ export class BookingsComponent implements OnInit {
   }
 
   onPending(bookings: any) {
-    const pedingBookings = [];
+    const pendingBookings = [];
     for (const val of bookings) {
       //console.log(val);
       if (val.state === 'Pending') {
-        pedingBookings.push(Object.assign({}, val));
+        pendingBookings.push(Object.assign({}, val));
       }
     }
-    this.recievedBookings = [...pedingBookings];
-    return pedingBookings;
+    this.recievedBookings = [...pendingBookings];
+    return this.recievedBookings;
   }
 
   onApproved(bookings: any) {
@@ -181,7 +181,7 @@ export class BookingsComponent implements OnInit {
       }
     }
     this.recievedBookings = [...approvedBookings];
-    return approvedBookings;
+    return this.recievedBookings;
   }
 
   onCancelled(bookings: any) {
@@ -193,7 +193,15 @@ export class BookingsComponent implements OnInit {
       }
     }
     this.recievedBookings = [...cancelledBookings];
-    return cancelledBookings;
+    return this.recievedBookings;
+  }
+
+  hasData() {
+    if (this.recievedBookings.length) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 

@@ -11,7 +11,7 @@
     </div>
 
     <mat-nav-list >
-        <a class="txt-white row active-nav" mat-list-item *ngIf="home" >
+        <a class="txt-white row active-nav" mat-list-item *ngIf="home" routerLink="/sel/dash">
             <div class="col-md-11 side-start " >
               <mat-icon >home</mat-icon>
               <span class="side-text">  Home</span>
@@ -31,7 +31,7 @@
         </div>
       </a>
 
-      <a class="txt-white row active-nav" mat-list-item  *ngIf="bProfile"  (click)="showSubMenu = !showSubMenu" >
+      <a class="txt-white row active-nav" mat-list-item  *ngIf="bProfile"  (click)="showSubMenu = !showSubMenu" routerLink="/sel/dash/bprofile">
         <div class="col-md-11 side-start">
           <mat-icon >business_centert</mat-icon>
           <span class="side-text">  Business Profile</span>
@@ -57,7 +57,7 @@
         Add New Poduct
       </a>
 
-      <a class="txt-white row active-nav" mat-list-item  *ngIf="orders"  >
+      <a class="txt-white row active-nav" mat-list-item  *ngIf="orders" routerLink="/sel/dash/orders" >
         <div class="col-md-11 side-start">
           <mat-icon >bookmarks</mat-icon>
           <span class="side-text">  Orders</span>
@@ -78,10 +78,10 @@
       </a>
 
 
-      <a class="txt-white row active-nav" mat-list-item  *ngIf="inventory" >
+      <a class="txt-white row active-nav" mat-list-item  *ngIf="inventory" routerLink="/sel/dash/inventory">
         <div class="col-md-11 side-start">
           <mat-icon >phone_locked</mat-icon>
-          <span class="side-text">  Inventory</span>
+          <span class="side-text">  Inventory & Delivery</span>
         </div>
         <div class="ol-md-1 side-end">
         <mat-icon >arrow_right</mat-icon>
@@ -91,7 +91,7 @@
       <a class="txt-white row" mat-list-item *ngIf="!inventory"  routerLink="/sel/dash/inventory">
         <div class="col-md-11 side-start">
           <mat-icon >phone_locked</mat-icon>
-          <span class="side-text">  Inventory</span>
+          <span class="side-text">  Inventory & Delivery</span>
         </div>
         <div class="ol-md-1 side-end">
         <mat-icon >arrow_right</mat-icon>
@@ -100,7 +100,7 @@
 
 
 
-      <a class="txt-white row active-nav" mat-list-item *ngIf="report"  >
+      <a class="txt-white row active-nav" mat-list-item *ngIf="report" outerLink="/sel/dash/reports" >
         <div class="col-md-11 side-start">
           <mat-icon >library_books</mat-icon>
           <span class="side-text">  Report Wizard</span>
@@ -120,7 +120,7 @@
       </div>
       </a>
 
-      <a class="txt-white row active-nav" mat-list-item *ngIf="profile" >
+      <a class="txt-white row active-nav" mat-list-item *ngIf="profile"  routerLink="/sel/dash/profile">
         <div class="col-md-11 side-start">
           <mat-icon >perm_identity</mat-icon>
           <span class="side-text">  My Profile</span>

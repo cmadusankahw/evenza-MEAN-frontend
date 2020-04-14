@@ -8,6 +8,7 @@ export interface Booking {
   service_id: string;
   cust_id: string;
   service_name: string;
+  service_category: string;
   customer_name: string;
   created_date: string;
   created_time: string;
@@ -51,7 +52,8 @@ export class BookingsComponent implements OnInit {
       booking_id: 'B-01',
       service_id: 'S-01',
       cust_id: 'C-01',
-      service_name: 'Photography',
+      service_name: 'Manjula Photography',
+      service_category: 'Photography',
       customer_name: 'Arjun',
       created_date: '22/03/2020',
       created_time: '14:25',
@@ -73,7 +75,8 @@ export class BookingsComponent implements OnInit {
       booking_id: 'B-02',
       service_id: 'S-01',
       cust_id: 'C-01',
-      service_name: 'Photography',
+      service_name: 'Arjun Photography',
+      service_category: 'Photography',
       customer_name: 'Arjun',
       created_date: '22/03/2020',
       created_time: '14:25',
@@ -95,7 +98,8 @@ export class BookingsComponent implements OnInit {
       booking_id: 'B-03',
       service_id: 'S-01',
       cust_id: 'C-01',
-      service_name: 'Photography',
+      service_name: 'ABC Photography',
+      service_category: 'Photography',
       customer_name: 'Arjun',
       created_date: '22/03/2020',
       created_time: '14:25',

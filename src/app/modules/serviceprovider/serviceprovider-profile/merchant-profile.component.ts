@@ -5,6 +5,7 @@ export interface ServiceProvider {
   id: string;
   first_name: string;
   last_name: string;
+  nic: string,
   profile_pic: string;
   email: string;
   password: string;
@@ -36,6 +37,7 @@ export class MerchantProfileComponent implements OnInit {
       id: 'U-01',
       first_name: 'Chiran',
       last_name: 'Hewawitharana',
+      nic: '951991635V',
       profile_pic: './assets/images/merchant/user.jpg',
       email: 'cmadusankahw@gmail.com',
       password: 'abcd1234',

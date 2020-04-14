@@ -68,7 +68,6 @@ import { CalendarComponent } from './modules/serviceprovider/calendar/calendar.c
 import { DashCalendarComponent } from './modules/serviceprovider/serviceprovider-dash/pages/dash-calendar/dash-calendar.component';
 import { MerchantProfileComponent } from './modules/serviceprovider/serviceprovider-profile/merchant-profile.component';
 import { ProductCardComponent } from './modules/product/product-card/product-card.component';
-import { InventoryComponent } from './modules/seller/inventory/inventory.component';
 import { ContactUsComponent } from './modules/home/contact-us/contact-us.component';
 import { ProductSearchComponent } from './modules/product/product-search/product-search.component';
 import { ServiceSearchComponent } from './modules/service/service-search/service-search.component';
@@ -93,6 +92,8 @@ import { ProductDetailsComponent } from './modules/product/product-details/produ
 import { NotFoundPageComponent } from './modules/home/not-found-page/not-found-page.component';
 import { SellerDashOrdersComponent } from './modules/seller/seller-dash/pages/seller-dash-orders/seller-dash-orders.component';
 import { SellerOrdersComponent } from './modules/seller/seller-orders/seller-orders.component';
+import { SellerInventoryComponent } from './modules/seller/seller-inventory/seller-inventory.component';
+import { SellerDeliveryComponent } from './modules/seller/seller-delivery/seller-delivery.component';
 
 
 @NgModule({
@@ -133,7 +134,6 @@ import { SellerOrdersComponent } from './modules/seller/seller-orders/seller-ord
     DashCalendarComponent,
     MerchantProfileComponent,
     ProductCardComponent,
-    InventoryComponent,
     ContactUsComponent,
     ProductSearchComponent,
     ServiceSearchComponent,
@@ -158,6 +158,8 @@ import { SellerOrdersComponent } from './modules/seller/seller-orders/seller-ord
     NotFoundPageComponent,
     SellerDashOrdersComponent,
     SellerOrdersComponent,
+    SellerInventoryComponent,
+    SellerDeliveryComponent,
 
 
 

@@ -90,7 +90,7 @@
     aria-labelledby="myBasicModalLabel"
     [config]="{ backdrop: false, ignoreBackdropClick: true }"
     aria-hidden="true"
-    *ngIf="hasData()"
+
 
   >
     <div
@@ -98,7 +98,7 @@
       role="document"
       style="overflow-y: initial !important"
     >
-      <div class="modal-content">
+      <div class="modal-content" *ngIf="hasData()">
         <div class="modal-header">
           <button
             type="button"
@@ -147,6 +147,15 @@
                     </div>
                   </div>
 
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Product Category
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{recievedOrders[0].product_category}}">
+                    </div>
+                  </div>
+
 
                   <div class="row ">
                     <div class="col-md-4 info-text-net">
@@ -157,6 +166,14 @@
                     </div>
                   </div>
 
+                  <div class="row " *ngIf="orderType != 3">
+                    <div class="col-md-4 info-text">
+                      Delivery Service
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{recievedOrders[0].delivery_service}}">
+                    </div>
+                  </div>
                   <div class="row ">
                     <div class="col-md-4 info-text">
                       Customer

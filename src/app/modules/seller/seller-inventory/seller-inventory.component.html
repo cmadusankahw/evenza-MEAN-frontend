@@ -1,0 +1,248 @@
+<div class="pd-top-min">
+
+  <h4>
+    <mat-icon>library_books</mat-icon>
+   <b> Product Inventory</b>
+  </h4>
+ <br>
+   <div class="text-center">
+    <mat-form-field class="service-full-width-sm">
+      <mat-label >Filter by Category</mat-label>
+      <select matNativeControl required (change)= "applyFilter($event)" >
+       <option  value={{pcat.val}} *ngFor="let pcat of categories" >
+          {{pcat.val}}</option>
+      </select>
+    </mat-form-field>
+  </div>
+  <hr>
+  <mat-form-field>
+    <mat-label>
+      <mat-icon>search</mat-icon>
+      Search Prdoducts</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. wedding" >
+  </mat-form-field>
+
+  <div class="mat-elevation-z8" *ngIf="hasData()">
+    <table class="table-responsive" mat-table [dataSource]="dataSource" matSort>
+
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Product ID </th>
+        <td mat-cell *matCellDef="let row"> {{row.product_id}} </td>
+      </ng-container>
+
+      <!-- Progress Column -->
+      <ng-container matColumnDef="product">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Product </th>
+        <td mat-cell *matCellDef="let row"> {{row.product}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Category </th>
+        <td mat-cell *matCellDef="let row"> {{row.product_category}} </td>
+      </ng-container>
+
+      <!-- Color Column -->
+      <ng-container matColumnDef="current_inventory">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > On-hand </th>
+        <td mat-cell *matCellDef="let row" > {{row.inventory + row.qty_type}} </td>
+      </ng-container>
+
+       <!-- Color Column -->
+       <ng-container matColumnDef="availability">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Available for Sale </th>
+        <td mat-cell *matCellDef="let row" > <b>{{row.availability ? 'YES' : 'NO'}}</b>  </td>
+      </ng-container>
+
+
+       <!-- Action Column -->
+       <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> ACTION </th>
+        <td mat-cell *matCellDef="let row">
+          <button mdbBtn color="purple" text="white" class="btn btn-sm text-center" (click)="inventoryOptions.show()">
+            ACTION
+          </button>
+         </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
+  </div>
+
+  <div class="text-center pd-top-min"  *ngIf="!hasData()">
+    No Products Found
+  </div>
+
+  </div>
+
+
+
+  <!--View Details Modal-->
+  <div
+    mdbModal
+    #inventoryOptions="mdbModal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myBasicModalLabel"
+    [config]="{ backdrop: false, ignoreBackdropClick: true }"
+    aria-hidden="true"
+
+
+  >
+    <div
+      class="modal-dialog modal-dialog-centered modal-lg"
+      role="document"
+      style="overflow-y: initial !important"
+    >
+      <div class="modal-content" *ngIf="hasData()">
+        <div class="modal-header">
+          <button
+            type="button"
+            class="close pull-right"
+            aria-label="Close"
+            (click)="inventoryOptions.hide()"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel" >
+            <mat-icon>service</mat-icon>Update Inventory
+          </h4>
+        </div>
+
+        <div class="modal-body " style="height: 450px; overflow-y: auto;">
+
+              <!--more info-->
+              <div class="text-center">
+
+                <section class="text-center dark-grey-text">
+                  <!--booking info-->
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Product ID
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{products[0].product_id}}">
+                    </div>
+                  </div>
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Product
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{products[0].product}}">
+                    </div>
+                  </div>
+
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Product Category
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{products[0].product_category}}">
+                    </div>
+                  </div>
+
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text-net">
+                      Price (Rs.)
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{products[0].price }}">
+                    </div>
+                  </div>
+
+                  <div class="row " *ngIf="orderType != 3">
+                    <div class="col-md-4 info-text">
+                      Delivery Service
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{products[0].delivery_service}}">
+                    </div>
+                  </div>
+
+                  <hr>
+                  <div>
+                    <p><u><b>Update Product Inventory</b></u></p>
+                  </div>
+                  <br>
+                  <div class="row " *ngIf="orderType != 3">
+                    <div class="col-md-4 info-text">
+                      Product Availability
+                    </div>
+                    <div class="col info-input">
+                      <mat-checkbox class="check-margin" [checked]="products[0].availability"
+                    (change)="products[0].availability = !products[0].availability">Available for Sale</mat-checkbox>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4 info-text">
+                      Inventory On-hand
+                    </div>
+                    <div class="col info-input" style="width:80%;">
+                      <mat-form-field>
+                      <input type="number" matInput placeholder="Set Inventory" value="{{products[0].inventory}}"
+                      [disabled]="!products[0].availability" min="0">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <br>
+                </section>
+              </div>
+        </div>
+
+        <div class="modal-footer">
+            <button mdbBtn color="purple" text="white" class="btn  btn-md text-center" (click)="inventoryOptions.hide()">
+             <span > Update Inventory</span>
+            </button>
+
+            <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center" (click)="inventoryOptions.hide()">
+              <span>Discard</span>
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--Success Modal-->
+  <div mdbModal #bookingSuccess="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+   [config]='{backdrop: false, ignoreBackdropClick: true}'   aria-hidden="true">
+   <div class="modal-dialog modal-notify modal-success modal-dialog-centered" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <p class="heading lead">Inventory Updated!</p>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="bookingSuccess.hide()">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <div class="text-center">
+          <mdb-icon fas icon="check" size="4x" class="mb-3 animated rotateIn"></mdb-icon>
+          <p>New Inventory {{24}} has been updated!</p>
+        </div>
+      </div>
+
+      <!--Footer-->
+      <div class="modal-footer justify-content-center">
+        <a type="button" mdbBtn color="success" class="waves-effect" mdbWavesEffect (click)="bookingSuccess.hide()">Okay
+        </a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+  </div >

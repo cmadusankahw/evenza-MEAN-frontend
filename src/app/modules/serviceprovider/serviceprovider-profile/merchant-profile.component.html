@@ -37,8 +37,19 @@
         </div>
           <hr>
 
+                <!--row 1-->
+                <div class="row">
+                  <div class="col-md-5 inst-text">
+                    <mdb-icon fas icon="user"></mdb-icon> <span> Your NIC </span>
+
+                  </div>
+
+                  <div class="col-md-7 profile-text">
+                      <span> {{serviceProvider[0].nic}}</span>
+                  </div>
+                </div>
               <!--row 1-->
-            <div class="row">
+            <div class="row div-content">
               <div class="col-md-5 inst-text">
                 <mdb-icon fas icon="envelope"></mdb-icon> <span> Your Email </span>
                 <br>
@@ -53,7 +64,7 @@
                <!--row 2-->
                <div class="row">
                 <div class="col-md-5 inst-text">
-                  <mdb-icon fas icon="envelope"></mdb-icon> <span> Your Contact No </span>
+                  <mdb-icon fas icon="phone"></mdb-icon> <span> Your Contact No </span>
                   <br>
                   <p class="infotxt"> This number will be used for two-factor authentication </p>
                 </div>
@@ -205,6 +216,23 @@
        </div>
 
 
+
+          <!--row 2-->
+          <div class="row page-content">
+
+            <div class="col-md-3 inst-text">
+              <mdb-icon fas icon="user"></mdb-icon> <span> NIC:</span>
+              <p class="infotxt"> If modified, re-ID verification required</p>
+            </div>
+
+            <div class="col-md-7 text-center">
+              <mat-form-field class="service-full-width">
+                <mat-label>NIC Here </mat-label>
+                <input matInput   value="{{ serviceProvider[0].nic }}" required>
+              </mat-form-field>
+            </div>
+           </div>
+
          <!--row 2-->
          <div class="row page-content">
 
@@ -220,6 +248,23 @@
             </mat-form-field>
           </div>
          </div>
+
+            <!--row 2-->
+            <div class="row page-content">
+
+              <div class="col-md-3 inst-text">
+                <mdb-icon fas icon="phone"></mdb-icon> <span> Contact No:</span>
+                <p class="infotxt"> If modified, re-configuration of two-factor authentication is required</p>
+              </div>
+
+              <div class="col-md-7 text-center">
+                <mat-form-field class="service-full-width">
+                  <mat-label> Contact No here </mat-label>
+                  <input matInput   value="{{ serviceProvider[0].contact_no }}" required>
+                </mat-form-field>
+              </div>
+             </div>
+
 
              <!--row 3-->
              <div class="row  page-content">

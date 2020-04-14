@@ -10,8 +10,42 @@ Product/ Service ratings -> total of order ratings/ booking ratings
 Business performance rate -> (total of product ratings/service ratings) + (no of sales/booking) / 100%
 
 
-Produc & Service Search Filters:
+
+
+Product & Service Search Filters:
 name  type  qty_available(product only)   date_availabble/ duration_available (service only)
 ratings/popularity  price   location
 
 Each search result (product or service card) -> no_of_orders/ bookings   ratings  view_reviews(button)
+
+
+
+
+Delivery Services:
+Can be maintained under Inventory Page
+Attr: Delivery_id   name  address   hotline   max_delivery_time   min_delivery_time (delivery time in Days only)  delivery_rate  delivey_rate_type
+
+Each product -> has a assigend Delivery_service
+  -> will be shown in product_details
+  -> will be shown in orders (sp dash/ eventplanner dash)
+  -> delivery service details will be provided in order_recipt sent by email
+
+
+
+Documents generated:
+    Booking Reciept
+    Appointment note
+    Order Reciept
+
+    Order Cancel note
+    Booking cancl note
+    appointment cancel note
+
+    event plan(agenda)
+    invitation email for closed type event participants
+    registration form for open type participants
+
+
+
+
+

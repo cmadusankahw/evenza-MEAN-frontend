@@ -9,6 +9,7 @@ export interface Order {
   product_id: string;
   cust_id: string;
   product: string;
+  product_category: string;
   customer_name: string;
   created_date: string;
   created_time: string;
@@ -17,6 +18,7 @@ export interface Order {
   review: string;
   quantity: number;
   qty_type: string;
+  delivery_service: string;
   comment: string;
   payment_type: string;
   amount: number;
@@ -49,6 +51,7 @@ export class SellerOrdersComponent implements OnInit {
       product_id: 'S-01',
       cust_id: 'C-01',
       product: 'Setty Back',
+      product_category: 'Wedding Eq',
       customer_name: 'Arjun',
       created_date: '22/03/2020',
       created_time: '14:25',
@@ -57,6 +60,7 @@ export class SellerOrdersComponent implements OnInit {
       review: 'Nice Product!',
       quantity: 3.5,
       qty_type: 'Units',
+      delivery_service: 'DHL',
       comment: 'please deliver on time',
       payment_type: 'Visa',
       amount: 215.30,
@@ -68,6 +72,7 @@ export class SellerOrdersComponent implements OnInit {
       product_id: 'S-01',
       cust_id: 'C-01',
       product: 'Setty Back',
+      product_category: 'Wedding Eq',
       customer_name: 'Arjun',
       created_date: '22/03/2020',
       created_time: '14:25',
@@ -76,6 +81,7 @@ export class SellerOrdersComponent implements OnInit {
       review: 'Nice Product!',
       quantity: 3.5,
       qty_type: 'Units',
+      delivery_service: 'DHL',
       comment: 'please deliver on time',
       payment_type: 'Visa',
       amount: 215.30,
@@ -87,6 +93,7 @@ export class SellerOrdersComponent implements OnInit {
       product_id: 'S-01',
       cust_id: 'C-01',
       product: 'Setty Back',
+      product_category: 'Wedding Eq',
       customer_name: 'Arjun',
       created_date: '22/03/2020',
       created_time: '14:25',
@@ -95,6 +102,7 @@ export class SellerOrdersComponent implements OnInit {
       review: 'Nice Product!',
       quantity: 3.5,
       qty_type: 'Units',
+      delivery_service: 'DHL',
       comment: 'please deliver on time',
       payment_type: 'Visa',
       amount: 215.30,

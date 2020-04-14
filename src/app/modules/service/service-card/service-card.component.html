@@ -5,7 +5,7 @@
 
     <div class="view overlay waves-light" mdbWavesEffect>
       <!-- Card img -->
-      <mdb-card-img src={{serviceDetail.feature_img}} [alt]="serviceDetail.title"></mdb-card-img>
+      <mdb-card-img src={{serviceDetail.feature_img}} [alt]="serviceDetail.service_name"></mdb-card-img>
       <a>
         <div class="mask rgba-white-slight"></div>
       </a>
@@ -14,7 +14,7 @@
     <mdb-card-body>
       <!--Title-->
       <mdb-card-title>
-        <h4>{{serviceDetail.title}}</h4>
+        <h4>{{serviceDetail.service_name}}</h4>
       </mdb-card-title>
 
       <!--Text-->
@@ -69,13 +69,13 @@
           <span aria-hidden="true">×</span>
         </button>
         <h4 class="modal-title w-100" id="myModalLabel" >
-          <mat-icon>service</mat-icon>{{'selectd_service'}} Details
+          <mat-icon>service</mat-icon>Service Details
         </h4>
       </div>
 
       <div class="modal-body " style="height: 450px; overflow-y: auto;">
 
-        <app-service-details></app-service-details>
+        <app-service-details [editmode]= "false" [addnew]= "fasle" [isowner]="isowner"></app-service-details>
 
       </div>
 

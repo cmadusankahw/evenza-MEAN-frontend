@@ -1,4 +1,4 @@
-<div class="container-fluid" *ngIf="!editmode">
+<div class="container-fluid" *ngIf="!editmode && !addnew">
 
   <div class="row f-image">
     <img src={{serviceDetails[0].feature_img}} alt="Service Cover" class="feature-img" >
@@ -6,24 +6,30 @@
     <div class="row">
       <div class="col-md-7">
         <div class="content-title">
-          {{serviceDetails[0].title}}
+          {{serviceDetails[0].service_name}}
         </div>
-        <div class="open-stat">
+        <div class="open-stat" *ngIf="serviceDetails[0].available_booking">
           <a mdbWavesEffect role="button" (click)="opendays.show()">
           <span><mdb-icon far icon="clock"> </mdb-icon> {{'Service is Available'}}</span>
+          </a>
+        </div>
+
+        <div class="open-stat" *ngIf="!serviceDetails[0].available_booking">
+          <a mdbWavesEffect role="button" disabled >
+          <span style="color:darkred;"><mdb-icon far icon="clock"> </mdb-icon> {{'Service not Available'}}</span>
           </a>
         </div>
 
       </div>
 
       <!--if editb=able by merchant-->
-      <div class="col-md-5 edit-cls" *ngIf="iseditable">
+      <div class="col-md-5 edit-cls" *ngIf="isowner">
           <a mdbBtn color="secondary" class="btn btn-md edit-btn" mdbWavesEffect
           (click)="editmode = !editmode">Edit Details</a>
       </div>
 
       <!--if only shown to users-->
-      <div class="col-md-5 edit-cls" *ngIf="!iseditable">
+      <div class="col-md-5 edit-cls" *ngIf="!isowner">
         <a mdbBtn color="secondary" outline="yes" class="btn btn-lg book-btn" mdbWavesEffect>Book Now</a>
       </div>
 
@@ -36,10 +42,10 @@
           {{serviceDetails[0].description}}
           <br>
           <div class="category">
-            <mdb-icon far icon="calendar-alt"></mdb-icon> Categry: {{serviceDetails[0].category}}
+            <mdb-icon far icon="calendar-alt"></mdb-icon> Categry: {{serviceDetails[0].service_category}}
           </div>
           <div class="notify" >
-            <mdb-icon far icon="calendar-check"> </mdb-icon> {{serviceDetails[0].pay_on_meet ? 'Pay on Meet Available' : 'Payment on Booking Required'}}
+            <mdb-icon far icon="calendar-check"> </mdb-icon> {{(serviceDetails[0].payment_type == 'Pay on Meet') ? 'Pay on Meet Available' : 'Payment on Booking Required'}}
           </div>
           <br>
           <div class="notify" *ngIf="iseditable">
@@ -59,21 +65,21 @@
 
           <!--service ratings-->
             <div class="rating">
-              <ngb-rating [(rate)]="currentRate" max="5">
+              <ngb-rating [(rate)]="serviceDetails[0].rating" max="5">
                 <ng-template let-fill="fill" let-index="index">
                   <span class="star" [class.filled]="fill === 100">&#9733;</span>
                 </ng-template>
               </ngb-rating>
               <br>
               <span class="rating-txt">
-                {{'1247'}} Recommended
+                {{serviceDetails[0].no_of_ratings}} Recommended
               </span>
             </div>
           <hr>
-          <div class="owner text-center" *ngIf="!iseditable">
+          <div class="owner text-center" >
             <span>Owned by {{serviceDetails[0].business_name}}</span>
             <br>
-            <a mdbBtn color="secondary" class="btn btn-md" outline="yes" mdbWavesEffect
+            <a mdbBtn color="secondary" class="btn btn-md" outline="yes" mdbWavesEffect *ngIf="!isowner"
               (click)="showBprofile()" >View Business</a>
           </div>
 
@@ -85,15 +91,15 @@
 </div>
 
 <!--editnew service-->
-<div class="container-fluid text-center" *ngIf="editmode && !addnew">
+<div class="container-fluid text-center" *ngIf="editmode">
   <div class="center-txt">
-    <p> You can change the details of service <b>{{serviceDetails[0].title}}</b> below.</p>
+    <p> You can change the details of service <b>{{serviceDetails[0].service_name}}</b> below.</p>
   </div>
   <br>
     <form class="service-form">
       <mat-form-field class="service-full-width">
         <mat-label>Service Title</mat-label>
-        <input matInput placeholder="Service Title here" value="{{serviceDetails[0].title}}" required>
+        <input matInput placeholder="Service Title here" value="{{serviceDetails[0].service_name}}" required>
       </mat-form-field>
       <br>
 
@@ -147,21 +153,27 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="check-cls">
-        <mat-checkbox class="check-margin" [checked]="serviceDetails[0].pay_on_meet"
-        (change)="serviceDetails[0].pay_on_meet = !serviceDetails[0].pay_on_meet"> Pay On Meet is Available</mat-checkbox>
-        <br><br>
-        <p> Note: If <b>Pay on Meet</b> is enabled, <b>no payment</b> will be charged on bookings by customer. Payment can be only collected manullay
-        at the service. If approved, <b>System will charge the due commission form you.</b></p>
+
+      <div class="text-center">
+        <mat-form-field class="service-full-width-sm">
+          <mat-label >Payment Type</mat-label>
+          <select matNativeControl required>
+           <option  value={{ptype.id}} *ngFor="let ptype of paymentTypes">
+              {{ptype.val}}</option>
+          </select>
+        </mat-form-field>
+        <br>
+        <p class="pay-on-meet"> Note: If <b>Pay on Meet</b> is selected, <b>no payment</b> will be charged on booking. Payment need to be collected manullay. However, <b>System will charge the due commission form you.</b></p>
       </div>
+
       <hr>
       <div class="enter-txt">
-        <p> Upload new feature Images related to your service (up to 3 images *5MB Max)</p>
+        <p> Upload images related to your service (up to 3 images *5MB Max)</p>
       </div>
       <div class="row">
         <div class="col-md-4">
           <a role="button" mdbWavesEffect (click)="sidea.click()">
-            <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
+            <img src="{{serviceDetails[0].image_01}}" alt="front side" class="img-cls">
           </a>
           <input type="file" hidden="true" id="sidea" #sidea>
           <p><b>Image 01</b></p>
@@ -169,7 +181,7 @@
 
         <div class="col-md-4">
           <a role="button" mdbWavesEffect (click)="sideb.click()">
-            <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
+            <img src="{{serviceDetails[0].image_02}}" alt="front side" class="img-cls">
           </a>
           <input type="file" hidden="true" id="sideb" #sideb>
           <p><b>Imag 02e</b></p>
@@ -177,7 +189,7 @@
 
         <div class="col-md-4">
           <a role="button" mdbWavesEffect (click)="sidec.click()">
-            <img src="./assets/images/merchant/nopic.png" alt="front side" class="img-cls">
+            <img src="{{serviceDetails[0].image_03}}" alt="front side" class="img-cls">
           </a>
           <input type="file" hidden="true" id="sidec" #sidec>
           <p><b>Image 03</b></p>
@@ -196,9 +208,9 @@
 </div>
 
 <!--add new service-->
-<div class="container-fluid text-center" *ngIf="editmode && addnew">
+<div class="container-fluid text-center" *ngIf="addnew">
   <div class="center-txt">
-    <p> Crete your service with providing details below.</p>
+    <p> To create a new service, fill details below...</p>
   </div>
   <br>
     <form class="service-form">
@@ -244,7 +256,7 @@
             <mat-label >Service Rate Type</mat-label>
             <select matNativeControl required>
              <option  value={{rate.id}} *ngFor="let rate of rates">
-                {{rates.val}</option>
+                {{rates.val}}</option>
             </select>
           </mat-form-field>
         </div>
@@ -256,13 +268,18 @@
           </mat-form-field>
         </div>
       </div>
-      <div>
-        <mat-checkbox class="check-margin" [checked]="temp_pay_on_meet"
-        (change)="temp_pay_on_meet= !temp_pay_on_meet"> Pay On Meet is Available</mat-checkbox>
-        <br><br>
-        <p> Note: If <b>Pay on Meet</b> is enabled, <b>no payment</b> will be charged on bookings by customer. Payment can be only collected manullay
-        at the service. If approved, <b>System will charge the due commission form you.</b></p>
-      </div>
+
+        <div class="text-center">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label >Payment Type</mat-label>
+            <select matNativeControl required>
+             <option  value={{ptype.id}} *ngFor="let ptype of paymentTypes">
+                {{ptype.val}}</option>
+            </select>
+          </mat-form-field>
+          <br>
+          <p class="pay-on-meet"> Note: If <b>Pay on Meet</b> is selected, <b>no payment</b> will be charged on booking. Payment need to be collected manullay. However, <b>System will charge the due commission form you.</b></p>
+        </div>
       <hr>
       <div class="enter-txt">
         <p> Upload feature Images related to your service (up to 3 images *5MB Max)</p>

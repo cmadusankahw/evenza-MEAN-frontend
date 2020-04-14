@@ -1,17 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-export interface ProductCard {
-  product_id: string;
-  business_id: string;
-  product: string;
-  description: string;
-  product_category: string;
-  no_of_orders: number;
-  price: number;
-  rating: number;
-  feature_img: string;
-}
-
+import { ProductCard} from '../product.model';
 
 @Component({
   selector: 'app-product-card',

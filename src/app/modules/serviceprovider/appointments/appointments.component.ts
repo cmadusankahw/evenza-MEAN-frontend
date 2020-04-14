@@ -3,25 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-export interface Appointment {
-  id: string;
-  service_id: string;
-  cust_id: string;
-  service_name: string;
-  customer_name: string;
-  created_date: string;
-  created_time: string;
-  state: string;
-  appointed_date: string;
-  pref_from_time: string;
-  pref_to_time: string;
-  comment: string;
-}
-
-export interface AppointmentState {
-  id: string;
-  val: string;
-}
+import { Appointment, AppointmentState } from '../serviceprovider.model';
 
 @Component({
   selector: 'app-appointments',
@@ -74,7 +56,7 @@ export class AppointmentsComponent implements OnInit {
       customer_name: 'Arjun',
       created_date: '22/03/2020',
       created_time: '14:25',
-      state: 'Cancelled',
+      state: 'Approved',
       appointed_date: '30/03/2020',
       pref_from_time: '08:00',
       pref_to_time: '16:00',
@@ -135,7 +117,7 @@ export class AppointmentsComponent implements OnInit {
       }
     }
     this.recievedAppointments = [...pedingBookings];
-    return pedingBookings;
+    return this.recievedAppointments;
   }
 
   onApproved(bookings: any) {
@@ -147,7 +129,7 @@ export class AppointmentsComponent implements OnInit {
       }
     }
     this.recievedAppointments = [...approvedBookings];
-    return approvedBookings;
+    return this.recievedAppointments;
   }
 
   onCancelled(bookings: any) {
@@ -159,7 +141,15 @@ export class AppointmentsComponent implements OnInit {
       }
     }
     this.recievedAppointments = [...cancelledBookings];
-    return cancelledBookings;
+    return this.recievedAppointments;
+  }
+
+  hasData() {
+    if (this.recievedAppointments.length) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 

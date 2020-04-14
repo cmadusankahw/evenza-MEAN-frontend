@@ -3,33 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-
-export interface Order {
-  order_id: string;
-  product_id: string;
-  cust_id: string;
-  product: string;
-  product_category: string;
-  customer_name: string;
-  created_date: string;
-  created_time: string;
-  state: string;
-  rating: number;
-  review: string;
-  quantity: number;
-  qty_type: string;
-  delivery_service: string;
-  comment: string;
-  payment_type: string;
-  amount: number;
-  commission_due: number;
-  amount_paid: number;
-}
-
-export interface OrderState {
-  id: string;
-  val: string;
-}
+import { Order, OrderState } from '../seller.model';
 
 @Component({
   selector: 'app-seller-orders',

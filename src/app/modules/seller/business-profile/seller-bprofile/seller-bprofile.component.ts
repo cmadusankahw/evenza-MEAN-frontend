@@ -1,22 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-export interface Business {
-  id: string;
-  merchant_type: string;
-  title: string;
-  description: string;
-  email: string;
-  contact_no: string;
-  address_line1: string;
-  address_line2: string;
-  postal_code: string;
-  location: string;
-  isverified: boolean;
-  isopened: boolean;
-  payment_verified: boolean;
-  feature_img: string;
-  logo: string;
-}
+import { Business } from '../../seller.model';
 
 @Component({
   selector: 'app-seller-bprofile',

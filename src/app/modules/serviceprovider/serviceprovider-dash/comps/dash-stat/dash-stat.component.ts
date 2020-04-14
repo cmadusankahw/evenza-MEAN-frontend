@@ -1,17 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-export interface DashStat {
-  business_id: string;
-  merchant_id: string;
-  pending_bookings: number;
-  last_book_date: string;
-  confirmed_bookings: number;
-  last_confirmed_book_date: string;
-  pending_appointments: number;
-  last_appointment_date: string;
-  approved_appointments: number;
-  last_approved_appointment_date: string;
-}
+import { DashStat } from '../../../serviceprovider.model';
 
 @Component({
   selector: 'app-dash-stat',

@@ -3,21 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-export interface DeliveryService {
-  delivery_id: string;
-  delivery_name: string;
-  address: string;
-  hotline: number;
-  delivery_rate: number;
-  rate_type: string;
-  min_delivery_time: number;
-  max_delivery_time: number;
-}
-
-export interface DeliveryRate {
-  id: string;
-  val: string;
-}
+import { DeliveryService, DeliveryRate } from '../seller.model';
 
 @Component({
   selector: 'app-seller-delivery',

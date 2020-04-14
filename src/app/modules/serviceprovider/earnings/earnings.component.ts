@@ -3,20 +3,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-export interface Earnings {
-  transaction_id: string;
-  booking_id: string;
-  service_booked: string;
-  duration: number;
-  booking_type: string;
-  cust_name: string;
-  earned_date: string;
-  earned_time: string;
-  comments: string;
-  payment_type: string;
-  commission_due: number;
-  net_earning: number;
-}
+import { Earnings } from '../serviceprovider.model';
+
 
 @Component({
   selector: 'app-earnings',

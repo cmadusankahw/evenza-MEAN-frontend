@@ -1,16 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-export interface ServiceCard {
-  service_id: string;
-  business_id: string;
-  service_name: string;
-  description: string;
-  service_category: string;
-  no_of_bookings: number;
-  no_of_appoints: number;
-  rating: number;
-  feature_img: string;
-}
+import { ServiceCard} from '../service.model';
 
 
 @Component({

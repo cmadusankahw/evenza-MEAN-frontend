@@ -3,34 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-export interface Booking {
-  booking_id: string;
-  service_id: string;
-  cust_id: string;
-  service_name: string;
-  service_category: string;
-  customer_name: string;
-  created_date: string;
-  created_time: string;
-  state: string;
-  rating: number;
-  review: string;
-  booking_type: string;
-  booked_date: string;
-  duration: number;
-  start_time: string;
-  end_time: string;
-  comment: string;
-  payment_type: string;
-  amount: number;
-  commission_due: number;
-  amount_paid: number;
-}
-
-export interface BookingState {
-  id: string;
-  val: string;
-}
+import { Booking, BookingState } from '../serviceprovider.model';
 
 
 @Component({

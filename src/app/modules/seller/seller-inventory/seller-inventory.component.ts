@@ -3,23 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-
-export interface ProductInventory {
-  product_id: string;
-  product: string;
-  product_category: string;
-  qty_type: string;
-  availability: boolean;
-  inventory: number;
-  delivery_service: string;
-  price: number;
-}
-
-export interface ProductCategories {
-  id: string;
-  val: string;
-}
-
+import { ProductInventory, ProductCategories } from '../seller.model';
 
 @Component({
   selector: 'app-seller-inventory',

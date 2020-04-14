@@ -1,44 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
-export interface Product {
-  product_id: string;
-  business_id: string;
-  business_name: string;
-  product: string;
-  product_category: string;
-  qty_type: string;
-  description: string;
-  created_date: string;
-  created_time: string;
-  availability: boolean;
-  inventory: number;
-  rating: number;
-  no_of_ratings: number;
-  no_of_orders: number;
-  delivery_service: string;
-  price: number;
-  payment_type: string;
-  feature_img: string;
-  image_01: string;
-  image_02: string;
-  image_03: string;
-}
-
-export interface ProductCategories {
-  id: string;
-  val: string;
-}
-
-export interface QuantityTypes {
-  id: string;
-  val: string;
-}
-
-export interface PaymentTypes {
-  id: string;
-  val: string;
-}
+import { Product, ProductCategories, QuantityTypes, PaymentTypes } from '../product.model';
 
 
 @Component({
@@ -96,7 +59,7 @@ export class ProductDetailsComponent implements OnInit {
     { id: '3', val: 'Catering' },
   ];
 
-  quantities: QuantityTypes [] = [
+  quantities: QuantityTypes[] = [
     { id: '1', val: 'Units' },
     { id: '2', val: 'Kg' },
     { id: '3', val: 'Ltr' },
@@ -123,7 +86,7 @@ export class ProductDetailsComponent implements OnInit {
     this.router.navigate(['/sp/bprofile']);
   }
 
-  removeProduct(){
+  removeProduct() {
     console.log('product removed');
   }
 

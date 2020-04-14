@@ -1,11 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-export interface Availability {
-  day: string;
-  isopened: boolean;
-  open_time: string;
-  close_time: string;
-}
+import { BusinessAvailability } from '../../serviceprovider.model';
 
 @Component({
   selector: 'app-business-open-days',

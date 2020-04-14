@@ -1,14 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-export interface BusinessStat {
-  business_id: string;
-  earnings: string;
-  performance_value: number;
-  active_services: number;
-  fb_link: string;
-  insta_link: string;
-  twitter_link: string;
-}
+import { BusinessStat } from '../../../serviceprovider.model';
+
 
 @Component({
   selector: 'app-business-stat',

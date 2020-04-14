@@ -1,22 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
-export interface Seller {
-  id: string;
-  first_name: string;
-  last_name: string;
-  nic: string;
-  profile_pic: string;
-  email: string;
-  password: string;
-  contact_no: string;
-  address_line1: string;
-  address_line2: string;
-  gender: string;
-  date_of_birth: string;
-  isverified: boolean;
-  reg_date: string;
-}
+import { Seller } from '../seller.model';
 
 @Component({
   selector: 'app-seller-profile',

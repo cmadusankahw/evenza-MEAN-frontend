@@ -20,7 +20,7 @@
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia">
   </mat-form-field>
 
-  <div class="mat-elevation-z8">
+  <div class="mat-elevation-z8" *ngIf="hasData()">
     <table class="table-responsive" mat-table [dataSource]="dataSource" matSort>
 
       <!-- ID Column -->
@@ -73,6 +73,10 @@
     <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
   </div>
 
+  <div class="text-center pd-top-min"  *ngIf="!hasData()">
+    No Appointments Found
+  </div>
+
   </div>
 
 
@@ -94,7 +98,7 @@
       role="document"
       style="overflow-y: initial !important"
     >
-      <div class="modal-content">
+      <div class="modal-content"  *ngIf = "hasData()">
         <div class="modal-header">
           <button
             type="button"

@@ -1,12 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-
-export interface IDVerify  {
-  isverified: string;
-  id_type: string;
-  sideA_image: object;
-  sideB_image: object;
-}
+import { IDVerify } from '../seller.model';
 
 @Component({
   selector: 'app-seller-id-verify',

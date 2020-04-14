@@ -1,13 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-export interface PayStat {
-  business_id: string;
-  pay_amount: number;
-  pay_due_date: string;
-  overdue: boolean;
-  last_payment: number;
-  last_pay_date: string;
-}
+import { PayStat } from '../../../serviceprovider.model';
 
 @Component({
   selector: 'app-pay-stat',

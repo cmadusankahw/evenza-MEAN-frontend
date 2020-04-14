@@ -1,13 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-export interface BusinessVerify {
-  isverified: string;
-  br_sideA_image: object;
-  br_sideB_image: object;
-  certify_name: string;
-  issued_org: string;
-  certify_image: object;
-}
+import { BusinessVerify } from '../../serviceprovider.model';
 
 @Component({
   selector: 'app-business-verify',

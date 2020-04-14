@@ -1,19 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-
-export interface DashStat {
-  business_id: string;
-  merchant_id: string;
-  pending_orders: number;
-  last_order_date: string;
-  to_delivery_orders: number;
-  next_delivery_date: string;
-  completed_orders: number;
-  last_completed_date: string;
-  inventory: number;
-  lasT_modified_date: string;
-}
-
+import { DashStat } from '../../../seller.model';
 
 @Component({
   selector: 'app-seller-dash-stat',

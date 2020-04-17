@@ -1,4 +1,6 @@
 <!-- Material form login -->
+
+
 <mdb-card>
   <mdb-card-header class="purple text-center white-text py-4">
     <h5>
@@ -9,7 +11,7 @@
   <!--Card content-->
   <mdb-card-body class="px-lg-5 pd-top-min">
     <!-- Form -->
-    <form [formGroup]="loginForm" style="color: #757575;" >
+    <form [formGroup]="loginForm" style="color: #757575;" (submit)= "loginUser()">
       <!-- Email -->
       <div class="md-form">
         <mdb-icon fas icon="envelope" class="prefix"></mdb-icon>
@@ -20,14 +22,12 @@
           id="form8"
           class="form-control"
           formControlName="email"
+          required
         />
         <label for="form8">Email</label>
-        <mdb-error *ngIf="input.invalid && (input.dirty || input.touched)"
+        <mdb-error *ngIf="email.invalid && (email.dirty || email.touched)"
           >Email Invalid</mdb-error
-        >
-        <mdb-success *ngIf="input.valid && (input.dirty || input.touched)"
-          >Email Valid</mdb-success
-        >
+          >
       </div>
 
       <!-- Password -->
@@ -38,7 +38,12 @@
           id="materialLoginFormPassword"
           class="form-control"
           mdbInput
+          required
+          formControlName="password"
         />
+        <mdb-error *ngIf="password.invalid && (password.dirty || password.touched)"
+          >Enter Your Password</mdb-error
+        >
         <label for="materialLoginFormPassword">Password</label>
       </div>
 
@@ -71,7 +76,7 @@
         <!-- Register -->
         <p>
           Not a member?
-          <a href="">Register</a>
+          <a routerLink="/register">Register</a>
         </p>
 
         <!-- Social login -->
@@ -93,4 +98,11 @@
     <!-- Form -->
   </mdb-card-body>
 </mdb-card>
+
+<div class="alert alert-danger alert-dismissible fade show alert-cls" role="alert" *ngIf="showAlert">
+  Username or Password is incorrect!
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)= "showAlert = !showAlert">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
 <!-- Material form login -->

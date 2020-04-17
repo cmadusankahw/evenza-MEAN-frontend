@@ -54,3 +54,28 @@ relavant product service categories at the other end.
 
 
 
+
+
+
+**Development Stages:
+
+1) Frontend - auth/home/seller/service provider/service/product
+2) Modedling, Form validation & Error handeling
+3) Basic Backnend connect  - product/ product card
+                            service/ service card
+                            servic/product search
+                            update bprofile
+                            update user profile
+4) Authentication - user acc/ login /signup/ session mgmt
+5) Database design and connect
+6) Frontend Event planner/ event
+7) Pararally advanced backend of product/service provider/service/seller
+8) Basic backend on event planner/event
+9) Advanced backend on event planner/event
+10) Database modifications and optimization (transaction/migrations)
+11) Email forwarding, google maps advanced connect, google forms connect and other 3rd party dev
+12) Report generation analytics (chart js jspdf & oher tools)
+13) Recommandation & analytics with Tensorflow and other ML tools
+14) Testing & Deployment
+15) Concurrent access optimization
+

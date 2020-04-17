@@ -11,7 +11,7 @@
   <mdb-card-body class="px-lg-5 pt-0">
 
       <!-- Form -->
-      <form  style="color: #757575;"  >
+      <form  style="color: #757575;"  [formGroup]="signupForm" (submit)="signupUser()">
         <div class="text-center p-md-3">
           <p>Reach out the most by signing up today..</p>
           </div>
@@ -21,15 +21,27 @@
                   <!-- First name -->
                   <div class="md-form">
                     <mdb-icon fas icon="user" class="prefix"></mdb-icon>
-                      <input mdbInput mdbValidate type="text" id="materialRegisterFormFirstName" class="form-control">
+                      <input mdbInput mdbValidate type="text" id="materialRegisterFormFirstName"
+                      class="form-control"
+                      formControlName="firstName"
+                      rquired>
+                      <mdb-error *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
+                        Enter your Name</mdb-error>
                       <label for="materialRegisterFormFirstName">First name</label>
                   </div>
               </div>
               <div class="col">
                   <!-- Last name -->
                   <div class="md-form">
-                      <input mdbInput mdbValidate type="text" id="materialRegisterFormLastName" class="form-control">
+                      <input mdbInput mdbValidate
+                      type="text" id="materialRegisterFormLastName"
+                      class="form-control"
+                      formControlName="lastName"
+                      required>
+                      <mdb-error *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
+                        Enter your Name</mdb-error>
                       <label for="materialRegisterFormLastName">Last name</label>
+
                   </div>
               </div>
           </div>
@@ -37,15 +49,32 @@
           <!-- E-mail -->
           <div class="md-form mt-0">
             <mdb-icon fas icon="envelope" class="prefix"></mdb-icon>
-              <input mdbInput mdbValidate type="email" id="materialRegisterFormEmail" class="form-control">
+              <input mdbInput mdbValidate
+              type="email"
+              id="materialRegisterFormEmail"
+              class="form-control"
+              formControlName="email"
+              required>
+              <mdb-error *ngIf="email.invalid && (email.dirty || email.touched)">
+                Enter valid Name</mdb-error>
               <label for="materialRegisterFormEmail">E-mail</label>
           </div>
 
           <!-- Password -->
           <div class="md-form">
             <mdb-icon fas icon="key" class="prefix"></mdb-icon>
-              <input mdbInput mdbValidate type="password" id="materialRegisterFormPassword" class="form-control" aria-describedby="materialRegisterFormPasswordHelpBlock">
+              <input mdbInput mdbValidate
+              type="password"
+              id="materialRegisterFormPassword"
+              class="form-control"
+              aria-describedby="materialRegisterFormPasswordHelpBlock"
+              formControlName="password">
+              <mdb-error *ngIf="password.invalid && (password.dirty || password.touched)">
+                Password is not satisfying required rules</mdb-error>
+                <mdb-success *ngIf="password.valid && (password.dirty || password.touched)"
+                >Strong Password</mdb-success>
               <label for="materialRegisterFormPassword">Password</label>
+              <br>
               <small id="materialRegisterFormPasswordHelpBlock" class="form-text text-muted mb-4">
                   At least 8 characters and 1 digit
               </small>
@@ -54,7 +83,13 @@
           <!-- Phone number -->
           <div class="md-form">
             <mdb-icon fas icon="mobile" class="prefix"></mdb-icon>
-              <input mdbInput mdbValidate type="password" id="materialRegisterFormPhone" class="form-control" aria-describedby="materialRegisterFormPhoneHelpBlock">
+              <input mdbInput mdbValidate type="text" id="materialRegisterFormPhone"
+              class="form-control"
+              aria-describedby="materialRegisterFormPhoneHelpBlock"
+              required
+              formControlName="contactno">
+              <mdb-error *ngIf="contactno.invalid && (contactno.dirty || contactno.touched)">
+                Phone no must contain 10 digits</mdb-error>
               <label for="materialRegisterFormPhone">Phone number</label>
 
           </div>
@@ -67,7 +102,7 @@
 
           <!-- Sign up button -->
           <button mdbBtn color="purple" outline="true" rounded="true" block="true" class="my-4 waves-effect z-depth-0" mdbWavesEffect
-         type="submit" (click)="simpleNavigate(this.routerVal)">Sign Up</button>
+         type="submit">Sign Up</button>
 
           <div class="text-center">
           <!-- Social register -->
@@ -100,4 +135,5 @@
  </mdb-card-body>
 
 </mdb-card>
+
 <!-- Material form register -->

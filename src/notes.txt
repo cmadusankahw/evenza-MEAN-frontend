@@ -48,4 +48,9 @@ Documents generated:
 
 
 
+Search Services & Products:
+category var should be passed to product/service-card comp. categories shold be checked with the
+relavant product service categories at the other end.
+
+
 

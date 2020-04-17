@@ -22,9 +22,9 @@ import { SellerDashInventoryComponent } from './modules/seller/seller-dash/pages
 import { SellerDashReportsComponent } from './modules/seller/seller-dash/pages/seller-dash-reports/seller-dash-reports.component';
 import { SellerDashProfileComponent } from './modules/seller/seller-dash/pages/seller-dash-profile/seller-dash-profile.component';
 import { NotFoundPageComponent } from './modules/home/not-found-page/not-found-page.component';
-import { ServiceSearchComponent } from './modules/service/service-search/service-search.component';
-import { ProductSearchComponent } from './modules/product/product-search/product-search.component';
 import { SellerDashOrdersComponent } from './modules/seller/seller-dash/pages/seller-dash-orders/seller-dash-orders.component';
+import { SearchProductsComponent } from './modules/product/search-products/search-products.component';
+import { SearchServicesComponent } from './modules/service/search-services/search-services.component';
 
 
 const routes: Routes = [
@@ -34,8 +34,8 @@ const routes: Routes = [
   { path: 'register/merchant', component: SignupMerchantComponent },
   { path: 'sp/bprofile', component: BprofileComponent },
   { path: 'contactus', component: ContactUsComponent },
-  { path: 'services', component: ServiceSearchComponent },
-  { path: 'products', component: ProductSearchComponent },
+  { path: 'services', component: SearchServicesComponent },
+  { path: 'products', component: SearchProductsComponent },
   {
     path: 'sp/dash',
     component: DashboardComponent,

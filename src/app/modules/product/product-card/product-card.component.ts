@@ -12,6 +12,9 @@ export class ProductCardComponent implements OnInit {
   //service card ownership
   @Input() isowner = false;
 
+  //filtering
+  @Input() category = 'any';
+
   productDetails: ProductCard[] = [
     {
       product_id: 'P-01', business_id: 'B-01', product: 'Setty Back', description: ' this is a wedding equipment',

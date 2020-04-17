@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import {EventPlanner} from '../auth.model';
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',

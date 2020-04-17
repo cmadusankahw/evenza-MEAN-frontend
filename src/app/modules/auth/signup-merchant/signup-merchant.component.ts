@@ -1,10 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-interface Gender {
-  value: string;
-  viewValue: string;
-}
+import {Merchant, Gender } from '../auth.model';
 
 @Component({
   selector: 'app-signup-merchant',
@@ -13,10 +10,10 @@ interface Gender {
 })
 export class SignupMerchantComponent implements OnInit {
 
+  @Input() merchantType;
+
 
   constructor() { }
-
-
 
   ngOnInit() {
 

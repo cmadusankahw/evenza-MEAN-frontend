@@ -36,6 +36,11 @@ export interface PaymentTypes {
   val: string;
 }
 
+export interface BusinessLocations {
+  id: string;
+  val: string;
+}
+
 export interface ServiceCard {
   service_id: string;
   business_id: string;
@@ -45,5 +50,7 @@ export interface ServiceCard {
   no_of_bookings: number;
   no_of_appoints: number;
   rating: number;
+  rate: number;
+  rate_type: string;
   feature_img: string;
 }

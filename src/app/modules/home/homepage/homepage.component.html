@@ -1,10 +1,37 @@
 
 <!--header-->
  <!--Section: Content-->
- <header class="px-md-5 text-center white-text grey pd-top hdr" style="background-image: url('./assets/images/back/home.jpg');">
 
+  <div style="position:relative;">
+    <mdb-carousel class="carousel slide carousel-fade cimg" [animation]="'fade'" >
+     <mdb-carousel-item>
+       <div class="view w-100">
+         <img class="d-block w-100" src="./assets/images/back/home.jpg" alt="Feature Image 1" class="feature-img">
+         <div class="mask rgba-black-light waves-light" mdbWavesEffect></div>
+       </div>
+     </mdb-carousel-item>
+     <mdb-carousel-item>
+       <div class="view w-100">
+         <img class="d-block w-100" src="./assets/images/back/home2.jpg" alt="Feature Image 2" class="feature-img">
+         <div class="mask rgba-black-strong waves-light" mdbWavesEffect></div>
+       </div>
+     </mdb-carousel-item>
+     <mdb-carousel-item>
+       <div class="view w-100">
+         <img class="d-block w-100" src="./assets/images/back/home3.jpg" alt="Feature Image 3" class="feature-img">
+         <div class="mask rgba-black-slight waves-light" mdbWavesEffect></div>
+       </div>
+     </mdb-carousel-item>
+     <mdb-carousel-item>
+       <div class="view w-100">
+         <img class="d-block w-100" src="./assets/images/back/home4.jpg" alt="Feature Image 4" class="feature-img">
+         <div class="mask rgba-black-slight waves-light" mdbWavesEffect></div>
+       </div>
+     </mdb-carousel-item>
+   </mdb-carousel>
+   </div>
  <!--Grid row-->
- <div class="row d-flex justify-content-center">
+ <div class="row container-fluid justify-content-center text-center text-white" style="position:absolute; z-index:10; top:35%; left:0; right:0; bottom:0;">
 
    <!--Grid column-->
    <div class="col-xl-8 col-md-10 mb-4 mb-md-0">
@@ -20,11 +47,9 @@
 
    </div>
    <!--Grid column-->
-
  </div>
  <!--Grid row-->
 
- </header>
 
 <div class="container my-5 py-5">
 

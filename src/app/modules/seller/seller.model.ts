@@ -138,8 +138,9 @@ export interface OrderState {
   val: string;
 }
 
-export interface Seller {
-  id: string;
+export interface Merchant {
+  merchant_id: string;
+  merchant_type: string;
   first_name: string;
   last_name: string;
   nic: string;

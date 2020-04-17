@@ -26,6 +26,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import {MatSliderModule} from '@angular/material/slider';
+
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -69,8 +71,6 @@ import { DashCalendarComponent } from './modules/serviceprovider/serviceprovider
 import { MerchantProfileComponent } from './modules/serviceprovider/serviceprovider-profile/merchant-profile.component';
 import { ProductCardComponent } from './modules/product/product-card/product-card.component';
 import { ContactUsComponent } from './modules/home/contact-us/contact-us.component';
-import { ProductSearchComponent } from './modules/product/product-search/product-search.component';
-import { ServiceSearchComponent } from './modules/service/service-search/service-search.component';
 import { SellerDashboardComponent } from './modules/seller/seller-dash/seller-dashboard/seller-dashboard.component';
 import { SellerBusinessStatComponent } from './modules/seller/seller-dash/comps/seller-business-stat/seller-business-stat.component';
 import { SellerDashStatComponent } from './modules/seller/seller-dash/comps/seller-dash-stat/seller-dash-stat.component';
@@ -94,6 +94,8 @@ import { SellerDashOrdersComponent } from './modules/seller/seller-dash/pages/se
 import { SellerOrdersComponent } from './modules/seller/seller-orders/seller-orders.component';
 import { SellerInventoryComponent } from './modules/seller/seller-inventory/seller-inventory.component';
 import { SellerDeliveryComponent } from './modules/seller/seller-delivery/seller-delivery.component';
+import { SearchProductsComponent } from './modules/product/search-products/search-products.component';
+import { SearchServicesComponent } from './modules/service/search-services/search-services.component';
 
 
 @NgModule({
@@ -135,8 +137,6 @@ import { SellerDeliveryComponent } from './modules/seller/seller-delivery/seller
     MerchantProfileComponent,
     ProductCardComponent,
     ContactUsComponent,
-    ProductSearchComponent,
-    ServiceSearchComponent,
     SellerDashboardComponent,
     SellerBusinessStatComponent,
     SellerDashStatComponent,
@@ -160,6 +160,8 @@ import { SellerDeliveryComponent } from './modules/seller/seller-delivery/seller
     SellerOrdersComponent,
     SellerInventoryComponent,
     SellerDeliveryComponent,
+    SearchProductsComponent,
+    SearchServicesComponent,
 
 
 
@@ -203,7 +205,8 @@ import { SellerDeliveryComponent } from './modules/seller/seller-delivery/seller
     NgbModule,
     MatCheckboxModule,
     FullCalendarModule,
-    CarouselModule
+    CarouselModule,
+    MatSliderModule
 
   ],
   schemas: [NO_ERRORS_SCHEMA],

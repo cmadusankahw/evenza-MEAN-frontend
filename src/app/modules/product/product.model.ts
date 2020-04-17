@@ -50,3 +50,9 @@ export interface ProductCard {
   rating: number;
   feature_img: string;
 }
+
+
+export interface Businesses {
+  id: string;
+  val: string;
+}

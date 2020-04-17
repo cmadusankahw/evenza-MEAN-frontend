@@ -5,6 +5,8 @@ mdb-card{
   min-width:220px;
   margin:0 auto !important;
   margin-bottom:5% !important;
+  margin-left:13px !important;
+  margin-right:13px !important;
 }
 
 .left-btn{
@@ -19,6 +21,24 @@ mdb-card{
   word-spacing:20px;
 }
 
+.left-notify{
+  text-align:left;
+  font-weight:bold;
+  color:darkslategray;
+  font-size:16px;
+  word-spacing:20px;
+  padding-bottom:12px;
+}
+
 mdb-icon{
   padding-right:7px;
+}
+
+
+//mobile view
+@media screen and (max-width: 600px) {
+  mdb-card{
+    margin-left:auto!important;
+    margin-right:auto !important;
+  }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
-import { ServiceProvider } from '../serviceprovider.model';
+import { Merchant } from '../serviceprovider.model';
 
 @Component({
   selector: 'app-merchant-profile',
@@ -17,9 +17,10 @@ export class MerchantProfileComponent implements OnInit {
   @Input() isowner;
 
   //bprofile data binding
-  serviceProvider: ServiceProvider[] = [
+  serviceProvider: Merchant[] = [
     {
-      id: 'U-01',
+      merchant_id: 'U-01',
+      merchant_type: 'SP',
       first_name: 'Chiran',
       last_name: 'Hewawitharana',
       nic: '951991635V',

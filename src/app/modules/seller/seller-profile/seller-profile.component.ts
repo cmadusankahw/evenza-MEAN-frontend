@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
-import { Seller } from '../seller.model';
+import { Merchant } from '../seller.model';
+
 
 @Component({
   selector: 'app-seller-profile',
@@ -17,9 +18,10 @@ export class SellerProfileComponent implements OnInit {
   @Input() isowner;
 
   //bprofile data binding
-  seller: Seller[] = [
+  seller: Merchant[] = [
     {
-      id: 'U-01',
+      merchant_id: 'U-01',
+      merchant_type: 'SEL',
       first_name: 'Chiran',
       last_name: 'Hewawitharana',
       nic: '951991635V',

@@ -135,8 +135,9 @@ export interface PayStat {
   last_pay_date: string;
 }
 
-export interface ServiceProvider {
-  id: string;
+export interface Merchant {
+  merchant_id: string;
+  merchant_type: string;
   first_name: string;
   last_name: string;
   nic: string,

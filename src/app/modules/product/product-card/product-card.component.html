@@ -1,48 +1,53 @@
 
 <div class="card-deck">
   <!-- Card -->
-  <mdb-card *ngFor="let prod of productDetailsNew">
 
-    <div class="view overlay waves-light" mdbWavesEffect>
-      <!-- Card img -->
-      <mdb-card-img src={{prod.feature_img}} [alt]="prod.product"></mdb-card-img>
-      <a>
-        <div class="mask rgba-white-slight"></div>
-      </a>
-    </div>
-    <!--Card content-->
-    <mdb-card-body>
-      <!--Title-->
-      <mdb-card-title>
-        <h4>{{prod.product}}</h4>
-      </mdb-card-title>
+                <mdb-card *ngFor="let prod of productDetailsNew">
 
-      <!--Text-->
-      <mdb-card-text> {{prod.description}}
-        <hr>
+                  <div class="view overlay waves-light" mdbWavesEffect>
+                    <!-- Card img -->
+                    <mdb-card-img src={{prod.feature_img}} [alt]="prod.product"></mdb-card-img>
+                    <a>
+                      <div class="mask rgba-white-slight"></div>
+                    </a>
+                  </div>
+                  <!--Card content-->
+                  <mdb-card-body>
+                    <!--Title-->
+                    <mdb-card-title>
+                      <h4>{{prod.product}}</h4>
+                    </mdb-card-title>
 
-      </mdb-card-text>
+                    <!--Text-->
+                    <mdb-card-text> {{prod.description}}
+                      <hr>
 
-      <div>
-        <div class="left-btn">
-          <a mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect (click)="productDetails.show()">More Details</a>
-        </div>
-        <div class="right-notify" *ngIf="isowner">
-          Rs.{{prod.price}}
-          <mdb-icon fas icon="bookmark"> </mdb-icon>{{prod.no_of_orders}}
+                    </mdb-card-text>
 
-        </div>
+                    <div>
+                      <div class="left-notify" *ngIf="!isowner">
+                        <span style="font-size:20px; font-weight:bold;">Rs.{{prod.price}}</span>
+                      </div>
+                      <div class="left-btn">
+                        <a mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect (click)="productDetails.show()">
+                          <span *ngIf="isowner"> More Details </span>
+                          <span *ngIf="!isowner"> Order Now </span>
+                        </a>
+                      </div>
 
-        <div class="right-notify" *ngIf="!isowner">
-          <mdb-icon fas icon="star"> </mdb-icon>{{prod.rating}}
-        </div>
+                      <div class="right-notify" *ngIf="isowner">
+                        <mdb-icon fas icon="bookmark"> </mdb-icon>{{prod.no_of_orders}}
+                        <mdb-icon fas icon="star"> </mdb-icon>{{prod.rating}}
+                      </div>
 
 
-      </div>
+                    </div>
 
-    </mdb-card-body>
-  </mdb-card>
-</div>
+                  </mdb-card-body>
+                </mdb-card>
+
+  </div>
+
 
 
 

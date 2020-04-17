@@ -37,3 +37,15 @@
   width: 100%;
   position: absolute;
 }
+
+.feature-img{
+  width:100%;
+  height:92vh;
+}
+
+
+@media screen and (max-width: 600px) {
+  .feature-img{
+    width:400%;
+  }
+}

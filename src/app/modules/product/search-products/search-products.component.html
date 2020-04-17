@@ -1,0 +1,261 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'over'"
+      [opened]="opened">
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+
+      <!--filters-->
+      <div mat-list-item class="filters">
+      <h4 style="padding-left:15px;">Filter Products..</h4>
+      <hr>
+
+      <!--category-->
+      <div class="filter-content pd-top-filter">
+        <h6> <mdb-icon fas icon="bookmark"></mdb-icon> By Category</h6>
+          <mat-form-field class="cat-list">
+            <mat-label >Select Category</mat-label>
+            <select matNativeControl required>
+             <option  value={{cat.val}} *ngFor="let cat of categories">
+                {{cat.val}}</option>
+            </select>
+          </mat-form-field>
+      </div>
+      <hr>
+      <!--price-->
+      <div class="filter-content pd-top-filter">
+        <h6> <mdb-icon fas icon="money-bill"></mdb-icon> By Price Range</h6>
+        <span class="price-text"> Min Price Rs. {{priceStart}}</span>
+        <br>
+        <mat-slider
+        class="cat-list"
+        invert="false"
+        [max]= "priceEnd"
+        min="0"
+        step="1"
+        thumbLabel="true"
+        [(ngModel)]="priceStart">
+        </mat-slider>
+        <br>
+        <span class="price-text"> Max Price Rs. {{priceEnd}}</span>
+        <br>
+        <mat-slider
+        class="cat-list"
+        invert="false"
+        max="49999"
+        [min]="priceStart"
+        step="1"
+        thumbLabel="true"
+        [(ngModel)]="priceEnd">
+        </mat-slider>
+      </div>
+      <hr>
+
+         <!--pay type-->
+         <div class="filter-content pd-top-filter">
+          <h6> <mdb-icon fas icon="credit-card"></mdb-icon> By Payment Method</h6>
+          <br>
+            <div class="filter-check"  *ngFor= "let ptypes of paymentTypes">
+            <mat-checkbox class="example-margin"
+            >{{ptypes.val}}</mat-checkbox>
+            </div>
+        </div>
+
+        <hr>
+        <!--business-->
+        <div class="filter-content pd-top-filter">
+          <h6> <mdb-icon fas icon="building"></mdb-icon> By Business Company</h6>
+          <mat-form-field class="cat-list">
+            <mat-label >Select Companies</mat-label>
+            <select matNativeControl required>
+             <option  value={{cat.val}} *ngFor="let cat of businesses">
+                {{cat.val}}</option>
+            </select>
+          </mat-form-field>
+        </div>
+
+        <hr>
+       <!--ratings-->
+       <div class="filter-content pd-top-filter">
+        <h6> <mdb-icon fas icon="star"></mdb-icon> By User Ratings</h6>
+        <div class="rating">
+          <ngb-rating [(rate)]="ratings" max="5">
+            <ng-template let-fill="fill" let-index="index">
+              <span class="star" [class.filled]="fill === 100">&#9733;</span>
+            </ng-template>
+          </ngb-rating>
+          <br>
+          <span class="rating-txt">
+            Scale 1-5
+          </span>
+        </div>
+      </div>
+      <hr>
+      <div class="filter-content pd-top-filter text-center">
+        <a role="button" mdbBtn color="secondary" class="btn btn-md"
+        style="margin:0 auto;" text="white" mdbWavesEffect (click)="drawer.close() && searchProducts()">
+          Apply Filters
+        </a>
+        <hr>
+      </div>
+
+
+    </div>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+
+    <div class="filter-btn shadow">
+      <button
+      type="button"
+      aria-label="Toggle sidenav"
+      mat-icon-button
+      (click)="drawer.open()"
+      >
+      <mat-icon aria-label="Side nav toggle icon">subject</mat-icon>
+    </button>
+    <span class="filter-title">Filter Products</span>
+    </div>
+
+
+
+    <!--search header-->
+        <div class="header text-center text-white" style="position:relative;">
+          <img src="./assets/images/back/search.jpg" class="back-img">
+          <div class="text-center" style="position: absolute; top:20%; bottom:0; left:0; right:0;">
+              <h2><b>Find best Deals!</b></h2>
+              <p>evenza has everything you require for your event..</p>
+              <br>
+                <div class="text-center search-box shadow">
+                  <mat-form-field class="search-input">
+                    <mat-label>
+                      <mat-icon>search</mat-icon>
+                      Search Products</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia">
+                  </mat-form-field>
+                </div>
+          </div>
+        </div>
+
+        <!--description-->
+        <div class="description text-center container pd-top pd-side">
+          <p>Evenza provide you everything for your event. Find products among below categories. You may simply order them or add products to your
+            <b><a routerLink="/ep/dash"> Event Plan</a></b>. Fastest Delivery Islandwide available with us!
+          </p>
+          <hr>
+        </div>
+
+        <!--categories-->
+        <div class="category-list" *ngIf="!searching">
+        <div class="container product-cat shadow pd-top-min" *ngFor="let cat of categories" >
+          <div class="row container-fluid product-cat-h">
+            <div class="col-md-6 text-md-left lead">
+                <h3 class="product-cat-heading">{{cat.val}}...</h3>
+            </div>
+            <div class="col-md-6 text-md-right lead product-cat-h" >
+                <a class="btn btn-outline-secondary btn-sm prev" mdbBtn mdbWavesEffect><i class="fa fa-lg fa-chevron-left"></i></a>
+                <a class="btn btn-outline-secondary btn-sm next"  mdbBtn mdbWavesEffect><i class="fa fa-lg fa-chevron-right"></i></a>
+            </div>
+         </div>
+            <div class="row">
+              <div class="col-md-12">
+                <app-product-card [isowner]="false" [category]="cat.val"></app-product-card>
+              </div>
+            </div>
+        </div>
+      </div>
+
+      <!--search results-->
+      <div class="search-results container" *ngIf="searching">
+        <div class="row search-result shadow container-fluid" mdbWavesEffect *ngFor="let product of products">
+          <div class="col-md-3">
+            <img src="{{product.feature_img}}" style="width:260px" alt="product.product" title="product.product">
+          </div>
+            <div class="col-md-4 search-result-pd">
+              <span class="search-result-heading"> {{product.product}}</span>
+              <br>
+              <span class="search-result-price"> Rs. {{product.price}}</span>
+            </div>
+          <div class="col-md-1">
+          </div>
+          <div class="col-md-4 search-result-btn-pd">
+            <div style="text-align:right;">
+              <a role="button" class="btn btn-md" color="secondary" text="white" mdbBtn mdbWavesEffect
+              (click)="productDetails.show()">
+              <mdb-icon fas icon="gem"></mdb-icon> Order Now</a>
+            </div>
+             <div class="rating-mini">
+              <ngb-rating readonly="true" [rate]="product.rating" max="5">
+                <ng-template  let-fill="fill" let-index="index">
+                  <span class="star-mini" [class.filled]="fill === 100">&#9733;</span>
+                </ng-template>
+              </ngb-rating>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+         <!--find out more--->
+            <div class="text-center pd-top">
+              <hr>
+              Find out more categories to order <a class="btn btn-lg" color="secondary" mdbBtn mdbWavesEffect style="margin-left:40px;">Find more</a>
+            </div>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<!--product details of a search result-->
+<div
+  mdbModal
+  #productDetails="mdbModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-hidden="true"
+
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-lg"
+    role="document"
+    style="overflow-y: initial !important"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="productDetails.hide()"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel" >
+          <mat-icon>service</mat-icon>Order Product
+        </h4>
+      </div>
+
+      <div class="modal-body " style="height: 500px; overflow-y: auto;">
+
+        <app-product-details [editmode]= "false" [addnew]= "false" [isowner]="false"></app-product-details>
+
+      </div>
+
+      <div class="modal-footer">
+        <button
+          mdbBtn
+          color="link"
+          (click)="productDetails.hide()"
+          mdbWavesEffect
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

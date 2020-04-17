@@ -1,6 +1,7 @@
 
 <div class="card-deck">
   <!-- Card -->
+
   <mdb-card *ngFor="let serviceDetail of serviceDetails">
 
     <div class="view overlay waves-light" mdbWavesEffect>
@@ -24,25 +25,31 @@
       </mdb-card-text>
 
       <div>
+        <div class="left-notify" *ngIf="!isowner">
+          <span style="font-size:20px; font-weight:bold;">
+            Rs. {{serviceDetail.rate}} {{serviceDetail.rate_type}}
+          </span>
+
+        </div>
+
         <div class="left-btn">
-          <a mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect (click)="serviceDetailsShow.show()">More Details</a>
+          <a mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect (click)="serviceDetailsShow.show()">
+            <span *ngIf="isowner"> More Details </span>
+            <span *ngIf="!isowner"> Book Now </span></a>
         </div>
         <div class="right-notify" *ngIf="isowner">
           <mdb-icon fas icon="bookmark"> </mdb-icon>{{serviceDetail.no_of_bookings}}
           <mdb-icon far icon="calendar-check"> </mdb-icon>{{serviceDetail.no_of_appoints}}
         </div>
 
-        <div class="right-notify" *ngIf="!isowner">
-          <mdb-icon fas icon="star"> </mdb-icon>{{serviceDetail.rating}}
-        </div>
 
 
       </div>
 
     </mdb-card-body>
   </mdb-card>
+  </div>
 
-</div>
 
 
 

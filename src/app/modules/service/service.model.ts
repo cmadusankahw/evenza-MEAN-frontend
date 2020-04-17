@@ -36,11 +36,6 @@ export interface PaymentTypes {
   val: string;
 }
 
-export interface BusinessLocations {
-  id: string;
-  val: string;
-}
-
 export interface ServiceCard {
   service_id: string;
   business_id: string;

@@ -42,4 +42,12 @@ export class ProductCardComponent implements OnInit {
     console.log(this.productDetails);
   }
 
+  hasData() {
+    if (this.productDetails.length) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }

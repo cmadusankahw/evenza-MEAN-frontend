@@ -1,5 +1,5 @@
 
-<div class="card-deck">
+<div class="card-deck" *ngIf="hasData()">
   <!-- Card -->
 
                 <mdb-card *ngFor="let prod of productDetailsNew">
@@ -47,6 +47,11 @@
                 </mdb-card>
 
   </div>
+
+  <div class="container-fluid text-center" *ngIf="!hasData()">
+    <p>No Services Found</p>
+  </div>
+
 
 
 

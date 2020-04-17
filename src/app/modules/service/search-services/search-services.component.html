@@ -67,16 +67,18 @@
         <div class="filter-content pd-top-filter">
           <h6> <mdb-icon fas icon="building"></mdb-icon> By Business Location</h6>
           <mat-form-field class="cat-list">
-            <mat-label >Select District</mat-label>
-            <select matNativeControl required>
-             <option  value={{cat.val}} *ngFor="let cat of businessLocations">
-                {{cat.val}}</option>
-            </select>
+            <mat-label><span class="location-label">Start typing city or town</span></mat-label>
+            <input matInput
+                id="typeahead-focus"
+                type="text"
+                class="form-control"
+                [(ngModel)]="model"
+                [ngbTypeahead]="search"
+                (focus)="focus$.next($any($event).target.value)"
+                (click)="click$.next($any($event).target.value)"
+                #instance="ngbTypeahead"
+              />
           </mat-form-field>
-          <mat-form-filed>
-            <mat-label><span class="location-label">Or Start typing location</span></mat-label>
-            <input matInput placeholer="Kekirawa, Anuradhapura">
-          </mat-form-filed>
         </div>
 
         <hr>
@@ -171,10 +173,10 @@
       </div>
 
       <!--search results-->
-      <div class="search-results container" *ngIf="searching">
+      <div class="search-results container" *ngIf="searching && hasData()">
         <div class="row search-result shadow container-fluid" mdbWavesEffect *ngFor="let service of services">
           <div class="col-md-3">
-            <img src="{{service.feature_img}}" style="width:260px" alt="product.product" title="product.product">
+            <img src="{{service.feature_img}}" style="width:260px" alt="product.product" title="product.product" >
           </div>
             <div class="col-md-4 search-result-pd">
               <span class="search-result-heading"> {{service.service_name}}</span>
@@ -199,6 +201,10 @@
           </div>
 
         </div>
+      </div>
+
+      <div class="text-center pd-top-min" *ngIf="searching && !hasData()">
+        No Services Found
       </div>
 
 

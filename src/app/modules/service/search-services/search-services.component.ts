@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { Observable, Subject, merge } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map, shareReplay } from 'rxjs/operators';
+import {NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
 
-import {Service, ServiceCategories, BusinessLocations, PaymentTypes } from '../service.model';
+
+import {Service, ServiceCategories, PaymentTypes } from '../service.model';
 
 @Component({
   selector: 'app-search-services',
@@ -60,15 +62,6 @@ export class SearchServicesComponent {
       { id: '3', val: 'PayHere' },
     ];
 
-    //filter-business locations
-    businessLocations: BusinessLocations[] = [
-      {id: '1', val: 'Matara'},
-      {id: '1', val: 'Galle'},
-      {id: '1', val: 'Hambanthota'},
-      {id: '1', val: 'Colombo'},
-      {id: '1', val: 'Gampaaha'},
-    ];
-
 
   //temp value for user ratings
   ratings = 0;
@@ -83,9 +76,31 @@ export class SearchServicesComponent {
   //enable searching mode
   searching = false;
 
+  //temp town suggessions for loction search FILTER-BUSINESS LOCATION
+  towns = [
+    'Matara', 'Colombo', 'Anuradhapura', 'Gampaha', 'Jaffana', 'Mannar', 'Mulativ',
+  ];
+
+  model: any;
+
   constructor(private breakpointObserver: BreakpointObserver) {}
 
-  asData() {
+  @ViewChild('instance', {static: true}) instance: NgbTypeahead;
+  focus$ = new Subject<string>();
+  click$ = new Subject<string>();
+
+  search = (text$: Observable<string>) => {
+    const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
+    const clicksWithClosedPopup$ = this.click$.pipe(filter(() => !this.instance.isPopupOpen()));
+    const inputFocus$ = this.focus$;
+
+    return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
+      map(term => (term === '' ? this.towns
+        : this.towns.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10))
+    );
+  }
+
+  hasData() {
     if (this.services.length) {
       return true;
     } else {

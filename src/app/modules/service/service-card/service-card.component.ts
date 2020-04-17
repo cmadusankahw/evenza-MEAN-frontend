@@ -41,4 +41,12 @@ export class ServiceCardComponent implements OnInit {
   ngOnInit() {
   }
 
+  hasData() {
+    if (this.serviceDetails.length) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }

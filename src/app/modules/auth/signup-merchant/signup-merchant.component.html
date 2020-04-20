@@ -1,6 +1,6 @@
 
   <mdb-card>
-  <mdb-card-header class="purple white-text text-center py-4 ">
+  <mdb-card-header class="purple white-text text-center py-4">
     <h2>
       You are Almost Done!
     </h2>
@@ -9,7 +9,7 @@
   <!--Card content-->
   <mdb-card-body class="px-lg-5 pt-0">
     <!-- Form -->
-    <form style="color: #757575;">
+    <form style="color: #757575;" (submit)="signupUser(signupform)" #signupform="ngForm">
       <br />
       <div class="text-center p-md-3">
         <p>Fill below details to continue Sign Up as a Merchant..</p>
@@ -18,42 +18,91 @@
       <div class="text-center">
         <mat-form-field class="mfield">
           <mat-label>Your Business Type</mat-label>
-          <mat-select required>
-            <mat-option value="option1">
+          <mat-select
+          required
+          name="merchantSelect"
+          #merchantSelect="ngModel"
+          ngModel>
+            <mat-option value="Service Provider">
               <mat-icon aria-label="">emoji_people</mat-icon>
               Service Provider</mat-option
             >
-            <mat-option value="option2">
+            <mat-option value="Seller">
               <mat-icon aria-label="">cake</mat-icon>
               Product Seller</mat-option
             >
           </mat-select>
+          <mat-error *ngIf="merchantSelect.invalid">Select Business Type</mat-error>
         </mat-form-field>
 
         <mat-form-field class="mfield">
-          <input matInput placeholder="Your NIC" required />
+          <input matInput
+          placeholder="Your NIC"
+          required
+          pattern="^([0-9]{9}[x|X|v|V]|[0-9]{12})$"
+          name="nic"
+          #nic="ngModel"
+          ngModel />
+          <mat-error *ngIf="nic.invalid">Please Provide a valid NIC</mat-error>
         </mat-form-field>
 
         <mat-form-field class="mfield">
           <mat-label>Your Gender</mat-label>
-          <mat-select required>
-            <mat-option value="option1">Male</mat-option>
-            <mat-option value="option2">Female</mat-option>
+          <mat-select
+          required
+          name="gender"
+          #gender="ngModel"
+          ngModel>
+            <mat-option value="male">Male</mat-option>
+            <mat-option value="female">Female</mat-option>
+            <mat-option value="none">Prefer Not to Say</mat-option>
           </mat-select>
+          <mat-error *ngIf="gender.invalid">Please Select your Gender</mat-error>
         </mat-form-field>
 
         <mat-form-field class="mfield">
           <mat-label>Your BirthDay</mat-label>
-          <input matInput [matDatepicker]="picker" />
+          <input matInput
+          [matDatepicker]="picker"
+          required
+          name="birthday"
+          #birthDay="ngModel"
+          ngModel
+          />
           <mat-datepicker-toggle
             matSuffix
             [for]="picker"
           ></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="birthDay.invalid">Please Select your BirthDay</mat-error>
         </mat-form-field>
 
         <mat-form-field class="mfield">
-          <textarea matInput rows="7" placeholder="Your Address"></textarea>
+          <input matInput type="text" placeholder="Address Line 1"
+          required
+          name="address1"
+          #address1="ngModel"
+          ngModel>
+          <mat-error *ngIf="address1.invalid">Your address is required</mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field class="mfield">
+          <input matInput type="text"
+          placeholder="Address Line 2"
+          name="address2"
+          ngModel>
+        </mat-form-field>
+          <br>
+          <mat-form-field class="mfield">
+          <input matInput type="number"
+          placeholder="Postal/Zip Code"
+          required
+          maxlength="6"
+          name="postalCode"
+          #postalCode ="ngModel"
+          ngModel
+          >
+          <mat-error *ngIf="postalCode.invalid">Postal code is required</mat-error>
         </mat-form-field>
       </div>
 
@@ -79,7 +128,6 @@
         color="purple"
         rounded="true"
         block="true"
-        class="my-4 waves-effect z-depth-0"
         mdbWavesEffect
         type="submit"
       >

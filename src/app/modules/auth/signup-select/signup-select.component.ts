@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth.service';
 
 
 @Component({
@@ -8,18 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SignupSelectComponent implements OnInit {
 
-  routerVal = true;
 
-  constructor() { }
+  constructor(public authService: AuthService) { }
 
   ngOnInit() {
   }
+
   navigateUser() {
-    this.routerVal = true;
+    this.authService.setUserType(false);
   }
 
   navigateMerchant() {
-    this.routerVal = false;
+    this.authService.setUserType(true);
   }
 
 }

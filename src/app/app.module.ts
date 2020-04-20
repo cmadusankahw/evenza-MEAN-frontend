@@ -27,7 +27,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import {MatSliderModule} from '@angular/material/slider';
-
+import { DatePipe } from '@angular/common';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -96,6 +96,7 @@ import { SellerInventoryComponent } from './modules/seller/seller-inventory/sell
 import { SellerDeliveryComponent } from './modules/seller/seller-delivery/seller-delivery.component';
 import { SearchProductsComponent } from './modules/product/search-products/search-products.component';
 import { SearchServicesComponent } from './modules/service/search-services/search-services.component';
+
 
 
 @NgModule({
@@ -210,7 +211,7 @@ import { SearchServicesComponent } from './modules/service/search-services/searc
 
   ],
   schemas: [NO_ERRORS_SCHEMA],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

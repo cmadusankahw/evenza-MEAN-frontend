@@ -11,7 +11,7 @@
   <mdb-card-body class="px-lg-5 pt-0">
 
       <!-- Form -->
-      <form  style="color: #757575;"  [formGroup]="signupForm" (submit)="signupUser()">
+      <form  style="color: #757575;"  [formGroup]="signupForm" (submit)="signupUser(signupform)"  #signupform="ngForm">
         <div class="text-center p-md-3">
           <p>Reach out the most by signing up today..</p>
           </div>
@@ -24,6 +24,8 @@
                       <input mdbInput mdbValidate type="text" id="materialRegisterFormFirstName"
                       class="form-control"
                       formControlName="firstName"
+                      name="firstName"
+                      ngModel
                       rquired>
                       <mdb-error *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
                         Enter your Name</mdb-error>
@@ -37,6 +39,8 @@
                       type="text" id="materialRegisterFormLastName"
                       class="form-control"
                       formControlName="lastName"
+                      name="lastName"
+                      ngModel
                       required>
                       <mdb-error *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
                         Enter your Name</mdb-error>
@@ -54,6 +58,8 @@
               id="materialRegisterFormEmail"
               class="form-control"
               formControlName="email"
+              name="email"
+              ngModel
               required>
               <mdb-error *ngIf="email.invalid && (email.dirty || email.touched)">
                 Enter valid Name</mdb-error>
@@ -68,7 +74,9 @@
               id="materialRegisterFormPassword"
               class="form-control"
               aria-describedby="materialRegisterFormPasswordHelpBlock"
-              formControlName="password">
+              formControlName="password"
+              name="password"
+              ngModel>
               <mdb-error *ngIf="password.invalid && (password.dirty || password.touched)">
                 Password is not satisfying required rules</mdb-error>
                 <mdb-success *ngIf="password.valid && (password.dirty || password.touched)"
@@ -87,7 +95,9 @@
               class="form-control"
               aria-describedby="materialRegisterFormPhoneHelpBlock"
               required
-              formControlName="contactno">
+              formControlName="contactno"
+              name="contactno"
+              ngModel>
               <mdb-error *ngIf="contactno.invalid && (contactno.dirty || contactno.touched)">
                 Phone no must contain 10 digits</mdb-error>
               <label for="materialRegisterFormPhone">Phone number</label>

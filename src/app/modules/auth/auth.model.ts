@@ -3,16 +3,27 @@ export interface Merchant {
   merchant_type: string;
   first_name: string;
   last_name: string;
+  profile_pic: string;
   nic: string;
   email: string;
   password: string;
   contact_no: string;
   address_line1: string;
   address_line2: string;
+  postal_code: string;
   gender: string;
   date_of_birth: string;
   isverified: boolean;
   reg_date: string;
+}
+
+export interface MerchantTemp {
+  merchant_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  contact_no: string;
 }
 
 export interface Gender {
@@ -24,14 +35,15 @@ export interface EventPlanner {
   user_id: string;
   first_name: string;
   last_name: string;
+  profile_pic: string;
   email: string;
   password: string;
   contact_no: string;
   address_line1: string;
   address_line2: string;
+  postal_code: string;
   gender: string;
   date_of_birth: string;
-  isverified: boolean;
   reg_date: string;
 }
 

@@ -47,11 +47,16 @@ export interface EventPlanner {
   reg_date: string;
 }
 
-export interface LogIn {
+export interface User {
   user_id: string;
   user_type: string;
   fisrt_name: string;
   last_name: string;
   isverified: boolean;
   state: string;
+}
+
+export interface LogIn {
+  email: string;
+  password: string;
 }

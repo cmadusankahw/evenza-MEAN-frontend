@@ -140,7 +140,7 @@ export interface Merchant {
   merchant_type: string;
   first_name: string;
   last_name: string;
-  nic: string,
+  nic: string;
   profile_pic: string;
   email: string;
   password: string;

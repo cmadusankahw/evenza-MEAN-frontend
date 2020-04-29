@@ -12,11 +12,10 @@ import { ProductCategories, Product, Businesses, PaymentTypes } from '../product
 })
 export class SearchProductsComponent implements OnInit {
 
-  //this is main product list
+  // this is main product list
   products: Product[] = [
     {
       product_id: 'P-01',
-      business_id: 'B-01',
       business_name: 'Chiran\' Business',
       product: 'Setty Back',
       product_category: 'Wedding Eq',
@@ -32,8 +31,7 @@ export class SearchProductsComponent implements OnInit {
       delivery_service: 'DHL',
       price: 12499.00,
       payment_type: 'Pay on Meet',
-      feature_img: './assets/images/products/1.jpg',
-      image_01: './assets/images/merchant/nopic.png',
+      image_01: './assets/images/products/1.jpg',
       image_02: './assets/images/merchant/nopic.png',
       image_03: './assets/images/merchant/nopic.png'
     },
@@ -46,9 +44,9 @@ export class SearchProductsComponent implements OnInit {
       shareReplay()
     );
 
-  //filters - derived arrays from main list
+  // filters - derived arrays from main list
 
-  //filter-categories
+  // filter-categories
   categories: ProductCategories[] = [
     { id: '1', val: 'Best Selling' },
     { id: '1', val: 'Party & Celebrations' },
@@ -57,31 +55,31 @@ export class SearchProductsComponent implements OnInit {
     { id: '1', val: 'Entertainment' },
   ];
 
-  //filter-companies
+  // filter-companies
   businesses: Businesses[] = [
     { id: '1', val: 'Chiran\'s' },
     { id: '1', val: 'Manjula Catering' },
     { id: '1', val: 'Samanthi Foods' },
   ];
 
-  //filter-pay types
+  // filter-pay types
   paymentTypes: PaymentTypes[] = [
     { id: '1', val: 'Pay on Delivery' },
     { id: '2', val: 'Visa' },
     { id: '3', val: 'PayHere' },
   ];
 
-  //temp value for user ratings
+  // temp value for user ratings
   ratings = 0;
 
-  //temp slider options
+  // temp slider options
   priceStart = 0;
   priceEnd = 49999;
 
-  //filter-drawe-state
+  // filter-drawe-state
   opened = false;
 
-  //enable searching mode
+  // enable searching mode
   searching = false;
 
 

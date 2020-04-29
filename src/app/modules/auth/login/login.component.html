@@ -11,7 +11,7 @@
   <!--Card content-->
   <mdb-card-body class="px-lg-5 pd-top-min">
     <!-- Form -->
-    <form [formGroup]="loginForm" style="color: #757575;" (submit)= "loginUser()">
+    <form [formGroup]="loginForm" style="color: #757575;" (submit)= "loginUser(loginform)" #loginform="ngForm">
       <!-- Email -->
       <div class="md-form">
         <mdb-icon fas icon="envelope" class="prefix"></mdb-icon>
@@ -22,7 +22,9 @@
           id="form8"
           class="form-control"
           formControlName="email"
+          name="email"
           required
+          ngModel
         />
         <label for="form8">Email</label>
         <mdb-error *ngIf="email.invalid && (email.dirty || email.touched)"
@@ -40,6 +42,8 @@
           mdbInput
           required
           formControlName="password"
+          name="password"
+          ngModel
         />
         <mdb-error *ngIf="password.invalid && (password.dirty || password.touched)"
           >Enter Your Password</mdb-error

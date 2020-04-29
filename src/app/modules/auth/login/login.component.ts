@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
+import { EventPlanner, Merchant, User, LogIn } from '../auth.model';
+import { HttpClient } from '@angular/common/http';
+
+import { AuthService } from '../auth.service';
 
 
 @Component({
@@ -13,11 +17,18 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
 
-  //temp login check value
-  login = false;
+  // temp login check value
+  loginPassed = false;
   showAlert = false;
 
-  constructor(private router: Router) { }
+  // loggedinuser
+  signedMerchant: Merchant;
+  signedEventPlanner: EventPlanner;
+
+  // recieving user list to check
+  recievedUsers: User[];
+
+  constructor(private router: Router, private http: HttpClient, public authService: AuthService) { }
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -29,17 +40,31 @@ export class LoginComponent implements OnInit {
   get email() { return this.loginForm.get('email'); }
   get password() { return this.loginForm.get('password'); }
 
-
-  loginUser() {
+  loginUser(loginform) {
     if (this.loginForm.invalid) {
-      console.log('Form Invalid');
+
+      this.showAlert = true;
+      console.log('form invalid');
+
     } else {
-      console.log('Signin Successfull!');
-      if (this.login) {
-        this.router.navigate(['/sp/dash']);
-        this.showAlert = false;
+      this.showAlert = false;
+
+      const logIn = {
+        email: loginform.value.email,
+        password: loginform.value.password
+      };
+
+      // log in check
+      this.authService.signIn(logIn); // need a promise
+
+      // login action
+      if (this.authService.getLogin()) {
+        console.log('login successfull!');
+        // login successfull code here
+
       } else {
         this.showAlert = true;
+        console.log('login unsuccessfull!');
       }
     }
   }

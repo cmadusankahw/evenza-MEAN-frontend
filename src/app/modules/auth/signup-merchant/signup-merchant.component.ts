@@ -37,7 +37,7 @@ export class SignupMerchantComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    //unsubscribe dta of the array when comp destroy to prevent memory leaks
+    // unsubscribe dta of the array when comp destroy to prevent memory leaks
     this.merchantTempSub.unsubscribe();
   }
 

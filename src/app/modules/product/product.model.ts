@@ -2,7 +2,6 @@
 
 export interface Product {
   product_id: string;
-  business_id: string;
   business_name: string;
   product: string;
   product_category: string;
@@ -18,7 +17,6 @@ export interface Product {
   delivery_service: string;
   price: number;
   payment_type: string;
-  feature_img: string;
   image_01: string;
   image_02: string;
   image_03: string;
@@ -41,14 +39,13 @@ export interface PaymentTypes {
 
 export interface ProductCard {
   product_id: string;
-  business_id: string;
   product: string;
   description: string;
   product_category: string;
   no_of_orders: number;
   price: number;
   rating: number;
-  feature_img: string;
+  image_01: string;
 }
 
 

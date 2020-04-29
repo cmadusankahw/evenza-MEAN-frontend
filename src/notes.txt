@@ -1,5 +1,6 @@
 Ratings & Reviews:
-they are included in bookings and orders
+they are included in product and service schemas
+current rating    no_of_reatings    reviews: array
 
 once the booking -> approved || order -> delivered
 then, user is recieving a notification ->

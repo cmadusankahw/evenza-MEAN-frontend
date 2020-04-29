@@ -22,8 +22,6 @@ export class SignupComponent implements OnInit {
 
   lastEventPlannerId: string;
 
-  todayDate: string;
-
   constructor(private router: Router, public datepipe: DatePipe, public authService: AuthService) { }
 
   ngOnInit() {
@@ -42,7 +40,7 @@ export class SignupComponent implements OnInit {
   }
 
 
-  //get form elements for validation
+  // get form elements for validation
   get firstName() { return this.signupForm.get('firstName'); }
   get lastName() { return this.signupForm.get('lastName'); }
   get email() { return this.signupForm.get('email'); }
@@ -50,7 +48,7 @@ export class SignupComponent implements OnInit {
   get contactno() { return this.signupForm.get('contactno'); }
 
 
-  //signup form submit
+  // signup form submit
   signupUser(signupform) {
     if (signupform.invalid) {
       console.log('Form Invalid');
@@ -89,20 +87,20 @@ export class SignupComponent implements OnInit {
           postal_code: null,
           gender: null,
           date_of_birth: null,
-          reg_date: this.todayDate
+          reg_date: this.convertDate()
         };
 
         this.authService.addEventPlanner(eventPlanner);
         console.log(eventPlanner);
         console.log('user signed up!');
+        this.router.navigate(['/']);
       }
     }
   }
 
   convertDate() {
     const date = new Date();
-    this.todayDate = this.datepipe.transform( date, 'dd/MM/yyyy').toString();
-    console.log(this.todayDate);
+    return this.datepipe.transform( date, 'dd/MM/yyyy').toString();
   }
 
   generateMerchantId(merchantId: string) {

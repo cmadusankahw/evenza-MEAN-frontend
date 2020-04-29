@@ -27,7 +27,7 @@ export class BusinessVerifyComponent implements OnInit {
     }
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = (_event) => {
+    reader.onload = () => {
       this.sideAUrl = reader.result;
     };
     return file;
@@ -41,7 +41,7 @@ export class BusinessVerifyComponent implements OnInit {
     }
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = (_event) => {
+    reader.onload = () => {
       this.sideBUrl = reader.result;
     };
     return file;
@@ -55,7 +55,7 @@ export class BusinessVerifyComponent implements OnInit {
     }
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = (_event) => {
+    reader.onload = () => {
       this.certifyUrl = reader.result;
     };
     return file;

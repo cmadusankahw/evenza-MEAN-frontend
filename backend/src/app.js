@@ -4,7 +4,11 @@ const mongoose = require('mongoose');
 
 const app = express();
 
-mongoose.connect('mongodb+srv://chiran:tevo1NqT1TupRAFo@cluster0-sylop.mongodb.net/postapp?retryWrites=true&w=majority',
+//import app segments
+const auth = require ('./modules/auth/auth');
+const product = require ('./modules/product/product');
+
+mongoose.connect('mongodb://localhost:27017/evenza',
   { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('Connected to monogodb database..');
@@ -17,7 +21,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 //Allow CROS
-app.use((req, res, next) => {
+app.use( (req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Headers",
@@ -28,7 +32,9 @@ app.use((req, res, next) => {
   next();
 });
 
-//functions here
 
+//functions here
+app.use('/api/auth', auth);
+app.use('/api/product', product);
 
 module.exports = app;

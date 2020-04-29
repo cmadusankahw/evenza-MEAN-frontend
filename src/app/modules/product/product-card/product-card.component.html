@@ -6,7 +6,7 @@
 
                   <div class="view overlay waves-light" mdbWavesEffect>
                     <!-- Card img -->
-                    <mdb-card-img src={{prod.feature_img}} [alt]="prod.product"></mdb-card-img>
+                    <mdb-card-img src={{prod.image_01}} [alt]="prod.product"></mdb-card-img>
                     <a>
                       <div class="mask rgba-white-slight"></div>
                     </a>
@@ -90,7 +90,7 @@
 
       <div class="modal-body " style="height: 500px; overflow-y: auto;">
 
-        <app-product-details [editmode]= "false" [addnew]= "false" [isowner]="isowner"></app-product-details>
+        <app-product-details  [addnew]= "false" [isowner]="isowner"></app-product-details>
 
       </div>
 

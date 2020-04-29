@@ -207,7 +207,7 @@ import { SearchServicesComponent } from './modules/service/search-services/searc
     MatCheckboxModule,
     FullCalendarModule,
     CarouselModule,
-    MatSliderModule
+    MatSliderModule,
 
   ],
   schemas: [NO_ERRORS_SCHEMA],

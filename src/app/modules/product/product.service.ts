@@ -127,12 +127,24 @@ export class ProductService {
 
 
   // crud methods
-  addProduct(product: Product) {
-    this.http.post<{ message: string, product_id: string }>(this.url + 'product/get', product)
-      .subscribe((recievedData) => {
-        console.log(recievedData.message);
-        this.products.push(product);
-        this.productsUpdated.next([...this.products]);
+  addProduct(product: Product, images: File[]) {
+    const productData = new FormData();
+    for (const image of images) {
+      productData.append('images[]', image, image.name);
+    }
+    console.log(productData);
+    this.http.post<{image_01: string, image_02: string, image_03: string}>(this.url + 'product/get/img', productData )
+      .subscribe ((recievedImages) => {
+        console.log(recievedImages);
+        product.image_01 = recievedImages.image_01;
+        product.image_02 = recievedImages.image_02;
+        product.image_03 = recievedImages.image_03;
+        this.http.post<{ message: string, product_id: string }>(this.url + 'product/get', product)
+        .subscribe((recievedData) => {
+          console.log(recievedData.message);
+          this.products.push(product);
+          this.productsUpdated.next([...this.products]);
+      });
       });
   }
 

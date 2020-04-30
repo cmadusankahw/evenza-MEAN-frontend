@@ -57,6 +57,23 @@ product.post('/get', (req, res, next) => {
       });
 });
 
+// add product photos
+product.post('/get/img',multer({storage:storage}).array("images[]"), (req, res, next) => {
+    const url = req.protocol + '://' + req.get("host");
+    const image01Path = url+ "/images/products/" + req.files[0].filename;
+    const image02Path = url+ "/images/products/" + req.files[1].filename;
+    const image03Path = url+ "/images/products/" + req.files[2].filename;
+    console.log(image01Path);
+    console.log(image02Path);
+    console.log(image03Path);
+    res.status(200).json({
+      image_01: image01Path,
+      image_02: image02Path,
+      image_03: image03Path
+    });
+});
+
+
 //edit product
 product.put('/get/:id', (req, res, next) => {
   const product = req.body;

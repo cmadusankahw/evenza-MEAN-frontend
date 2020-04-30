@@ -22,7 +22,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   private quantitySub: Subscription ;
 
   // product id form product cards component
-  @Input() productId = 'P-01';
+  @Input() productId = 'P-03';
 
   // service is editable by parent comp
   @Input() isowner = false;
@@ -138,7 +138,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     } else {
 
       const product: Product = {
-        product_id: 'P-01',
+        product_id: 'P-03',
         business_name:  this.businessName,
         product: addProductForm.value.product,
         product_category: addProductForm.value.category,
@@ -154,13 +154,16 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         delivery_service: 'Not Assigned',
         price:  addProductForm.value.price,
         payment_type:  addProductForm.value.payment_type,
-        image_01:  addProductForm.value.image_01,
-        image_02:  addProductForm.value.image_02,
-        image_03:  addProductForm.value.image_03,
+        image_01: './assets/images/merchant/nopic.png',
+        image_02: './assets/images/merchant/nopic.png',
+        image_03: './assets/images/merchant/nopic.png',
         };
-      this.productService.addProduct(product);
+      this.productService.addProduct(product, [this.image01, this.image02, this.image03]);
       console.log(product);
       addProductForm.resetForm();
+      this.image01Url = './assets/images/merchant/nopic.png';
+      this.image02Url = './assets/images/merchant/nopic.png';
+      this.image03Url = './assets/images/merchant/nopic.png';
     }
   }
 

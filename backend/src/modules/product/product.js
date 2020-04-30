@@ -43,10 +43,8 @@ product.use(bodyParser.json());
 product.use(bodyParser.urlencoded({ extended: false }));
 
 
-//functions here
-
 //add new product
-product.post('/get', (req, res, next) => {
+product.post('/add', (req, res, next) => {
     const newProduct = new Product(req.body);
     console.log(newProduct);
     newProduct.save( function(err, product) {
@@ -58,40 +56,62 @@ product.post('/get', (req, res, next) => {
 });
 
 // add product photos
-product.post('/get/img',multer({storage:storage}).array("images[]"), (req, res, next) => {
+product.post('/add/img',multer({storage:storage}).array("images[]"), (req, res, next) => {
     const url = req.protocol + '://' + req.get("host");
-    const image01Path = url+ "/images/products/" + req.files[0].filename;
-    const image02Path = url+ "/images/products/" + req.files[1].filename;
-    const image03Path = url+ "/images/products/" + req.files[2].filename;
-    console.log(image01Path);
-    console.log(image02Path);
-    console.log(image03Path);
+    let image01Path, image02Path, image03Path = null;
+    if (req.files[0]){
+      image01Path = url+ "/images/products/" + req.files[0].filename;
+    }
+    if (req.files[1]){
+      image02Path = url+ "/images/products/" + req.files[1].filename;
+    }
+    if (req.files[2]){
+      image03Path = url+ "/images/products/" + req.files[2].filename;
+    }
     res.status(200).json({
       image_01: image01Path,
       image_02: image02Path,
       image_03: image03Path
     });
+
 });
 
-
 //edit product
-product.put('/get/:id', (req, res, next) => {
-  const product = req.body;
-  console.log(product);
-
-  res.status(200).json({
-    message: 'product updated successfully!',
+product.post('/edit/:id', (req, res, next) => {
+  const newProduct = new Product(req.body);
+  console.log(newProduct);
+  Product.updateOne({ product_id: req.params.id }, {
+    business_name:  req.body.business_name,
+    product: req.body.product,
+    product_category: req.body.product_category,
+    qty_type: req.body.qty_type,
+    description: req.body.description,
+    created_date: req.body.created_date,
+    created_time: req.body.created_time,
+    availability: req.body.availability,
+    inventory: req.body.inventory,
+    rating: req.body.rating,
+    no_of_ratings: req.body.no_of_ratings,
+    no_of_orders: req.body.no_of_orders,
+    delivery_service: req.body.delivery_service,
+    price: req.body.price,
+    payment_type: req.body.paymentTypes,
+    image_01: req.body.image_01,
+    image_02: req.body.image_02,
+    image_03: req.body.image_03
+  },
+    function (err) {
+    if (err) return console.error(err);
+    res.status(200).json({
+      message: 'product updated successfully!'
+    });
   });
 });
 
 
 //remove a product
-product.delete('/get/:id', (req, res, next) => {
-
-  const productId = req.param['id'];
-  console.log(prductId);
-  //remove product in products array code here
-
+product.delete('/edit/:id', (req, res, next) => {
+  Product.deleteOne({'product_id': req.params.id});
   res.status(200).json(
     {
       message: 'products deleted successfully!',
@@ -161,7 +181,7 @@ product.get('/pt', (req, res, next) => {
 });
 
 
-//get list of product cards
+//get list of products
 product.get('/get', (req, res, next) => {
   Product.find(function (err, products) {
     console.log(products);
@@ -170,6 +190,25 @@ product.get('/get', (req, res, next) => {
       {
         message: 'Product list recieved successfully!',
         products: products
+      }
+    );
+  });
+});
+
+//get product id of the last product
+product.get('/last', (req, res, next) => {
+  Product.find(function (err, products) {
+    var lastid;
+    if(products.length){
+      lastid = products[products.length-1].product_id;
+    } else {
+      lasid= 'P0';
+    }
+    console.log(lastid);
+    if (err) return handleError(err);
+    res.status(200).json(
+      {
+        lastid: lastid
       }
     );
   });

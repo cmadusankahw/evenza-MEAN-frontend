@@ -1,0 +1,18 @@
+Backend Routing:
+
+1)Product
+
+get req
+Get a Product:  /api/product/get/id
+Get list of products:  /api/product/get
+Get list of Payment types: /api/product/get/pt
+Get list of Quantity Types: /api/product/get/qt
+Get list of Product Categories: /api/product/get/cat
+
+post req
+Add new product: /api/product/add
+Add product images: /api/product/add/img
+Edit product: /api/product/edit/id
+
+delete req
+Delete Product: /api/product/edit/id

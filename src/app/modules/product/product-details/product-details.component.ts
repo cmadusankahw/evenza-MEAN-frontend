@@ -20,9 +20,10 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   private categorySub: Subscription ;
   private paymentTypeSub: Subscription ;
   private quantitySub: Subscription ;
+  private lastIdSub: Subscription;
 
   // product id form product cards component
-  @Input() productId = 'P-03';
+  @Input() productId = 'P3'; // should be replace with test
 
   // service is editable by parent comp
   @Input() isowner = false;
@@ -34,8 +35,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   @Input() addnew = false;
 
   // business name is send by parent comp for adding a new product
-  @Input() businessName = 'Tesst Business';
-
+  @Input() businessName = 'Test Business';
 
 
   // images to upload
@@ -47,30 +47,15 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   image03Url: any = './assets/images/merchant/nopic.png';
 
   // recieved product
-  product: Product = {
-      product_id: null,
-      business_name: null,
-      product: null,
-      product_category: null,
-      qty_type: null,
-      description: '',
-      created_date: null,
-      created_time: null,
-      availability: false,
-      inventory: 0,
-      rating: 0,
-      no_of_ratings: 0,
-      no_of_orders: 0,
-      delivery_service: null,
-      price: 0,
-      payment_type: null,
-      image_01: null,
-      image_02: null,
-      image_03: null
-    };
+  product: Product;
 
+  // last product id of the list
+  private lastId: string;
 
-    // recieved categories
+  // product removed
+  removed = false;
+
+  // recieved categories
   categories: ProductCategories[] = [];
 
   // recieved quantities
@@ -85,18 +70,24 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
               public datepipe: DatePipe) { }
 
   ngOnInit() {
-    // get the product id not 'add new' mode
+   // get the product
     if (!this.addnew) {
       this.productService.getProduct(this.productId);
       this.productSub = this.productService.getProductUpdateListener()
         .subscribe((recievedProduct: Product) => {
-          if (recievedProduct === null || recievedProduct === undefined ) {
-            return;
-          } else {
             this.product = recievedProduct;
             console.log(this.product);
-          }
-    });
+      });
+    }
+
+    // get the product id not 'add new' mode
+    if (this.addnew) {
+      this.productService.getLastProductId();
+      this.lastIdSub = this.productService.getLastIdUpdateListener()
+        .subscribe((recievedId: string) => {
+          this.lastId = recievedId;
+          console.log(this.lastId);
+        });
     }
 
     // import categories
@@ -129,7 +120,16 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.categorySub.unsubscribe();
     this.quantitySub.unsubscribe();
     this.paymentTypeSub.unsubscribe();
+    this.lastIdSub.unsubscribe();
+    this.image01Url = './assets/images/merchant/nopic.png';
+    this.image02Url = './assets/images/merchant/nopic.png';
+    this.image03Url = './assets/images/merchant/nopic.png';
+    this.image01 = null;
+    this.image02 = null;
+    this.image03 = null;
+    this.editmode = false;
   }
+
 
   // add new product
   createProduct(addProductForm: NgForm) {
@@ -138,7 +138,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     } else {
 
       const product: Product = {
-        product_id: 'P-03',
+        product_id: this.generateProductId(this.lastId),
         business_name:  this.businessName,
         product: addProductForm.value.product,
         product_category: addProductForm.value.category,
@@ -168,11 +168,10 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   // update product
-  updateProduct(updateProductForm: NgForm, productId) {
+  updateProduct(updateProductForm: NgForm) {
     if (updateProductForm.invalid) {
       console.log('Form Invalid');
     } else {
-
       const product: Product = {
         product_id: this.product.product_id,
         business_name:  this.product.business_name,
@@ -190,25 +189,26 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         delivery_service: this.product.delivery_service,
         price:  updateProductForm.value.price,
         payment_type:  updateProductForm.value.payment_type,
-        image_01:  updateProductForm.value.image_01,
-        image_02:  updateProductForm.value.image_02,
-        image_03:  updateProductForm.value.image_03,
+        image_01:  this.product.image_01,
+        image_02:  this.product.image_02,
+        image_03:  this.product.image_03,
         };
-
-      console.log(product);
-      this.productService.updateProduct(product, productId);
+      this.productService.updateProduct(product, [this.image01, this.image02, this.image03]);
       this.productSub = this.productService.getProductUpdateListener()
       .subscribe((recievedProduct: Product) => {
-      this.product = recievedProduct;
-    });
+        console.log(recievedProduct);
+        this.product = recievedProduct;
+      });
       console.log('Product updated successfully!');
       updateProductForm.resetForm();
+      this.editmode = false;
     }
   }
 
   // remove product
-  removeProduct(productId: string) {
-    console.log('product removed');
+  removeProduct() {
+    this.productService.removeProduct(this.productId);
+    this.removed = true;
   }
 
   // to get date for created date
@@ -223,13 +223,14 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     return this.datepipe.transform( date, 'shortTime').toString();
   }
 
+  // to be modified later (optional function)
   showBprofile() {
     this.router.navigate(['/sp/bprofile']);
   }
 
-  // image uploading
-  onImage01Uploaded(event) {
-    const file = event.target.files[0];
+  // image 01 uploading
+  onImage01Uploaded(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
     const mimeType = file.type;
     if (mimeType.match(/image\/*/) == null) {
       return;
@@ -242,24 +243,24 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     };
   }
 
-  // image uploading
-  onImage02Uploaded(event) {
-    const file = event.target.files[0];
-    const mimeType = file.type;
-    if (mimeType.match(/image\/*/) == null) {
-      return;
+    // image 02 uploading
+    onImage02Uploaded(event: Event) {
+      const file = (event.target as HTMLInputElement).files[0];
+      const mimeType = file.type;
+      if (mimeType.match(/image\/*/) == null) {
+        return;
+      }
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.image02 = file;
+        this.image02Url = reader.result;
+      };
     }
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      this.image02 = file;
-      this.image02Url = reader.result;
-    };
-  }
 
-  // image uploading
-  onImage03Uploaded(event) {
-    const file = event.target.files[0];
+      // image 03 uploading
+  onImage03Uploaded(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
     const mimeType = file.type;
     if (mimeType.match(/image\/*/) == null) {
       return;
@@ -272,5 +273,11 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     };
   }
 
+  generateProductId(productId: string): string {
+    let mId = +(productId.slice(1));
+    console.log(mId);
+    ++mId;
+    return 'P' + mId.toString();
+  }
 
 }

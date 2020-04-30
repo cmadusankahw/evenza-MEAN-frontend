@@ -1,4 +1,4 @@
-<div class="container-fluid" *ngIf="!editmode && !addnew">
+<div class="container-fluid" *ngIf="!editmode && !addnew && !removed">
 
   <div class="row f-image">
 
@@ -115,14 +115,14 @@
 
 
 <!--edit product-->
-<div class="container-fluid text-center" *ngIf="editmode">
+<div class="container-fluid text-center" *ngIf="editmode && !removed">
   <div class="center-txt">
     <div class="row">
       <div class="col-md-8">
         <p style="line-height:35px;"> You can change the details of <b>{{product.product}}</b> below.</p>
       </div>
       <div class="col-md-4">
-        <a role="button" mdbBtn class="btn btn-sm" color="red" text="white" (click)="removeProduct(productId)"> Remove Product</a>
+        <a role="button" mdbBtn class="btn btn-sm" color="red" text="white" (click)="removeProduct()"> Remove Product</a>
       </div>
     </div>
    </div>
@@ -216,28 +216,28 @@
       <div class="row">
         <div class="col-md-4">
           <a role="button" mdbWavesEffect (click)="img1.click()">
-            <img [src]="product.image_01" alt="front side" class="img-cls">
+            <img [src]="image01 ? image01Url : product.image_01" alt="front side" class="img-cls">
           </a>
           <input type="file" hidden="true" id="img1" #img1
-          ngModel name="image_01"  accept="image/*">
+          ngModel name="image_01"  accept="image/*"  (change)="onImage01Uploaded($event)">
           <p><b>Image 01</b></p>
         </div>
 
         <div class="col-md-4">
           <a role="button" mdbWavesEffect (click)="img2.click()">
-            <img [src]="product.image_02" alt="front side" class="img-cls">
+            <img [src]="image02 ? image02Url : product.image_02" alt="front side" class="img-cls">
           </a>
           <input type="file" hidden="true" id="img2" #img2
-          ngMode name="image_02"  accept="image/*">
+          ngMode name="image_02"  accept="image/*"  (change)="onImage02Uploaded($event)">
           <p><b>Image 02</b></p>
         </div>
 
         <div class="col-md-4">
           <a role="button" mdbWavesEffect (click)="img3.click()">
-            <img [src]="product.image_03" alt="front side" class="img-cls">
+            <img [src]="image03 ? image03Url : product.image_03" alt="front side" class="img-cls">
           </a>
           <input type="file" hidden="true" id="img3" #img3
-          name="image_03"  accept="image/*">
+          name="image_03"  accept="image/*"  (change)="onImage03Uploaded($event)">
           <p><b>Image 03</b></p>
         </div>
       </div>
@@ -246,9 +246,9 @@
   <!--back button only if !addnew-->
   <div class="btns">
     <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
-  (click)="editmode = !editmode" type="submit">Save Changes</button>
+     type="submit">Save Changes</button>
   <button mdbBtn color="secondary" class="btn btn-md edtbt" outline="yes" mdbWavesEffect
-  (click)="editmode = !editmode && editProductForm.resetForm()"  >Discard</button>
+  (click)="editmode = !editmode && editProductForm.resetForm()"  type="button">Discard</button>
   </div>
 </form>
 </div>
@@ -276,7 +276,7 @@
         <mat-label >Select Product Category</mat-label>
         <select matNativeControl required
         ngModel name="category">
-          <option [value]="cat.val" *ngFor="let cat of categories"  >
+          <option *ngFor="let cat of categories"  [value]="cat.val" >
             {{cat.val}}
           </option>
         </select>
@@ -297,7 +297,7 @@
             <mat-label >Quantity Type</mat-label>
             <select matNativeControl required
             ngModel name="quantity_type">
-             <option [value]="qty.val" *ngFor="let qty of quantities"  >
+             <option  *ngFor="let qty of quantities" [value]="qty.val" >
                {{qty.val}}
              </option>
             </select>
@@ -336,7 +336,7 @@
             <mat-label >Payment Type</mat-label>
             <select matNativeControl required
             ngModel name="payment_type">
-             <option [value]="ptype.val"  *ngFor="let ptype of paymentTypes" >
+             <option  *ngFor="let ptype of paymentTypes" [value]="ptype.val" >
               {{ptype.val}}
              </option>
             </select>
@@ -385,5 +385,13 @@
   </div>
 
 </form>
+</div>
+
+<div class="container-fluid" *ngIf= "!addnew && removed">
+  <div class="text-center" style="padding-top:20%">
+    <img src="./assets/images/other/tick.png" style="width:220px" alt="Delete Successful">
+    <br>
+    <h4><b>Product Removed!</b></h4>
+  </div>
 </div>
 

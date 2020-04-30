@@ -4,21 +4,17 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
-export class ProductService {
+export class ProductService  {
 
   private productUpdated = new Subject<Product>();
   private productsUpdated = new Subject<Product[]>();
-  private productCardUpdated = new Subject<ProductCard[]>();
-
+  private lastIdUpdated = new Subject<string>();
   private quantitiesUpdated = new Subject<QuantityTypes[]>();
   private paymentTypesupdated = new Subject<PaymentTypes[]>();
   private categoriesUpdated = new Subject<ProductCategories[]>();
 
   // to add products
   private products: Product[] = [];
-
-  // to generate list of product cards
-  private productCards: ProductCard[] = [];
 
   // to generate quanitties list
   private quantities: QuantityTypes[] = [];
@@ -29,18 +25,16 @@ export class ProductService {
   // to generate quanitties list
   private paymentTypes: PaymentTypes[] = [];
 
-  // is product owner
-  private isOwner = true;
-
   // api url (to be centralized)
   url = 'http://localhost:3000/api/';
 
   // to render selected product
   private product: Product;
 
+  // to get the very last id of the product list
+  private lastId: string;
 
   constructor(private http: HttpClient) { }
-
 
   // get methods
 
@@ -56,19 +50,13 @@ export class ProductService {
   }
 
   // get list of available product cards
-  getProductCard() {
-    this.http.get<{ message: string, productCards: ProductCard[] }>(this.url + 'product/list')
+  getProducts() {
+    this.http.get<{ message: string, products: Product[] }>(this.url + 'product/get')
       .subscribe((productList) => {
-        this.productCards = productList.productCards;
-        this.productCardUpdated.next([...this.productCards]);
+        this.products = productList.products;
+        this.productsUpdated.next([...this.products]);
       });
   }
-
-  // get owner details
-  getOwner(): boolean {
-    return this.isOwner;
-  }
-
 
   // get categories list
   getCategories() {
@@ -97,6 +85,16 @@ export class ProductService {
     });
   }
 
+  // get last product id
+  getLastProductId() {
+    this.http.get<{ lastid: string }>(this.url + 'product/last')
+    .subscribe((recievedId) => {
+      console.log(recievedId.lastid);
+      this.lastId = recievedId.lastid;
+      this.lastIdUpdated.next(this.lastId);
+    });
+  }
+
 
 
   // listners for subjects
@@ -106,10 +104,6 @@ export class ProductService {
 
   getProductsUpdateListener() {
     return this.productsUpdated.asObservable();
-  }
-
-  getProductCardUpdateListener() {
-    return this.productCardUpdated.asObservable();
   }
 
   getQuantitiesUpdateListener() {
@@ -124,42 +118,79 @@ export class ProductService {
     return this.paymentTypesupdated.asObservable();
   }
 
-
+  getLastIdUpdateListener(){
+    return this.lastIdUpdated.asObservable();
+  }
 
   // crud methods
+
+  // add new product
   addProduct(product: Product, images: File[]) {
     const productData = new FormData();
     for (const image of images) {
-      productData.append('images[]', image, image.name);
+      if (image) {
+        productData.append('images[]', image, image.name);
+      }
     }
     console.log(productData);
-    this.http.post<{image_01: string, image_02: string, image_03: string}>(this.url + 'product/get/img', productData )
+    this.http.post<{image_01: string, image_02: string, image_03: string}>(this.url + 'product/add/img', productData )
       .subscribe ((recievedImages) => {
         console.log(recievedImages);
-        product.image_01 = recievedImages.image_01;
-        product.image_02 = recievedImages.image_02;
-        product.image_03 = recievedImages.image_03;
-        this.http.post<{ message: string, product_id: string }>(this.url + 'product/get', product)
+        if (recievedImages.image_01 !== null) {
+          product.image_01 = recievedImages.image_01;
+        }
+        if (recievedImages.image_02 !== null) {
+          product.image_02 = recievedImages.image_02;
+        }
+        if (recievedImages.image_03 !== null) {
+          product.image_03 = recievedImages.image_03;
+        }
+        this.http.post<{ message: string }>(this.url + 'product/add', product)
         .subscribe((recievedData) => {
           console.log(recievedData.message);
           this.products.push(product);
           this.productsUpdated.next([...this.products]);
+          this.getLastProductId();
       });
-      });
-  }
-
-  updateProduct(product: Product, productId) {
-    this.http.put<{ message: string }>(this.url + 'product/get/:' + productId, product)
-    .subscribe((recievedData) => {
-      console.log(recievedData.message);
-      return product;
     });
   }
 
-  removeProduct(productId: string) {
-    this.http.delete<{ message: string }>(this.url + 'product/get/:' + productId)
+  // update product
+  updateProduct(product: Product, images: File[]) {
+    const productData = new FormData();
+    for (const image of images) {
+      if (image) {
+        productData.append('images[]', image, image.name);
+      }
+    }
+    console.log(productData);
+    this.http.post<{image_01: string, image_02: string, image_03: string}>(this.url + 'product/add/img', productData )
+      .subscribe ((recievedImages) => {
+      console.log(recievedImages);
+      if (recievedImages.image_01 !== null) {
+        product.image_01 = recievedImages.image_01;
+      }
+      if (recievedImages.image_02 !== null) {
+        product.image_02 = recievedImages.image_02;
+      }
+      if (recievedImages.image_03!== null) {
+        product.image_03 = recievedImages.image_03;
+      }
+      this.http.post<{ message: string }>(this.url + 'product/edit/' + product.product_id, product)
       .subscribe((recievedData) => {
         console.log(recievedData.message);
+        this.product = product;
+        this.productUpdated.next(this.product);
+    });
+  });
+  }
+
+  // remove product
+  removeProduct(productId: string) {
+    this.http.delete<{ message: string }>(this.url + 'product/edit/' + productId)
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.getProducts();
       });
   }
 

@@ -2,7 +2,7 @@
 <div class="card-deck" *ngIf="hasData()">
   <!-- Card -->
 
-                <mdb-card *ngFor="let prod of productDetailsNew">
+                <mdb-card *ngFor="let prod of products">
 
                   <div class="view overlay waves-light" mdbWavesEffect>
                     <!-- Card img -->
@@ -19,7 +19,7 @@
                     </mdb-card-title>
 
                     <!--Text-->
-                    <mdb-card-text> {{prod.description}}
+                    <mdb-card-text> {{prod.description.slice(15)+ '...'}}
                       <hr>
 
                     </mdb-card-text>
@@ -29,7 +29,8 @@
                         <span style="font-size:20px; font-weight:bold;">Rs.{{prod.price}}</span>
                       </div>
                       <div class="left-btn">
-                        <a mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect (click)="productDetails.show()">
+                        <a mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect
+                        (click)= "sendProduct(prod)" (click)="productDetails.show()">
                           <span *ngIf="isowner"> More Details </span>
                           <span *ngIf="!isowner"> Order Now </span>
                         </a>
@@ -53,9 +54,6 @@
   </div>
 
 
-
-
-
 <!--View Service Modal-->
 <div
   mdbModal
@@ -64,9 +62,8 @@
   tabindex="-1"
   role="dialog"
   aria-labelledby="myBasicModalLabel"
-  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  [config]="{ backdrop: false, ignoreBackdropClick: true, show:success }"
   aria-hidden="true"
-
 >
   <div
     class="modal-dialog modal-dialog-centered modal-lg"
@@ -79,6 +76,7 @@
           type="button"
           class="close pull-right"
           aria-label="Close"
+          (click)="success=false"
           (click)="productDetails.hide()"
         >
           <span aria-hidden="true">×</span>
@@ -90,7 +88,7 @@
 
       <div class="modal-body " style="height: 500px; overflow-y: auto;">
 
-        <app-product-details  [addnew]= "false" [isowner]="isowner"></app-product-details>
+        <app-product-details [isowner]="isowner"></app-product-details>
 
       </div>
 
@@ -98,6 +96,7 @@
         <button
           mdbBtn
           color="link"
+          (click)="success=false"
           (click)="productDetails.hide()"
           mdbWavesEffect
         >

@@ -2,7 +2,6 @@
 const Product = require("../../../models/product/product.model");
 const ProductCategories = require("../../../models/product/categories.model");
 const QuantityTypes = require("../../../models/product/quantities.model");
-const PaymentTypes = require("../../../models/paymentTypes.model");
 
 //dependency imports
 const express = require("express");
@@ -95,7 +94,7 @@ product.post('/edit/:id', (req, res, next) => {
     no_of_orders: req.body.no_of_orders,
     delivery_service: req.body.delivery_service,
     price: req.body.price,
-    payment_type: req.body.paymentTypes,
+    pay_on_delivery: req.body.pay_on_delivery,
     image_01: req.body.image_01,
     image_02: req.body.image_02,
     image_03: req.body.image_03
@@ -111,10 +110,10 @@ product.post('/edit/:id', (req, res, next) => {
 
 //remove a product
 product.delete('/edit/:id', (req, res, next) => {
-  Product.deleteOne({'product_id': req.params.id});
-  res.status(200).json(
-    {
-      message: 'products deleted successfully!',
+  Product.deleteOne({'product_id': req.params.id}).then(
+    result => {
+      console.log(result);
+      res.status(200).json({ message: "Product deleted!" });
     }
   );
 });
@@ -124,7 +123,7 @@ product.delete('/edit/:id', (req, res, next) => {
 //get selected product
 product.get('/get/:id', (req, res, next) => {
 
-  Product.findOne({ product_id: req.params.id }, function (err, product) {
+  Product.findOne({ product_id: req.params.id }, function (err,product) {
     if (err) return handleError(err);
     res.status(200).json(
       {
@@ -165,21 +164,6 @@ product.get('/qt', (req, res, next) => {
   });
 });
 
-//get payment types
-product.get('/pt', (req, res, next) => {
-
-  PaymentTypes.find(function (err, paymentTypes) {
-    console.log(paymentTypes);
-    if (err) return handleError(err);
-    res.status(200).json(
-      {
-        message: 'Payment types recieved successfully!',
-        paymentTypes: paymentTypes
-      }
-    );
-  });
-});
-
 
 //get list of products
 product.get('/get', (req, res, next) => {
@@ -202,7 +186,7 @@ product.get('/last', (req, res, next) => {
     if(products.length){
       lastid = products[products.length-1].product_id;
     } else {
-      lasid= 'P0';
+      lastid= 'P0';
     }
     console.log(lastid);
     if (err) return handleError(err);

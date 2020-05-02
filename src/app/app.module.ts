@@ -96,6 +96,8 @@ import { SellerInventoryComponent } from './modules/seller/seller-inventory/sell
 import { SellerDeliveryComponent } from './modules/seller/seller-delivery/seller-delivery.component';
 import { SearchProductsComponent } from './modules/product/search-products/search-products.component';
 import { SearchServicesComponent } from './modules/service/search-services/search-services.component';
+import { AddNewProductComponent } from './modules/product/add-new-product/add-new-product.component';
+import { AddnewServiceComponent } from './modules/service/addnew-service/addnew-service.component';
 
 
 
@@ -163,6 +165,8 @@ import { SearchServicesComponent } from './modules/service/search-services/searc
     SellerDeliveryComponent,
     SearchProductsComponent,
     SearchServicesComponent,
+    AddNewProductComponent,
+    AddnewServiceComponent
 
 
 

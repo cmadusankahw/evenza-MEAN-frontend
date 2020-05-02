@@ -16,7 +16,7 @@ export interface Product {
   no_of_orders: number;
   delivery_service: string;
   price: number;
-  payment_type: string;
+  pay_on_delivery: boolean;
   image_01: string;
   image_02: string;
   image_03: string;

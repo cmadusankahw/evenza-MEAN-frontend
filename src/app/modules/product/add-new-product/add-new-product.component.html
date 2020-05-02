@@ -1,0 +1,150 @@
+
+<!--add new product-->
+<div class="container-fluid text-center" >
+  <div class="center-txt">
+    <p> To create a new product, fill details below...</p>
+  </div>
+  <br>
+    <form class="service-form" (submit)="createProduct(addProductForm)" #addProductForm="ngForm">
+      <mat-form-field class="service-full-width">
+        <mat-label>Product Name</mat-label>
+        <input matInput placeholder="Product name here"  required
+        ngModel name="product" #addNewProductName="ngModel">
+        <mat-error *ngIf="addNewProductName.invalid">Please enter product name</mat-error>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field class="service-full-width">
+        <mat-label >Select Product Category</mat-label>
+        <select matNativeControl required
+        ngModel name="category">
+          <option [value]="cat.val" *ngFor="let cat of categories"  >
+            {{cat.val}}
+          </option>
+        </select>
+      </mat-form-field>
+      <br>
+      <mat-form-field class="service-full-width">
+        <mat-label class="check-label">Product Description</mat-label>
+        <textarea matInput rows="5" placeholder="Product Description"
+        ngModel name="description">
+        </textarea>
+      </mat-form-field>
+      <br>
+
+      <div class="row">
+
+        <div class="col">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label >Quantity Type</mat-label>
+            <select matNativeControl required
+            ngModel name="quantity_type">
+             <option [value]="qty.val" *ngFor="let qty of quantities"  >
+               {{qty.val}}
+             </option>
+            </select>
+          </mat-form-field>
+        </div>
+
+        <div class="col">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label>Price(Rs.)</mat-label>
+            <input matInput placeholder="0.00"  required
+            ngModel name="price" #addNewprice ="ngModel">
+            <mat-error *ngIf="addNewprice.invalid">Please enter price</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+
+        <div class="col">
+            <mat-checkbox class="check-margin"
+            ngModel name="availability">Available for Sale</mat-checkbox>
+        </div>
+
+        <div class="col">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label>Quantity</mat-label>
+            <input matInput value="0"  required type="number"
+            ngModel name="inventory" #productInventory ="ngModel">
+            <mat-error *ngIf="productInventory.invalid">Please enter quantity</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <hr>
+        <div class="text-center">
+          <mat-checkbox class="check-margin"
+          ngModel name="pay_on_delivery">Pay on Delivery</mat-checkbox>
+          <br>
+          <p class="pay-on-meet"> Note: If <b>Pay on Delivery</b> is selected, <b>no payment</b> will be charged on order. Payment need to be collected manullay. However, <b>system will charge the due commission form you.</b></p>
+        </div>
+      <hr>
+      <div class="enter-txt">
+        <p> Upload feature Images of the product (up to 3 images *5MB Max)</p>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="sidea.click()">
+            <img [src]="image01Url" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="sidea" #sidea  (change)="onImage01Uploaded($event)"
+          ngModel name="image_01"  accept="image/*">
+          <p><b>Image 01</b></p>
+        </div>
+
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="sideb.click()">
+            <img [src]="image02Url" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="sideb" #sideb (change)="onImage02Uploaded($event)"
+          ngModel name="image_02" accept="image/*">
+          <p><b>Image 02</b></p>
+        </div>
+
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="sidec.click()">
+            <img [src]="image03Url" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="sidec" #sidec  (change)="onImage03Uploaded($event)"
+          ngModel name="image_03"  accept="image/*">
+          <p><b>Image 03</b></p>
+        </div>
+      </div>
+
+    <hr>
+  <!--back button only if !addnew-->
+  <div class="btns">
+    <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
+  type="submit" (click)="bookingSuccess.show()">Create Product</button>
+  </div>
+
+</form>
+</div>
+
+
+ <!--Success Modal-->
+ <div mdbModal #bookingSuccess="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+   aria-hidden="true">
+ <div class="modal-dialog modal-notify modal-success modal-dialog-centered" role="document">
+  <!--Content-->
+  <div class="modal-content">
+    <!--Header-->
+
+    <!--Body-->
+    <div class="modal-body">
+      <div class="text-center">
+        <mdb-icon fas icon="check" size="4x" class="mb-3 animated rotateIn"></mdb-icon>
+        <p>Product Added Successfully!</p>
+      </div>
+    </div>
+
+    <!--Footer-->
+    <div class="modal-footer justify-content-center">
+      <a type="button" mdbBtn color="success" class="waves-effect" mdbWavesEffect (click)="bookingSuccess.hide()">Okay
+      </a>
+    </div>
+  </div>
+  <!--/.Content-->
+</div>
+</div >

@@ -1,4 +1,4 @@
-<div class="container-fluid" *ngIf="!editmode && !addnew && !removed">
+<div class="container-fluid" *ngIf="!editmode && !removed">
 
   <div class="row f-image">
 
@@ -68,7 +68,7 @@
             <mdb-icon far icon="calendar-alt"></mdb-icon> Categry: {{product.product_category}}
           </div>
           <div class="notify" >
-            <mdb-icon far icon="calendar-check"> </mdb-icon> {{(product.payment_type == 'Pay on Meet') ? 'Pay on Delivery' : 'Pay Online'}}
+            <mdb-icon far icon="calendar-check"> </mdb-icon> {{(product.pay_on_delivery) ? 'Pay on Delivery Available' : 'Pay Online'}}
           </div>
           <br>
           <div class="notify" *ngIf="isowner">
@@ -122,7 +122,7 @@
         <p style="line-height:35px;"> You can change the details of <b>{{product.product}}</b> below.</p>
       </div>
       <div class="col-md-4">
-        <a role="button" mdbBtn class="btn btn-sm" color="red" text="white" (click)="removeProduct()"> Remove Product</a>
+        <a role="button" mdbBtn class="btn btn-sm" color="red" text="white" (click)="removeProduct(product.product_id)"> Remove Product</a>
       </div>
     </div>
    </div>
@@ -189,24 +189,17 @@
           <mat-form-field class="service-full-width-sm">
             <mat-label>Quantity</mat-label>
             <input matInput   required type="number"
-            [ngModel]="product.inventory" name="inventory" #productInventory ="ngModel">
+            [ngModel]="product.inventory" name="inventory" #productInventory ="ngModel" value="0">
             <mat-error *ngIf="productInventory.invalid">Please enter quantity</mat-error>
           </mat-form-field>
         </div>
       </div>
-
+      <hr>
       <div class="text-center">
-        <mat-form-field class="service-full-width-sm">
-          <mat-label >Payment Type</mat-label>
-          <select matNativeControl required
-          [ngModel]="product.payment_type" name="payment_type">
-           <option [value]="ptype.val" *ngFor="let ptype of paymentTypes" >
-             {{ptype.val}}
-           </option>
-          </select>
-        </mat-form-field>
+        <mat-checkbox class="check-margin"
+        [ngModel]="product.pay_on_delivery" name="pay_on_delivery">Pay on Delivery</mat-checkbox>
         <br>
-        <p class="pay-on-meet"> Note: If <b>Pay on Deliver</b> is selected, <b>no payment</b> will be charged on order. Payment need to be collected manullay. However, <b>system will charge the due commission form you.</b></p>
+        <p class="pay-on-meet"> Note: If <b>Pay on Delivery</b> is selected, <b>no payment</b> will be charged on order. Payment need to be collected manullay. However, <b>system will charge the due commission form you.</b></p>
       </div>
 
       <hr>
@@ -254,140 +247,7 @@
 </div>
 
 
-
-
-
-<!--add new product-->
-<div class="container-fluid text-center" *ngIf="addnew">
-  <div class="center-txt">
-    <p> To create a new product, fill details below...</p>
-  </div>
-  <br>
-    <form class="service-form" (submit)="createProduct(addProductForm)" #addProductForm="ngForm">
-      <mat-form-field class="service-full-width">
-        <mat-label>Product Name</mat-label>
-        <input matInput placeholder="Product name here"  required
-        ngModel name="product" #addNewProductName="ngModel">
-        <mat-error *ngIf="addNewProductName.invalid">Please enter product name</mat-error>
-      </mat-form-field>
-      <br>
-
-      <mat-form-field class="service-full-width">
-        <mat-label >Select Product Category</mat-label>
-        <select matNativeControl required
-        ngModel name="category">
-          <option *ngFor="let cat of categories"  [value]="cat.val" >
-            {{cat.val}}
-          </option>
-        </select>
-      </mat-form-field>
-      <br>
-      <mat-form-field class="service-full-width">
-        <mat-label class="check-label">Product Description</mat-label>
-        <textarea matInput rows="5" placeholder="Product Description"
-        ngModel name="description">
-        </textarea>
-      </mat-form-field>
-      <br>
-
-      <div class="row">
-
-        <div class="col">
-          <mat-form-field class="service-full-width-sm">
-            <mat-label >Quantity Type</mat-label>
-            <select matNativeControl required
-            ngModel name="quantity_type">
-             <option  *ngFor="let qty of quantities" [value]="qty.val" >
-               {{qty.val}}
-             </option>
-            </select>
-          </mat-form-field>
-        </div>
-
-        <div class="col">
-          <mat-form-field class="service-full-width-sm">
-            <mat-label>Price(Rs.)</mat-label>
-            <input matInput placeholder="0.00"  required
-            ngModel name="price" #addNewprice ="ngModel">
-            <mat-error *ngIf="addNewprice.invalid">Please enter price</mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-      <br>
-      <div class="row">
-
-        <div class="col">
-            <mat-checkbox class="check-margin"
-            ngModel name="availability">Available for Sale</mat-checkbox>
-        </div>
-
-        <div class="col">
-          <mat-form-field class="service-full-width-sm">
-            <mat-label>Quantity</mat-label>
-            <input matInput value="0"  required type="number"
-            ngModel name="inventory" #productInventory ="ngModel">
-            <mat-error *ngIf="productInventory.invalid">Please enter quantity</mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-
-        <div class="text-center">
-          <mat-form-field class="service-full-width-sm">
-            <mat-label >Payment Type</mat-label>
-            <select matNativeControl required
-            ngModel name="payment_type">
-             <option  *ngFor="let ptype of paymentTypes" [value]="ptype.val" >
-              {{ptype.val}}
-             </option>
-            </select>
-          </mat-form-field>
-          <br>
-          <p class="pay-on-meet"> Note: If <b>Pay on Delivery</b> is selected, <b>no payment</b> will be charged on order. Payment need to be collected manullay. However, <b>system will charge the due commission form you.</b></p>
-        </div>
-      <hr>
-      <div class="enter-txt">
-        <p> Upload feature Images of the product (up to 3 images *5MB Max)</p>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <a role="button" mdbWavesEffect (click)="sidea.click()">
-            <img [src]="image01Url" alt="front side" class="img-cls">
-          </a>
-          <input type="file" hidden="true" id="sidea" #sidea  (change)="onImage01Uploaded($event)"
-          ngModel name="image_01"  accept="image/*">
-          <p><b>Image 01</b></p>
-        </div>
-
-        <div class="col-md-4">
-          <a role="button" mdbWavesEffect (click)="sideb.click()">
-            <img [src]="image02Url" alt="front side" class="img-cls">
-          </a>
-          <input type="file" hidden="true" id="sideb" #sideb (change)="onImage02Uploaded($event)"
-          ngModel name="image_02" accept="image/*">
-          <p><b>Image 02</b></p>
-        </div>
-
-        <div class="col-md-4">
-          <a role="button" mdbWavesEffect (click)="sidec.click()">
-            <img [src]="image03Url" alt="front side" class="img-cls">
-          </a>
-          <input type="file" hidden="true" id="sidec" #sidec  (change)="onImage03Uploaded($event)"
-          ngModel name="image_03"  accept="image/*">
-          <p><b>Image 03</b></p>
-        </div>
-      </div>
-
-    <hr>
-  <!--back button only if !addnew-->
-  <div class="btns">
-    <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
-  type="submit" >Create Product</button>
-  </div>
-
-</form>
-</div>
-
-<div class="container-fluid" *ngIf= "!addnew && removed">
+<div class="container-fluid" *ngIf= "removed">
   <div class="text-center" style="padding-top:20%">
     <img src="./assets/images/other/tick.png" style="width:220px" alt="Delete Successful">
     <br>

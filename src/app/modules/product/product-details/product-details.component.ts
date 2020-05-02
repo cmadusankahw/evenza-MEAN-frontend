@@ -18,12 +18,8 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   // subscription
   private productSub: Subscription ;
   private categorySub: Subscription ;
-  private paymentTypeSub: Subscription ;
   private quantitySub: Subscription ;
-  private lastIdSub: Subscription;
 
-  // product id form product cards component
-  @Input() productId = 'P3'; // should be replace with test
 
   // service is editable by parent comp
   @Input() isowner = false;
@@ -31,11 +27,8 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   // edit mode by parent comp
   editmode = false;
 
-  // add new service mode by parent comp
-  @Input() addnew = false;
-
-  // business name is send by parent comp for adding a new product
-  @Input() businessName = 'Test Business';
+  // editablity
+  @Input() editable = true;
 
 
   // images to upload
@@ -47,10 +40,27 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   image03Url: any = './assets/images/merchant/nopic.png';
 
   // recieved product
-  product: Product;
-
-  // last product id of the list
-  private lastId: string;
+  product: Product = {
+        product_id: null,
+        business_name:  null,
+        product: null,
+        product_category: null,
+        qty_type: null,
+        description: null,
+        created_date: null,
+        created_time: null,
+        availability: null,
+        inventory: null,
+        rating: null,
+        no_of_ratings: null,
+        no_of_orders: null,
+        delivery_service: null,
+        price:  null,
+        pay_on_delivery:  null,
+        image_01:  null,
+        image_02:  null,
+        image_03:  null
+  };
 
   // product removed
   removed = false;
@@ -61,8 +71,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   // recieved quantities
   quantities: QuantityTypes[] = [];
 
-  // recieved payment types
-  paymentTypes: PaymentTypes[] = [];
 
 
   constructor(private router: Router,
@@ -71,56 +79,39 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
    // get the product
-    if (!this.addnew) {
-      this.productService.getProduct(this.productId);
+      this.productService.getProduct();
       this.productSub = this.productService.getProductUpdateListener()
         .subscribe((recievedProduct: Product) => {
             this.product = recievedProduct;
             console.log(this.product);
-      });
-    }
+            this.removed = false;
+            this.editmode = false;
+    });
 
-    // get the product id not 'add new' mode
-    if (this.addnew) {
-      this.productService.getLastProductId();
-      this.lastIdSub = this.productService.getLastIdUpdateListener()
-        .subscribe((recievedId: string) => {
-          this.lastId = recievedId;
-          console.log(this.lastId);
-        });
-    }
-
+      if (this.editable === true) {
     // import categories
-    this.productService.getCategories();
-    this.categorySub = this.productService.getCategoriesUpdateListener()
+      this.productService.getCategories();
+      this.categorySub = this.productService.getCategoriesUpdateListener()
         .subscribe((recievedData: ProductCategories[]) => {
         this.categories = recievedData;
         console.log(this.categories);
     });
 
-    // import payment types
-    this.productService.getPaymentTypes();
-    this.paymentTypeSub = this.productService.getPaymentTypesUpdateListener()
-        .subscribe((recievedData: PaymentTypes[]) => {
-        this.paymentTypes = recievedData;
-        console.log(this.paymentTypes);
-    });
 
     // import quantity types
-    this.productService.getQuantities();
-    this.quantitySub = this.productService.getQuantitiesUpdateListener()
+      this.productService.getQuantities();
+      this.quantitySub = this.productService.getQuantitiesUpdateListener()
          .subscribe((recievedData: QuantityTypes[]) => {
          this.quantities = recievedData;
          console.log(this.quantities);
      });
+    }
   }
 
   ngOnDestroy() {
     this.productSub.unsubscribe();
     this.categorySub.unsubscribe();
     this.quantitySub.unsubscribe();
-    this.paymentTypeSub.unsubscribe();
-    this.lastIdSub.unsubscribe();
     this.image01Url = './assets/images/merchant/nopic.png';
     this.image02Url = './assets/images/merchant/nopic.png';
     this.image03Url = './assets/images/merchant/nopic.png';
@@ -128,44 +119,9 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.image02 = null;
     this.image03 = null;
     this.editmode = false;
+    this.removed = false;
   }
 
-
-  // add new product
-  createProduct(addProductForm: NgForm) {
-    if (addProductForm.invalid) {
-      console.log('Form Invalid');
-    } else {
-
-      const product: Product = {
-        product_id: this.generateProductId(this.lastId),
-        business_name:  this.businessName,
-        product: addProductForm.value.product,
-        product_category: addProductForm.value.category,
-        qty_type: addProductForm.value.quantity_type,
-        description: addProductForm.value.description,
-        created_date: this.convertDate(),
-        created_time: this.convertTime(),
-        availability: addProductForm.value.availability,
-        inventory:  addProductForm.value.inventory,
-        rating: 0,
-        no_of_ratings: 0,
-        no_of_orders: 0,
-        delivery_service: 'Not Assigned',
-        price:  addProductForm.value.price,
-        payment_type:  addProductForm.value.payment_type,
-        image_01: './assets/images/merchant/nopic.png',
-        image_02: './assets/images/merchant/nopic.png',
-        image_03: './assets/images/merchant/nopic.png',
-        };
-      this.productService.addProduct(product, [this.image01, this.image02, this.image03]);
-      console.log(product);
-      addProductForm.resetForm();
-      this.image01Url = './assets/images/merchant/nopic.png';
-      this.image02Url = './assets/images/merchant/nopic.png';
-      this.image03Url = './assets/images/merchant/nopic.png';
-    }
-  }
 
   // update product
   updateProduct(updateProductForm: NgForm) {
@@ -181,14 +137,14 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         description: updateProductForm.value.description,
         created_date: this.product.created_date,
         created_time: this.product.created_time,
-        availability: updateProductForm.value.availability,
+        availability: this.booleanValue(updateProductForm.value.availability),
         inventory:  updateProductForm.value.inventory,
         rating: this.product.rating,
         no_of_ratings: this.product.no_of_ratings,
         no_of_orders: this.product.no_of_orders,
         delivery_service: this.product.delivery_service,
         price:  updateProductForm.value.price,
-        payment_type:  updateProductForm.value.payment_type,
+        pay_on_delivery:  this.booleanValue(updateProductForm.value.pay_on_delivery),
         image_01:  this.product.image_01,
         image_02:  this.product.image_02,
         image_03:  this.product.image_03,
@@ -206,22 +162,11 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   // remove product
-  removeProduct() {
-    this.productService.removeProduct(this.productId);
+  removeProduct(productId: string) {
+    this.productService.removeProduct(productId);
     this.removed = true;
   }
 
-  // to get date for created date
-  convertDate() {
-    const date = new Date();
-    return this.datepipe.transform( date, 'dd/MM/yyyy').toString();
-  }
-
-  // to get time for the created time
-  convertTime() {
-    const date = new Date();
-    return this.datepipe.transform( date, 'shortTime').toString();
-  }
 
   // to be modified later (optional function)
   showBprofile() {
@@ -273,11 +218,10 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     };
   }
 
-  generateProductId(productId: string): string {
-    let mId = +(productId.slice(1));
-    console.log(mId);
-    ++mId;
-    return 'P' + mId.toString();
+  booleanValue(value: any) {
+    if (value ===  '') {
+      return false;
+    } else {return value; }
   }
 
 }

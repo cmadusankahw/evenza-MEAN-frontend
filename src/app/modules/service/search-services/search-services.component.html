@@ -7,6 +7,7 @@
     <mat-nav-list>
 
       <!--filters-->
+      <form (submit)="searchServices(filterForm)" #filterForm="ngForm"></form>
       <div mat-list-item class="filters">
       <h4 style="padding-left:15px;">Filter Services..</h4>
       <hr>
@@ -16,8 +17,8 @@
         <h6> <mdb-icon fas icon="bookmark"></mdb-icon> By Category</h6>
           <mat-form-field class="cat-list">
             <mat-label >Select Category</mat-label>
-            <select matNativeControl required>
-             <option  value={{cat.val}} *ngFor="let cat of categories">
+            <select matNativeControl required ngModel name="category">
+             <option  [value]="cat.val" *ngFor="let cat of categories">
                 {{cat.val}}</option>
             </select>
           </mat-form-field>
@@ -56,9 +57,10 @@
          <div class="filter-content pd-top-filter">
           <h6> <mdb-icon fas icon="credit-card"></mdb-icon> By Payment Method</h6>
           <br>
-            <div class="filter-check"  *ngFor= "let ptypes of paymentTypes">
-            <mat-checkbox class="example-margin"
-            >{{ptypes.val}}</mat-checkbox>
+            <div class="filter-check">
+              <mat-checkbox class="example-margin" ngModel name="visa"> Visa</mat-checkbox><br>
+              <mat-checkbox class="example-margin" ngModel name="payhere"> PayHere</mat-checkbox><br>
+              <mat-checkbox class="example-margin" ngModel name="pay_on_meet">Pay on Meet</mat-checkbox>
             </div>
         </div>
 
@@ -99,10 +101,10 @@
       </div>
       <hr>
       <div class="filter-content pd-top-filter text-center">
-        <a role="button" mdbBtn color="secondary" class="btn btn-md"
-        style="margin:0 auto;" text="white" mdbWavesEffect (click)="drawer.close() && searchServices()">
+        <button mdbBtn color="secondary" class="btn btn-md"
+        style="margin:0 auto;" text="white" mdbWavesEffect (click)="drawer.close()" type="submit">
           Apply Filters
-        </a>
+        </button>
         <hr>
       </div>
 
@@ -154,10 +156,10 @@
 
         <!--categories-->
         <div class="category-list" *ngIf="!searching">
-        <div class="container product-cat shadow pd-top-min" *ngFor="let cat of categories" >
+        <div class="container product-cat shadow pd-top-min" >
           <div class="row container-fluid product-cat-h">
             <div class="col-md-6 text-md-left lead">
-                <h3 class="product-cat-heading">{{cat.val}}...</h3>
+                <h3 class="product-cat-heading">Recently Booked...</h3>
             </div>
             <div class="col-md-6 text-md-right lead product-cat-h" >
                 <a class="btn btn-outline-secondary btn-sm prev" mdbBtn mdbWavesEffect><i class="fa fa-lg fa-chevron-left"></i></a>
@@ -166,7 +168,7 @@
          </div>
             <div class="row">
               <div class="col-md-12">
-                <app-service-card [isowner]="false" [category]="cat.val"></app-service-card>
+                <app-service-card [isowner]="false"></app-service-card>
               </div>
             </div>
         </div>
@@ -176,7 +178,7 @@
       <div class="search-results container" *ngIf="searching && hasData()">
         <div class="row search-result shadow container-fluid" mdbWavesEffect *ngFor="let service of services">
           <div class="col-md-3">
-            <img src="{{service.feature_img}}" style="width:260px" alt="product.product" title="product.product" >
+            <img src="{{service.image_01}}" style="width:260px" alt="product.product" title="product.product" >
           </div>
             <div class="col-md-4 search-result-pd">
               <span class="search-result-heading"> {{service.service_name}}</span>
@@ -211,7 +213,7 @@
          <!--find out more--->
             <div class="text-center pd-top">
               <hr>
-              Find out more services to book <a class="btn btn-lg" color="secondary" mdbBtn mdbWavesEffect style="margin-left:40px;">Find more</a>
+              Find more services to book <a class="btn btn-lg" color="secondary" mdbBtn mdbWavesEffect style="margin-left:40px;">Find more</a>
             </div>
 
   </mat-sidenav-content>
@@ -251,7 +253,7 @@
 
       <div class="modal-body " style="height: 500px; overflow-y: auto;">
 
-        <app-service-details [editmode]= "false" [addnew]= "false" [isowner]="false"></app-service-details>
+        <app-service-details [editable]= "false" [isowner]="false"></app-service-details>
 
       </div>
 

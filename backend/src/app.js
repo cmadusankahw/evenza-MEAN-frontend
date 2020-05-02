@@ -8,6 +8,7 @@ const app = express();
 //import app segments
 const auth = require ('./modules/auth/auth');
 const product = require ('./modules/product/product');
+const service = require ('./modules/service/service');
 
 mongoose.connect('mongodb://localhost:27017/evenza',
   { useNewUrlParser: true, useUnifiedTopology: true })
@@ -38,5 +39,6 @@ app.use( (req, res, next) => {
 //functions here
 app.use('/api/auth', auth);
 app.use('/api/product', product);
+app.use('/api/service', service);
 
 module.exports = app;

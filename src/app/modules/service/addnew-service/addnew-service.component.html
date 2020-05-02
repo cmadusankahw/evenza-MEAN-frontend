@@ -1,0 +1,140 @@
+
+<!--add new product-->
+<div class="container-fluid text-center" >
+  <div class="center-txt">
+    <p> To create a new service, fill details below...</p>
+  </div>
+  <br>
+    <form class="service-form" (submit)="createService(addServiceForm)" #addServiceForm="ngForm">
+      <mat-form-field class="service-full-width">
+        <mat-label>Service Title</mat-label>
+        <input matInput placeholder="Service name here"  required
+        ngModel name="service_name" #addNewServiceName="ngModel">
+        <mat-error *ngIf="addNewServiceName.invalid">Please enter service title</mat-error>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field class="service-full-width">
+        <mat-label >Select Service Category</mat-label>
+        <select matNativeControl required
+        ngModel name="category">
+          <option [value]="cat.val" *ngFor="let cat of categories"  >
+            {{cat.val}}
+          </option>
+        </select>
+      </mat-form-field>
+      <br>
+      <div class="check-cls">
+        <mat-label class="check-label">Service Availability</mat-label>
+        <mat-checkbox class="check-margin" ngModel name="available_booking">Available for Booking</mat-checkbox>
+        <mat-checkbox class="check-margin" ngModel name="available_appoints">Available for Appointments</mat-checkbox>
+      </div>
+      <br>
+      <mat-form-field class="service-full-width">
+        <mat-label class="check-label">Service Description</mat-label>
+        <textarea matInput rows="5" placeholder="Service Description"
+        ngModel name="description">
+        </textarea>
+      </mat-form-field>
+      <br>
+
+      <div class="row">
+
+        <div class="col">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label >Service Rate Type</mat-label>
+            <select matNativeControl required
+            ngModel name="rate_type">
+             <option [value]="qty.val" *ngFor="let qty of rates"  >
+               {{qty.val}}
+             </option>
+            </select>
+          </mat-form-field>
+        </div>
+
+        <div class="col">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label>Service Rate(Rs.)</mat-label>
+            <input matInput placeholder="0.00"  required
+            ngModel name="rate" #addNewprice ="ngModel">
+            <mat-error *ngIf="addNewprice.invalid">Please enter price</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <hr>
+        <div class="text-center">
+          <mat-checkbox class="check-margin"
+          ngModel name="pay_on_meet">Pay on Meet</mat-checkbox>
+          <br>
+          <p class="pay-on-meet"> Note: If <b>Pay on Meet</b> is enabled, <b>no payment</b> will be charged on booking. Payment need to be collected manullay. However, <b>system will charge the due commission form you.</b></p>
+        </div>
+      <hr>
+      <div class="enter-txt">
+        <p> Upload feature Images of the product (up to 3 images *5MB Max)</p>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="sidea.click()">
+            <img [src]="image01Url" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="sidea" #sidea  (change)="onImage01Uploaded($event)"
+          ngModel name="image_01"  accept="image/*">
+          <p><b>Image 01</b></p>
+        </div>
+
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="sideb.click()">
+            <img [src]="image02Url" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="sideb" #sideb (change)="onImage02Uploaded($event)"
+          ngModel name="image_02" accept="image/*">
+          <p><b>Image 02</b></p>
+        </div>
+
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="sidec.click()">
+            <img [src]="image03Url" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="sidec" #sidec  (change)="onImage03Uploaded($event)"
+          ngModel name="image_03"  accept="image/*">
+          <p><b>Image 03</b></p>
+        </div>
+      </div>
+
+    <hr>
+  <!--back button only if !addnew-->
+  <div class="btns">
+    <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
+  type="submit" (click)="bookingSuccess.show()">Create Service</button>
+  </div>
+
+</form>
+</div>
+
+
+ <!--Success Modal-->
+ <div mdbModal #bookingSuccess="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+   aria-hidden="true">
+ <div class="modal-dialog modal-notify modal-success modal-dialog-centered" role="document">
+  <!--Content-->
+  <div class="modal-content">
+    <!--Header-->
+
+    <!--Body-->
+    <div class="modal-body">
+      <div class="text-center">
+        <mdb-icon fas icon="check" size="4x" class="mb-3 animated rotateIn"></mdb-icon>
+        <p>Service created Successfully!</p>
+      </div>
+    </div>
+
+    <!--Footer-->
+    <div class="modal-footer justify-content-center">
+      <a type="button" mdbBtn color="success" class="waves-effect" mdbWavesEffect (click)="bookingSuccess.hide()">Okay
+      </a>
+    </div>
+  </div>
+  <!--/.Content-->
+</div>
+</div >
+

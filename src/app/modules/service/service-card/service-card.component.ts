@@ -1,6 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
-import { ServiceCard} from '../service.model';
+import { Service } from '../service.model';
+import { ServiceService } from '../service.service';
 
 
 @Component({
@@ -8,41 +11,47 @@ import { ServiceCard} from '../service.model';
   templateUrl: './service-card.component.html',
   styleUrls: ['./service-card.component.scss']
 })
-export class ServiceCardComponent implements OnInit {
+export class ServiceCardComponent implements OnInit, OnDestroy {
 
-  //service card ownership
+  // subscription
+  private serviceSub: Subscription ;
+
+  // service card ownership
   @Input() isowner = false;
 
-   //filtering
-   @Input() category = 'any';
+  // filtering
+  @Input() category = 'any';
 
-  serviceDetails: ServiceCard[] = [
-    {
-      service_id: 'S-01', business_id: 'B-01', service_name: 'Dream Photography', description: 'this is sample description',
-      service_category: 'Photography', no_of_bookings: 4, no_of_appoints: 2, rating: 3.2, rate: 1500, rate_type: '/Hr', feature_img: './assets/images/services/1.jpg'
-    },
-    {
-      service_id: 'S-02', business_id: 'B-01', service_name: 'Manjula Dressing', description: 'this is sample description',
-      service_category: 'Dressing', no_of_bookings: 11, no_of_appoints: 7, rating: 2.1, rate: 1500, rate_type: '/Day',feature_img: './assets/images/services/2.jpg'
-    },
-    {
-      service_id: 'S-03', business_id: 'B-01', service_name: 'Corona Cabs', description: 'this is sample description',
-      service_category: 'Transport', no_of_bookings: 5, no_of_appoints: 1, rating: 3.5, rate: 1500, rate_type: '/Day',feature_img: './assets/images/services/3.jpg'
-    },
-    {
-      service_id: 'S-04', business_id: 'B-01', service_name: 'Photography', description: 'this is sample description',
-      service_category: 'Photography', no_of_bookings: 4, no_of_appoints: 1, rating: 4.3, rate: 1500, rate_type: '/Hr',feature_img: './assets/images/services/4.jpg'
-    }
-  ];
+  // services list
+  services: Service[] = [];
+
+  // show service details once loaded
+  success = false;
 
 
-  constructor() { }
+  constructor(private router: Router,
+              public serviceService: ServiceService) { }
 
   ngOnInit() {
+     // get the service
+     this.serviceService.getServices();
+     this.serviceSub = this.serviceService.getservicesUpdateListener()
+       .subscribe((recievedServices: Service[]) => {
+           this.services = recievedServices;
+           console.log(this.services);
+   });
   }
 
+  ngOnDestroy() {
+    this.serviceSub.unsubscribe();
+  }
+
+  sendService(service: Service) {
+    this.success = this.serviceService.setService(service);
+   }
+
   hasData() {
-    if (this.serviceDetails.length) {
+    if (this.services.length) {
       return true;
     } else {
       return false;

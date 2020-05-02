@@ -1,4 +1,4 @@
-import { Product, ProductCard, ProductCategories, QuantityTypes, PaymentTypes } from './product.model';
+import { Product, ProductCategories, QuantityTypes } from './product.model';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -10,7 +10,6 @@ export class ProductService  {
   private productsUpdated = new Subject<Product[]>();
   private lastIdUpdated = new Subject<string>();
   private quantitiesUpdated = new Subject<QuantityTypes[]>();
-  private paymentTypesupdated = new Subject<PaymentTypes[]>();
   private categoriesUpdated = new Subject<ProductCategories[]>();
 
   // to add products
@@ -21,9 +20,6 @@ export class ProductService  {
 
   // to generate quanitties list
   private categories: ProductCategories[] = [];
-
-  // to generate quanitties list
-  private paymentTypes: PaymentTypes[] = [];
 
   // api url (to be centralized)
   url = 'http://localhost:3000/api/';
@@ -36,18 +32,13 @@ export class ProductService  {
 
   constructor(private http: HttpClient) { }
 
+
   // get methods
 
-  // get the selected products
-  getProduct(productId: string) {
-    this.http.get<{ message: string, product: Product }>(this.url + 'product/get/' + productId)
-      .subscribe((recievedProduct) => {
-        console.log(recievedProduct.message);
-        console.log(recievedProduct.product);
-        this.product = recievedProduct.product;
-        this.productUpdated.next(this.product);
-      });
-  }
+  // get current produt
+ getProduct() {
+    this.productUpdated.next(this.product);
+ }
 
   // get list of available product cards
   getProducts() {
@@ -76,14 +67,6 @@ export class ProductService  {
     });
   }
 
-   // get payment types list
-   getPaymentTypes() {
-    this.http.get<{ message: string, paymentTypes: PaymentTypes[] }>(this.url + 'product/pt')
-    .subscribe((paymentTypeList) => {
-      this.paymentTypes = paymentTypeList.paymentTypes;
-      this.paymentTypesupdated.next([...this.paymentTypes]);
-    });
-  }
 
   // get last product id
   getLastProductId() {
@@ -112,10 +95,6 @@ export class ProductService  {
 
   getCategoriesUpdateListener() {
     return this.categoriesUpdated.asObservable();
-  }
-
-  getPaymentTypesUpdateListener() {
-    return this.paymentTypesupdated.asObservable();
   }
 
   getLastIdUpdateListener(){
@@ -187,11 +166,22 @@ export class ProductService  {
 
   // remove product
   removeProduct(productId: string) {
+    console.log(productId);
     this.http.delete<{ message: string }>(this.url + 'product/edit/' + productId)
       .subscribe((recievedData) => {
+        const updatedProducts = this.products.filter(prod => prod.product_id !== productId);
+        this.products = updatedProducts;
+        this.productsUpdated.next([...this.products]);
         console.log(recievedData.message);
-        this.getProducts();
+        this.getLastProductId();
       });
+  }
+
+  // set current product
+  setProduct(product: Product) {
+    this.product = product;
+    this.productUpdated.next(this.product);
+    return true;
   }
 
 }

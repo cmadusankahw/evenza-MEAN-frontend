@@ -124,9 +124,10 @@ export class ProductService  {
         if (recievedImages.image_03 !== null) {
           product.image_03 = recievedImages.image_03;
         }
-        this.http.post<{ message: string }>(this.url + 'product/add', product)
+        this.http.post<{ message: string, result: Product }>(this.url + 'product/add', product)
         .subscribe((recievedData) => {
           console.log(recievedData.message);
+          console.log(recievedData.result);
           this.products.push(product);
           this.productsUpdated.next([...this.products]);
           this.getLastProductId();
@@ -155,9 +156,10 @@ export class ProductService  {
       if (recievedImages.image_03!== null) {
         product.image_03 = recievedImages.image_03;
       }
-      this.http.post<{ message: string }>(this.url + 'product/edit/' + product.product_id, product)
+      this.http.post<{ message: string, result: Product }>(this.url + 'product/edit/' + product.product_id, product)
       .subscribe((recievedData) => {
         console.log(recievedData.message);
+        console.log(recievedData.result);
         this.product = product;
         this.productUpdated.next(this.product);
     });

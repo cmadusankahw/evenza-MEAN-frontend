@@ -1,100 +1,72 @@
-import { Merchant, EventPlanner, User, MerchantTemp, LogIn } from './auth.model';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
+import { Merchant, EventPlanner, User, MerchantTemp, LogIn } from './auth.model';
+
 @Injectable({providedIn: 'root'})
 export class AuthService {
   private merchantUpdated = new Subject<Merchant[]>();
-  private merchantTempUpdated = new Subject<MerchantTemp[]>();
   private eventPlannerUpdated = new Subject<EventPlanner[]>();
   private userUpdated = new Subject<User[]>();
+  private lastIdUpdated = new Subject<string>();
 
-  private merchant: Merchant [] = [];
-  private eventplanner: EventPlanner [] = [];
-  private recivedUser: User [] = [];
-
-  private signedMerchant: Merchant;
-  private signedEventPlanner: EventPlanner;
-  private login: LogIn;
+  private merchants: Merchant [] = [];
+  private eventPlanners: EventPlanner [] = [];
+  private users: User [] = [];
 
   // for merchant data passing
-  private merchantTemp: MerchantTemp [] = [];
+  private merchantTemp: MerchantTemp ;
 
-  private isMerchant = true;
-  url = 'http://localhost:3000/api';
+  // user type
+  private userType = false;
 
-  // login status
-  private loginPassed = false;
+  url = 'http://localhost:3000/api/';
 
+  // last signed user id
+  private lastId: string;
 
   constructor(private http: HttpClient) {}
 
-
-
   // get methods
-
-  getMerchant() {
-    this.http.get<{message: string, merchant: Merchant}>(this.url + '/auth/merchant')
-    .subscribe((recievedMerhant) => {
-      this.signedMerchant = recievedMerhant.merchant;
-    });
-  }
-
-  getEventPlanner() {
-    this.http.get<{message: string, eventPlanner: EventPlanner}>(this.url + '/auth/eventplanner')
-    .subscribe((recievedEventplanner) => {
-      this.signedEventPlanner = recievedEventplanner.eventPlanner;
-    });
-  }
 
   // return merchant Temp array between comps
   getMerchantTemp() {
-      return [...this.merchantTemp];
+      if (this.merchantTemp) {
+        return this.merchantTemp;
+      }
+
   }
 
-  // get users list to login check
+  // get users list to login
   getUser() {
-    this.http.get<{message: string, user: User[]}>(this.url + '/auth/users')
+    this.http.get<{message: string, users: User[]}>(this.url + 'auth/users')
       .subscribe((recievedUsers) => {
-        this.recivedUser = recievedUsers.user;
-        this.userUpdated.next([...this.recivedUser]);
+        this.users = recievedUsers.users;
+        this.userUpdated.next([...this.users]);
       });
   }
 
-  // get login state
-  getLogin(): boolean {
-    return this.loginPassed;
-  }
-
-
-
-  // logic related methods
-
+  // get user type in signup-select
   getUserType() {
-    return this.isMerchant;
+        return this.userType;
   }
 
-
-  getLastMerchantId() {
-    if (this.merchant.length > 1) {
-      return this.merchant[this.merchant.length - 1].merchant_id;
-    } else if (this.merchant.length === 1) {
-      return this.merchant[0].merchant_id;
-    } else {
-      return 'M0';
-    }
+   // get last product id
+   getLastUserId() {
+     if (this.users.length) {
+        this.lastId = this.users[this.users.length - 1].user_id;
+        this.lastIdUpdated.next(this.lastId);
+     } else {
+        this.http.get<{ lastid: string }>(this.url + 'auth/last')
+        .subscribe((recievedId) => {
+          console.log(recievedId.lastid);
+          this.lastId = recievedId.lastid;
+          this.lastIdUpdated.next(this.lastId);
+        });
+     }
   }
 
-  getLastEventPlannerId() {
-    if (this.eventplanner.length > 1) {
-      return this.eventplanner[this.eventplanner.length - 1].user_id;
-    } else if (this.eventplanner.length === 1) {
-      return this.eventplanner[0].user_id;
-    } else {
-      return 'U0';
-    }
-  }
 
 
 
@@ -104,54 +76,92 @@ export class AuthService {
     return this.merchantUpdated.asObservable();
   }
 
+
   getEventPlannerUpdateListener() {
     return this.eventPlannerUpdated.asObservable();
   }
 
-  getMerchantTempUpdateListener() {
-    return this.merchantTempUpdated.asObservable();
-  }
 
   getUserUpdateListener() {
     return this.userUpdated.asObservable();
   }
 
+  getLastIdUpdateListener() {
+    return this.lastIdUpdated.asObservable();
+  }
+
+
 
 
   // set methods
 
-  addMerchant(merchant: Merchant) {
-
-    this.merchant.push(merchant);
-    this.merchantUpdated.next([...this.merchant]);
-  }
-
-  addEventPlanner(eventplanner: EventPlanner) {
-
-    this.eventplanner.push(eventplanner);
-    this.eventPlannerUpdated.next([...this.eventplanner]);
-  }
-
-  addMerchantTemp(merchantTemp: MerchantTemp) {
-
-    this.merchantTemp.push(merchantTemp);
-  }
-
-  setUserType(userType: boolean) {
-    this.isMerchant = userType;
-  }
-
-  signIn(login: LogIn) {
-    const newLogin = {
-      email: login.email,
-      password: login.password
+  // add merchant
+  addMerchant(merchant: Merchant, password: string) {
+    const user: User = {
+      user_id: merchant.user_id,
+      user_type: merchant.user_type,
+      email: merchant.email,
+      password,
+      state: false,
     };
-    this.http.post<{message: string, loginpassed: boolean}>(this.url + '/auth/login', newLogin)
-    .subscribe((recievedLogin) => {
-        this.loginPassed =  recievedLogin.loginpassed;
-        console.log(recievedLogin.message);
-        console.log(this.loginPassed);
-    });
+    this.http.post<{ message: string, result: User }>(this.url + 'auth/signup/user', user)
+    .subscribe((recievedData) => {
+      console.log(recievedData.message);
+      console.log(recievedData.result);
+      this.users.push(user);
+      this.userUpdated.next([...this.users]);
+      this.http.post<{ message: string }>(this.url + 'auth/signup/merchant', merchant)
+        .subscribe((recievedMessage) => {
+          console.log(recievedMessage.message);
+          this.merchants.push(merchant);
+          this.merchantUpdated.next([...this.merchants]);
+          this.getLastUserId();
+          alert('Successfully Signed Up!');
+            });
+   });
+  }
+
+  // add event planner
+  addEventPlanner(eventPlanner: EventPlanner, password: string) {
+    const user: User = {
+      user_id: eventPlanner.user_id,
+      user_type: 'eventPlanner',
+      email: eventPlanner.email,
+      password,
+      state: false,
+    };
+    this.http.post<{ message: string, result: User }>(this.url + 'auth/signup/user', user)
+    .subscribe((recievedData) => {
+      console.log(recievedData.message);
+      console.log(recievedData.result);
+      this.users.push(user);
+      this.userUpdated.next([...this.users]);
+      this.http.post<{ message: string }>(this.url + 'auth/signup/planner', eventPlanner)
+        .subscribe((recievedMessage) => {
+          console.log(recievedMessage.message);
+          this.eventPlanners.push(eventPlanner);
+          this.eventPlannerUpdated.next([...this.eventPlanners]);
+          this.getLastUserId();
+          alert('Successfully Signed Up!');
+            });
+   });
+  }
+
+ // add a new Merchant Temp
+  addMerchantTemp(merchantTemp: MerchantTemp) {
+    this.merchantTemp = merchantTemp;
+  }
+
+  // set user type
+  setUserType(userType: boolean) {
+    this.userType = userType;
+    console.log(this.userType);
+  }
+
+
+  // log in user
+  signIn() {
+
   }
 
 }

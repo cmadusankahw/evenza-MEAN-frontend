@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit,  OnDestroy } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
 import { EventPlanner, MerchantTemp } from '../auth.model';
 import { AuthService } from '../auth.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -12,19 +13,24 @@ import { AuthService } from '../auth.service';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, OnDestroy {
+
+  private lastIdSub: Subscription;
 
   signupForm: FormGroup;
 
-  ismerchant: boolean;
+  // user type
+  userType: boolean;
 
-  lastMerchantId: string;
+  // last user Id
+  private lastid: string;
 
-  lastEventPlannerId: string;
-
-  constructor(private router: Router, public datepipe: DatePipe, public authService: AuthService) { }
+  constructor(private router: Router,
+              public datepipe: DatePipe,
+              public authService: AuthService) { }
 
   ngOnInit() {
+    // signup form validators
     this.signupForm = new FormGroup({
       firstName: new FormControl(null, [Validators.required]),
       lastName: new FormControl(null, [Validators.required]),
@@ -32,13 +38,32 @@ export class SignupComponent implements OnInit {
       password: new FormControl(null, [Validators.required, Validators.pattern('^(?=.*\d).{7,}$')]),
       contactno: new FormControl(null, [Validators.required, Validators.minLength(10), Validators.maxLength(10)])
     });
-    this.convertDate();
-    this.ismerchant = this.authService.getUserType();
-    console.log(this.ismerchant);
-    this.lastMerchantId = this.authService.getLastMerchantId();
-    this.lastEventPlannerId = this.authService.getLastEventPlannerId();
+
+      // get user type
+    this.userType = this.authService.getUserType();
+    console.log(this.userType);
+
+     // get last user id
+    this.authService.getLastUserId();
+    this.lastIdSub = this.authService.getLastIdUpdateListener()
+     .subscribe((lastId: string) => {
+       this.lastid = lastId;
+       console.log(this.lastid);
+     });
+
+      // router scroll
+    this.router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+          return;
+      }
+      window.scrollTo(0, 0);
+  });
+
   }
 
+  ngOnDestroy() {
+    this.lastIdSub.unsubscribe();
+  }
 
   // get form elements for validation
   get firstName() { return this.signupForm.get('firstName'); }
@@ -48,53 +73,47 @@ export class SignupComponent implements OnInit {
   get contactno() { return this.signupForm.get('contactno'); }
 
 
-  // signup form submit
-  signupUser(signupform) {
+  // signup user
+  signupUser(signupform: NgForm) {
     if (signupform.invalid) {
       console.log('Form Invalid');
-      alert('Form has errors! Please check');
+      alert('Please check errors before continue!');
     } else {
-      console.log('Signup Successfull!');
 
-      if (this.ismerchant) {
-        const mid = 'M' + this.generateMerchantId(this.lastMerchantId).toString();
+      if (this.userType) {
         const merchantTemp: MerchantTemp = {
-          merchant_id: mid,
+          user_id: this.generateUserId(this.lastid),
           first_name: signupform.value.firstName,
           last_name: signupform.value.lastName,
-          email: signupform.value.email,
-          password: signupform.value.password,
-          contact_no: signupform.value.contactno
-        };
-
-        this.authService.addMerchantTemp(merchantTemp);
-        console.log(merchantTemp);
-        console.log('merchant signed up!');
-        this.router.navigate(['/register/merchant']);
-
-      } else {
-        const uid = 'U' + this.generateEventPlannerId(this.lastEventPlannerId).toString();
-        const eventPlanner: EventPlanner = {
-          user_id: uid ,
-          first_name: signupform.value.firstName,
-          last_name: signupform.value.lastName,
-          profile_pic: null,
           email: signupform.value.email,
           password: signupform.value.password,
           contact_no: signupform.value.contactno,
-          address_line1: null,
-          address_line2: null,
-          postal_code: null,
-          gender: null,
-          date_of_birth: null,
           reg_date: this.convertDate()
         };
+        this.authService.addMerchantTemp(merchantTemp);
+        console.log('merchant temp data sent!');
+        this.router.navigate(['/register/merchant']);
 
-        this.authService.addEventPlanner(eventPlanner);
+      } else {
+        const eventPlanner: EventPlanner = {
+          user_id: this.generateUserId(this.lastid),
+          first_name: signupform.value.firstName,
+          last_name: signupform.value.lastName,
+          profile_pic: './assets/images/merchant/nopic.png',
+          email: signupform.value.email,
+          contact_no: signupform.value.contactno,
+          address_line1: '',
+          address_line2: '',
+          postal_code: '',
+          gender: 'none',
+          date_of_birth: '',
+          reg_date: this.convertDate()
+        };
         console.log(eventPlanner);
-        console.log('user signed up!');
+        this.authService.addEventPlanner(eventPlanner, signupform.value.password);
         this.router.navigate(['/']);
       }
+      signupform.resetForm();
     }
   }
 
@@ -103,16 +122,11 @@ export class SignupComponent implements OnInit {
     return this.datepipe.transform( date, 'dd/MM/yyyy').toString();
   }
 
-  generateMerchantId(merchantId: string) {
-      let mId = +(merchantId.slice(1));
-      console.log(mId);
-      return ++mId;
-  }
 
-  generateEventPlannerId(eventPlannerId: string) {
-      let eId = +(eventPlannerId.slice(1));
+  generateUserId(userId: string) {
+      let eId = +(userId.slice(1));
       console.log(eId);
-      return ++eId;
+      return ('U' + (++eId).toString());
   }
 
 

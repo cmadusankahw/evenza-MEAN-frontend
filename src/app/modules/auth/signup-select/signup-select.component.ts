@@ -17,10 +17,12 @@ export class SignupSelectComponent implements OnInit {
 
   navigateUser() {
     this.authService.setUserType(false);
+    console.log('eplanner');
   }
 
   navigateMerchant() {
     this.authService.setUserType(true);
+    console.log('merchant');
   }
 
 }

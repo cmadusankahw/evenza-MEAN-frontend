@@ -46,10 +46,16 @@ service.use(bodyParser.urlencoded({ extended: false }));
 service.post('/add', (req, res, next) => {
     const newService = new Service(req.body);
     console.log(newService);
-    newService.save( function(err) {
-        if (err) return console.error(err);
+    newService.save()
+    .then(result => {
         res.status(200).json({
-          message: 'service added successfully!'
+          message: 'service added successfully!',
+          ressult: result
+        });
+      })
+      .catch(err=>{
+        res.status(500).json({
+          error: err
         });
       });
 });
@@ -98,11 +104,16 @@ service.post('/edit/:id', (req, res, next) => {
     image_01: req.body.image_01,
     image_02: req.body.image_02,
     image_03: req.body.image_03
-  },
-    function (err) {
-    if (err) return console.error(err);
+  })
+  .then(result=>{
     res.status(200).json({
-      message: 'service updated successfully!'
+      message: 'service updated successfully!',
+      result: result
+    });
+  })
+  .catch(err=>{
+    res.status(500).json({
+      error: err
     });
   });
 });

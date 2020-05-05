@@ -123,9 +123,10 @@ export class ServiceService  {
         if (recievedImages.image_03 !== null) {
           service.image_03 = recievedImages.image_03;
         }
-        this.http.post<{ message: string }>(this.url + 'service/add', service)
+        this.http.post<{ message: string, result: Service }>(this.url + 'service/add', service)
         .subscribe((recievedData) => {
           console.log(recievedData.message);
+          console.log(recievedData.result);
           this.services.push(service);
           this.servicesUpdated.next([...this.services]);
           this.getLastServiceId();
@@ -154,9 +155,10 @@ export class ServiceService  {
       if (recievedImages.image_03!== null) {
         service.image_03 = recievedImages.image_03;
       }
-      this.http.post<{ message: string }>(this.url + 'service/edit/' + service.service_id, service)
+      this.http.post<{ message: string, result: Service }>(this.url + 'service/edit/' + service.service_id, service)
       .subscribe((recievedData) => {
         console.log(recievedData.message);
+        console.log(recievedData.result);
         this.service = service;
         this.serviceUpdated.next(this.service);
     });

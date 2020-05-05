@@ -10,26 +10,29 @@ import { Merchant } from '../serviceprovider.model';
 })
 export class MerchantProfileComponent implements OnInit {
 
-  //edit profile mode
+  // edit profile mode
   editmode = false;
 
-  //enabling ctomization
+  // user password
+  password = 'abcd1234';
+
+  // enabling ctomization
   @Input() isowner;
 
-  //bprofile data binding
+  // bprofile data binding
   serviceProvider: Merchant[] = [
     {
-      merchant_id: 'U-01',
-      merchant_type: 'SP',
+      user_id: 'U-01',
+      user_type: 'SP',
       first_name: 'Chiran',
       last_name: 'Hewawitharana',
       nic: '951991635V',
       profile_pic: './assets/images/merchant/user.jpg',
       email: 'cmadusankahw@gmail.com',
-      password: 'abcd1234',
       contact_no: '0711234567',
       address_line1: 'Chiran s Business, No 155',
       address_line2: 'Athtthudawa, Palatuwa',
+      postal_code: '81000',
       gender: 'Male',
       date_of_birth: '07/17/1995',
       isverified: false,

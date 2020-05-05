@@ -46,10 +46,16 @@ product.use(bodyParser.urlencoded({ extended: false }));
 product.post('/add', (req, res, next) => {
     const newProduct = new Product(req.body);
     console.log(newProduct);
-    newProduct.save( function(err, product) {
-        if (err) return console.error(err);
+    newProduct.save()
+    .then(result => {
         res.status(200).json({
-          message: 'product added successfully!'
+          message: 'product added successfully!',
+          result: result
+        });
+      })
+      .catch(err=>{
+        res.status(500).json({
+          error: err
         });
       });
 });
@@ -98,11 +104,16 @@ product.post('/edit/:id', (req, res, next) => {
     image_01: req.body.image_01,
     image_02: req.body.image_02,
     image_03: req.body.image_03
-  },
-    function (err) {
-    if (err) return console.error(err);
+  })
+  .then(result => {
     res.status(200).json({
-      message: 'product updated successfully!'
+      message: 'product updated successfully!',
+      result: result
+    });
+  })
+  .catch(err=>{
+    res.status(500).json({
+      error: err
     });
   });
 });

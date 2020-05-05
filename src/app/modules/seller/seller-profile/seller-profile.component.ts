@@ -11,26 +11,29 @@ import { Merchant } from '../seller.model';
 })
 export class SellerProfileComponent implements OnInit {
 
-  //edit profile mode
+  // edit profile mode
   editmode = false;
 
-  //enabling ctomization
+  // user password
+  password = 'abcd1234';
+
+  // enabling ctomization
   @Input() isowner;
 
-  //bprofile data binding
+  // bprofile data binding
   seller: Merchant[] = [
     {
-      merchant_id: 'U-01',
-      merchant_type: 'SEL',
+      user_id: 'U1',
+      user_type: 'SEL',
       first_name: 'Chiran',
       last_name: 'Hewawitharana',
       nic: '951991635V',
       profile_pic: './assets/images/merchant/user.jpg',
       email: 'cmadusankahw@gmail.com',
-      password: 'abcd1234',
       contact_no: '0711234567',
       address_line1: 'Chiran s Business, No 155',
       address_line2: 'Athtthudawa, Palatuwa',
+      postal_code: '81000',
       gender: 'Male',
       date_of_birth: '07/17/1995',
       isverified: false,
@@ -44,7 +47,7 @@ export class SellerProfileComponent implements OnInit {
   ngOnInit() {
   }
 
-  //string to date function
+  // string to date function
   convertDate(dob) {
     const m = Number(dob.slice(0, 2)) - 1;
     const d = Number(dob.slice(3, 5));

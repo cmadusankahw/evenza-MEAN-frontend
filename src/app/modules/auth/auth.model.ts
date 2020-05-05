@@ -1,12 +1,11 @@
 export interface Merchant {
-  merchant_id: string;
-  merchant_type: string;
+  user_id: string;
+  user_type: string;
   first_name: string;
   last_name: string;
   profile_pic: string;
   nic: string;
   email: string;
-  password: string;
   contact_no: string;
   address_line1: string;
   address_line2: string;
@@ -17,18 +16,15 @@ export interface Merchant {
   reg_date: string;
 }
 
+
 export interface MerchantTemp {
-  merchant_id: string;
+  user_id: string;
   first_name: string;
   last_name: string;
   email: string;
   password: string;
   contact_no: string;
-}
-
-export interface Gender {
-  id: string;
-  val: string;
+  reg_date: string;
 }
 
 export interface EventPlanner {
@@ -37,7 +33,6 @@ export interface EventPlanner {
   last_name: string;
   profile_pic: string;
   email: string;
-  password: string;
   contact_no: string;
   address_line1: string;
   address_line2: string;
@@ -50,10 +45,9 @@ export interface EventPlanner {
 export interface User {
   user_id: string;
   user_type: string;
-  fisrt_name: string;
-  last_name: string;
-  isverified: boolean;
-  state: string;
+  email: string;
+  password: string;
+  state: boolean;
 }
 
 export interface LogIn {

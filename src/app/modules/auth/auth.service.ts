@@ -160,8 +160,11 @@ export class AuthService {
 
 
   // log in user
-  signIn() {
-
-  }
-
+  signIn(login: LogIn) {
+    this.http.post<{ message: string, token: any }>(this.url + 'auth/signin', login)
+    .subscribe((recievedData) => {
+      console.log(recievedData.message);
+      console.log(recievedData.token);
+   });
+ }
 }

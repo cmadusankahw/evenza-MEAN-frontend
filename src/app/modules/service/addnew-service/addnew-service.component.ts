@@ -73,10 +73,18 @@ export class AddnewServiceComponent implements OnInit, OnDestroy {
 }
 
 ngOnDestroy() {
-  this.serviceSub.unsubscribe();
-  this.categorySub.unsubscribe();
-  this.ratesSub.unsubscribe();
-  this.lastIdSub.unsubscribe();
+  if (this.serviceSub) {
+    this.serviceSub.unsubscribe();
+  }
+  if (this.categorySub){
+    this.categorySub.unsubscribe();
+  }
+  if (this.ratesSub) {
+    this.ratesSub.unsubscribe();
+  }
+  if (this.lastIdSub){
+    this.lastIdSub.unsubscribe();
+  }
   this.image01Url = './assets/images/merchant/nopic.png';
   this.image02Url = './assets/images/merchant/nopic.png';
   this.image03Url = './assets/images/merchant/nopic.png';

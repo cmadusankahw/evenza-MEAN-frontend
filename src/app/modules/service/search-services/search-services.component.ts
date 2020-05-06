@@ -86,10 +86,13 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    this.serviceSub.unsubscribe();
-    this.categorySub.unsubscribe();
+    if (this.serviceSub) {
+      this.serviceSub.unsubscribe();
+    }
+    if (this.categorySub){
+      this.categorySub.unsubscribe();
+    }
   }
-
 
   search = (text$: Observable<string>) => {
     const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());

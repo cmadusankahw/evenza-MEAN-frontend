@@ -73,9 +73,12 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.productSub) {
     this.productSub.unsubscribe();
-    this.categorySub.unsubscribe();
-
+    }
+    if (this.categorySub){
+      this.categorySub.unsubscribe();
+    }
   }
 
   hasData() {

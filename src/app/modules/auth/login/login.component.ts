@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 
 import { User, LogIn } from '../auth.model';
 import { HttpClient } from '@angular/common/http';
 
 import { AuthService } from '../auth.service';
-
 
 @Component({
   selector: 'app-login',
@@ -38,16 +37,18 @@ export class LoginComponent implements OnInit {
   get password() { return this.loginForm.get('password'); }
 
 
-  loginUser(loginform) {
+  loginUser(loginform: NgForm) {
     if (this.loginForm.invalid) {
-
       this.showAlert = true;
       console.log('form invalid');
 
     } else {
       this.showAlert = false;
-
-     // login function here
+      const login: LogIn = {
+        email: loginform.value.email,
+        password: loginform.value.password
+      };
+      this.authService.signIn(login);
 
     }
   }

@@ -73,10 +73,18 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.productSub.unsubscribe();
-    this.categorySub.unsubscribe();
-    this.quantitySub.unsubscribe();
-    this.lastIdSub.unsubscribe();
+    if (this.productSub) {
+      this.productSub.unsubscribe();
+    }
+    if (this.categorySub){
+      this.categorySub.unsubscribe();
+    }
+    if (this.quantitySub) {
+      this.quantitySub.unsubscribe();
+    }
+    if (this.lastIdSub){
+      this.lastIdSub.unsubscribe();
+    }
     this.image01Url = './assets/images/merchant/nopic.png';
     this.image02Url = './assets/images/merchant/nopic.png';
     this.image03Url = './assets/images/merchant/nopic.png';

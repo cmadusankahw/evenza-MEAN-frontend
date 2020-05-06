@@ -43,7 +43,9 @@ export class ServiceCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.serviceSub.unsubscribe();
+    if (this.serviceSub) {
+      this.serviceSub.unsubscribe();
+    }
   }
 
   sendService(service: Service) {

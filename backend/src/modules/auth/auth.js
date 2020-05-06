@@ -7,6 +7,7 @@ const Merchant = require("../../../models/auth/merchant.model");
 const express = require("express");
 const bodyParser = require("body-parser");
 const bcrypt = require ("bcrypt");
+const jwt = require("jsonwebtoken");
 
 //express app declaration
 const auth = express();
@@ -98,17 +99,48 @@ auth.post('/signup/admin', (req, res, next) => {
 
 
 
-//get selected user
-auth.get('/signin/:id', (req, res, next) => {
-
-  User.findOne({ user_id: req.params.id }, function (err,user) {
-    if (err) return handleError(err);
-    res.status(200).json(
+//login user
+auth.post('/signin', (req, res, next) => {
+  let fetchedUser;
+  User.findOne({ email: req.body.email })
+  .then( user => {
+    if (!user){
+      res.status(401).json(
+        {
+          message: 'user authentication failed!',
+        });
+    }
+    fetchedUser = user;
+    console.log(user);
+    return bcrypt.compare(req.body.password, user.password);
+  })
+  .then( result => {
+    if (!result) {
+      res.status(401).json(
+        {
+          message: 'user authentication failed!',
+        });
+    }
+    // json web token here
+    const token = jwt.sign({
+      email:fetchedUser.email,
+      user_id: fetchedUser.user_id,
+      user_type: fetchedUser.user_type
+    },
+    'secret_long_text_asdvBBGH##$$sdddgfg567$33',
+    {expiresIn:"1h"});
+    res.status(200).json({
+      message: 'user authentication successfull!',
+      token:token
+    });
+  })
+  .catch(err => {
+    console.log('the error :', err);
+    res.status(401).json(
       {
-        message: 'user recieved successfully!',
-        user: user
-      }
-    );
+        message: 'user authentication failed!',
+        error: err
+      });
   });
 });
 

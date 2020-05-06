@@ -62,7 +62,9 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.lastIdSub.unsubscribe();
+    if (this.lastIdSub){
+      this.lastIdSub.unsubscribe();
+    }
   }
 
   // get form elements for validation

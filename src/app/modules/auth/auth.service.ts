@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { Merchant, EventPlanner, User, MerchantTemp, LogIn } from './auth.model';
+import { Router } from '@angular/router';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -26,7 +27,18 @@ export class AuthService {
   // last signed user id
   private lastId: string;
 
-  constructor(private http: HttpClient) {}
+  // storing token for auth validation
+  private token: string;
+
+  // timer to auto logout
+  private tokenTimer: any;
+
+  private authStatusListener = new Subject<boolean>();
+
+  private isAuthenticated = false;
+
+  constructor(private http: HttpClient,
+              private router: Router, ) {}
 
   // get methods
 
@@ -67,8 +79,15 @@ export class AuthService {
      }
   }
 
+  // get token to be used by other services
+  getToken() {
+    return this.token;
+  }
 
-
+  // get authentication status
+  getisAuth() {
+    return this.isAuthenticated;
+  }
 
   // listners for subjects
 
@@ -90,6 +109,9 @@ export class AuthService {
     return this.lastIdUpdated.asObservable();
   }
 
+  getAuhStatusListener() {
+    return this.authStatusListener.asObservable();
+  }
 
 
 
@@ -161,10 +183,88 @@ export class AuthService {
 
   // log in user
   signIn(login: LogIn) {
-    this.http.post<{ message: string, token: any }>(this.url + 'auth/signin', login)
+    this.http.post<{ message: string, token: any, expiersIn: number }>(this.url + 'auth/signin', login)
     .subscribe((recievedData) => {
       console.log(recievedData.message);
-      console.log(recievedData.token);
+
+      this.setAuthTimer(recievedData.expiersIn);
+
+      this.token = recievedData.token;
+
+      if (recievedData.token) {
+        this.isAuthenticated = true;
+        this.authStatusListener.next(true);
+
+        const now = new Date();
+        const expirationDate = new Date (now.getTime() + recievedData.expiersIn * 1000 );
+        this.saveAuthData(recievedData.token, expirationDate );
+
+        alert('Login Successfull!');
+        this.router.navigate(['/sp/dash']);
+      }
    });
  }
+
+   // auto auth user after restart
+   autoAuthUser() {
+    const authInformation = this.getAuthData();
+    if (!authInformation) {
+      return;
+    }
+    const now = new Date();
+    const expiersIn = authInformation.expiarationDate.getTime() - now.getTime();
+    if (expiersIn > 0) {
+      this.token = authInformation.token;
+      this.isAuthenticated = true;
+      this.setAuthTimer(expiersIn / 1000); // node timers works in secords (not ms)
+      this.authStatusListener.next(true);
+
+    }
+  }
+
+
+ // log out user
+ signOut() {
+   this.token = null;
+   this.isAuthenticated = false;
+   this.authStatusListener.next(false);
+   this.clearAuthData();
+   clearTimeout(this.tokenTimer);
+ }
+
+ // starts the session timer
+ private setAuthTimer(duration: number) {
+   console.log ('Setting timer to : ' + duration);
+   this.tokenTimer = setTimeout(() => {
+    this.signOut();
+    alert('Session Time Out! You have been logged out! Please log in back..');
+    this.router.navigate(['/']);
+   }, duration* 1000);
+ }
+
+ // store token and user data in local storage
+ private saveAuthData(token: string, expiarationDate: Date) {
+   localStorage.setItem('token', token);
+   localStorage.setItem('expiration', expiarationDate.toISOString());
+ }
+
+ // clear locally sotred auth data in timeout or sign out
+ private clearAuthData() {
+   localStorage.removeItem('token');
+   localStorage.removeItem('expiration');
+ }
+
+ // access locally stored auth data
+ private getAuthData() {
+   const token = localStorage.getItem('token');
+   const expiration = localStorage.getItem('expiration');
+   if (!token || !expiration) {
+     return;
+   }
+   return {
+     token,
+     expiarationDate : new Date(expiration)
+   };
+ }
+
 }

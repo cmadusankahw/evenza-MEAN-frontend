@@ -1,6 +1,6 @@
 <!-- common navbar-->
 <!--Navbar-->
-<mdb-navbar SideClass="navbar navbar-expand-lg sticky-top navbar-dark purple scrolling-navbar" [containerInside]="false" *ngIf="isCommon">
+<mdb-navbar SideClass="navbar navbar-expand-lg sticky-top navbar-dark purple scrolling-navbar" [containerInside]="false" *ngIf="!userIsAuthenticated">
 
   <!-- Navbar brand -->
   <mdb-navbar-brand><a class="navbar-brand" routerLink="/">
@@ -54,7 +54,7 @@
 
 <!--service provider navbar-->
 <!--Navbar-->
-<mdb-navbar SideClass="navbar navbar-expand-lg sticky-top navbar-dark purple scrolling-navbar" [containerInside]="false" *ngIf="isServiceProvider">
+<mdb-navbar SideClass="navbar navbar-expand-lg sticky-top navbar-dark purple scrolling-navbar" [containerInside]="false" *ngIf="userIsAuthenticated">
 
   <!-- Navbar brand -->
   <mdb-navbar-brand><a class="navbar-brand" routerLink="/">
@@ -102,7 +102,7 @@
             <mdb-icon fas icon="user" ></mdb-icon>
             &emsp;  &emsp; My Profile</a>
           <hr>
-          <a class="dropdown-item waves-light" mdbWavesEffect >
+          <a class="dropdown-item waves-light" mdbWavesEffect (click) = "onSignOut()" routerLink="/">
             <mdb-icon fas icon="sign-out-alt" ></mdb-icon>
             &emsp;  &emsp; Log out</a>
         </div>
@@ -165,7 +165,7 @@
             <mdb-icon fas icon="user" ></mdb-icon>
             &emsp;  &emsp; My Profile</a>
           <hr>
-          <a class="dropdown-item waves-light" mdbWavesEffect >
+          <a class="dropdown-item waves-light" mdbWavesEffect (click) = "onSignOut()" routerLink="/">
             <mdb-icon fas icon="sign-out-alt" ></mdb-icon>
             &emsp;  &emsp; Log out</a>
         </div>

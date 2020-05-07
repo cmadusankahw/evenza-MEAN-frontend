@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, Event, NavigationStart } from '@angular/router';
+import { AuthService } from '../auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   isSeller = false;
   isServiceProvider = false;
   isCommon = true;
@@ -16,9 +18,21 @@ export class HeaderComponent implements OnInit {
   onLogin = false;
   onRegister = false;
 
-  constructor( private router: Router) { }
+  constructor( private router: Router, private authService: AuthService) { }
+
+  private authSubs: Subscription;
+
+  userIsAuthenticated = false;
 
   ngOnInit() {
+    this.userIsAuthenticated = this.authService.getisAuth();
+    this.authSubs = this.authService.getAuhStatusListener().subscribe(
+      isAuthenticated => {
+        this.userIsAuthenticated = isAuthenticated;
+      }
+    );
+
+    // to be deleted
     this.router.events.subscribe( (e) => {
       if (e instanceof NavigationStart) {
         if (e.url === '/sp/dash' ||
@@ -73,6 +87,14 @@ export class HeaderComponent implements OnInit {
       }
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.authSubs.unsubscribe();
+  }
+
+  onSignOut(){
+    this.authService.signOut();
   }
 
 

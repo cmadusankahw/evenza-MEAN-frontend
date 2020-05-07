@@ -25,6 +25,7 @@ import { NotFoundPageComponent } from './modules/home/not-found-page/not-found-p
 import { SellerDashOrdersComponent } from './modules/seller/seller-dash/pages/seller-dash-orders/seller-dash-orders.component';
 import { SearchProductsComponent } from './modules/product/search-products/search-products.component';
 import { SearchServicesComponent } from './modules/service/search-services/search-services.component';
+import { AuthGuard } from './modules/auth/auth.guard';
 
 
 const routes: Routes = [
@@ -48,7 +49,7 @@ const routes: Routes = [
       { path: 'reports', component: DashReportsComponent },
       { path: 'profile', component: DashProfileComponent },
       { path: '**', component: NotFoundPageComponent },
-    ]
+    ], canActivate: [AuthGuard]
   },
   {
     path: 'sel/dash',
@@ -61,7 +62,7 @@ const routes: Routes = [
       { path: 'reports', component: SellerDashReportsComponent },
       { path: 'profile', component: SellerDashProfileComponent },
       { path: '**', component: NotFoundPageComponent },
-    ]
+    ], canActivate: [AuthGuard]
   },
   { path: '', component: HomeComponent },
   { path: '**', component: NotFoundPageComponent }
@@ -69,6 +70,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard]
 })
 export class AppRoutingModule { }

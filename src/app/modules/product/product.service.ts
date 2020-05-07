@@ -1,7 +1,8 @@
-import { Product, ProductCategories, QuantityTypes } from './product.model';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+
+import { Product, ProductCategories, QuantityTypes } from './product.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService  {

@@ -2,6 +2,7 @@
 const Service = require("../../../models/service/service.model");
 const ServiceCategories = require("../../../models/service/categories.model");
 const ServiceRates = require("../../../models/service/rates.model");
+const checkAuth = require("../../../middleware/auth-check");
 
 //dependency imports
 const express = require("express");
@@ -43,7 +44,7 @@ service.use(bodyParser.urlencoded({ extended: false }));
 
 
 //add new service
-service.post('/add', (req, res, next) => {
+service.post('/add',checkAuth, (req, res, next) => {
     const newService = new Service(req.body);
     console.log(newService);
     newService.save()
@@ -61,7 +62,7 @@ service.post('/add', (req, res, next) => {
 });
 
 // add service photos
-service.post('/add/img',multer({storage:storage}).array("images[]"), (req, res, next) => {
+service.post('/add/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
     const url = req.protocol + '://' + req.get("host");
     let image01Path, image02Path, image03Path = null;
     if (req.files[0]){
@@ -82,7 +83,7 @@ service.post('/add/img',multer({storage:storage}).array("images[]"), (req, res, 
 });
 
 //edit service
-service.post('/edit/:id', (req, res, next) => {
+service.post('/edit/:id',checkAuth, (req, res, next) => {
   const newService = new Service(req.body);
   console.log(newService);
   Service.updateOne({ service_id: req.params.id }, {
@@ -120,7 +121,7 @@ service.post('/edit/:id', (req, res, next) => {
 
 
 //remove a service
-service.delete('/edit/:id', (req, res, next) => {
+service.delete('/edit/:id',checkAuth, (req, res, next) => {
   Service.deleteOne({'service_id': req.params.id}).then(
     result => {
       console.log(result);

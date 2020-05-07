@@ -131,7 +131,8 @@ auth.post('/signin', (req, res, next) => {
     {expiresIn:"1h"});
     res.status(200).json({
       message: 'user authentication successfull!',
-      token:token
+      token:token,
+      expiersIn: 3600
     });
   })
   .catch(err => {

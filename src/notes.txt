@@ -80,3 +80,34 @@ relavant product service categories at the other end.
 14) Testing & Deployment
 15) Concurrent access optimization
 
+
+** Design Patterns
+------------------
+
+1. Singlethon Patterns
+    When using servics as AsObservable
+      - Using Observables is allowing only one instaance to be intiated in the relavant service class
+      - so in that case we use singlethon design pattern here
+    We use only once database connection object
+      - we use app.js as a single instance and use factory pattern to inherit others (so here also) we use singlethon
+        design pattern for the database connector object
+
+2. Adapter Design Patterns
+    using middleware
+      - multer to transorm image files to form data and upload to server
+      - json web token to encrypt decrypt login details
+      - body-parser to parse JSON data to transform from the requests
+      - password encryption
+
+3. Factory Design pattern
+  Inhertance
+  Implementation and polymorphism
+
+
+
+
+Protecting Wrappers and middleware
+----------------------------------
+  - router protecting with auth.guard class
+  - request wrapping from frontend with auth-interceptor class
+  - backend protection middleware auth-check.js to validate tokens

@@ -2,6 +2,7 @@
 const Product = require("../../../models/product/product.model");
 const ProductCategories = require("../../../models/product/categories.model");
 const QuantityTypes = require("../../../models/product/quantities.model");
+const checkAuth = require("../../../middleware/auth-check");
 
 //dependency imports
 const express = require("express");
@@ -43,7 +44,7 @@ product.use(bodyParser.urlencoded({ extended: false }));
 
 
 //add new product
-product.post('/add', (req, res, next) => {
+product.post('/add',checkAuth, (req, res, next) => {
     const newProduct = new Product(req.body);
     console.log(newProduct);
     newProduct.save()
@@ -61,7 +62,7 @@ product.post('/add', (req, res, next) => {
 });
 
 // add product photos
-product.post('/add/img',multer({storage:storage}).array("images[]"), (req, res, next) => {
+product.post('/add/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
     const url = req.protocol + '://' + req.get("host");
     let image01Path, image02Path, image03Path = null;
     if (req.files[0]){
@@ -82,7 +83,7 @@ product.post('/add/img',multer({storage:storage}).array("images[]"), (req, res, 
 });
 
 //edit product
-product.post('/edit/:id', (req, res, next) => {
+product.post('/edit/:id',checkAuth, (req, res, next) => {
   const newProduct = new Product(req.body);
   console.log(newProduct);
   Product.updateOne({ product_id: req.params.id }, {
@@ -120,7 +121,7 @@ product.post('/edit/:id', (req, res, next) => {
 
 
 //remove a product
-product.delete('/edit/:id', (req, res, next) => {
+product.delete('/edit/:id',checkAuth, (req, res, next) => {
   Product.deleteOne({'product_id': req.params.id}).then(
     result => {
       console.log(result);

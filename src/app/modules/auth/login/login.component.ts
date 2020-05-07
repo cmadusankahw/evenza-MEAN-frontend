@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 
 import { User, LogIn } from '../auth.model';
@@ -22,7 +21,8 @@ export class LoginComponent implements OnInit {
   // recieving user list to check
   recievedUsers: User;
 
-  constructor(private router: Router, private http: HttpClient, public authService: AuthService) { }
+  constructor(private http: HttpClient,
+              public authService: AuthService) { }
 
   ngOnInit() {
     // login form validation
@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [Validators.required]),
     });
+
   }
 
   // get form elements
@@ -49,7 +50,6 @@ export class LoginComponent implements OnInit {
         password: loginform.value.password
       };
       this.authService.signIn(login);
-
     }
   }
 

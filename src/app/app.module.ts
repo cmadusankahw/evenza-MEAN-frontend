@@ -1,7 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
-import { InputsModule, InputUtilitiesModule, WavesModule, ButtonsModule, ModalModule, TableModule, ChartsModule, CarouselModule } from 'angular-bootstrap-md';
+import { InputsModule,
+        InputUtilitiesModule,
+        WavesModule,
+        ButtonsModule,
+        ModalModule,
+        TableModule,
+        ChartsModule,
+        CarouselModule } from 'angular-bootstrap-md';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuModule } from '@angular/material/menu';
@@ -12,7 +19,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -98,6 +105,7 @@ import { SearchProductsComponent } from './modules/product/search-products/searc
 import { SearchServicesComponent } from './modules/service/search-services/search-services.component';
 import { AddNewProductComponent } from './modules/product/add-new-product/add-new-product.component';
 import { AddnewServiceComponent } from './modules/service/addnew-service/addnew-service.component';
+import { AuthInterceptor } from './modules/auth/auth-interceptor';
 
 
 
@@ -215,7 +223,10 @@ import { AddnewServiceComponent } from './modules/service/addnew-service/addnew-
 
   ],
   schemas: [NO_ERRORS_SCHEMA],
-  providers: [DatePipe],
+  providers: [
+    DatePipe,
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

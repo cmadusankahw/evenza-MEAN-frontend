@@ -1,29 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Router, Event, NavigationStart } from '@angular/router';
-
+import { AuthService } from 'src/app/modules/auth/auth.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   showSubMenu = false;
   home = true;
-  bProfile;
-  booking;
-  appointment;
-  calendar;
-  report;
-  profile;
+  bProfile: boolean;
+  booking: boolean;
+  appointment: boolean;
+  calendar: boolean;
+  report: boolean;
+  profile: boolean;
 
-  //create new service
+  private authSubs: Subscription;
+
+
+  // create new service
   editmode = true;
-  addnew = true;
-
 
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -32,11 +33,20 @@ export class DashboardComponent implements OnInit {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, private router: Router) { }
+  constructor(private breakpointObserver: BreakpointObserver,
+              private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
     this.routerEvents();
   }
+
+
+  ngOnDestroy() {
+    if (this.authSubs) {
+      this.authSubs.unsubscribe();
+    }
+  }
+
 
   routerEvents() {
     this.router.events.subscribe((e) => {

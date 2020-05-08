@@ -132,7 +132,9 @@ auth.post('/signin', (req, res, next) => {
     res.status(200).json({
       message: 'user authentication successfull!',
       token:token,
-      expiersIn: 3600
+      expiersIn: 3600,
+      user_type: fetchedUser.user_type,
+      user_id: fetchedUser.user_id
     });
   })
   .catch(err => {
@@ -160,6 +162,34 @@ auth.get('/last', (req, res, next) => {
     res.status(200).json(
       {
         lastid: lastid
+      }
+    );
+  });
+});
+
+// get merchant logged in
+auth.get('/get/merchant/:id', (req, res, next) => {
+
+  Merchant.findOne({ user_id: req.params.id }, function (err,merchant) {
+    if (err) return handleError(err);
+    res.status(200).json(
+      {
+        message: 'Merchant recieved successfully!',
+        merchant: merchant
+      }
+    );
+  });
+});
+
+// get event planner logged in
+auth.get('/get/planner/:id', (req, res, next) => {
+
+  EventPlanner.findOne({ user_id: req.params.id }, function (err,planner) {
+    if (err) return handleError(err);
+    res.status(200).json(
+      {
+        message: 'Event Planner recieved successfully!',
+        eventPlanner: planner
       }
     );
   });

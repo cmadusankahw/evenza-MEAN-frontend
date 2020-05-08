@@ -111,3 +111,17 @@ Protecting Wrappers and middleware
   - router protecting with auth.guard class
   - request wrapping from frontend with auth-interceptor class
   - backend protection middleware auth-check.js to validate tokens
+
+
+Development Notes
+-----------------
+
+** business profile details should be included in th merchant schema
+    - auth module MEerchant does not have all these dtails of usiness profile.
+    - using monogDB noSQL feature we only add those info to Merchant once we create a business profile
+
+** Product/service is created --> include user_id with it as ref (reference) to the merchant schema
+
+** Order/ appointment/booking is created --> user-id as reference to the created user and the service/product id
+
+** service/product id naming convention -> business_id _ service/product id  ex:- B1_S1 , B2_P1

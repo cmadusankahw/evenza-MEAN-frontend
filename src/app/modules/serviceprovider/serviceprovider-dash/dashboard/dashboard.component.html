@@ -6,8 +6,8 @@
 
     <!--profile pic-->
     <div class="pd-img">
-      <img src="./assets/images/merchant/user.jpg" alt="Merchant Pic" class="img-thumbnail " style="border-radius:50%;">
-      <h5 class="txt-white pd-top-min text-center"> {{"Service Provider"}} </h5>
+      <img [src]="merchant ? merchant.profile_pic: './assets/images/merchant/nopic.png'" alt="Merchant Pic" class="img-thumbnail " style="border-radius:50%;">
+      <h5 class="txt-white pd-top-min text-center"> {{merchant ? merchant.first_name: 'Loading..'}} </h5>
     </div>
 
     <mat-nav-list >
@@ -173,7 +173,7 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>Howday! {{"Service Provider"}}</span>
+      <span>Howday! {{merchant ? merchant.first_name: 'Loading..'}} </span>
     </mat-toolbar>
 
     <!--dashboard content-->

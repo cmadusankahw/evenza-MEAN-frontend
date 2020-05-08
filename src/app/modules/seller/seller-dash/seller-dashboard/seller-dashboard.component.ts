@@ -2,8 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, Subscription } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { Router, Event, NavigationStart } from '@angular/router';
+import { Router, NavigationStart } from '@angular/router';
 import { AuthService } from 'src/app/modules/auth/auth.service';
+
+import { Merchant } from 'src/app/modules/seller/seller.model';
 
 @Component({
   selector: 'app-seller-dashboard',
@@ -22,6 +24,11 @@ export class SellerDashboardComponent implements OnInit, OnDestroy {
 
   private authSubs: Subscription;
 
+  private merchantSubs: Subscription;
+
+  // recieved merchant
+  merchant: Merchant;
+
     // create new product
     editmode = true;
 
@@ -36,13 +43,20 @@ export class SellerDashboardComponent implements OnInit, OnDestroy {
               private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
-
     this.routerEvents();
+    this.authService.getMerchant();
+    this.merchantSubs = this.authService.getMerchantUpdateListener().subscribe (
+      merchant => {
+          this.merchant = merchant;
+      });
   }
 
   ngOnDestroy() {
     if (this.authSubs) {
       this.authSubs.unsubscribe();
+    }
+    if (this.merchantSubs) {
+      this.merchantSubs.unsubscribe();
     }
   }
 

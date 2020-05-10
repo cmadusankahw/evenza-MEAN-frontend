@@ -45,7 +45,9 @@ product.use(bodyParser.urlencoded({ extended: false }));
 
 //add new product
 product.post('/add',checkAuth, (req, res, next) => {
-    const newProduct = new Product(req.body);
+    const reqProduct = req.body;
+    reqProduct['user_id']= req.userData.user_id;
+    const newProduct = new Product(reqProduct);
     console.log(newProduct);
     newProduct.save()
     .then(result => {
@@ -104,7 +106,8 @@ product.post('/edit/:id',checkAuth, (req, res, next) => {
     pay_on_delivery: req.body.pay_on_delivery,
     image_01: req.body.image_01,
     image_02: req.body.image_02,
-    image_03: req.body.image_03
+    image_03: req.body.image_03,
+    user_id: req.userData.user_id
   })
   .then(result => {
     res.status(200).json({
@@ -131,6 +134,37 @@ product.delete('/edit/:id',checkAuth, (req, res, next) => {
 });
 
 // get methods
+
+//get list of products for search
+product.get('/get', (req, res, next) => {
+  Product.find(function (err, products) {
+    console.log(products);
+    if (err) return handleError(err);
+    res.status(200).json(
+      {
+        message: 'Product list recieved successfully!',
+        products: products
+      }
+    );
+  });
+});
+
+//get list of products to seller's business profile
+product.get('/get/seller',checkAuth, (req, res, next) => {
+  Product.find({ user_id: req.userData.user_id },function (err, products) {
+    delete products['user_id'];
+    console.log(products);
+    if (err) return handleError(err);
+    res.status(200).json(
+      {
+        message: 'Seller Product list recieved successfully!',
+        products: products
+      }
+    );
+  });
+});
+
+
 
 //get selected product
 product.get('/get/:id', (req, res, next) => {
@@ -176,20 +210,6 @@ product.get('/qt', (req, res, next) => {
   });
 });
 
-
-//get list of products
-product.get('/get', (req, res, next) => {
-  Product.find(function (err, products) {
-    console.log(products);
-    if (err) return handleError(err);
-    res.status(200).json(
-      {
-        message: 'Product list recieved successfully!',
-        products: products
-      }
-    );
-  });
-});
 
 //get product id of the last product
 product.get('/last', (req, res, next) => {

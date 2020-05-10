@@ -34,8 +34,8 @@ export class ServiceCardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
      // get the service
-     this.serviceService.getServices();
-     this.serviceSub = this.serviceService.getservicesUpdateListener()
+     this.serviceService.getServiceProviderServices();
+     this.serviceSub = this.serviceService.getServiceProviderServiceUpdateListener()
        .subscribe((recievedServices: Service[]) => {
            this.services = recievedServices;
            console.log(this.services);

@@ -2,6 +2,7 @@
 const User = require("../../../models/auth/user.model");
 const EventPlanner = require("../../../models/auth/eventPlanner.model");
 const Merchant = require("../../../models/auth/merchant.model");
+const checkAuth = require("../../../middleware/auth-check");
 
 //dependency imports
 const express = require("express");
@@ -134,7 +135,6 @@ auth.post('/signin', (req, res, next) => {
       token:token,
       expiersIn: 3600,
       user_type: fetchedUser.user_type,
-      user_id: fetchedUser.user_id
     });
   })
   .catch(err => {
@@ -168,9 +168,9 @@ auth.get('/last', (req, res, next) => {
 });
 
 // get merchant logged in
-auth.get('/get/merchant/:id', (req, res, next) => {
-
-  Merchant.findOne({ user_id: req.params.id }, function (err,merchant) {
+auth.get('/get/merchant',checkAuth, (req, res, next) => {
+  console.log(req.userData);
+  Merchant.findOne({ user_id: req.userData.user_id}, function (err,merchant) {
     if (err) return handleError(err);
     res.status(200).json(
       {
@@ -182,9 +182,9 @@ auth.get('/get/merchant/:id', (req, res, next) => {
 });
 
 // get event planner logged in
-auth.get('/get/planner/:id', (req, res, next) => {
+auth.get('/get/planner',checkAuth, (req, res, next) => {
 
-  EventPlanner.findOne({ user_id: req.params.id }, function (err,planner) {
+  EventPlanner.findOne({ user_id: req.userData.user_id }, function (err,planner) {
     if (err) return handleError(err);
     res.status(200).json(
       {
@@ -194,5 +194,33 @@ auth.get('/get/planner/:id', (req, res, next) => {
     );
   });
 });
+
+// get header details
+auth.get('/get/header',checkAuth, (req, res, next) => {
+    if (req.userData.user_type == 'planner'){
+      EventPlanner.findOne({ user_id: req.userData.user_id }, function (err,planner) {
+        if (err) return handleError(err);
+        res.status(200).json(
+          {
+            user_type: req.userData.user_type,
+            profile_pic: planner.profile_pic
+          }
+        );
+      });
+    }
+    else {
+    Merchant.findOne({ user_id: req.userData.user_id }, function (err,merchant) {
+      if (err) return handleError(err);
+      res.status(200).json(
+        {
+          user_type: req.userData.user_type,
+          profile_pic: merchant.profile_pic
+        }
+      );
+    });
+  }
+
+});
+
 
 module.exports = auth;

@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 export class ServiceService  {
 
   private serviceUpdated = new Subject<Service>();
+  private serviceProviderServiceUpdated = new Subject<Service[]>();
   private servicesUpdated = new Subject<Service[]>();
   private lastIdUpdated = new Subject<string>();
   private ratesUpdated = new Subject<ServiceRates[]>();
@@ -14,6 +15,9 @@ export class ServiceService  {
 
   // to add services
   private services: Service[] = [];
+
+  // list of service provider services
+  private serviceProviderServices: Service[] = [];
 
   // to generate rates list
   private rates: ServiceRates[] = [];
@@ -49,6 +53,15 @@ export class ServiceService  {
       });
   }
 
+    // get list of sellers only prodcts
+    getServiceProviderServices() {
+      this.http.get<{ message: string, services: Service[] }>(this.url + 'service/get/sp')
+        .subscribe((serviceList) => {
+          this.serviceProviderServices = serviceList.services;
+          this.serviceProviderServiceUpdated.next([...this.serviceProviderServices]);
+        });
+    }
+
   // get categories list
   getCategories() {
     this.http.get<{ message: string, categories: ServiceCategories[] }>(this.url + 'service/cat')
@@ -82,6 +95,10 @@ export class ServiceService  {
   // listners for subjects
   getServiceUpdateListener() {
     return this.serviceUpdated.asObservable();
+  }
+
+  getServiceProviderServiceUpdateListener() {
+    return this.serviceProviderServiceUpdated.asObservable();
   }
 
   getservicesUpdateListener() {
@@ -127,8 +144,8 @@ export class ServiceService  {
         .subscribe((recievedData) => {
           console.log(recievedData.message);
           console.log(recievedData.result);
-          this.services.push(service);
-          this.servicesUpdated.next([...this.services]);
+          this.serviceProviderServices.push(service);
+          this.serviceProviderServiceUpdated.next([...this.serviceProviderServices]);
           this.getLastServiceId();
       });
     });
@@ -170,9 +187,9 @@ export class ServiceService  {
     console.log(serviceId);
     this.http.delete<{ message: string }>(this.url + 'service/edit/' + serviceId)
       .subscribe((recievedData) => {
-        const updatedServices = this.services.filter(prod => prod.service_id !== serviceId);
-        this.services = updatedServices;
-        this.servicesUpdated.next([...this.services]);
+        const updatedServices = this.serviceProviderServices.filter(prod => prod.service_id !== serviceId);
+        this.serviceProviderServices = updatedServices;
+        this.serviceProviderServiceUpdated.next([...this.serviceProviderServices]);
         console.log(recievedData.message);
         this.getLastServiceId();
       });

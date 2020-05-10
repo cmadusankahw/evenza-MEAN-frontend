@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
-import { Product, ProductCategories, QuantityTypes, PaymentTypes } from '../product.model';
+import { Product, ProductCategories, QuantityTypes } from '../product.model';
 import { ProductService } from '../product.service';
 
 
@@ -225,7 +225,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   booleanValue(value: any) {
-    if (value ===  '') {
+    if (value ===  '' || value === null || value === undefined) {
       return false;
     } else {return value; }
   }

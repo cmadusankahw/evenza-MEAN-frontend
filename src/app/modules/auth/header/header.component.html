@@ -56,7 +56,7 @@
 <!--service provider navbar-->
 <!--Navbar-->
 <mdb-navbar SideClass="navbar navbar-expand-lg sticky-top navbar-dark purple scrolling-navbar" [containerInside]="false"
-            *ngIf="userIsAuthenticated && (signedUserType === 'serviceProvider')">
+            *ngIf="userIsAuthenticated && (headerDetails.userType === 'serviceProvider')">
 
   <!-- Navbar brand -->
   <mdb-navbar-brand><a class="navbar-brand" routerLink="/">
@@ -86,7 +86,7 @@
       <ul class="navbar-nav ">
       <li class="nav-item avatar dropdown" dropdown>
         <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
-          <img src="./assets/images/other/user.png" alt="merchant_active" height="35" class=" rounded-circle z-depth-0 img-nav"></a>
+          <img [src]="headerDetails ? headerDetails.profilePic : './assets/images/other/user.png'"  alt="merchant_active" height="35" class=" rounded-circle z-depth-0 img-nav"></a>
         <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
           <a class="dropdown-item waves-light  mx-wd" mdbWavesEffect routerLink="/sp/dash">
             <mdb-icon fas icon="tachometer-alt" ></mdb-icon>
@@ -120,7 +120,7 @@
 <!--seller navbar-->
 <!--Navbar-->
 <mdb-navbar SideClass="navbar navbar-expand-lg sticky-top navbar-dark purple scrolling-navbar" [containerInside]="false"
-          *ngIf="userIsAuthenticated && (signedUserType === 'seller')">
+          *ngIf="userIsAuthenticated && (headerDetails.userType === 'seller')">
 
   <!-- Navbar brand -->
   <mdb-navbar-brand><a class="navbar-brand" routerLink="/">
@@ -150,7 +150,7 @@
       <ul class="navbar-nav ">
       <li class="nav-item avatar dropdown" dropdown>
         <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
-          <img src="./assets/images/other/user.png" alt="merchant_active" height="35" class=" rounded-circle z-depth-0 img-nav"></a>
+          <img [src]="headerDetails ? headerDetails.profilePic : './assets/images/other/user.png'" alt="merchant_active" height="35" class=" rounded-circle z-depth-0 img-nav"></a>
         <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
           <a class="dropdown-item waves-light  mx-wd" mdbWavesEffect routerLink="/sel/dash">
             <mdb-icon fas icon="tachometer-alt" ></mdb-icon>

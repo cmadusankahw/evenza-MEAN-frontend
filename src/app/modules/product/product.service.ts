@@ -8,6 +8,7 @@ import { Product, ProductCategories, QuantityTypes } from './product.model';
 export class ProductService  {
 
   private productUpdated = new Subject<Product>();
+  private sellerProductsUpdated = new Subject<Product[]>();
   private productsUpdated = new Subject<Product[]>();
   private lastIdUpdated = new Subject<string>();
   private quantitiesUpdated = new Subject<QuantityTypes[]>();
@@ -15,6 +16,9 @@ export class ProductService  {
 
   // to add products
   private products: Product[] = [];
+
+  // list of seller products
+  private sellerProducts: Product[] = [];
 
   // to generate quanitties list
   private quantities: QuantityTypes[] = [];
@@ -47,6 +51,15 @@ export class ProductService  {
       .subscribe((productList) => {
         this.products = productList.products;
         this.productsUpdated.next([...this.products]);
+      });
+  }
+
+  // get list of sellers only prodcts
+  getSellerProducts() {
+    this.http.get<{ message: string, products: Product[] }>(this.url + 'product/get/seller')
+      .subscribe((productList) => {
+        this.sellerProducts = productList.products;
+        this.sellerProductsUpdated.next([...this.sellerProducts]);
       });
   }
 
@@ -85,6 +98,11 @@ export class ProductService  {
   getProductUpdateListener() {
     return this.productUpdated.asObservable();
   }
+
+  getSellerProductUpdateListener() {
+    return this.sellerProductsUpdated.asObservable();
+  }
+
 
   getProductsUpdateListener() {
     return this.productsUpdated.asObservable();
@@ -129,8 +147,8 @@ export class ProductService  {
         .subscribe((recievedData) => {
           console.log(recievedData.message);
           console.log(recievedData.result);
-          this.products.push(product);
-          this.productsUpdated.next([...this.products]);
+          this.sellerProducts.push(product);
+          this.sellerProductsUpdated.next([...this.sellerProducts]);
           this.getLastProductId();
       });
     });
@@ -172,9 +190,9 @@ export class ProductService  {
     console.log(productId);
     this.http.delete<{ message: string }>(this.url + 'product/edit/' + productId)
       .subscribe((recievedData) => {
-        const updatedProducts = this.products.filter(prod => prod.product_id !== productId);
-        this.products = updatedProducts;
-        this.productsUpdated.next([...this.products]);
+        const updatedProducts = this.sellerProducts.filter(prod => prod.product_id !== productId);
+        this.sellerProducts = updatedProducts;
+        this.sellerProductsUpdated.next([...this.sellerProducts]);
         console.log(recievedData.message);
         this.getLastProductId();
       });

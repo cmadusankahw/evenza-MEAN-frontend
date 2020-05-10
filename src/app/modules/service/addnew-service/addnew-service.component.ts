@@ -192,8 +192,9 @@ console.log(mId);
 return 'S' + mId.toString();
 }
 
+
 booleanValue(value: any) {
-  if (value ===  '') {
+  if (value ===  '' || value === null || value === undefined) {
     return false;
   } else {return value; }
 }

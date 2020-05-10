@@ -45,7 +45,9 @@ service.use(bodyParser.urlencoded({ extended: false }));
 
 //add new service
 service.post('/add',checkAuth, (req, res, next) => {
-    const newService = new Service(req.body);
+    const reqService = req.body;
+    reqService['user_id']= req.userData.user_id;
+    const newService = new Service(reqService);
     console.log(newService);
     newService.save()
     .then(result => {
@@ -104,7 +106,8 @@ service.post('/edit/:id',checkAuth, (req, res, next) => {
     pay_on_meet: req.body.pay_on_meet,
     image_01: req.body.image_01,
     image_02: req.body.image_02,
-    image_03: req.body.image_03
+    image_03: req.body.image_03,
+    user_id: req.userData.user_id
   })
   .then(result=>{
     res.status(200).json({
@@ -131,6 +134,37 @@ service.delete('/edit/:id',checkAuth, (req, res, next) => {
 });
 
 // get methods
+
+
+//get list of services
+service.get('/get', (req, res, next) => {
+  Service.find(function (err, services) {
+    console.log(services);
+    if (err) return handleError(err);
+    res.status(200).json(
+      {
+        message: 'Product list recieved successfully!',
+        services: services
+      }
+    );
+  });
+});
+
+//get list of service provider only services
+service.get('/get/sp',checkAuth, (req, res, next) => {
+  Service.find({ user_id: req.userData.user_id },function (err, services) {
+    delete services['user_id'];
+    console.log(services);
+    if (err) return handleError(err);
+    res.status(200).json(
+      {
+        message: 'Product list recieved successfully!',
+        services: services
+      }
+    );
+  });
+});
+
 
 //get selected service
 service.get('/get/:id', (req, res, next) => {
@@ -176,20 +210,6 @@ service.get('/rt', (req, res, next) => {
   });
 });
 
-
-//get list of services
-service.get('/get', (req, res, next) => {
-  Service.find(function (err, services) {
-    console.log(services);
-    if (err) return handleError(err);
-    res.status(200).json(
-      {
-        message: 'Product list recieved successfully!',
-        services: services
-      }
-    );
-  });
-});
 
 //get product id of the last product
 service.get('/last', (req, res, next) => {

@@ -19,31 +19,34 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private authService: AuthService) { }
 
   private authSubs: Subscription;
-  private userTypeSubs: Subscription;
+  private headerDetailsSubs: Subscription;
 
   // check if user is authneticated
   userIsAuthenticated = false;
 
   // get signed user type
-  signedUserType: string;
+  headerDetails: {userType: string, profilePic: string};
 
 
 
   ngOnInit() {
-    this.userIsAuthenticated = this.authService.getisAuth();
-    this.authSubs = this.authService.getAuhStatusListener().subscribe(
-      isAuthenticated => {
-        this.userIsAuthenticated = isAuthenticated;
-        console.log(isAuthenticated);
+    this.authService.getHeaderDetails();
+    this.headerDetailsSubs = this.authService.getHeaderDetailsListener().subscribe(
+      headerDetails => {
+        this.headerDetails = headerDetails;
+        console.log(headerDetails);
+        this.userIsAuthenticated = this.authService.getisAuth();
+        this.authSubs = this.authService.getAuhStatusListener().subscribe(
+          isAuthenticated => {
+            this.userIsAuthenticated = isAuthenticated;
+            console.log(isAuthenticated);
+          }
+        );
       }
     );
-    this.signedUserType = this.authService.getSignedUserType();
-    this.userTypeSubs = this.authService.getUserTypeListener().subscribe(
-      userType => {
-        this.signedUserType = userType;
-        console.log(userType);
-      }
-    );
+
+
+
     // hide login and signup button depend on route
     this.router.events.subscribe((e) => {
       if (e instanceof NavigationStart) {
@@ -72,8 +75,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.authSubs) {
       this.authSubs.unsubscribe();
     }
-    if (this.userTypeSubs) {
-      this.userTypeSubs.unsubscribe();
+    if (this.headerDetailsSubs) {
+      this.headerDetailsSubs.unsubscribe();
     }
 
   }

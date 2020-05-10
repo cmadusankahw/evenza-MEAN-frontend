@@ -30,16 +30,3 @@ export interface ServiceRates {
   val: string;
 }
 
-export interface ServiceCard {
-  service_id: string;
-  business_id: string;
-  service_name: string;
-  description: string;
-  service_category: string;
-  no_of_bookings: number;
-  no_of_appoints: number;
-  rating: number;
-  rate: number;
-  rate_type: string;
-  feature_img: string;
-}

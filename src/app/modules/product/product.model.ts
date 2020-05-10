@@ -32,22 +32,6 @@ export interface QuantityTypes {
   val: string;
 }
 
-export interface PaymentTypes {
-  id: string;
-  val: string;
-}
-
-export interface ProductCard {
-  product_id: string;
-  product: string;
-  description: string;
-  product_category: string;
-  no_of_orders: number;
-  price: number;
-  rating: number;
-  image_01: string;
-}
-
 
 export interface Businesses {
   id: string;

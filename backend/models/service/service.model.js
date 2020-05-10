@@ -20,7 +20,8 @@ const serviceSchema = mongoose.Schema(
     pay_on_meet:{type: Boolean, required: true, default: false},
     image_01: {type: String},
     image_02: {type: String},
-    image_03: {type: String}
+    image_03: {type: String},
+    user_id: {type: String, ref: "Merchant", required: true} // foreign key reference
   },
   { collection : 'Service' }
 );

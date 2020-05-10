@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
-import { ProductCategories, Product, PaymentTypes } from '../product.model';
+import { ProductCategories, Product } from '../product.model';
 import { ProductService } from '../product.service';
 
 @Component({

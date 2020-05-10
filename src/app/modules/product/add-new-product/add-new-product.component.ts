@@ -193,7 +193,7 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
   }
 
   booleanValue(value: any) {
-    if (value ===  '') {
+    if (value ===  '' || value === null || value === undefined) {
       return false;
     } else {return value; }
   }

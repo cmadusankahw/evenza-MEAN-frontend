@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material';
 
 import { Service, ServiceCategories, ServiceRates, ServiceQuery } from './service.model';
+import { SuccessComponent } from 'src/app/success/success.component';
+
 
 @Injectable({ providedIn: 'root' })
 export class ServiceService  {
@@ -40,7 +43,8 @@ export class ServiceService  {
   // to get the very last id of the service list
   private lastId: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              public dialog: MatDialog) { }
 
 
   // get methods
@@ -157,6 +161,7 @@ export class ServiceService  {
           console.log(recievedData.result);
           this.serviceProviderServices.push(service);
           this.serviceProviderServiceUpdated.next([...this.serviceProviderServices]);
+          this.dialog.open(SuccessComponent, {data: {message: 'Service Successfully Added!'}});
           this.getLastServiceId();
       });
     });
@@ -189,6 +194,7 @@ export class ServiceService  {
         console.log(recievedData.result);
         this.service = service;
         this.serviceUpdated.next(this.service);
+        this.dialog.open(SuccessComponent, {data: {message: 'Service Successfully Updated!'}});
     });
   });
   }

@@ -108,6 +108,8 @@ import { AddnewServiceComponent } from './modules/service/addnew-service/addnew-
 import { AuthInterceptor } from './modules/auth/auth-interceptor';
 import { ErrorInterceptor } from './error-interceptor';
 import { ErrorComponent } from './error/error.component';
+import { EventplannerDashboardComponent } from './modules/eventplanner/eventplannerdash/eventplanner-dashboard/eventplanner-dashboard.component';
+import { SuccessComponent } from './success/success.component';
 
 
 
@@ -178,6 +180,8 @@ import { ErrorComponent } from './error/error.component';
     AddNewProductComponent,
     AddnewServiceComponent,
     ErrorComponent,
+    EventplannerDashboardComponent,
+    SuccessComponent,
 
 
 
@@ -234,6 +238,6 @@ import { ErrorComponent } from './error/error.component';
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ErrorComponent]
+  entryComponents: [ErrorComponent, SuccessComponent]
 })
 export class AppModule { }

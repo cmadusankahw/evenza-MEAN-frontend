@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 
 import { Merchant, EventPlanner, User, MerchantTemp, LogIn } from './auth.model';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { SuccessComponent } from 'src/app/success/success.component';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -49,7 +51,8 @@ export class AuthService {
 
 
   constructor(private http: HttpClient,
-              private router: Router, ) {}
+              private router: Router,
+              public dialog: MatDialog) {}
 
 
   // get methods
@@ -109,13 +112,10 @@ export class AuthService {
     }
   }
 
-
   // get user type in signup-select
   getUserType() {
         return this.userType;
   }
-
-
 
    // get last product id
   getLastUserId() {
@@ -195,9 +195,8 @@ export class AuthService {
         .subscribe((recievedMessage) => {
           console.log(recievedMessage.message);
           this.getLastUserId();
-          alert('Successfully Signed Up!');
+          this.dialog.open(SuccessComponent, {data: {message: 'Signed up successfully! Welcome to Evenza!'}});
             }, (error) => {
-              alert ('Something went wrong while adding a new Merchant. Please try Again');
               console.log(error);
             });
    }, (error) => {
@@ -224,7 +223,7 @@ export class AuthService {
         .subscribe((recievedMessage) => {
           console.log(recievedMessage.message);
           this.getLastUserId();
-          alert('Successfully Signed Up!');
+          this.dialog.open(SuccessComponent, {data: {message: 'Signed up successfully! Welcome to Evenza!'}});
             }, (error) => {
               console.log(error);
             });
@@ -258,6 +257,7 @@ export class AuthService {
 
       this.token = recievedData.token;
       console.log(this.token);
+      this.getHeaderDetails();
 
       if (recievedData.token) {
         this.isAuthenticated = true;
@@ -266,7 +266,6 @@ export class AuthService {
         const expirationDate = new Date (now.getTime() + recievedData.expiersIn * 1000 );
         this.saveAuthData(recievedData.token, expirationDate );
 
-        alert('Login Successfull!');
         if (recievedData.user_type === 'serviceProvider') {
           this.router.navigate(['/sp/dash']);
         }

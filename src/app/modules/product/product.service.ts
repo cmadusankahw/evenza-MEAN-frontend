@@ -3,6 +3,8 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { Product, ProductCategories, QuantityTypes, ProductQuery } from './product.model';
+import { SuccessComponent } from 'src/app/success/success.component';
+import { MatDialog } from '@angular/material';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService  {
@@ -40,7 +42,8 @@ export class ProductService  {
   // to get the very last id of the product list
   private lastId: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              public dialog: MatDialog) { }
 
 
   // get methods
@@ -158,6 +161,7 @@ export class ProductService  {
           console.log(recievedData.result);
           this.sellerProducts.push(product);
           this.sellerProductsUpdated.next([...this.sellerProducts]);
+          this.dialog.open(SuccessComponent, {data: {message: 'Product Added Successfully!'}});
           this.getLastProductId();
       });
     });
@@ -190,6 +194,7 @@ export class ProductService  {
         console.log(recievedData.result);
         this.product = product;
         this.productUpdated.next(this.product);
+        this.dialog.open(SuccessComponent, {data: {message: 'Product Updated Successfully!'}});
     });
   });
   }

@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { Service, ServiceCategories, ServiceRates } from '../service.model';
 import { ServiceService } from '../service.service';
 
+
 @Component({
   selector: 'app-addnew-service',
   templateUrl: './addnew-service.component.html',

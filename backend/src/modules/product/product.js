@@ -7,7 +7,6 @@ const checkAuth = require("../../../middleware/auth-check");
 //dependency imports
 const express = require("express");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 const multer = require ("multer");
 
 //express app declaration
@@ -58,7 +57,7 @@ product.post('/add',checkAuth, (req, res, next) => {
       })
       .catch(err=>{
         res.status(500).json({
-          error: err
+          message: 'Product creation was unsuccessful! Please try again!'
         });
       });
 });
@@ -117,7 +116,7 @@ product.post('/edit/:id',checkAuth, (req, res, next) => {
   })
   .catch(err=>{
     res.status(500).json({
-      error: err
+      message: 'Product update was unsuccessful! Please Try again!'
     });
   });
 });
@@ -130,8 +129,32 @@ product.delete('/edit/:id',checkAuth, (req, res, next) => {
       console.log(result);
       res.status(200).json({ message: "Product deleted!" });
     }
-  );
+  ).catch((err) => {
+    res.status(500).json({ message: "Product was not deleted! Please try again!" });
+  })
 });
+
+
+//search products
+product.post('/search', (req, res, next) => {
+
+  Product.find({product_category: req.body.category,
+                price: {$gte: req.body.minPrice},
+                pay_on_delivery:req.body.payOnDelivery,
+                rating: {$gte: req.body.userRating}})
+  .then(result => {
+      res.status(200).json({
+        message: 'products recieved successfully!',
+        products: result
+      });
+    })
+    .catch(err=>{
+      res.status(500).json({
+        message: 'No matching products Found!'
+      });
+    });
+});
+
 
 // get methods
 
@@ -139,7 +162,11 @@ product.delete('/edit/:id',checkAuth, (req, res, next) => {
 product.get('/get', (req, res, next) => {
   Product.find(function (err, products) {
     console.log(products);
-    if (err) return handleError(err);
+    if (err) return handleError(err => {
+      res.status(500).json(
+        { message: 'No matching Products Found! Please check your filters again!'}
+        );
+    });
     res.status(200).json(
       {
         message: 'Product list recieved successfully!',
@@ -154,7 +181,11 @@ product.get('/get/seller',checkAuth, (req, res, next) => {
   Product.find({ user_id: req.userData.user_id },function (err, products) {
     delete products['user_id'];
     console.log(products);
-    if (err) return handleError(err);
+    if (err) return handleError(err => {
+      res.status(500).json(
+        { message: 'No matching Products Found! Please try again'}
+        );
+    });
     res.status(200).json(
       {
         message: 'Seller Product list recieved successfully!',
@@ -170,7 +201,11 @@ product.get('/get/seller',checkAuth, (req, res, next) => {
 product.get('/get/:id', (req, res, next) => {
 
   Product.findOne({ product_id: req.params.id }, function (err,product) {
-    if (err) return handleError(err);
+    if (err) return handleError(err => {
+      res.status(500).json(
+        { message: 'Error while loading product Details! Please try another time!'}
+        );
+    });
     res.status(200).json(
       {
         message: 'product recieved successfully!',

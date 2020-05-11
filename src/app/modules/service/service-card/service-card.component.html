@@ -6,7 +6,7 @@
 
     <div class="view overlay waves-light" mdbWavesEffect>
       <!-- Card img -->
-      <mdb-card-img src={{service.image_01}} [alt]="service.service_name"></mdb-card-img>
+      <mdb-card-img [src]="service.image_01" [alt]="service.service_name"></mdb-card-img>
       <a>
         <div class="mask rgba-white-slight"></div>
       </a>
@@ -34,7 +34,7 @@
 
         <div class="left-btn">
           <a mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect
-          (click)="serviceDetailsShow.show()" (click)= "sendService(service)">
+          (click)= "sendService(service)" (click)="serviceDetailsShow.show()" >
             <span *ngIf="isowner"> More Details </span>
             <span *ngIf="!isowner"> Book Now </span></a>
         </div>

@@ -7,7 +7,7 @@
     <mat-nav-list>
 
       <!--filters-->
-      <form (submit)="searchServices(filterForm)" #filterForm="ngForm"></form>
+      <form (submit)="searchServices(filterForm)" #filterForm="ngForm">
       <div mat-list-item class="filters">
       <h4 style="padding-left:15px;">Filter Services..</h4>
       <hr>
@@ -36,7 +36,8 @@
         min="0"
         step="1"
         thumbLabel="true"
-        [(ngModel)]="priceStart">
+        [(ngModel)]="priceStart"
+        name="priceStart">
         </mat-slider>
         <br>
         <span class="price-text"> Max Rate Rs. {{priceEnd}}</span>
@@ -48,7 +49,8 @@
         [min]="priceStart"
         step="1"
         thumbLabel="true"
-        [(ngModel)]="priceEnd">
+        [(ngModel)]="priceEnd"
+        name="priceEnd">
         </mat-slider>
       </div>
       <hr>
@@ -79,6 +81,7 @@
                 (focus)="focus$.next($any($event).target.value)"
                 (click)="click$.next($any($event).target.value)"
                 #instance="ngbTypeahead"
+                name="location"
               />
           </mat-form-field>
         </div>
@@ -107,9 +110,8 @@
         </button>
         <hr>
       </div>
-
-
     </div>
+  </form>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -190,7 +192,7 @@
           <div class="col-md-4 search-result-btn-pd">
             <div style="text-align:right;">
               <a role="button" class="btn btn-md" color="secondary" text="white" mdbBtn mdbWavesEffect
-              (click)="serviceDetails.show()">
+              (click)= "sendService(service)"  (click)="serviceDetails.show()">
               <mdb-icon fas icon="gem"></mdb-icon> Book Now</a>
             </div>
              <div class="rating-mini">

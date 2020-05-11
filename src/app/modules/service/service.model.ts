@@ -30,3 +30,11 @@ export interface ServiceRates {
   val: string;
 }
 
+export interface ServiceQuery {
+  category: string;
+  location: string;
+  minPrice: number;
+  maxPrice: number;
+  payOnMeet: boolean;
+  userRating: number;
+}

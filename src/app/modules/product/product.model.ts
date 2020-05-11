@@ -37,3 +37,11 @@ export interface Businesses {
   id: string;
   val: string;
 }
+
+export interface ProductQuery {
+  category: string;
+  minPrice: number;
+  maxPrice: number;
+  payOnDelivery: boolean;
+  userRating: number;
+}

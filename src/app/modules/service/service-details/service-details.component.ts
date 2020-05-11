@@ -82,10 +82,12 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
     this.serviceService.getService();
     this.serviceSub = this.serviceService.getServiceUpdateListener()
       .subscribe((recievedService: Service) => {
+        if (recievedService) {
           this.service = recievedService;
           console.log(this.service);
           this.removed = false;
           this.editmode = false;
+        }
   });
 
     if (this.editable === true) {

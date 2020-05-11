@@ -157,9 +157,9 @@
 
       <!--search results-->
       <div class="search-results container" *ngIf="searching && hasData()">
-        <div class="row search-result shadow container-fluid" mdbWavesEffect *ngFor="let product of searchedProducts">
+        <div class="row search-result shadow container-fluid" mdbWavesEffect *ngFor="let product of products">
           <div class="col-md-3">
-            <img src="{{product.image_01}}" style="width:260px" alt="product.product" title="product.product">
+            <img [src]="product.image_01" style="width:260px" alt="product.product" title="product.product">
           </div>
             <div class="col-md-4 search-result-pd">
               <span class="search-result-heading"> {{product.product}}</span>
@@ -171,7 +171,7 @@
           <div class="col-md-4 search-result-btn-pd">
             <div style="text-align:right;">
               <a role="button" class="btn btn-md" color="secondary" text="white" mdbBtn mdbWavesEffect
-              (click)="productDetails.show()">
+              (click)= "sendProduct(product)" (click)="productDetails.show()">
               <mdb-icon fas icon="gem"></mdb-icon> Order Now</a>
             </div>
              <div class="rating-mini">
@@ -194,7 +194,7 @@
          <!--find out more--->
             <div class="text-center pd-top">
               <hr>
-              Find out more categories to order <a class="btn btn-lg" color="secondary" mdbBtn mdbWavesEffect style="margin-left:40px;">Find more</a>
+              Find out more products to order <a class="btn btn-lg" color="secondary" mdbBtn mdbWavesEffect style="margin-left:40px;">Find more</a>
             </div>
 
   </mat-sidenav-content>
@@ -208,7 +208,7 @@
   tabindex="-1"
   role="dialog"
   aria-labelledby="myBasicModalLabel"
-  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  [config]="{ backdrop: false, ignoreBackdropClick: true, show:success }"
   aria-hidden="true"
 
 >

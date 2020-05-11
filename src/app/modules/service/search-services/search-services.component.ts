@@ -6,9 +6,10 @@ import { Subscription } from 'rxjs';
 
 
 
-import {Service, ServiceCategories } from '../service.model';
+import {Service, ServiceCategories, ServiceQuery } from '../service.model';
 import { ServiceService } from '../service.service';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-search-services',
@@ -21,10 +22,8 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
   // subscription
   private serviceSub: Subscription ;
   private categorySub: Subscription ;
+  private searchedServiceSub: Subscription;
 
-
-  // this is serached product list
-  searchedServices: Service[] = [];
 
   services: Service[] = [];
 
@@ -35,8 +34,8 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
       shareReplay()
     );
 
-    // filter-categories
-    categories: ServiceCategories[] = [];
+  // filter-categories
+  categories: ServiceCategories[] = [];
 
 
   // temp value for user ratings
@@ -51,6 +50,10 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
 
   // enable searching mode
   searching = false;
+
+  // show product details
+  success = false;
+
 
   // temp town suggessions for loction search FILTER-BUSINESS LOCATION
   towns = [
@@ -85,15 +88,19 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
  });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     if (this.serviceSub) {
       this.serviceSub.unsubscribe();
     }
-    if (this.categorySub){
+    if (this.categorySub) {
       this.categorySub.unsubscribe();
+    }
+    if (this.searchedServiceSub) {
+      this.searchedServiceSub.unsubscribe();
     }
   }
 
+  // location search auto complete
   search = (text$: Observable<string>) => {
     const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
     const clicksWithClosedPopup$ = this.click$.pipe(filter(() => !this.instance.isPopupOpen()));
@@ -117,9 +124,33 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
     const filterValue = (event.target as HTMLInputElement).value;
   }
 
-  searchServices() {
+  searchServices(filterForm: NgForm) {
+    const searchQuery: ServiceQuery = {
+      category: filterForm.value.category,
+      location: filterForm.value.location, // location
+      minPrice: this.priceStart,
+      maxPrice: this.priceEnd,
+      payOnMeet: this.booleanValue(filterForm.value.pay_on_meet),
+      userRating: this.ratings
+    };
+    console.log(searchQuery);
+    this.serviceService.searchServices(searchQuery);
+    this.searchedServiceSub = this.serviceService.getSearchedServiceUpdatedListener()
+    .subscribe((recievedData: Service[]) => {
+    this.services = recievedData;
+    console.log(this.services);
     this.searching = !this.searching;
+   });
   }
 
+  booleanValue(value: any) {
+    if (value ===  '' || value === null || value === undefined) {
+      return false;
+    } else {return value; }
+  }
+
+  sendService(service: Service) {
+    this.success = this.serviceService.setService(service);
+   }
 
 }

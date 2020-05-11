@@ -33,13 +33,22 @@ export class ProductCardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
      // get the product
+     if (this.isowner) {
      this.productService.getSellerProducts();
      this.productSub = this.productService.getSellerProductUpdateListener()
        .subscribe((recievedProducts: Product[]) => {
            this.products = recievedProducts;
            console.log(this.products);
-   });
-  }
+        });
+      } else {
+        this.productService.getProducts();
+        this.productSub = this.productService.getProductsUpdateListener()
+          .subscribe((recievedProducts: Product[]) => {
+              this.products = recievedProducts;
+              console.log(this.products);
+      });
+      }
+    }
 
   ngOnDestroy() {
     if (this.productSub) {

@@ -34,12 +34,22 @@ export class ServiceCardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
      // get the service
-     this.serviceService.getServiceProviderServices();
-     this.serviceSub = this.serviceService.getServiceProviderServiceUpdateListener()
-       .subscribe((recievedServices: Service[]) => {
-           this.services = recievedServices;
-           console.log(this.services);
-   });
+     if (this.isowner){
+      this.serviceService.getServiceProviderServices();
+      this.serviceSub = this.serviceService.getServiceProviderServiceUpdateListener()
+        .subscribe((recievedServices: Service[]) => {
+            this.services = recievedServices;
+            console.log(this.services);
+      });
+     } else {
+      this.serviceService.getServices();
+      this.serviceSub = this.serviceService.getservicesUpdateListener()
+        .subscribe((recievedServices: Service[]) => {
+            this.services = recievedServices;
+            console.log(this.services);
+      });
+     }
+
   }
 
   ngOnDestroy() {

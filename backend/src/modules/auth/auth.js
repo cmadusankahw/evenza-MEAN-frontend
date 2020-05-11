@@ -41,7 +41,7 @@ auth.post('/signup/user', (req, res, next) => {
       })
         .catch( err => {
           res.status(500).json({
-            error: err
+            message: 'User signup was not successfull! Please try again!'
           });
         });
     });
@@ -59,7 +59,7 @@ auth.post('/signup/merchant', (req, res, next) => {
     })
     .catch( err => {
       res.status(500).json({
-        error: err
+        message: 'Merchant sign up was not successfull! Please try again!'
       });
     });
 });
@@ -76,7 +76,7 @@ auth.post('/signup/planner', (req, res, next) => {
     })
     .catch( err => {
       res.status(500).json({
-        error: err
+        message: 'Event Plnner Signup was not successful! Please try again!'
       });
     });
 });
@@ -93,7 +93,7 @@ auth.post('/signup/admin', (req, res, next) => {
     })
     .catch( err => {
       res.status(500).json({
-        error: err
+        message: 'Admin signup was not successful! Please try again!'
       });
     });
 });
@@ -108,7 +108,7 @@ auth.post('/signin', (req, res, next) => {
     if (!user){
       res.status(401).json(
         {
-          message: 'user authentication failed!',
+          message: 'Invalid username or password!',
         });
     }
     fetchedUser = user;
@@ -119,7 +119,7 @@ auth.post('/signin', (req, res, next) => {
     if (!result) {
       res.status(401).json(
         {
-          message: 'user authentication failed!',
+          message: 'Invalid username or password!',
         });
     }
     // json web token here
@@ -138,11 +138,9 @@ auth.post('/signin', (req, res, next) => {
     });
   })
   .catch(err => {
-    console.log('the error :', err);
     res.status(401).json(
       {
-        message: 'user authentication failed!',
-        error: err
+        message: 'Invalid username or password!',
       });
   });
 });
@@ -171,7 +169,12 @@ auth.get('/last', (req, res, next) => {
 auth.get('/get/merchant',checkAuth, (req, res, next) => {
   console.log(req.userData);
   Merchant.findOne({ user_id: req.userData.user_id}, function (err,merchant) {
-    if (err) return handleError(err);
+    if (err) return handleError(err => {
+      res.status(500).json(
+        {
+          message: 'Couldn\'t recieve Merchant Details! Please check your connetion'
+        });
+    });
     res.status(200).json(
       {
         message: 'Merchant recieved successfully!',
@@ -185,7 +188,12 @@ auth.get('/get/merchant',checkAuth, (req, res, next) => {
 auth.get('/get/planner',checkAuth, (req, res, next) => {
 
   EventPlanner.findOne({ user_id: req.userData.user_id }, function (err,planner) {
-    if (err) return handleError(err);
+    if (err) return handleError(err => {
+      res.status(500).json(
+        {
+          message: 'Couldn\'t recieve Event Planner Details! Please check your connetion'
+        });
+    });
     res.status(200).json(
       {
         message: 'Event Planner recieved successfully!',
@@ -199,7 +207,6 @@ auth.get('/get/planner',checkAuth, (req, res, next) => {
 auth.get('/get/header',checkAuth, (req, res, next) => {
     if (req.userData.user_type == 'planner'){
       EventPlanner.findOne({ user_id: req.userData.user_id }, function (err,planner) {
-        if (err) return handleError(err);
         res.status(200).json(
           {
             user_type: req.userData.user_type,
@@ -210,7 +217,6 @@ auth.get('/get/header',checkAuth, (req, res, next) => {
     }
     else {
     Merchant.findOne({ user_id: req.userData.user_id }, function (err,merchant) {
-      if (err) return handleError(err);
       res.status(200).json(
         {
           user_type: req.userData.user_type,

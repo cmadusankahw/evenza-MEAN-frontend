@@ -30,21 +30,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+
     this.authService.getHeaderDetails();
     this.headerDetailsSubs = this.authService.getHeaderDetailsListener().subscribe(
       headerDetails => {
-        this.headerDetails = headerDetails;
-        console.log(headerDetails);
-        this.userIsAuthenticated = this.authService.getisAuth();
-        this.authSubs = this.authService.getAuhStatusListener().subscribe(
+        if (headerDetails) {
+          this.headerDetails = headerDetails;
+          console.log(headerDetails);
+          this.userIsAuthenticated = this.authService.getisAuth();
+          this.authSubs = this.authService.getAuhStatusListener().subscribe(
           isAuthenticated => {
             this.userIsAuthenticated = isAuthenticated;
             console.log(isAuthenticated);
           }
         );
+        }
       }
     );
-
 
 
     // hide login and signup button depend on route

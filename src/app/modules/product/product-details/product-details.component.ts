@@ -59,7 +59,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         pay_on_delivery:  null,
         image_01:  null,
         image_02:  null,
-        image_03:  null
+        image_03: null
   };
 
   // product removed
@@ -82,10 +82,12 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       this.productService.getProduct();
       this.productSub = this.productService.getProductUpdateListener()
         .subscribe((recievedProduct: Product) => {
+          if (recievedProduct) {
             this.product = recievedProduct;
             console.log(this.product);
             this.removed = false;
             this.editmode = false;
+          }
     });
 
       if (this.editable === true) {

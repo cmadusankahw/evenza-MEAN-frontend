@@ -1,13 +1,15 @@
-import { Service, ServiceCategories, ServiceRates } from './service.model';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+
+import { Service, ServiceCategories, ServiceRates, ServiceQuery } from './service.model';
 
 @Injectable({ providedIn: 'root' })
 export class ServiceService  {
 
   private serviceUpdated = new Subject<Service>();
   private serviceProviderServiceUpdated = new Subject<Service[]>();
+  private searchedServiceUpdated = new Subject<Service[]>();
   private servicesUpdated = new Subject<Service[]>();
   private lastIdUpdated = new Subject<string>();
   private ratesUpdated = new Subject<ServiceRates[]>();
@@ -15,6 +17,10 @@ export class ServiceService  {
 
   // to add services
   private services: Service[] = [];
+
+
+   // to add searched services
+   private searchedServices: Service[] = [];
 
   // list of service provider services
   private serviceProviderServices: Service[] = [];
@@ -97,9 +103,14 @@ export class ServiceService  {
     return this.serviceUpdated.asObservable();
   }
 
+  getSearchedServiceUpdatedListener() {
+    return this.searchedServiceUpdated.asObservable();
+  }
+
   getServiceProviderServiceUpdateListener() {
     return this.serviceProviderServiceUpdated.asObservable();
   }
+
 
   getservicesUpdateListener() {
     return this.servicesUpdated.asObservable();
@@ -200,6 +211,17 @@ export class ServiceService  {
     this.service = service;
     this.serviceUpdated.next(this.service);
     return true;
+  }
+
+
+  // search services
+  searchServices(searchQuery: ServiceQuery) {
+    this.http.post<{ message: string, services: Service[] }>(this.url + 'service/search', searchQuery)
+    .subscribe((serviceList) => {
+      this.searchedServices = serviceList.services;
+      this.searchedServiceUpdated.next([...this.searchedServices]);
+      console.log(serviceList.message);
+    });
   }
 
 }

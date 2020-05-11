@@ -4,8 +4,9 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
-import { ProductCategories, Product } from '../product.model';
+import { ProductCategories, Product, ProductQuery } from '../product.model';
 import { ProductService } from '../product.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-search-products',
@@ -17,12 +18,10 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
     // subscription
     private productSub: Subscription ;
     private categorySub: Subscription ;
+    private searchedProductSub: Subscription;
 
   // this is main product list
   products: Product[] = [];
-
-  // this is serached product list
-  searchedProducts: Product[] = [];
 
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -49,6 +48,9 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
 
   // enable searching mode
   searching = false;
+
+  // show product details
+  success = false;
 
 
   constructor(private breakpointObserver: BreakpointObserver,
@@ -79,6 +81,9 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
     if (this.categorySub){
       this.categorySub.unsubscribe();
     }
+    if (this.searchedProductSub) {
+      this.searchedProductSub.unsubscribe();
+    }
   }
 
   hasData() {
@@ -93,9 +98,33 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
     const filterValue = (event.target as HTMLInputElement).value;
   }
 
-  searchProducts() {
+  searchProducts(filterForm: NgForm) {
+    const searchQuery: ProductQuery = {
+      category: filterForm.value.category,
+      minPrice: this.priceStart,
+      maxPrice: this.priceEnd,
+      payOnDelivery: this.booleanValue(filterForm.value.pay_on_dlivery),
+      userRating: this.ratings
+    };
+    console.log(searchQuery);
+    this.productService.searchProducts(searchQuery);
+    this.searchedProductSub = this.productService.getSearchedProductUpdatedListener()
+    .subscribe((recievedData: Product[]) => {
+    this.products = recievedData;
+    console.log(this.products);
     this.searching = !this.searching;
+   });
   }
 
+
+  booleanValue(value: any) {
+    if (value ===  '' || value === null || value === undefined) {
+      return false;
+    } else {return value; }
+  }
+
+  sendProduct(product: Product) {
+    this.success = this.productService.setProduct(product);
+   }
 
 }

@@ -21,9 +21,7 @@ export class AuthService {
   // for merchant data passing
   private merchantTemp: MerchantTemp ;
 
-  //
-
-  // user type
+  // user type between signup pages
   private userType = false;
 
   url = 'http://localhost:3000/api/';
@@ -37,6 +35,7 @@ export class AuthService {
   // timer to auto logout
   private tokenTimer: any;
 
+  // login details listener
   private authStatusListener = new Subject<boolean>();
 
   // details for app header
@@ -44,14 +43,14 @@ export class AuthService {
 
   private headerDetails: {userType: string, profilePic: string};
 
+  // user login status
   private isAuthenticated = false;
 
-  // signed user id
-  private userId: string;
 
 
   constructor(private http: HttpClient,
               private router: Router, ) {}
+
 
   // get methods
 
@@ -78,6 +77,9 @@ export class AuthService {
     .subscribe((recievedMerchant) => {
       this.merchant = recievedMerchant.merchant;
       this.merchantUpdated.next(this.merchant);
+    }, (error) => {
+      this.router.navigate(['/']);
+      console.log(error);
     });
   }
 
@@ -87,19 +89,24 @@ export class AuthService {
       .subscribe((recievedMerchant) => {
         this.eventPlanner = recievedMerchant.eventPlanner;
         this.eventPlannerUpdated.next(this.eventPlanner);
+    }, (error) => {
+      this.router.navigate(['/']);
+      console.log(error);
     });
   }
 
 
   // get details for header
   getHeaderDetails() {
-    this.http.get<{user_type: string, profile_pic: string}>(this.url + 'auth/get/header')
+    if (this.token) {
+      this.http.get<{user_type: string, profile_pic: string}>(this.url + 'auth/get/header')
       .subscribe((recievedHeader) => {
         this.headerDetails = {
           userType: recievedHeader.user_type,
           profilePic: recievedHeader.profile_pic};
         this.headerDetailsListener.next(this.headerDetails);
     });
+    }
   }
 
 
@@ -166,6 +173,7 @@ export class AuthService {
 
 
 
+
   // set methods
 
   // add merchant
@@ -188,7 +196,12 @@ export class AuthService {
           console.log(recievedMessage.message);
           this.getLastUserId();
           alert('Successfully Signed Up!');
+            }, (error) => {
+              alert ('Something went wrong while adding a new Merchant. Please try Again');
+              console.log(error);
             });
+   }, (error) => {
+     console.log(error);
    });
   }
 
@@ -212,7 +225,11 @@ export class AuthService {
           console.log(recievedMessage.message);
           this.getLastUserId();
           alert('Successfully Signed Up!');
+            }, (error) => {
+              console.log(error);
             });
+   }, (error) => {
+      console.log(error);
    });
   }
 
@@ -260,6 +277,8 @@ export class AuthService {
           this.router.navigate(['/']);
         }
       }
+   }, (error) => {
+     console.log(error);
    });
  }
 
@@ -288,6 +307,7 @@ export class AuthService {
    this.clearAuthData();
    clearTimeout(this.tokenTimer);
  }
+
 
  // starts the session timer
  private setAuthTimer(duration: number) {

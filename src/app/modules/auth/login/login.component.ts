@@ -5,6 +5,8 @@ import { User, LogIn } from '../auth.model';
 import { HttpClient } from '@angular/common/http';
 
 import { AuthService } from '../auth.service';
+import { MatDialog } from '@angular/material';
+import { ErrorComponent } from 'src/app/error/error.component';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +24,8 @@ export class LoginComponent implements OnInit {
   recievedUsers: User;
 
   constructor(private http: HttpClient,
-              public authService: AuthService) { }
+              public authService: AuthService,
+              public dialog: MatDialog) { }
 
   ngOnInit() {
     // login form validation
@@ -40,9 +43,8 @@ export class LoginComponent implements OnInit {
 
   loginUser(loginform: NgForm) {
     if (this.loginForm.invalid) {
-      this.showAlert = true;
       console.log('form invalid');
-
+      this.dialog.open(ErrorComponent, {data: {message: 'Incorrect Username or Password'}});
     } else {
       this.showAlert = false;
       const login: LogIn = {

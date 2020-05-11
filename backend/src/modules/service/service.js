@@ -7,7 +7,6 @@ const checkAuth = require("../../../middleware/auth-check");
 //dependency imports
 const express = require("express");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 const multer = require ("multer");
 
 //express app declaration
@@ -58,7 +57,7 @@ service.post('/add',checkAuth, (req, res, next) => {
       })
       .catch(err=>{
         res.status(500).json({
-          error: err
+          message: 'Service creation was unsuccessfull! Please try Again!'
         });
       });
 });
@@ -117,7 +116,7 @@ service.post('/edit/:id',checkAuth, (req, res, next) => {
   })
   .catch(err=>{
     res.status(500).json({
-      error: err
+      message: 'Service update was unsuccessfull! Please try Again!'
     });
   });
 });
@@ -130,7 +129,30 @@ service.delete('/edit/:id',checkAuth, (req, res, next) => {
       console.log(result);
       res.status(200).json({ message: "Service  deleted!" });
     }
-  );
+  ).catch(err => {
+    res.status(500).json({ message: "Service was not deleted! Please try again!" });
+  })
+});
+
+
+//search products
+service.post('/search', (req, res, next) => {
+
+  Service.find({service_category: req.body.category,
+                rate: {$gte: req.body.minPrice},
+                pay_on_meet:req.body.payOnMeet,
+                rating: {$gte: req.body.userRating}})
+  .then(result => {
+      res.status(200).json({
+        message: 'services recieved successfully!',
+        services: result
+      });
+    })
+    .catch(err=>{
+      res.status(500).json({
+        message: 'No matching services Found!'
+      });
+    });
 });
 
 // get methods
@@ -140,7 +162,11 @@ service.delete('/edit/:id',checkAuth, (req, res, next) => {
 service.get('/get', (req, res, next) => {
   Service.find(function (err, services) {
     console.log(services);
-    if (err) return handleError(err);
+    if (err) return handleError(err => {
+      res.status(500).json(
+        { message: 'No matching Services Found! Please check your filters again!'}
+        );
+    });
     res.status(200).json(
       {
         message: 'Product list recieved successfully!',
@@ -155,7 +181,11 @@ service.get('/get/sp',checkAuth, (req, res, next) => {
   Service.find({ user_id: req.userData.user_id },function (err, services) {
     delete services['user_id'];
     console.log(services);
-    if (err) return handleError(err);
+    if (err) return handleError(err => {
+      res.status(500).json(
+        { message: 'No matching Services Found! Please try again!'}
+        );
+    });
     res.status(200).json(
       {
         message: 'Product list recieved successfully!',
@@ -170,7 +200,11 @@ service.get('/get/sp',checkAuth, (req, res, next) => {
 service.get('/get/:id', (req, res, next) => {
 
   Service.findOne({ service_id: req.params.id }, function (err,service) {
-    if (err) return handleError(err);
+    if (err) return handleError(err => {
+      res.status(500).json(
+        { message: 'Error while loading service details! Please try another time!'}
+        );
+    });
     res.status(200).json(
       {
         message: 'Service recieved successfully!',

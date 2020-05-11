@@ -24,7 +24,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material';
+import { MatNativeDateModule, MatDialogModule } from '@angular/material';
 import { CreditCardDirectivesModule } from 'angular-cc-library';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
@@ -106,6 +106,8 @@ import { SearchServicesComponent } from './modules/service/search-services/searc
 import { AddNewProductComponent } from './modules/product/add-new-product/add-new-product.component';
 import { AddnewServiceComponent } from './modules/service/addnew-service/addnew-service.component';
 import { AuthInterceptor } from './modules/auth/auth-interceptor';
+import { ErrorInterceptor } from './error-interceptor';
+import { ErrorComponent } from './error/error.component';
 
 
 
@@ -174,7 +176,9 @@ import { AuthInterceptor } from './modules/auth/auth-interceptor';
     SearchProductsComponent,
     SearchServicesComponent,
     AddNewProductComponent,
-    AddnewServiceComponent
+    AddnewServiceComponent,
+    ErrorComponent,
+
 
 
 
@@ -220,13 +224,16 @@ import { AuthInterceptor } from './modules/auth/auth-interceptor';
     FullCalendarModule,
     CarouselModule,
     MatSliderModule,
+    MatDialogModule
 
   ],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [
     DatePipe,
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ErrorComponent]
 })
 export class AppModule { }

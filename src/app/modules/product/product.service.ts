@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import { Product, ProductCategories, QuantityTypes } from './product.model';
+import { Product, ProductCategories, QuantityTypes, ProductQuery } from './product.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService  {
 
   private productUpdated = new Subject<Product>();
   private sellerProductsUpdated = new Subject<Product[]>();
+  private searchedProductUpdated = new Subject<Product[]>();
   private productsUpdated = new Subject<Product[]>();
   private lastIdUpdated = new Subject<string>();
   private quantitiesUpdated = new Subject<QuantityTypes[]>();
@@ -16,6 +17,10 @@ export class ProductService  {
 
   // to add products
   private products: Product[] = [];
+
+   // to add searched products
+   private seachedProducts: Product[] = [];
+
 
   // list of seller products
   private sellerProducts: Product[] = [];
@@ -103,6 +108,10 @@ export class ProductService  {
     return this.sellerProductsUpdated.asObservable();
   }
 
+
+  getSearchedProductUpdatedListener() {
+    return this.searchedProductUpdated.asObservable();
+  }
 
   getProductsUpdateListener() {
     return this.productsUpdated.asObservable();
@@ -204,5 +213,17 @@ export class ProductService  {
     this.productUpdated.next(this.product);
     return true;
   }
+
+  // search products
+  searchProducts(searchQuery: ProductQuery) {
+    this.http.post<{ message: string, products: Product[] }>(this.url + 'product/search', searchQuery)
+    .subscribe((productList) => {
+      this.seachedProducts = productList.products;
+      this.searchedProductUpdated.next([...this.seachedProducts]);
+      console.log(productList.message);
+    });
+  }
+
+
 
 }

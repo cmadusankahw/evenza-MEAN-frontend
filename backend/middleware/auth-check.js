@@ -10,8 +10,7 @@ module.exports = (req, res, next) => {
   }
   catch (error) {
     res.status(401).json({
-      message: 'Authntication denied!',
-      error: error
+      message: 'You are not authenticated! Access Denied!'
     });
   }
 }

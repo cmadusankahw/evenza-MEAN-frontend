@@ -14,7 +14,6 @@ export class ServiceService  {
   private serviceProviderServiceUpdated = new Subject<Service[]>();
   private searchedServiceUpdated = new Subject<Service[]>();
   private servicesUpdated = new Subject<Service[]>();
-  private lastIdUpdated = new Subject<string>();
   private ratesUpdated = new Subject<ServiceRates[]>();
   private categoriesUpdated = new Subject<ServiceCategories[]>();
 
@@ -40,8 +39,7 @@ export class ServiceService  {
   // to render selected service
   private service: Service;
 
-  // to get the very last id of the service list
-  private lastId: string;
+
 
   constructor(private http: HttpClient,
               public dialog: MatDialog) { }
@@ -90,15 +88,6 @@ export class ServiceService  {
     });
   }
 
-  // get last service id
-  getLastServiceId() {
-    this.http.get<{ lastid: string }>(this.url + 'service/last')
-    .subscribe((recievedId) => {
-      console.log(recievedId.lastid);
-      this.lastId = recievedId.lastid;
-      this.lastIdUpdated.next(this.lastId);
-    });
-  }
 
 
 
@@ -128,9 +117,6 @@ export class ServiceService  {
     return this.categoriesUpdated.asObservable();
   }
 
-  getLastIdUpdateListener(){
-    return this.lastIdUpdated.asObservable();
-  }
 
   // crud methods
 
@@ -159,10 +145,8 @@ export class ServiceService  {
         .subscribe((recievedData) => {
           console.log(recievedData.message);
           console.log(recievedData.result);
-          this.serviceProviderServices.push(service);
-          this.serviceProviderServiceUpdated.next([...this.serviceProviderServices]);
+          this.getServiceProviderServices();
           this.dialog.open(SuccessComponent, {data: {message: 'Service Successfully Added!'}});
-          this.getLastServiceId();
       });
     });
   }
@@ -188,12 +172,13 @@ export class ServiceService  {
       if (recievedImages.image_03!== null) {
         service.image_03 = recievedImages.image_03;
       }
-      this.http.post<{ message: string, result: Service }>(this.url + 'service/edit/' + service.service_id, service)
+      this.http.post<{ message: string, result: Service }>(this.url + 'service/edit', service)
       .subscribe((recievedData) => {
         console.log(recievedData.message);
         console.log(recievedData.result);
         this.service = service;
         this.serviceUpdated.next(this.service);
+        this.getServiceProviderServices();
         this.dialog.open(SuccessComponent, {data: {message: 'Service Successfully Updated!'}});
     });
   });
@@ -208,7 +193,6 @@ export class ServiceService  {
         this.serviceProviderServices = updatedServices;
         this.serviceProviderServiceUpdated.next([...this.serviceProviderServices]);
         console.log(recievedData.message);
-        this.getLastServiceId();
       });
   }
 

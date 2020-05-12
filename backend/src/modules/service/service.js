@@ -44,7 +44,25 @@ service.use(bodyParser.urlencoded({ extended: false }));
 
 //add new service
 service.post('/add',checkAuth, (req, res, next) => {
+    var lastid;
+    Service.find(function (err, services) {
+      if(services.length){
+        lastid = services[services.length-1].service_id;
+      } else {
+        lastid= 'S0';
+      }
+      let mId = +(lastid.slice(1));
+      ++mId;
+      lastid = 'S' + mId.toString();
+      console.log(lastid);
+      if (err) return handleError(err => {
+        res.status(500).json({
+          message: 'Error occured while getting product ID details!'
+        });
+      });
+    }).then( () => {
     const reqService = req.body;
+    reqService['service_id']= lastid;
     reqService['user_id']= req.userData.user_id;
     const newService = new Service(reqService);
     console.log(newService);
@@ -60,6 +78,7 @@ service.post('/add',checkAuth, (req, res, next) => {
           message: 'Service creation was unsuccessfull! Please try Again!'
         });
       });
+    });
 });
 
 // add service photos
@@ -84,10 +103,10 @@ service.post('/add/img',checkAuth, multer({storage:storage}).array("images[]"), 
 });
 
 //edit service
-service.post('/edit/:id',checkAuth, (req, res, next) => {
+service.post('/edit',checkAuth, (req, res, next) => {
   const newService = new Service(req.body);
   console.log(newService);
-  Service.updateOne({ service_id: req.params.id }, {
+  Service.updateOne({ service_id: req.body.service_id }, {
     service_name: req.body.service_name,
     business_name:  req.body.business_name,
     description: req.body.description,

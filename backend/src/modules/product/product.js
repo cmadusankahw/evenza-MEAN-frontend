@@ -43,8 +43,27 @@ product.use(bodyParser.urlencoded({ extended: false }));
 
 
 //add new product
+
 product.post('/add',checkAuth, (req, res, next) => {
+  var lastid;
+  Product.find(function (err, products) {
+    if(products.length){
+      lastid = products[products.length-1].product_id;
+    } else {
+      lastid= 'P0';
+    }
+    let mId = +(lastid.slice(1));
+    ++mId;
+    lastid = 'P' + mId.toString();
+    console.log(lastid);
+    if (err) return handleError(err => {
+      res.status(500).json({
+        message: 'Error occured while getting product ID details!'
+      });
+    });
+  }).then( () => {
     const reqProduct = req.body;
+    reqProduct['product_id']= lastid;
     reqProduct['user_id']= req.userData.user_id;
     const newProduct = new Product(reqProduct);
     console.log(newProduct);
@@ -60,7 +79,8 @@ product.post('/add',checkAuth, (req, res, next) => {
           message: 'Product creation was unsuccessful! Please try again!'
         });
       });
-});
+  });
+ });
 
 // add product photos
 product.post('/add/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
@@ -84,10 +104,10 @@ product.post('/add/img',checkAuth, multer({storage:storage}).array("images[]"), 
 });
 
 //edit product
-product.post('/edit/:id',checkAuth, (req, res, next) => {
+product.post('/edit',checkAuth, (req, res, next) => {
   const newProduct = new Product(req.body);
   console.log(newProduct);
-  Product.updateOne({ product_id: req.params.id }, {
+  Product.updateOne({ product_id: req.body.product_id}, {
     business_name:  req.body.business_name,
     product: req.body.product,
     product_category: req.body.product_category,

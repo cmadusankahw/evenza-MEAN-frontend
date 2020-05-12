@@ -13,7 +13,6 @@ export class ProductService  {
   private sellerProductsUpdated = new Subject<Product[]>();
   private searchedProductUpdated = new Subject<Product[]>();
   private productsUpdated = new Subject<Product[]>();
-  private lastIdUpdated = new Subject<string>();
   private quantitiesUpdated = new Subject<QuantityTypes[]>();
   private categoriesUpdated = new Subject<ProductCategories[]>();
 
@@ -39,8 +38,6 @@ export class ProductService  {
   // to render selected product
   private product: Product;
 
-  // to get the very last id of the product list
-  private lastId: string;
 
   constructor(private http: HttpClient,
               public dialog: MatDialog) { }
@@ -90,16 +87,6 @@ export class ProductService  {
   }
 
 
-  // get last product id
-  getLastProductId() {
-    this.http.get<{ lastid: string }>(this.url + 'product/last')
-    .subscribe((recievedId) => {
-      console.log(recievedId.lastid);
-      this.lastId = recievedId.lastid;
-      this.lastIdUpdated.next(this.lastId);
-    });
-  }
-
 
 
   // listners for subjects
@@ -126,10 +113,6 @@ export class ProductService  {
 
   getCategoriesUpdateListener() {
     return this.categoriesUpdated.asObservable();
-  }
-
-  getLastIdUpdateListener(){
-    return this.lastIdUpdated.asObservable();
   }
 
   // crud methods
@@ -159,10 +142,8 @@ export class ProductService  {
         .subscribe((recievedData) => {
           console.log(recievedData.message);
           console.log(recievedData.result);
-          this.sellerProducts.push(product);
-          this.sellerProductsUpdated.next([...this.sellerProducts]);
+          this.getSellerProducts();
           this.dialog.open(SuccessComponent, {data: {message: 'Product Added Successfully!'}});
-          this.getLastProductId();
       });
     });
   }
@@ -188,12 +169,13 @@ export class ProductService  {
       if (recievedImages.image_03!== null) {
         product.image_03 = recievedImages.image_03;
       }
-      this.http.post<{ message: string, result: Product }>(this.url + 'product/edit/' + product.product_id, product)
+      this.http.post<{ message: string, result: Product }>(this.url + 'product/edit', product)
       .subscribe((recievedData) => {
         console.log(recievedData.message);
         console.log(recievedData.result);
         this.product = product;
         this.productUpdated.next(this.product);
+        this.getSellerProducts();
         this.dialog.open(SuccessComponent, {data: {message: 'Product Updated Successfully!'}});
     });
   });
@@ -208,7 +190,6 @@ export class ProductService  {
         this.sellerProducts = updatedProducts;
         this.sellerProductsUpdated.next([...this.sellerProducts]);
         console.log(recievedData.message);
-        this.getLastProductId();
       });
   }
 

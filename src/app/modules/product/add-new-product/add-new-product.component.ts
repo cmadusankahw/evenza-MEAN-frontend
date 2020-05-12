@@ -18,7 +18,6 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
   private productSub: Subscription ;
   private categorySub: Subscription ;
   private quantitySub: Subscription ;
-  private lastIdSub: Subscription;
 
   // images to upload
   image01: File;
@@ -38,21 +37,11 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
   quantities: QuantityTypes[] = [];
 
 
-  // last product id of the list
-  private lastId: string;
-
   constructor(private router: Router,
               public productService: ProductService,
               public datepipe: DatePipe) { }
 
   ngOnInit() {
-    // get the product id of last product
-      this.productService.getLastProductId();
-      this.lastIdSub = this.productService.getLastIdUpdateListener()
-        .subscribe((recievedId: string) => {
-          this.lastId = recievedId;
-          console.log(this.lastId);
-      });
 
 
     // import categories
@@ -82,9 +71,7 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
     if (this.quantitySub) {
       this.quantitySub.unsubscribe();
     }
-    if (this.lastIdSub){
-      this.lastIdSub.unsubscribe();
-    }
+
     this.image01Url = './assets/images/merchant/nopic.png';
     this.image02Url = './assets/images/merchant/nopic.png';
     this.image03Url = './assets/images/merchant/nopic.png';
@@ -100,7 +87,7 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
       } else {
 
         const product: Product = {
-          product_id: this.generateProductId(this.lastId),
+          product_id: null,
           business_name:  this.businessName,
           product: addProductForm.value.product,
           product_category: addProductForm.value.category,
@@ -185,12 +172,6 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
     };
   }
 
-  generateProductId(productId: string): string {
-    let mId = +(productId.slice(1));
-    console.log(mId);
-    ++mId;
-    return 'P' + mId.toString();
-  }
 
   booleanValue(value: any) {
     if (value ===  '' || value === null || value === undefined) {

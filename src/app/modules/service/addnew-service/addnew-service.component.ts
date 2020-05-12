@@ -18,7 +18,6 @@ export class AddnewServiceComponent implements OnInit, OnDestroy {
   private serviceSub: Subscription ;
   private categorySub: Subscription ;
   private ratesSub: Subscription ;
-  private lastIdSub: Subscription;
 
    // images to upload
    image01: File;
@@ -38,22 +37,12 @@ export class AddnewServiceComponent implements OnInit, OnDestroy {
    rates: ServiceRates[] = [];
 
 
-  // last product id of the list
-  private lastId: string;
-
   constructor(private router: Router,
               public serviceService: ServiceService,
               public datepipe: DatePipe) { }
 
 
   ngOnInit() {
-  // get the product id of last product
-    this.serviceService.getLastServiceId();
-    this.lastIdSub = this.serviceService.getLastIdUpdateListener()
-      .subscribe((recievedId: string) => {
-        this.lastId = recievedId;
-        console.log(this.lastId);
-    });
 
 
   // import categories
@@ -83,9 +72,7 @@ ngOnDestroy() {
   if (this.ratesSub) {
     this.ratesSub.unsubscribe();
   }
-  if (this.lastIdSub){
-    this.lastIdSub.unsubscribe();
-  }
+
   this.image01Url = './assets/images/merchant/nopic.png';
   this.image02Url = './assets/images/merchant/nopic.png';
   this.image03Url = './assets/images/merchant/nopic.png';
@@ -101,7 +88,7 @@ createService(addServiceForm: NgForm) {
   } else {
 
     const service: Service = {
-      service_id: this.generateServiceId(this.lastId),
+      service_id: null,
       service_name: addServiceForm.value.service_name,
       business_name:  this.businessName,
       description: addServiceForm.value.description,
@@ -186,12 +173,6 @@ reader.onload = () => {
 };
 }
 
-generateServiceId(serviceId: string): string {
-let mId = +(serviceId.slice(1));
-console.log(mId);
-++mId;
-return 'S' + mId.toString();
-}
 
 
 booleanValue(value: any) {

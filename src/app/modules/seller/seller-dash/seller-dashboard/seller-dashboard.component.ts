@@ -15,12 +15,13 @@ import { Merchant } from 'src/app/modules/seller/seller.model';
 export class SellerDashboardComponent implements OnInit, OnDestroy {
 
   showSubMenu = false;
-  home = true;
-  bProfile: boolean;
-  orders: boolean;
-  inventory: boolean;
-  report: boolean;
-  profile: boolean;
+   // navigation
+   home = 'txt-white row';
+   bprofile = 'txt-white row';
+   orders = 'txt-white row';
+   inventory = 'txt-white row';
+   reports = 'txt-white row';
+   profile = 'txt-white row';
 
   private authSubs: Subscription;
 
@@ -63,87 +64,52 @@ export class SellerDashboardComponent implements OnInit, OnDestroy {
   routerEvents() {
     this.router.events.subscribe((e) => {
       if (e instanceof NavigationStart) {
-        if (e.url === '/sel/dash') {
-          this.onHome();
-        } else if (e.url === '/sel/dash/bprofile') {
-          this.onBprofile();
-        } else if (e.url === '/sel/dash/orders') {
-          this.onOrders();
-        } else if (e.url === '/sel/dash/inventory') {
-          this.onInventory();
-        } else if (e.url === '/sel/dash/reports') {
-          this.onReport();
-        } else if (e.url === '/sel/dash/profile') {
-          this.onProfile();
-        }
-      }
-    });
+        if (e.url === '/sp/dash') {
+          this.navHome();
+        } else if (e.url === '/sp/dash/bprofile') {
+          this.navBprofile();
+        } else if (e.url === '/sp/dash/orders') {
+          this.navOrders();
+        } else if (e.url === '/sp/dash/inventory') {
+          this.navInventory();
+        } else if (e.url === '/sp/dash/reports') {
+          this.navReports();
+        } else if (e.url === '/sp/dash/profile') {
+        this.navProfile();
+    }
+    }
+  });
   }
 
-
-  onHome() {
-    this.home = true;
-    this.bProfile = false;
-    this.orders = false;
-    this.inventory = false;
-    this.report = false;
-    this.profile = false;
-
+  navHome() {
+    this.home = 'txt-white row active-nav';
+    this.bprofile = this.orders = this.inventory = this.profile = this.reports = 'txt-white row';
   }
 
-
-  onBprofile() {
-    this.home = false;
-    this.bProfile = true;
-    this.orders = false;
-    this.inventory = false;
-    this.report = false;
-    this.profile = false;
-
+  navBprofile() {
+    this.bprofile = 'txt-white row active-nav';
+    this.home = this.orders = this.inventory  = this.profile = this.reports = 'txt-white row';
   }
 
-
-  onOrders() {
-    this.home = false;
-    this.bProfile = false;
-    this.orders = true;
-    this.inventory = false;
-    this.report = false;
-    this.profile = false;
-
+  navOrders() {
+    this.orders = 'txt-white row active-nav';
+    this.bprofile = this.home = this.inventory  = this.profile = this.reports = 'txt-white row';
   }
 
-
-  onInventory() {
-    this.home = false;
-    this.bProfile = false;
-    this.orders = false;
-    this.inventory = true;
-    this.report = false;
-    this.profile = false;
-
+  navInventory() {
+    this.inventory = 'txt-white row active-nav';
+    this.bprofile = this.orders = this.home  = this.profile = this.reports = 'txt-white row';
   }
 
-
-  onReport() {
-    this.home = false;
-    this.bProfile = false;
-    this.orders = false;
-    this.inventory = false;
-    this.report = true;
-    this.profile = false;
-
+  navReports() {
+    this.reports = 'txt-white row active-nav';
+    this.bprofile = this.orders = this.inventory = this.home = this.profile  = 'txt-white row';
   }
 
-
-  onProfile() {
-    this.home = false;
-    this.bProfile = false;
-    this.orders = false;
-    this.inventory = false;
-    this.report = false;
-    this.profile = true;
-
+  navProfile() {
+    this.profile = 'txt-white row active-nav';
+    this.bprofile = this.orders = this.inventory  = this.home = this.reports = 'txt-white row';
   }
+
 
 }

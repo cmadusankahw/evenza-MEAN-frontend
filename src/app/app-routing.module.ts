@@ -26,6 +26,13 @@ import { SellerDashOrdersComponent } from './modules/seller/seller-dash/pages/se
 import { SearchProductsComponent } from './modules/product/search-products/search-products.component';
 import { SearchServicesComponent } from './modules/service/search-services/search-services.component';
 import { AuthGuard } from './modules/auth/auth.guard';
+import { EventplannerDashEventsComponent } from './modules/eventplanner/eventplannerdash/pages/eventplanner-dash-events/eventplanner-dash-events.component';
+import { EventplannerDashBookingsComponent } from './modules/eventplanner/eventplannerdash/pages/eventplanner-dash-bookings/eventplanner-dash-bookings.component';
+import { EventplannerDashAppointmentsComponent } from './modules/eventplanner/eventplannerdash/pages/eventplanner-dash-appointments/eventplanner-dash-appointments.component';
+import { EventplannerDashOrdersComponent } from './modules/eventplanner/eventplannerdash/pages/eventplanner-dash-orders/eventplanner-dash-orders.component';
+import { EventplannerDashProfileComponent } from './modules/eventplanner/eventplannerdash/pages/eventplanner-dash-profile/eventplanner-dash-profile.component';
+import { EventplannerDashboardComponent } from './modules/eventplanner/eventplannerdash/eventplanner-dashboard/eventplanner-dashboard.component';
+import { EventplannerDashHomeComponent } from './modules/eventplanner/eventplannerdash/pages/eventplanner-dash-home/eventplanner-dash-home.component';
 
 
 const routes: Routes = [
@@ -63,6 +70,19 @@ const routes: Routes = [
       { path: 'profile', component: SellerDashProfileComponent },
       { path: '**', component: NotFoundPageComponent },
     ], canActivate: [AuthGuard]
+  },
+  {
+    path: 'planner',
+    component: EventplannerDashboardComponent,
+    children: [
+      { path: '', component: EventplannerDashHomeComponent },
+      { path: 'events', component: EventplannerDashEventsComponent },
+      { path: 'bookings', component: EventplannerDashBookingsComponent },
+      { path: 'appoints', component: EventplannerDashAppointmentsComponent },
+      { path: 'orders', component: EventplannerDashOrdersComponent },
+      { path: 'profile', component: EventplannerDashProfileComponent },
+      { path: '**', component: NotFoundPageComponent },
+    ] , canActivate: [AuthGuard]
   },
   { path: '', component: HomeComponent },
   { path: '**', component: NotFoundPageComponent }

@@ -1,14 +1,14 @@
 <div class="pd-top-min">
 
-  <h4 *ngIf="appointmentType == 1">
+  <h4 *ngIf="appointmentType == 'pending'">
     <mat-icon>library_books</mat-icon>
    <b> Appointment Requests</b>
   </h4>
-  <h4 *ngIf="appointmentType == 2">
+  <h4 *ngIf="appointmentType == 'confirmed'">
     <mat-icon>check_circle</mat-icon>
    <b> Approved Appointments</b>
   </h4>
-  <h4 *ngIf="appointmentType == 3" >
+  <h4 *ngIf="appointmentType == 'cancelled'" >
     <mat-icon>block</mat-icon>
    <b> Cancelled Appointments</b>
   </h4>
@@ -17,16 +17,16 @@
     <mat-label>
       <mat-icon>search</mat-icon>
       Search Visit Appointments</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia">
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Reservation Hall">
   </mat-form-field>
 
-  <div class="mat-elevation-z8" *ngIf="hasData()">
+  <div class="mat-elevation-z8" *ngIf="recievedAppointments.length">
     <table class="table-responsive" mat-table [dataSource]="dataSource" matSort>
 
       <!-- ID Column -->
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header > Appointed ID </th>
-        <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.appoint_id}} </td>
       </ng-container>
 
       <!-- Progress Column -->
@@ -43,8 +43,8 @@
 
       <!-- Color Column -->
       <ng-container matColumnDef="duration">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header > Visit Time Between </th>
-        <td mat-cell *matCellDef="let row" > {{row.pref_from_time}} to {{row.pref_to_time}} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Appointed time </th>
+        <td mat-cell *matCellDef="let row" > {{row.appointed_time}} </td>
       </ng-container>
 
 
@@ -73,7 +73,7 @@
     <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
   </div>
 
-  <div class="text-center pd-top-min"  *ngIf="!hasData()">
+  <div class="text-center pd-top-min"  *ngIf="!recievedAppointments.length">
     No Appointments Found
   </div>
 
@@ -98,7 +98,7 @@
       role="document"
       style="overflow-y: initial !important"
     >
-      <div class="modal-content"  *ngIf = "hasData()">
+      <div class="modal-content"  *ngIf = "recievedAppointments.length">
         <div class="modal-header">
           <button
             type="button"
@@ -109,7 +109,7 @@
             <span aria-hidden="true">×</span>
           </button>
           <h4 class="modal-title w-100" id="myModalLabel" >
-            <mat-icon>service</mat-icon>Visit Appoinment {{recievedAppointments[0].id}} Details
+            <mat-icon>service</mat-icon>Visit Appoinment: {{recievedAppointments[0].appoint_id}} Details
           </h4>
         </div>
 
@@ -122,10 +122,10 @@
                   <!--booking info-->
                   <div class="row ">
                     <div class="col-md-4 info-text">
-                      Boking ID
+                      Appointment ID
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedAppointments[0].id}}">
+                      <input type="text" matInput disabled value=" {{recievedAppointments[0].appoint_id}}">
                     </div>
                   </div>
 
@@ -176,10 +176,10 @@
 
                   <div class="row ">
                     <div class="col-md-4 info-text-net">
-                      Visit Time Between
+                      Appointed Visit Time
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedAppointments[0].pref_from_time}} to {{recievedAppointments[0].pref_to_time}}">
+                      <input type="text" matInput disabled value=" {{recievedAppointments[0].appointed_time}}">
                     </div>
                   </div>
 
@@ -202,7 +202,7 @@
                   </div>
 
                   <!--pending bookings -->
-                  <div class="info-top" *ngIf="recievedAppointments[0].state == 'Pending'" >
+                  <div class="info-top" *ngIf="recievedAppointments[0].state == 'pending'" >
                   <button mdbBtn color="purple" text="white" class="btn  btn-md text-center">
                    <span > Approve Appointment </span>
                   </button>
@@ -213,7 +213,7 @@
                 </div>
 
                  <!--approved bookings -->
-                 <div class="info-top" *ngIf="recievedAppointments[0].state == 'Approved'">
+                 <div class="info-top" *ngIf="recievedAppointments[0].state == 'confirmed'">
                   <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center" >
                     <span >Send Cancel Request</span>
                   </button>

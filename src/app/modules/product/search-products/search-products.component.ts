@@ -3,10 +3,11 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { NgForm } from '@angular/forms';
 
 import { ProductCategories, Product, ProductQuery } from '../product.model';
 import { ProductService } from '../product.service';
-import { NgForm } from '@angular/forms';
+
 
 @Component({
   selector: 'app-search-products',

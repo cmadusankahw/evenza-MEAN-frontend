@@ -133,7 +133,7 @@ auth.post('/signin', (req, res, next) => {
     res.status(200).json({
       message: 'user authentication successfull!',
       token:token,
-      expiersIn: 3600,
+      expiersIn: 7200,
       user_type: fetchedUser.user_type,
     });
   })
@@ -205,7 +205,7 @@ auth.get('/get/planner',checkAuth, (req, res, next) => {
 
 // get header details
 auth.get('/get/header',checkAuth, (req, res, next) => {
-    if (req.userData.user_type == 'planner'){
+    if (req.userData.user_type == 'eventPlanner'){
       EventPlanner.findOne({ user_id: req.userData.user_id }, function (err,planner) {
         res.status(200).json(
           {

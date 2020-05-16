@@ -1,20 +1,4 @@
-export interface Business {
-  id: string;
-  merchant_type: string;
-  title: string;
-  description: string;
-  email: string;
-  contact_no: string;
-  address_line1: string;
-  address_line2: string;
-  postal_code: string;
-  location: string;
-  isverified: boolean;
-  isopened: boolean;
-  payment_verified: boolean;
-  feature_img: string;
-  logo: string;
-}
+
 
 export interface BusinessAvailability {
   day: string;
@@ -32,43 +16,23 @@ export interface BusinessVerify {
   certify_image: object;
 }
 
-export interface Appointment {
-  id: string;
-  service_id: string;
-  cust_id: string;
-  service_name: string;
-  customer_name: string;
-  created_date: string;
-  created_time: string;
-  state: string;
-  appointed_date: string;
-  pref_from_time: string;
-  pref_to_time: string;
-  comment: string;
-}
-
-export interface AppointmentState {
-  id: string;
-  val: string;
-}
 
 export interface Booking {
-  booking_id: string;
+  booking_id: string; // ref  user.user_id
   service_id: string;
-  cust_id: string;
-  service_name: string;
-  service_category: string;
-  customer_name: string;
+  event_id: string;
+  service_name: string; // retrived from service
+  customer_name: string; // retrived from user
   created_date: string;
   created_time: string;
   state: string;
   rating: number;
   review: string;
-  booking_type: string;
-  booked_date: string;
+  from_date: string;
+  to_date: string;
   duration: number;
-  start_time: string;
-  end_time: string;
+  from_time: string;
+  to_time: string;
   comment: string;
   payment_type: string;
   amount: number;
@@ -76,10 +40,20 @@ export interface Booking {
   amount_paid: number;
 }
 
-export interface BookingState {
-  id: string;
-  val: string;
+export interface Appointment {
+  appoint_id: string; // ref user.user_id
+  service_id: string;
+  service_name: string;
+  customer_name: string;
+  created_date: string;
+  created_time: string;
+  state: string;
+  appointed_date: string;
+  appointed_time: string;
+  comment: string;
 }
+
+
 
 export interface Earnings {
   transaction_id: string;
@@ -151,4 +125,44 @@ export interface Merchant {
   date_of_birth: string;
   isverified: boolean;
   reg_date: string;
+  // business details
+  // business_created_date: string;
+  // business_title: string;
+  // description: string;
+  // business_email: string;
+  // business_contact_no: string;
+  // business_address_line1: string;
+  // business_address_line2: string;
+  // business_postal_code: string;
+  // business_location: string;
+  // business_isverified: boolean;
+  // br_side_a: string;
+  // br_side_b: string;
+  // open_days: [{ day: number, from_time: string, to_time: string; }];
+  // payment_verified: boolean;
+  // card_no: number;
+  // pin_no: number;
+  // bank: string;
+  // exp_date: string;
+  // feature_img: string;
+  // logo: string;
+}
+
+// to be removed once merchant is configured
+export interface Business {
+  id: string;
+  merchant_type: string;
+  title: string;
+  description: string;
+  email: string;
+  contact_no: string;
+  address_line1: string;
+  address_line2: string;
+  postal_code: string;
+  location: string;
+  isverified: boolean;
+  isopened: boolean;
+  payment_verified: boolean;
+  feature_img: string;
+  logo: string;
 }

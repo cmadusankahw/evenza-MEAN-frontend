@@ -1,20 +1,3 @@
-export interface Business {
-  id: string;
-  merchant_type: string;
-  title: string;
-  description: string;
-  email: string;
-  contact_no: string;
-  address_line1: string;
-  address_line2: string;
-  postal_code: string;
-  location: string;
-  isverified: boolean;
-  isopened: boolean;
-  payment_verified: boolean;
-  feature_img: string;
-  logo: string;
-}
 
 export interface BusinessVerify {
   isverified: string;
@@ -114,9 +97,7 @@ export interface ProductCategories {
 export interface Order {
   order_id: string;
   product_id: string;
-  cust_id: string;
   product: string;
-  product_category: string;
   customer_name: string;
   created_date: string;
   created_time: string;
@@ -133,10 +114,6 @@ export interface Order {
   amount_paid: number;
 }
 
-export interface OrderState {
-  id: string;
-  val: string;
-}
 
 export interface Merchant {
   user_id: string;
@@ -154,4 +131,44 @@ export interface Merchant {
   date_of_birth: string;
   isverified: boolean;
   reg_date: string;
+  // business details
+  // business_created_date: string;
+  // business_title: string;
+  // description: string;
+  // business_email: string;
+  // business_contact_no: string;
+  // business_address_line1: string;
+  // business_address_line2: string;
+  // business_postal_code: string;
+  // business_location: string;
+  // business_isverified: boolean;
+  // br_side_a: string;
+  // br_side_b: string;
+  // open_days: [{ day: number, from_time: string, to_time: string; }];
+  // payment_verified: boolean;
+  // card_no: number;
+  // pin_no: number;
+  // bank: string;
+  // exp_date: string;
+  // feature_img: string;
+  // logo: string;
+}
+
+// to be removed once merchant is configured
+export interface Business {
+  id: string;
+  merchant_type: string;
+  title: string;
+  description: string;
+  email: string;
+  contact_no: string;
+  address_line1: string;
+  address_line2: string;
+  postal_code: string;
+  location: string;
+  isverified: boolean;
+  isopened: boolean;
+  payment_verified: boolean;
+  feature_img: string;
+  logo: string;
 }

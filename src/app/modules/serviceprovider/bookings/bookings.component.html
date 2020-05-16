@@ -1,14 +1,14 @@
 <div class="pd-top-min">
 
-<h4 *ngIf="bookingType == 1">
+<h4 *ngIf="bookingType == 'pending'">
   <mat-icon>library_books</mat-icon>
  <b> Pending Bookings</b>
 </h4>
-<h4 *ngIf="bookingType == 2">
+<h4 *ngIf="bookingType == 'confirmed'">
   <mat-icon>check_circle</mat-icon>
  <b> Confirmed Bookings</b>
 </h4>
-<h4 *ngIf="bookingType == 3" >
+<h4 *ngIf="bookingType == 'cancelled'" >
   <mat-icon>block</mat-icon>
  <b> Cancelled Bookings</b>
 </h4>
@@ -17,10 +17,10 @@
   <mat-label>
     <mat-icon>search</mat-icon>
     Search Bookings</mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia">
+  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Photography">
 </mat-form-field>
 
-<div class="mat-elevation-z8" *ngIf="hasData()">
+<div class="mat-elevation-z8" *ngIf="recievedBookings.length">
   <table class="table-responsive" mat-table [dataSource]="dataSource" matSort>
 
     <!-- ID Column -->
@@ -38,13 +38,13 @@
     <!-- Name Column -->
     <ng-container matColumnDef="booked_date">
       <th mat-header-cell *matHeaderCellDef mat-sort-header > Date Booked </th>
-      <td mat-cell *matCellDef="let row"> {{row.booked_date}} </td>
+      <td mat-cell *matCellDef="let row"> {{row.from_date}} </td>
     </ng-container>
 
     <!-- Color Column -->
     <ng-container matColumnDef="duration">
       <th mat-header-cell *matHeaderCellDef mat-sort-header > Duration </th>
-      <td mat-cell *matCellDef="let row" > {{row.duration + row.booking_type}} </td>
+      <td mat-cell *matCellDef="let row" > {{row.duration}} {{row.duration == 1 ? ' Hrs' : ' Days'}} </td>
     </ng-container>
 
      <!-- Color Column -->
@@ -72,7 +72,7 @@
   <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
 </div>
 
-<div class="text-center pd-top-min"  *ngIf="!hasData()">
+<div class="text-center pd-top-min"  *ngIf="!recievedBookings.length">
   No Bookings Found
 </div>
 
@@ -98,7 +98,7 @@
     role="document"
     style="overflow-y: initial !important"
   >
-    <div class="modal-content"   *ngIf = "hasData()">
+    <div class="modal-content"   *ngIf = "recievedBookings.length">
       <div class="modal-header">
         <button
           type="button"
@@ -140,37 +140,68 @@
 
                 <div class="row ">
                   <div class="col-md-4 info-text">
-                    Service Booked
+                    Service Name
                   </div>
                   <div class="col info-input">
                     <input type="text" matInput disabled value=" {{recievedBookings[0].service_name}}">
                   </div>
                 </div>
 
+                <div *ngIf="recievedBookings[0].duration > 1">
                 <div class="row ">
                   <div class="col-md-4 info-text">
-                    Service Category
+                    Booked Date (from)
                   </div>
                   <div class="col info-input">
-                    <input type="text" matInput disabled value=" {{recievedBookings[0].service_category}}">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].from_date}}">
                   </div>
                 </div>
 
                 <div class="row ">
                   <div class="col-md-4 info-text">
-                    Booked Date
+                    Booked Date (to)
                   </div>
                   <div class="col info-input">
-                    <input type="text" matInput disabled value=" {{recievedBookings[0].booked_date}}">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].to_date}}">
                   </div>
                 </div>
+                </div>
+
+                <div *ngIf="recievedBookings[0].duration == 1">
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Booked Date
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{recievedBookings[0].from_date}}">
+                    </div>
+                  </div>
+
+                <div class="row ">
+                  <div class="col-md-4 info-text">
+                    Booked Time (from)
+                  </div>
+                  <div class="col info-input">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].from_time}}">
+                  </div>
+                </div>
+
+                <div class="row ">
+                  <div class="col-md-4 info-text">
+                    Booked Time (to)
+                  </div>
+                  <div class="col info-input">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].to_time}}">
+                  </div>
+                </div>
+              </div>
 
                 <div class="row ">
                   <div class="col-md-4 info-text-net">
-                    Booking Duration
+                    Duration
                   </div>
                   <div class="col info-input">
-                    <input type="text" matInput disabled value=" {{recievedBookings[0].duration + recievedBookings[0].booking_type}}">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].duration}} {{recievedBookings[0].duration == 1 ? 'Hrs' : 'Days'}}">
                   </div>
                 </div>
 
@@ -201,7 +232,14 @@
                   </div>
                 </div>
 
-                <hr>
+                <div class="row ">
+                  <div class="col-md-4 info-text-net">
+                    State
+                  </div>
+                  <div class="col info-input-net">
+                    <b><input type="text" matInput disabled value=" {{recievedBookings[0].state}}"></b>
+                  </div>
+                </div>
 
                 <div class="row ">
                   <div class="col-md-4 info-text">
@@ -212,6 +250,8 @@
                   </div>
                 </div>
                 <hr>
+
+                <div *ngIf="bookingType != 'cancelled'">
                 <div class="row ">
                   <div class="col-md-4 info-text">
                     Due Commission
@@ -238,18 +278,20 @@
                     <b><input type="text" matInput disabled value=" Rs. {{recievedBookings[0].amount_paid}}"></b>
                   </div>
                 </div>
-                <hr>
-                <div class="row ">
+
+                <div class="row " *ngIf="(recievedBookings[0].amount - recievedBookings[0].amount_paid) > 0">
                   <div class="col-md-4 info-text-net">
-                    State
+                    Amount to be Paid
                   </div>
-                  <div class="col info-input-net" style="color:darkmagenta;">
-                    <b><input type="text" matInput disabled value=" {{recievedBookings[0].state}}"></b>
+                  <div class="col info-input-net"  style="color:darkmagenta !important;">
+                    <b><input type="text" matInput disabled value=" Rs. {{recievedBookings[0].amount - recievedBookings[0].amount_paid}}"></b>
                   </div>
                 </div>
+                <hr>
+              </div>
 
                 <!--pending bookings -->
-                <div class="info-top" *ngIf="recievedBookings[0].state == 'Pending'" >
+                <div class="info-top" *ngIf="recievedBookings[0].state == 'pending'" >
                 <button mdbBtn color="purple" text="white" class="btn  btn-md text-center">
                  <span > Approve Booking </span>
                 </button>
@@ -260,7 +302,7 @@
               </div>
 
                <!--approved bookings -->
-               <div class="info-top" *ngIf="recievedBookings[0].state == 'Approved'">
+               <div class="info-top" *ngIf="recievedBookings[0].state == 'confirmed'">
                 <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center" >
                   <span >Send Cancel Request</span>
                 </button>

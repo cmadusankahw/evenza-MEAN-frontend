@@ -14,13 +14,15 @@ import { Merchant } from 'src/app/modules/serviceprovider/serviceprovider.model'
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   showSubMenu = false;
-  home = true;
-  bProfile: boolean;
-  booking: boolean;
-  appointment: boolean;
-  calendar: boolean;
-  report: boolean;
-  profile: boolean;
+   // navigation
+   home = 'txt-white row';
+   bprofile = 'txt-white row';
+   bookings = 'txt-white row';
+   appoints = 'txt-white row';
+   calendar = 'txt-white row';
+   reports = 'txt-white row';
+   profile = 'txt-white row';
+
 
   private authSubs: Subscription;
 
@@ -67,105 +69,57 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.router.events.subscribe((e) => {
       if (e instanceof NavigationStart) {
         if (e.url === '/sp/dash') {
-          this.onHome();
+          this.navHome();
         } else if (e.url === '/sp/dash/bprofile') {
-          this.onBprofile();
+          this.navBprofile();
         } else if (e.url === '/sp/dash/bookings') {
-          this.onBooking();
+          this.navBookings();
         } else if (e.url === '/sp/dash/appoints') {
-          this.onAppointment();
+          this.navAppoints();
         } else if (e.url === '/sp/dash/calendar') {
-          this.onCalendar();
+          this.navCalendar();
         } else if (e.url === '/sp/dash/reports') {
-          this.onReport();
+          this.navReports();
         } else if (e.url === '/sp/dash/profile') {
-          this.onProfile();
-        }
-      }
-    });
+        this.navProfile();
+    }
+    }
+  });
   }
 
-  onHome() {
-    this.home = true;
-    this.bProfile = false;
-    this.booking = false;
-    this.appointment = false;
-    this.calendar = false;
-    this.report = false;
-    this.profile = false;
-
+  navHome() {
+    this.home = 'txt-white row active-nav';
+    this.bprofile = this.bookings = this.appoints = this.calendar = this.profile = this.reports = 'txt-white row';
   }
 
-
-  onBprofile() {
-    this.home = false;
-    this.bProfile = true;
-    this.booking = false;
-    this.appointment = false;
-    this.calendar = false;
-    this.report = false;
-    this.profile = false;
-
+  navBprofile() {
+    this.bprofile = 'txt-white row active-nav';
+    this.home = this.bookings = this.appoints = this.calendar = this.profile = this.reports = 'txt-white row';
   }
 
-
-  onBooking() {
-    this.home = false;
-    this.bProfile = false;
-    this.booking = true;
-    this.appointment = false;
-    this.calendar = false;
-    this.report = false;
-    this.profile = false;
-
+  navBookings() {
+    this.bookings = 'txt-white row active-nav';
+    this.bprofile = this.home = this.appoints = this.calendar = this.profile = this.reports = 'txt-white row';
   }
 
-
-  onAppointment() {
-    this.home = false;
-    this.bProfile = false;
-    this.booking = false;
-    this.appointment = true;
-    this.calendar = false;
-    this.report = false;
-    this.profile = false;
-
+  navAppoints() {
+    this.appoints = 'txt-white row active-nav';
+    this.bprofile = this.bookings = this.home = this.calendar = this.profile = this.reports = 'txt-white row';
   }
 
-
-  onCalendar() {
-    this.home = false;
-    this.bProfile = false;
-    this.booking = false;
-    this.appointment = false;
-    this.calendar = true;
-    this.report = false;
-    this.profile = false;
-
+  navCalendar() {
+    this.calendar = 'txt-white row active-nav';
+    this.bprofile = this.bookings = this.appoints = this.home = this.profile = this.reports = 'txt-white row';
   }
 
-
-  onReport() {
-    this.home = false;
-    this.bProfile = false;
-    this.booking = false;
-    this.appointment = false;
-    this.calendar = false;
-    this.report = true;
-    this.profile = false;
-
+  navReports() {
+    this.reports = 'txt-white row active-nav';
+    this.bprofile = this.bookings = this.appoints = this.home = this.profile = this.calendar = 'txt-white row';
   }
 
-
-  onProfile() {
-    this.home = false;
-    this.bProfile = false;
-    this.booking = false;
-    this.appointment = false;
-    this.calendar = false;
-    this.report = false;
-    this.profile = true;
-
+  navProfile() {
+    this.profile = 'txt-white row active-nav';
+    this.bprofile = this.bookings = this.appoints = this.calendar = this.home = this.reports = 'txt-white row';
   }
 
 

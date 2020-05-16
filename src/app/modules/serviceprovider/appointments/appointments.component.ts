@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { Appointment, AppointmentState } from '../serviceprovider.model';
+import { Appointment } from '../serviceprovider.model';
 
 @Component({
   selector: 'app-appointments',
@@ -21,60 +21,49 @@ export class AppointmentsComponent implements OnInit {
   // Create sample bookings
   appointments: Appointment[] = [
     {
-      id: 'A-01',
+      appoint_id: 'A-01',
       service_id: 'S-01',
-      cust_id: 'C-01',
       service_name: 'Photography',
       customer_name: 'Arjun',
       created_date: '22/03/2020',
       created_time: '14:25',
-      state: 'Approved',
+      state: 'pending',
       appointed_date: '30/03/2020',
-      pref_from_time: '08:00',
-      pref_to_time: '16:00',
+      appointed_time: '08:00',
       comment: 'please be on time',
     },
     {
-      id: 'A-02',
-      service_id: 'S-01',
-      cust_id: 'C-01',
+      appoint_id: 'A-02',
+      service_id: 'S-02',
       service_name: 'Photography',
       customer_name: 'Arjun',
       created_date: '22/03/2020',
       created_time: '14:25',
-      state: 'Pending',
+      state: 'cancelled',
       appointed_date: '30/03/2020',
-      pref_from_time: '08:00',
-      pref_to_time: '16:00',
+      appointed_time: '08:00',
       comment: 'please be on time',
     },
     {
-      id: 'A-03',
-      service_id: 'S-01',
-      cust_id: 'C-01',
+      appoint_id: 'A-03',
+      service_id: 'S-03',
       service_name: 'Photography',
       customer_name: 'Arjun',
       created_date: '22/03/2020',
       created_time: '14:25',
-      state: 'Approved',
+      state: 'confirmed',
       appointed_date: '30/03/2020',
-      pref_from_time: '08:00',
-      pref_to_time: '16:00',
+      appointed_time: '08:00',
       comment: 'please be on time',
     },
 
   ];
 
-  status: AppointmentState[] = [
-    { id: '1', val: 'Approved' },
-    { id: '2', val: 'Pending' },
-    { id: '3', val: 'Cancelled' },
-  ];
 
-  //booking-states
-  @Input() appointmentType = 1;
+  // booking-states
+  @Input() appointmentType = 'pending';
 
-  //booking arrays
+  // booking arrays
   recievedAppointments = [];
 
 
@@ -83,7 +72,7 @@ export class AppointmentsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initBookingType();
+    this.dataSource = new MatTableDataSource(this.addAppointments(this.appointments, this.appointmentType));
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
@@ -98,59 +87,19 @@ export class AppointmentsComponent implements OnInit {
     }
   }
 
-  initBookingType() {
-    if (this.appointmentType === 1) {
-      this.dataSource = new MatTableDataSource(this.onPending(this.appointments));
-    } else if (this.appointmentType === 2) {
-      this.dataSource = new MatTableDataSource(this.onApproved(this.appointments));
-    } else if (this.appointmentType === 3) {
-      this.dataSource = new MatTableDataSource(this.onCancelled(this.appointments));
-    }
-  }
 
-  onPending(bookings: any) {
-    const pedingBookings = [];
-    for (const val of bookings) {
-      //console.log(val);
-      if (val.state === 'Pending') {
-        pedingBookings.push(Object.assign({}, val));
+
+  addAppointments(appoints: Appointment[], state: string) {
+    const pedingAppoints = [];
+    for (const val of appoints) {
+      if (val.state === state) {
+        pedingAppoints.push(Object.assign({}, val));
       }
     }
-    this.recievedAppointments = [...pedingBookings];
+    this.recievedAppointments = [...pedingAppoints];
     return this.recievedAppointments;
   }
 
-  onApproved(bookings: any) {
-    const approvedBookings = [];
-    for (const val of bookings) {
-      //console.log(val);
-      if (val.state === 'Approved') {
-        approvedBookings.push(Object.assign({}, val));
-      }
-    }
-    this.recievedAppointments = [...approvedBookings];
-    return this.recievedAppointments;
-  }
-
-  onCancelled(bookings: any) {
-    const cancelledBookings = [];
-    for (const val of bookings) {
-      //console.log(val);
-      if (val.state === 'Cancelled') {
-        cancelledBookings.push(Object.assign({}, val));
-      }
-    }
-    this.recievedAppointments = [...cancelledBookings];
-    return this.recievedAppointments;
-  }
-
-  hasData() {
-    if (this.recievedAppointments.length) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
 
 }

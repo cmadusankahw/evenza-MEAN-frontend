@@ -11,7 +11,8 @@
     </div>
 
     <mat-nav-list >
-        <a class="txt-white row active-nav" mat-list-item *ngIf="home" routerLink="/sp/dash">
+        <a class="txt-white row" mat-list-item [ngClass] ="home"
+        (click)="navHome()"  routerLink="/sp/dash">
             <div class="col-md-11 side-start " >
               <mat-icon >home</mat-icon>
               <span class="side-text">  Home</span>
@@ -21,27 +22,10 @@
           </div>
         </a>
 
-        <a class="txt-white row" mat-list-item  *ngIf="!home" routerLink="/sp/dash">
-          <div class="col-md-11 side-start " >
-            <mat-icon >home</mat-icon>
-            <span class="side-text">  Home</span>
-          </div>
-          <div class="ol-md-1 side-end">
-          <mat-icon >arrow_right</mat-icon>
-        </div>
-      </a>
 
-      <a class="txt-white row active-nav" mat-list-item  *ngIf="bProfile"  (click)="showSubMenu = !showSubMenu" routerLink="/sp/dash/bprofile">
-        <div class="col-md-11 side-start">
-          <mat-icon >business_centert</mat-icon>
-          <span class="side-text">  Business Profile</span>
-        </div>
-        <div class="ol-md-1 side-end">
-        <mat-icon >arrow_right</mat-icon>
-      </div>
-      </a>
 
-      <a class="txt-white row" mat-list-item *ngIf="!bProfile" (click)="showSubMenu = !showSubMenu"  routerLink="/sp/dash/bprofile">
+      <a class="txt-white row" mat-list-item  [ngClass] ="bprofile"
+      (click)="navBprofile()"   (click)="showSubMenu = !showSubMenu" routerLink="/sp/dash/bprofile">
         <div class="col-md-11 side-start">
           <mat-icon >business_centert</mat-icon>
           <span class="side-text">  Business Profile</span>
@@ -57,7 +41,8 @@
         Add New Service
       </a>
 
-      <a class="txt-white row active-nav" mat-list-item  *ngIf="booking"  routerLink="/sp/dash/bookings">
+      <a class="txt-white row" mat-list-item [ngClass] ="bookings"
+      (click)="navBookings()"  routerLink="/sp/dash/bookings">
         <div class="col-md-11 side-start">
           <mat-icon >bookmarks</mat-icon>
           <span class="side-text">  Bookings</span>
@@ -67,18 +52,10 @@
       </div>
       </a>
 
-      <a class="txt-white row" mat-list-item *ngIf="!booking"  routerLink="/sp/dash/bookings">
-        <div class="col-md-11 side-start">
-          <mat-icon >bookmarks</mat-icon>
-          <span class="side-text">  Bookings</span>
-        </div>
-        <div class="ol-md-1 side-end">
-        <mat-icon >arrow_right</mat-icon>
-      </div>
-      </a>
 
 
-      <a class="txt-white row active-nav" mat-list-item  *ngIf="appointment" outerLink="/sp/dash/appoints">
+      <a class="txt-white row" mat-list-item  [ngClass] ="appoints"
+      (click)="navAppoints()" routerLink="/sp/dash/appoints">
         <div class="col-md-11 side-start">
           <mat-icon >phone_locked</mat-icon>
           <span class="side-text">  Appointments</span>
@@ -88,17 +65,10 @@
       </div>
       </a>
 
-      <a class="txt-white row" mat-list-item *ngIf="!appointment"  routerLink="/sp/dash/appoints">
-        <div class="col-md-11 side-start">
-          <mat-icon >phone_locked</mat-icon>
-          <span class="side-text">  Appointments</span>
-        </div>
-        <div class="ol-md-1 side-end">
-        <mat-icon >arrow_right</mat-icon>
-      </div>
-      </a>
 
-      <a class="txt-white row active-nav" mat-list-item *ngIf="calendar"  routerLink="/sp/dash/calendar">
+
+      <a class="txt-white row" mat-list-item [ngClass] ="calendar"
+      (click)="navCalendar()"  routerLink="/sp/dash/calendar">
         <div class="col-md-11 side-start">
           <mat-icon >calendar_today</mat-icon>
           <span class="side-text">  Booking Calendar</span>
@@ -108,17 +78,10 @@
       </div>
       </a>
 
-      <a class="txt-white row" mat-list-item *ngIf="!calendar" routerLink="/sp/dash/calendar">
-        <div class="col-md-11 side-start">
-          <mat-icon >calendar_today</mat-icon>
-          <span class="side-text">  Booking Calendar</span>
-        </div>
-        <div class="ol-md-1 side-end">
-        <mat-icon >arrow_right</mat-icon>
-      </div>
-      </a>
 
-      <a class="txt-white row active-nav" mat-list-item *ngIf="report"  routerLink="/sp/dash/reports">
+
+      <a class="txt-white row" mat-list-item [ngClass] ="reports"
+      (click)="navReports()"  routerLink="/sp/dash/reports">
         <div class="col-md-11 side-start">
           <mat-icon >library_books</mat-icon>
           <span class="side-text">  Report Wizard</span>
@@ -128,17 +91,10 @@
       </div>
       </a>
 
-      <a class="txt-white row" mat-list-item *ngIf="!report"  routerLink="/sp/dash/reports">
-        <div class="col-md-11 side-start">
-          <mat-icon >library_books</mat-icon>
-          <span class="side-text">  Report Wizard</span>
-        </div>
-        <div class="ol-md-1 side-end">
-        <mat-icon >arrow_right</mat-icon>
-      </div>
-      </a>
 
-      <a class="txt-white row active-nav" mat-list-item *ngIf="profile" routerLink="/sp/dash/profile">
+
+      <a class="txt-white row" mat-list-item [ngClass] ="profile"
+      (click)="navProfile()" routerLink="/sp/dash/profile">
         <div class="col-md-11 side-start">
           <mat-icon >perm_identity</mat-icon>
           <span class="side-text">  My Profile</span>
@@ -148,16 +104,6 @@
       </div>
       </a>
 
-
-      <a class="txt-white row" mat-list-item *ngIf="!profile"  routerLink="/sp/dash/profile">
-        <div class="col-md-11 side-start">
-          <mat-icon >perm_identity</mat-icon>
-          <span class="side-text">  My Profile</span>
-        </div>
-        <div class="ol-md-1 side-end">
-        <mat-icon >arrow_right</mat-icon>
-      </div>
-      </a>
     </mat-nav-list>
 
   </mat-sidenav>
@@ -179,13 +125,6 @@
     <!--dashboard content-->
     <div class="container-fluid">
       <router-outlet></router-outlet>
-      <!--<app-dash-home *ngIf="home"></app-dash-home>
-      <app-dash-business-profile *ngIf="bProfile"></app-dash-business-profile>
-      <app-dash-bookings *ngIf="booking"></app-dash-bookings>
-      <app-dash-appointments *ngIf="appointment"></app-dash-appointments>
-      <app-dash-calendar *ngIf="calendar"></app-dash-calendar>
-      <app-dash-reports *ngIf="report"></app-dash-reports>
-      <app-dash-profile *ngIf="profile"></app-dash-profile>-->
     </div>
     <!--end dashboard content-->
   </mat-sidenav-content>

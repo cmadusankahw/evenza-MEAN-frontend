@@ -1,1 +1,125 @@
-<p>eventplanner-dashboard works!</p>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'over'"
+      [opened]="opened">
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+       <div class="nav-top" style="position:relative;">
+        <img src="./assets/images/back/planner_nav_back.png" class="nav-back-img">
+          <div class="nav-top-back" style="position:absolute; top:0; bottom:0; left:0; right:0;">
+            <div class="pd-img">
+              <img [src]="eventPlanner ? eventPlanner.profile_pic: './assets/images/merchant/nopic.png'"
+              alt="Event Planner Pic" class="img-thumbnail" style="border-radius:50%;">
+            </div>
+          </div>
+       </div>
+
+          <a class="txt-white row " mat-list-item  [ngClass] ="home"
+            (click)="navHome()" routerLink="/planner">
+            <div class="col-md-11 side-start " >
+              <mat-icon >home</mat-icon>
+              <span class="side-text">  Home</span>
+            </div>
+            <div class="ol-md-1 side-end">
+            <mat-icon >arrow_right</mat-icon>
+          </div>
+        </a>
+
+
+
+      <a class="txt-white row" mat-list-item  [ngClass] ="events"
+      (click)="navEvents()" routerLink="/planner/events">
+        <div class="col-md-11 side-start">
+          <mat-icon >business_centert</mat-icon>
+          <span class="side-text">  My Events</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+
+
+      <a class="txt-white row " mat-list-item [ngClass] ="bookings"
+       (click)="navBookings()" routerLink="/planner/bookings">
+        <div class="col-md-11 side-start">
+          <mat-icon >bookmarks</mat-icon>
+          <span class="side-text">  My Bookings</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+
+      <a class="txt-white row" mat-list-item  [ngClass] ="appoints"
+       (click)="navAppoints()" routerLink="/planner/appoints">
+        <div class="col-md-11 side-start">
+          <mat-icon >phone_locked</mat-icon>
+          <span class="side-text">  Appointments</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+
+
+      <a class="txt-white row" mat-list-item [ngClass] ="orders"
+     (click)="navOrders()"  routerLink="/planner/orders">
+        <div class="col-md-11 side-start">
+          <mat-icon >calendar_today</mat-icon>
+          <span class="side-text">  My Orders</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+
+
+      <a class="txt-white row" mat-list-item [ngClass] ="profile"
+      (click)="navProfile()" routerLink="/planner/profile">
+        <div class="col-md-11 side-start">
+          <mat-icon >perm_identity</mat-icon>
+          <span class="side-text">  My Profile</span>
+        </div>
+        <div class="ol-md-1 side-end">
+        <mat-icon >arrow_right</mat-icon>
+      </div>
+      </a>
+
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+
+    <div class="filter-btn shadow">
+      <button
+      type="button"
+      aria-label="Toggle sidenav"
+      mat-icon-button
+      (click)="drawer.open()"
+      >
+      <mat-icon aria-label="Side nav toggle icon">subject</mat-icon>
+    </button>
+    <span class="filter-title"> Main Menu</span>
+    </div>
+
+
+
+    <!--search header-->
+        <div class="header text-center text-white" style="position:relative;">
+          <img src="./assets/images/back/eventPlanner.jpg" class="back-img">
+          <div class="text-center" style="position: absolute; top:20%; bottom:0; left:0; right:0;">
+             <div class="container-fluid pd-top-min">
+                <h2><b>Welcome Back! {{eventPlanner ? eventPlanner.first_name: 'Loading..'}}</b></h2>
+                <p>evenza has everything you require for your event..</p>
+             </div>
+          </div>
+        </div>
+
+       <router-outlet></router-outlet>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

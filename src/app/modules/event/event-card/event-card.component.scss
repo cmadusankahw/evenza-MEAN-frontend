@@ -1,0 +1,48 @@
+mdb-card{
+  max-height:300px;
+  min-height:200px;
+  max-width:250px;
+  min-width:220px;
+  margin:0 auto !important;
+  margin-bottom:13px !important;
+  margin-left:13px !important;
+  margin-right:13px !important;
+}
+
+.left-btn{
+  text-align:left;
+}
+
+.right-notify{
+  text-align:right;
+  font-weight:bold;
+  color:darkslategray;
+  font-size:16px;
+  word-spacing:20px;
+  padding-top:20px;
+}
+
+.left-notify{
+  text-align:left;
+  font-weight:bold;
+  color:darkslategray;
+  font-size:16px;
+  word-spacing:20px;
+  padding-bottom:12px;
+}
+
+mdb-icon{
+  padding-right:7px;
+}
+
+.pd-top-min{
+  padding-top:30px;
+}
+
+//mobile view
+@media screen and (max-width: 600px) {
+  mdb-card{
+    margin-left:auto!important;
+    margin-right:auto !important;
+  }
+}

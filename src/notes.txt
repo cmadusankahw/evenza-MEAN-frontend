@@ -125,3 +125,14 @@ Development Notes
 ** Order/ appointment/booking is created --> user-id as reference to the created user and the service/product id
 
 ** service/product id naming convention -> business_id _ service/product id  ex:- B1_S1 , B2_P1
+
+
+Modifications:
+update product/service api
+remove signup user id generation/ hasdata in frontend
+make appointment --> service view
+book now
+make appointment
+order now
+make payment (linking card details comp)
+

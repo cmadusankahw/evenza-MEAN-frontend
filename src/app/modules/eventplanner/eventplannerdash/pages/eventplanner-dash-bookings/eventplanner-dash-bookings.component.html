@@ -1,0 +1,21 @@
+<div class="text-center container pd-top">
+  <div class="top-content container-fluid">
+  <h3> Manage Your Bookings as a whole..</h3>
+  <h5> You can also manage bookings relate to specific event in relavant event plan..</h5>
+  <hr>
+</div>
+
+<div class="container-fluid">
+    <div class="pd-t">
+    <app-planner-bookings [bookingType] = "'pending'"></app-planner-bookings>
+    </div>
+
+    <div class="pd-t">
+      <app-planner-bookings [bookingType] = "'confirmed'"></app-planner-bookings>
+      </div>
+
+      <div class="pd-t">
+        <app-planner-bookings [bookingType] = "'cancelled'"></app-planner-bookings>
+        </div>
+  </div>
+</div>

@@ -273,7 +273,7 @@ export class AuthService {
           this.router.navigate(['/sel/dash']);
         }
         if (recievedData.user_type === 'eventPlanner') {
-          this.router.navigate(['/']);
+          this.router.navigate(['/planner']);
         }
       }
    }, (error) => {

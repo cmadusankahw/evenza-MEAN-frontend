@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { Order, OrderState } from '../seller.model';
+import { Order } from '../seller.model';
 
 @Component({
   selector: 'app-seller-orders',
@@ -23,13 +23,11 @@ export class SellerOrdersComponent implements OnInit {
     {
       order_id: 'B-01',
       product_id: 'S-01',
-      cust_id: 'C-01',
       product: 'Setty Back',
-      product_category: 'Wedding Eq',
       customer_name: 'Arjun',
       created_date: '22/03/2020',
       created_time: '14:25',
-      state: 'Delivered',
+      state: 'delivered',
       rating: 3,
       review: 'Nice Product!',
       quantity: 3.5,
@@ -44,13 +42,11 @@ export class SellerOrdersComponent implements OnInit {
     {
       order_id: 'B-01',
       product_id: 'S-01',
-      cust_id: 'C-01',
       product: 'Setty Back',
-      product_category: 'Wedding Eq',
       customer_name: 'Arjun',
       created_date: '22/03/2020',
       created_time: '14:25',
-      state: 'Pending',
+      state: 'pending',
       rating: 3,
       review: 'Nice Product!',
       quantity: 3.5,
@@ -65,13 +61,11 @@ export class SellerOrdersComponent implements OnInit {
     {
       order_id: 'B-01',
       product_id: 'S-01',
-      cust_id: 'C-01',
       product: 'Setty Back',
-      product_category: 'Wedding Eq',
       customer_name: 'Arjun',
       created_date: '22/03/2020',
       created_time: '14:25',
-      state: 'Pending',
+      state: 'pending',
       rating: 3,
       review: 'Nice Product!',
       quantity: 3.5,
@@ -86,16 +80,12 @@ export class SellerOrdersComponent implements OnInit {
 
   ];
 
-  status: OrderState[] = [
-    { id: '1', val: 'Delivered' },
-    { id: '2', val: 'Pending' },
-    { id: '3', val: 'Cancelled' },
-  ];
 
-  //booking-states
-  @Input() orderType = 1;
 
-  //booking arrays
+  // order types
+  @Input() orderType = 'pending';
+
+  // recieved orders
   recievedOrders = [];
 
 
@@ -103,7 +93,7 @@ export class SellerOrdersComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.initorderType();
+    this.dataSource = new MatTableDataSource(this.addOrders(this.orders, this.orderType ));
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
@@ -118,61 +108,16 @@ export class SellerOrdersComponent implements OnInit {
     }
   }
 
-  initorderType() {
-    if (this.orderType === 1) {
-      this.dataSource = new MatTableDataSource(this.onPending(this.orders));
-    } else if (this.orderType === 2) {
-      this.dataSource = new MatTableDataSource(this.onApproved(this.orders));
-    } else if (this.orderType === 3) {
-      this.dataSource = new MatTableDataSource(this.onCancelled(this.orders));
-    }
-  }
 
-  onPending(orders: any) {
+  addOrders(orders: Order[], state: string) {
     const pendingOrders = [];
     for (const val of orders) {
-      //console.log(val);
-      if (val.state === 'Pending') {
+      if (val.state === state) {
         pendingOrders.push(Object.assign({}, val));
       }
     }
     this.recievedOrders = [...pendingOrders];
     return this.recievedOrders;
   }
-
-  onApproved(orders: any) {
-    const deliveredOrders = [];
-    for (const val of orders) {
-      //console.log(val);
-      if (val.state === 'Delivered') {
-        deliveredOrders.push(Object.assign({}, val));
-      }
-    }
-    this.recievedOrders = [...deliveredOrders];
-    return this.recievedOrders;
-  }
-
-  onCancelled(orders: any) {
-    const cancelledOrders = [];
-    for (const val of orders) {
-      //console.log(val);
-      if (val.state === 'Cancelled') {
-        cancelledOrders.push(Object.assign({}, val));
-      }
-    }
-    this.recievedOrders = [...cancelledOrders];
-    return this.recievedOrders;
-  }
-
-
-  hasData() {
-    if (this.recievedOrders.length) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-
 
 }

@@ -46,7 +46,7 @@ export class MerchantProfileComponent implements OnInit {
   ngOnInit() {
   }
 
-  //string to date function
+  // string to date function
   convertDate(dob) {
     const m = Number(dob.slice(0, 2)) - 1;
     const d = Number(dob.slice(3, 5));

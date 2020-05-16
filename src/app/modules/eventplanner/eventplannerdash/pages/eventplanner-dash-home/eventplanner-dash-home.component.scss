@@ -1,0 +1,47 @@
+.pd-top{
+  padding-top:30px;
+}
+
+.pd-top-min{
+  padding-top:20px;
+}
+
+.link-box{
+  height:150px;
+  max-width:170px !important;
+  margin:20px auto;
+  padding:10px;
+}
+
+.quick-links{
+  padding-bottom:30px;
+}
+
+.create-event{
+  position:absolute; top:60; right:10; left:80%; bottom:0;
+}
+
+.link-icon{
+  font-size:40px;
+  font-weight:bold;
+  color:darkmagenta;
+  padding:5px;
+}
+
+
+
+//mobile view
+@media screen and (max-width: 600px) {
+  .create-event{
+    top:13vh;
+    left:0;
+    right:0;
+    bottom:0;
+  }
+
+  .pd-top{
+    padding-top:40px;
+  }
+
+
+}

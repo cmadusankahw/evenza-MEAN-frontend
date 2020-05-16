@@ -1,0 +1,74 @@
+.pd-top{
+  padding-top:40px;
+}
+
+
+.step-card{
+  position:relative;
+  max-width:280px;
+  max-height:250px;
+  min-height:250px;
+  margin: 20px auto;
+  padding-top: 20px;
+  padding-bottom:20px;
+  padding-left:15px;
+  padding-right:15px;
+}
+
+
+.card-no{
+  border-radius:50%;
+  background-color:darkmagenta;
+  font-size:40px;
+  padding-left:15px;
+  padding-right:15px;
+  font-weight:bold;
+  position:absolute;
+  top:-10;
+  left:-10;
+  color:white;
+}
+
+.card-icon{
+  height:130px;
+  margin:10px;
+}
+
+.pd-top-min{
+  padding-top:25px;
+}
+
+.hide-btn{
+  font-weight:bold;
+  color:darkmagenta;
+  text-align:right;
+  padding-right:40px;
+}
+
+.top-content{
+  position:relative;
+}
+
+.create-event{
+  position:absolute; top:60; right:10; left:80%; bottom:0;
+}
+
+
+//mobile view
+@media screen and (max-width: 600px) {
+  .create-event{
+    top:13vh;
+    left:0;
+    right:0;
+    bottom:0;
+  }
+
+  .hide-btn{
+    font-weight:bold;
+    padding-top:70px;
+    color:darkmagenta;
+    text-align:center;
+    padding-right:0px;
+  }
+
+}

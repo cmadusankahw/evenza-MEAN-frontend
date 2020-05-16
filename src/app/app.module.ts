@@ -110,6 +110,24 @@ import { ErrorInterceptor } from './error-interceptor';
 import { ErrorComponent } from './error/error.component';
 import { EventplannerDashboardComponent } from './modules/eventplanner/eventplannerdash/eventplanner-dashboard/eventplanner-dashboard.component';
 import { SuccessComponent } from './success/success.component';
+import { EventCardComponent } from './modules/event/event-card/event-card.component';
+import { EventplannerDashHomeComponent } from './modules/eventplanner/eventplannerdash/pages/eventplanner-dash-home/eventplanner-dash-home.component';
+import { EventplannerDashEventsComponent } from './modules/eventplanner/eventplannerdash/pages/eventplanner-dash-events/eventplanner-dash-events.component';
+import { EventplannerDashBookingsComponent } from './modules/eventplanner/eventplannerdash/pages/eventplanner-dash-bookings/eventplanner-dash-bookings.component';
+import { EventplannerDashAppointmentsComponent } from './modules/eventplanner/eventplannerdash/pages/eventplanner-dash-appointments/eventplanner-dash-appointments.component';
+import { EventplannerDashOrdersComponent } from './modules/eventplanner/eventplannerdash/pages/eventplanner-dash-orders/eventplanner-dash-orders.component';
+import { EventplannerDashParticipantsComponent } from './modules/eventplanner/eventplannerdash/pages/eventplanner-dash-participants/eventplanner-dash-participants.component';
+import { EventplannerDashProfileComponent } from './modules/eventplanner/eventplannerdash/pages/eventplanner-dash-profile/eventplanner-dash-profile.component';
+import { PlannerNotificationsComponent } from './modules/eventplanner/planner-notifications/planner-notifications.component';
+import { EventDetailsComponent } from './modules/event/event-details/event-details.component';
+import { PlannerBookingsComponent } from './modules/eventplanner/planner-bookings/planner-bookings.component';
+import { PlannerAppointsComponent } from './modules/eventplanner/planner-appoints/planner-appoints.component';
+import { PlannerOrdersComponent } from './modules/eventplanner/planner-orders/planner-orders.component';
+import { EventPlanComponent } from './modules/event/event-plan/event-plan.component';
+import { EventPlanSegmentComponent } from './modules/event/event-plan-segment/event-plan-segment.component';
+import { EventScheduleComponent } from './modules/event/event-schedule/event-schedule.component';
+import { EventParticipantsComponent } from './modules/event/event-participants/event-participants.component';
+import { PlannerProfileComponent } from './modules/eventplanner/planner-profile/planner-profile.component';
 
 
 
@@ -182,6 +200,24 @@ import { SuccessComponent } from './success/success.component';
     ErrorComponent,
     EventplannerDashboardComponent,
     SuccessComponent,
+    EventCardComponent,
+    EventplannerDashHomeComponent,
+    EventplannerDashEventsComponent,
+    EventplannerDashBookingsComponent,
+    EventplannerDashAppointmentsComponent,
+    EventplannerDashOrdersComponent,
+    EventplannerDashParticipantsComponent,
+    EventplannerDashProfileComponent,
+    PlannerNotificationsComponent,
+    EventDetailsComponent,
+    PlannerBookingsComponent,
+    PlannerAppointsComponent,
+    PlannerOrdersComponent,
+    EventPlanComponent,
+    EventPlanSegmentComponent,
+    EventScheduleComponent,
+    EventParticipantsComponent,
+    PlannerProfileComponent,
 
 
 

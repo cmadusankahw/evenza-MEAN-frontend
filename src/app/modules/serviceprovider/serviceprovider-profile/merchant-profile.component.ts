@@ -17,6 +17,7 @@ import { Merchant } from '../serviceprovider.model';
   styleUrls: ['./merchant-profile.component.scss']
 })
 export class MerchantProfileComponent implements OnInit, OnDestroy {
+
   private merchantSubs: Subscription;
 
   // edit profile mode
@@ -65,9 +66,6 @@ export class MerchantProfileComponent implements OnInit, OnDestroy {
    // this.serviceProviderService.changeUserPassword(currentPword, newPword);
   }
 
-
-
-
   // edit user
   editUser(editForm: NgForm) {
     if (editForm.invalid) {
@@ -87,7 +85,7 @@ export class MerchantProfileComponent implements OnInit, OnDestroy {
         postal_code: editForm.value.postal_code,
         gender: editForm.value.gender,
         date_of_birth: editForm.value.date_of_birth,
-        reg_date: this.getDate(),
+        reg_date: this.serviceProvider.reg_date,
         isverified: this.serviceProvider.isverified // to be modified later
         };
       this.authService.updateMerchant(merchant, this.image);
@@ -118,11 +116,6 @@ export class MerchantProfileComponent implements OnInit, OnDestroy {
         this.image = file;
         this.imageUrl = reader.result;
       };
-    }
-
-    getDate() {
-      const date = new Date();
-      return this.datepipe.transform( date, 'dd/MM/yyyy').toString();
     }
 
 }

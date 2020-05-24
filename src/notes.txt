@@ -135,4 +135,34 @@ book now
 make appointment
 order now
 make payment (linking card details comp)
-home page modifications
+home page modifications (download mobile app and other data)
+booking note
+appointment note
+order reciept
+(printing with jspdf maiing with node mailer)
+service search on location basis - with google maps
+
+part 2 : event frontend comps
+
+part 3: seller/ service provider backend
+    - business profile (id verify / businss verify) - seller/sp
+    - dash stat/ graphs/ business stat/ earnings
+    - bookings/orders/ appointments/ delivery services - seller/sp/event planner
+    - booking calendar mgmt
+
+part 4 - improvements - db transactions/migrations
+       - complete event frontend comps
+       - event part backend
+
+part 5 - admin comps
+       - admin backend
+       - payment gateway/ payment management
+
+part 6 - report generation (chart js and other libriaries)
+
+part 7 - advanced error handeling/ enhancements/ validation check / Testing
+
+part 8 - additional features - recommendations/ rating
+       - azure cognetive service - chat bot
+       - adavanced analytical reports with tensorflow js
+       - cloud deplyment azure, evenza.biz domain

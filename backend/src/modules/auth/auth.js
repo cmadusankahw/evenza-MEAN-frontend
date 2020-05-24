@@ -136,7 +136,7 @@ auth.post('/merchant/img',checkAuth, multer({storage:storage}).array("images[]")
 // add profile pic event planner
 auth.post('/planner/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
   const url = req.protocol + '://' + req.get("host");
-  imagePath = url+ "/images/planner/" + req.files[0].filename;
+  imagePath = url+ "/images/merchant/" + req.files[0].filename;
   res.status(200).json({
     profile_pic: imagePath
   });
@@ -165,6 +165,7 @@ auth.post('/merchant',checkAuth, (req, res, next) => {
     });
   })
   .catch(err=>{
+    console.log(err);
     res.status(500).json({
       message: 'Profile Details update unsuccessfull! Please Try Again!'
     });
@@ -192,6 +193,7 @@ auth.post('/planner',checkAuth, (req, res, next) => {
     });
   })
   .catch(err=>{
+    console.log(err);
     res.status(500).json({
       message: 'Profile Details update unsuccessfull! Please Try Again!'
     });

@@ -130,9 +130,9 @@ Development Notes
 Modifications:
 update product/service api
 remove signup user id generation/ hasdata in frontend
-make appointment --> service view
+make appointment --> service view comp
 book now
 make appointment
 order now
 make payment (linking card details comp)
-
+home page modifications

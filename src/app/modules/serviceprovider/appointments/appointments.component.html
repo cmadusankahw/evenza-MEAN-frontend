@@ -59,7 +59,8 @@
        <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> ACTION </th>
         <td mat-cell *matCellDef="let row">
-          <button mdbBtn color="purple" text="white" class="btn btn-sm text-center" (click)="bookingOptions.show()">
+          <button mdbBtn color="purple" text="white" class="btn btn-sm text-center"
+          (click)= "showAppointmentDetails(row.appoint_id)" (click)="bookingOptions.show()">
             ACTION
           </button>
          </td>
@@ -147,14 +148,49 @@
                     </div>
                   </div>
 
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                      Customer
+                   <div>
+                     <hr>
+                     <h5><b>Customer Details</b></h5>
+
+                     <div class="row ">
+                      <div class="col-md-4 info-text">
+                        Customer Name
+                      </div>
+                      <div class="col info-input">
+                        <input type="text" matInput disabled value=" {{recievedAppointments[0].customer_name}}">
+                      </div>
                     </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedAppointments[0].customer_name}}">
+
+                    <div class="row ">
+                      <div class="col-md-4 info-text">
+                        Assigned Event
+                      </div>
+                      <div class="col info-input">
+                        <input type="text" matInput disabled value=" {{recievedAppointments[0].event_name}}">
+                      </div>
                     </div>
-                  </div>
+
+                    <div class="row ">
+                      <div class="col-md-4 info-text">
+                        Customer email
+                      </div>
+                      <div class="col info-input">
+                        <input type="text" matInput disabled value=" {{recievedAppointments[0].customer_email}}">
+                      </div>
+                    </div>
+
+                    <div class="row ">
+                      <div class="col-md-4 info-text">
+                        Customer Contact No
+                      </div>
+                      <div class="col info-input">
+                        <input type="text" matInput disabled value=" {{recievedAppointments[0].customer_contact}}">
+                      </div>
+                    </div>
+
+                    <hr>
+                   </div>
+
 
                   <div class="row ">
                     <div class="col-md-4 info-text">
@@ -209,13 +245,6 @@
 
                   <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center" >
                     <span>Cancel Appointment </span>
-                  </button>
-                </div>
-
-                 <!--approved bookings -->
-                 <div class="info-top" *ngIf="recievedAppointments[0].state == 'confirmed'">
-                  <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center" >
-                    <span >Send Cancel Request</span>
                   </button>
                 </div>
 

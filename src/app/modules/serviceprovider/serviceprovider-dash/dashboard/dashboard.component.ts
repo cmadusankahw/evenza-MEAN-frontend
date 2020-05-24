@@ -24,8 +24,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
    profile = 'txt-white row';
 
 
-  private authSubs: Subscription;
-
   private merchantSubs: Subscription;
 
   // recieved merchant
@@ -56,9 +54,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-    if (this.authSubs) {
-      this.authSubs.unsubscribe();
-    }
     if (this.merchantSubs) {
       this.merchantSubs.unsubscribe();
     }

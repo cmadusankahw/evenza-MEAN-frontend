@@ -156,6 +156,16 @@
                     </div>
                   </div>
 
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Customer
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{recievedOrders[0].customer_name}}">
+                    </div>
+                  </div>
+
                   <div class="row " *ngIf="orderType != 'cancelled'">
                     <div class="col-md-4 info-text">
                       Delivery Service
@@ -164,12 +174,14 @@
                       <input type="text" matInput disabled value=" {{recievedOrders[0].delivery_service}}">
                     </div>
                   </div>
-                  <div class="row ">
+
+                  <div class="row " *ngIf="orderType != 'cancelled'">
                     <div class="col-md-4 info-text">
-                      Customer
+                      Address for Delivery
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedOrders[0].customer_name}}">
+                      <textarea type="text" matInput disabled value=" {{recievedOrders[0].delivery_address}}" >
+                        </textarea>
                     </div>
                   </div>
 
@@ -191,6 +203,16 @@
                       <textarea type="text" matInput disabled value=" {{recievedOrders[0].comment}}"></textarea>
                     </div>
                   </div>
+
+
+                <div class="row ">
+                  <div class="col-md-4 info-text">
+                    Customer Review
+                  </div>
+                  <div class="col info-input">
+                    <textarea type="text" matInput disabled value=" {{recievedOrders[0].review ? recievedOrders[0].review : 'Not Reviewed yet'}}"></textarea>
+                  </div>
+                </div>
 
                   <hr>
                   <div class="row ">
@@ -246,13 +268,6 @@
 
                   <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center" >
                     <span>Cancel Order </span>
-                  </button>
-                </div>
-
-                 <!--approved bookings -->
-                 <div class="info-top" *ngIf="recievedOrders[0].state == 'delivered'">
-                  <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center" >
-                    <span >Send Cancel Request</span>
                   </button>
                 </div>
 

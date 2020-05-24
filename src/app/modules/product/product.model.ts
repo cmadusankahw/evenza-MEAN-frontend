@@ -14,7 +14,7 @@ export interface Product {
   rating: number;
   no_of_ratings: number;
   no_of_orders: number;
-  delivery_service: string;
+  delivery_service: string; // fk
   price: number;
   pay_on_delivery: boolean;
   image_01: string;

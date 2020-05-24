@@ -15,25 +15,34 @@ export interface EventPlanner {
 
 export interface Order {
   order_id: string;
-  product_id: string;
-  cust_id: string;
-  product: string;
-  product_category: string;
-  customer_name: string;
+  product_id: string; // fk
+  user_id: string; // fk (created user)
+  product: string; // retrived from product
+  delivery_service: string; // retrived from product
+  qty_type: string; // retrived from product
+  delivery_address: string;
   created_date: string;
   created_time: string;
   state: string;
-  rating: number;
   review: string;
   quantity: number;
-  qty_type: string;
-  delivery_service: string;
   comment: string;
   payment_type: string;
   amount: number;
   commission_due: number;
   amount_paid: number;
 }
+
+export interface DeliveryService {
+  delivery_service: string;
+  title: string;
+  address: string;
+  hotline: string;
+  delivery_rate: number;
+  min_delivery_time: number;
+  max_delivery_time: number;
+}
+
 
 export interface ProductCategories {
   id: string;
@@ -45,28 +54,16 @@ export interface ServiceCategories {
   val: string;
 }
 
-export interface DeliveryService {
-  delivery_id: string;
-  delivery_name: string;
-  address: string;
-  hotline: number;
-  delivery_rate: number;
-  rate_type: string;
-  min_delivery_time: number;
-  max_delivery_time: number;
-}
-
-
 export interface Booking {
-  booking_id: string; // ref  user.user_id
-  service_id: string;
-  event_id: string;
+  booking_id: string;
+  service_id: string; // fk
+  user_id: string; // fk (created user)
+  event_id: string; // fk
   service_name: string; // retrived from service
-  customer_name: string; // retrived from user
+  event_name: string; // retrived from event
   created_date: string;
   created_time: string;
   state: string;
-  rating: number;
   review: string;
   from_date: string;
   to_date: string;
@@ -81,10 +78,12 @@ export interface Booking {
 }
 
 export interface Appointment {
-  appoint_id: string; // ref user.user_id
-  service_id: string;
-  service_name: string;
-  customer_name: string;
+  appoint_id: string;
+  service_id: string; // fk
+  user_id: string; // fk (created user)
+  event_id: string; // fk
+  service_name: string; // retrived from service
+  event_name: string; // retrived from event
   created_date: string;
   created_time: string;
   state: string;

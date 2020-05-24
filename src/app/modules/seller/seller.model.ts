@@ -41,20 +41,15 @@ export interface PayStat {
 }
 
 export interface DeliveryService {
-  delivery_id: string;
-  delivery_name: string;
+  delivery_service: string;
+  title: string;
   address: string;
-  hotline: number;
+  hotline: string;
   delivery_rate: number;
-  rate_type: string;
   min_delivery_time: number;
   max_delivery_time: number;
 }
 
-export interface DeliveryRate {
-  id: string;
-  val: string;
-}
 
 export interface Earnings {
   transaction_id: string;
@@ -96,17 +91,18 @@ export interface ProductCategories {
 
 export interface Order {
   order_id: string;
-  product_id: string;
-  product: string;
-  customer_name: string;
+  product_id: string; // fk
+  user_id: string; // fk (created user)
+  product: string; // retrived from product
+  delivery_service: string; // retrived from product
+  qty_type: string; // retrived from product
+  customer_name: string; // retrived from user
+  delivery_address: string;
   created_date: string;
   created_time: string;
   state: string;
-  rating: number;
   review: string;
   quantity: number;
-  qty_type: string;
-  delivery_service: string;
   comment: string;
   payment_type: string;
   amount: number;

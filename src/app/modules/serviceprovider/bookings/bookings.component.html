@@ -58,7 +58,8 @@
      <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> ACTION </th>
       <td mat-cell *matCellDef="let row">
-        <button mdbBtn color="purple" text="white" class="btn btn-sm text-center" (click)="bookingOptions.show()">
+        <button mdbBtn color="purple" text="white" class="btn btn-sm text-center"
+        (click) ="showBookingDetails(row.booking_id)" (click)="bookingOptions.show()">
           ACTION
         </button>
        </td>
@@ -205,13 +206,47 @@
                   </div>
                 </div>
 
+                <div>
+                  <hr>
+                  <h5><b>Customer Details</b></h5>
+
                 <div class="row ">
                   <div class="col-md-4 info-text">
-                    Customer
+                    Customer Name
                   </div>
                   <div class="col info-input">
                     <input type="text" matInput disabled value=" {{recievedBookings[0].customer_name}}">
                   </div>
+                </div>
+
+                <div class="row ">
+                  <div class="col-md-4 info-text">
+                    Assigned Event
+                  </div>
+                  <div class="col info-input">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].event_name}}">
+                  </div>
+                </div>
+
+                <div class="row ">
+                  <div class="col-md-4 info-text">
+                    Customer Email
+                  </div>
+                  <div class="col info-input">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].customer_email}}">
+                  </div>
+                </div>
+
+                <div class="row ">
+                  <div class="col-md-4 info-text">
+                    Customer Contact No
+                  </div>
+                  <div class="col info-input">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].customer_contact}}">
+                  </div>
+                </div>
+
+                <hr>
                 </div>
 
                 <div class="row ">
@@ -231,6 +266,16 @@
                     <textarea type="text" matInput disabled value=" {{recievedBookings[0].comment}}"></textarea>
                   </div>
                 </div>
+
+                <div class="row ">
+                  <div class="col-md-4 info-text">
+                    Customer Review
+                  </div>
+                  <div class="col info-input">
+                    <textarea type="text" matInput disabled value=" {{recievedBookings[0].review ? recievedBookings[0].review : 'Not Reviewed yet'}}"></textarea>
+                  </div>
+                </div>
+
 
                 <div class="row ">
                   <div class="col-md-4 info-text-net">
@@ -301,12 +346,6 @@
                 </button>
               </div>
 
-               <!--approved bookings -->
-               <div class="info-top" *ngIf="recievedBookings[0].state == 'confirmed'">
-                <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center" >
-                  <span >Send Cancel Request</span>
-                </button>
-              </div>
 
               </section>
             </div>

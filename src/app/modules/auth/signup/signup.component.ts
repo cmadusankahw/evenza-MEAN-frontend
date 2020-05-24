@@ -90,7 +90,7 @@ export class SignupComponent implements OnInit, OnDestroy {
           email: signupform.value.email,
           password: signupform.value.password,
           contact_no: signupform.value.contactno,
-          reg_date: this.convertDate()
+          reg_date: new Date().toISOString()
         };
         this.authService.addMerchantTemp(merchantTemp);
         console.log('merchant temp data sent!');
@@ -109,7 +109,7 @@ export class SignupComponent implements OnInit, OnDestroy {
           postal_code: '',
           gender: 'none',
           date_of_birth: '',
-          reg_date: this.convertDate()
+          reg_date: new Date().toISOString()
         };
         console.log(eventPlanner);
         this.authService.addEventPlanner(eventPlanner, signupform.value.password);

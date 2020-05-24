@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { DeliveryService, DeliveryRate } from '../seller.model';
+import { DeliveryService } from '../seller.model';
 
 @Component({
   selector: 'app-seller-delivery',
@@ -19,30 +19,25 @@ export class SellerDeliveryComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  //make editable
+  // make editable
   editmode = false;
 
-  //add new delivery service
+  // add new delivery service
   addnew = false;
 
 
   deliveryServices: DeliveryService[] = [
     {
-      delivery_id: 'D-01',
-      delivery_name: 'DHL',
+      delivery_service: 'D-01',
+      title: 'DHL',
       address: 'Main Street, Colombo 07',
-      hotline: 713456678,
+      hotline: '713456678',
       delivery_rate: 300.00,
-      rate_type: 'Fixed',
       min_delivery_time: 1,
       max_delivery_time: 3
     },
   ];
 
-  deliveryrates: DeliveryRate[] = [
-    { id: '1', val: '/Km' },
-    { id: '2', val: 'Fixed' },
-  ]
 
   constructor() { }
 

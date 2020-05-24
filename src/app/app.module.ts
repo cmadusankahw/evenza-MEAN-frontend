@@ -128,6 +128,7 @@ import { EventPlanSegmentComponent } from './modules/event/event-plan-segment/ev
 import { EventScheduleComponent } from './modules/event/event-schedule/event-schedule.component';
 import { EventParticipantsComponent } from './modules/event/event-participants/event-participants.component';
 import { PlannerProfileComponent } from './modules/eventplanner/planner-profile/planner-profile.component';
+import { RatingReviewComponent } from './modules/eventplanner/rating-review/rating-review.component';
 
 
 
@@ -218,6 +219,7 @@ import { PlannerProfileComponent } from './modules/eventplanner/planner-profile/
     EventScheduleComponent,
     EventParticipantsComponent,
     PlannerProfileComponent,
+    RatingReviewComponent,
 
 
 

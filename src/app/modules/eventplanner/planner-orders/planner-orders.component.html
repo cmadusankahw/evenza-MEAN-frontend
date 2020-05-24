@@ -1,1 +1,373 @@
-<p>planner-orders works!</p>
+<div class="pd-top-min">
+
+  <h4 *ngIf="orderType == 'pending'">
+    <mat-icon>library_books</mat-icon>
+   <b> New Orders</b>
+  </h4>
+  <h4 *ngIf="orderType == 'delivered'">
+    <mat-icon>check_circle</mat-icon>
+   <b> Delivered Orders</b>
+  </h4>
+  <h4 *ngIf="orderType == 'cancelled'" >
+    <mat-icon>block</mat-icon>
+   <b> Cancelled Orders</b>
+  </h4>
+  <mat-form-field>
+
+    <mat-label>
+      <mat-icon>search</mat-icon>
+      Search Order History</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Buffet Set">
+  </mat-form-field>
+
+  <div class="mat-elevation-z8" *ngIf="recievedOrders.length">
+    <table class="table-responsive" mat-table [dataSource]="dataSource" matSort>
+
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Order ID </th>
+        <td mat-cell *matCellDef="let row"> {{row.order_id}} </td>
+      </ng-container>
+
+      <!-- Progress Column -->
+      <ng-container matColumnDef="product">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Product </th>
+        <td mat-cell *matCellDef="let row"> {{row.product}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="date_ordered">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Date Orderd </th>
+        <td mat-cell *matCellDef="let row"> {{row.created_date + row.created_time}} </td>
+      </ng-container>
+
+      <!-- Color Column -->
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Quantity </th>
+        <td mat-cell *matCellDef="let row" > {{row.quantity + row.qty_type}} </td>
+      </ng-container>
+
+       <!-- Color Column -->
+       <ng-container matColumnDef="amount_paid">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Amount Paid </th>
+        <td mat-cell *matCellDef="let row" > {{row.amount_paid}}  </td>
+      </ng-container>
+
+
+       <!-- Action Column -->
+       <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> ACTION </th>
+        <td mat-cell *matCellDef="let row">
+          <button mdbBtn color="purple" text="white" class="btn btn-sm text-center"
+          (click) = "showOrderDetails(row.order_id)" (click)="orderOptions.show()">
+            ACTION
+          </button>
+         </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
+  </div>
+
+  <div class="text-center pd-top-min"  *ngIf="!recievedOrders.length">
+    No Orders Found
+  </div>
+
+  </div>
+
+
+
+  <!--View Details Modal-->
+  <div
+    mdbModal
+    #orderOptions="mdbModal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myBasicModalLabel"
+    [config]="{ backdrop: false, ignoreBackdropClick: true }"
+    aria-hidden="true"
+
+
+  >
+    <div
+      class="modal-dialog modal-dialog-centered modal-lg"
+      role="document"
+      style="overflow-y: initial !important"
+    >
+      <div class="modal-content" *ngIf="recievedOrders.length">
+        <div class="modal-header">
+          <button
+            type="button"
+            class="close pull-right"
+            aria-label="Close"
+            (click)="orderOptions.hide()"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel" >
+            <mat-icon>service</mat-icon>Order: {{recievedOrders[0].order_id}} Details
+          </h4>
+        </div>
+
+        <div class="modal-body " style="height: 450px; overflow-y: auto;">
+
+              <!--more info-->
+              <div class="text-center">
+
+                <section class="text-center dark-grey-text" *ngIf="!rateReview">
+                  <!--booking info-->
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Order ID
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{recievedOrders[0].order_id}}">
+                    </div>
+                  </div>
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Product ID
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{recievedOrders[0].product_id}}">
+                    </div>
+                  </div>
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Product
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{recievedOrders[0].product}}">
+                    </div>
+                  </div>
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text-net">
+                      Quantity
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{recievedOrders[0].quantity + recievedOrders[0].qty_type}}">
+                    </div>
+                  </div>
+
+                  <div *ngIf="recievedDeliveryService">
+                    <hr>
+                    <h5> <b>Delivery Service Details</b> </h5>
+                    <br>
+                    <div class="row " >
+
+                      <div class="col-md-4 info-text">
+                        Delivery Service
+                      </div>
+                      <div class="col info-input">
+                        <input type="text" matInput disabled value=" {{recievedDeliveryService.delivery_service}}">
+                      </div>
+                    </div>
+
+                    <div class="row " >
+                      <div class="col-md-4 info-text">
+                        Hotline (For Inquries)
+                      </div>
+                      <div class="col info-input">
+                        <input type="text" matInput disabled value=" {{recievedDeliveryService.hotline}}">
+                      </div>
+                    </div>
+
+                    <div class="row " >
+                      <div class="col-md-4 info-text">
+                        Address to Delivery
+                      </div>
+                      <div class="col info-input">
+                        <textarea type="text" matInput disabled
+                        value=" {{recievedOrders[0].delivery_address}}"> </textarea>
+                      </div>
+                    </div>
+
+                    <div class="row " >
+                      <div class="col-md-4 info-text">
+                        Approximate Delivery Time
+                      </div>
+                      <div class="col info-input">
+                        <input type="text" matInput disabled
+                        value=" {{recievedDeliveryService.min_delivery_time + ' to ' + recievedDeliveryService.max_delivery_time}}">
+                      </div>
+                    </div>
+
+                    <div class="row " >
+                      <div class="col-md-4 info-text">
+                        Order state
+                      </div>
+                      <div class="col info-input">
+                        <input type="text" matInput disabled value=" {{orderType == 'delivered' ? 'On Delivery' : 'Not Delivered yet' }}">
+                      </div>
+                    </div>
+
+                  <hr>
+                  </div>
+
+
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Order Date & Time
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{recievedOrders[0].created_date + recievedOrders[0].created_time}}">
+                    </div>
+                  </div>
+                  <hr>
+                  <h5><b> Write a Review</b></h5>
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      My Reviews
+                    </div>
+                    <div class="col info-input">
+                      <textarea type="text" matInput [disabled]="!addReview" [value]=" recievedOrders[0].review ? recievedOrders[0].review : 'No Reviewes yet'"></textarea>
+                      <br>
+                      <button mdbBtn color="secondary"  class="btn  btn-sm" outline="yes" *ngIf="!addReview"
+                       (click)= "addReview = !addReview">
+                       <span > Add/ Edit Review </span>
+                     </button>
+                    <button mdbBtn color="primary"  class="btn  btn-sm" outline="yes" *ngIf="addReview"
+                    (click)= "addReview = !addReview" (click)= "submitReview(recievedOrders[0].order_id,recievedOrders[0].review)">
+                    <span > Save Changes </span>
+                    </button>
+                    <button mdbBtn color="red"  class="btn  btn-sm" outline="yes" *ngIf="addReview"
+                    (click)= "addReview = !addReview">
+                    <span > Discard </span>
+                    </button>
+                    </div>
+
+                  </div>
+
+                  <hr>
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Payment type
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{recievedOrders[0].payment_type}}">
+                    </div>
+                  </div>
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Due Commission
+                    </div>
+                    <div class="col info-input-net">
+                      <input type="text" matInput disabled value=" Rs. {{recievedOrders[0].commission_due}}">
+                    </div>
+                  </div>
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text-net">
+                      Total Amount
+                    </div>
+                    <div class="col info-input-net">
+                      <input type="text" matInput disabled value=" Rs. {{recievedOrders[0].amount}}">
+                    </div>
+                  </div>
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text-net">
+                      Amount Paid
+                    </div>
+                    <div class="col info-input-net">
+                      <b><input type="text" matInput disabled value=" Rs. {{recievedOrders[0].amount_paid}}"></b>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row ">
+                    <div class="col-md-4 info-text-net">
+                      State
+                    </div>
+                    <div class="col info-input-net" style="color:darkmagenta;">
+                      <b><input type="text" matInput disabled value=" {{recievedOrders[0].state}}"></b>
+                    </div>
+                  </div>
+
+                  <!--pending bookings -->
+                  <div class="info-top" >
+                  <button mdbBtn color="purple" text="white" class="btn  btn-md text-center"
+                  (click)= "rateReview = !rateReview">
+                   <span > <mdb-icon fas icon="star"></mdb-icon> Rate Product </span>
+                  </button>
+
+                  <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center"
+                  *ngIf="recievedOrders[0].state == 'pending'" >
+                    <span>Cancel Order </span>
+                  </button>
+                </div>
+
+
+
+                </section>
+
+                <div *ngIf="rateReview">
+                  <app-rating-review [type] = "'product'" [id]= "recievedOrders[0].product_id"></app-rating-review>
+                  <hr>
+                  <div class="info-top"  >
+                    <button mdbBtn color="purple" text="white" class="btn  btn-md text-center"
+                    (click)= "rateReview = !rateReview">
+                     <span >  Go Back </span>
+                    </button>
+                    </div>
+                </div>
+
+              </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            mdbBtn
+            color="link"
+            (click)="orderOptions.hide()"
+            mdbWavesEffect
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--Success Modal-->
+  <div mdbModal #bookingSuccess="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+   [config]='{backdrop: false, ignoreBackdropClick: true}'   aria-hidden="true">
+   <div class="modal-dialog modal-notify modal-success modal-dialog-centered" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <p class="heading lead">Order Approved!</p>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="bookingSuccess.hide()">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <div class="text-center">
+          <mdb-icon fas icon="check" size="4x" class="mb-3 animated rotateIn"></mdb-icon>
+          <p>Order was approved and sent to delivery!</p>
+        </div>
+      </div>
+
+      <!--Footer-->
+      <div class="modal-footer justify-content-center">
+        <a type="button" mdbBtn color="success" class="waves-effect" mdbWavesEffect (click)="bookingSuccess.hide()">Okay
+        </a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+  </div >

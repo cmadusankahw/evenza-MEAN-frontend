@@ -21,10 +21,15 @@ export class AppointmentsComponent implements OnInit {
   // Create sample bookings
   appointments: Appointment[] = [
     {
-      appoint_id: 'A-01',
-      service_id: 'S-01',
+      appoint_id: 'A1',
+      service_id: 'S1',
+      user_id: 'U1',
+      event_id: 'E1',
       service_name: 'Photography',
+      event_name: 'Wedding',
       customer_name: 'Arjun',
+      customer_email: 'abc@gmail.com',
+      customer_contact: '0712345678',
       created_date: '22/03/2020',
       created_time: '14:25',
       state: 'pending',
@@ -33,10 +38,15 @@ export class AppointmentsComponent implements OnInit {
       comment: 'please be on time',
     },
     {
-      appoint_id: 'A-02',
-      service_id: 'S-02',
+      appoint_id: 'A2',
+      service_id: 'S2',
+      user_id: 'U1',
+      event_id: 'E2',
       service_name: 'Photography',
+      event_name: 'Wedding',
       customer_name: 'Arjun',
+      customer_email: 'abc@gmail.com',
+      customer_contact: '0712345678',
       created_date: '22/03/2020',
       created_time: '14:25',
       state: 'cancelled',
@@ -45,10 +55,15 @@ export class AppointmentsComponent implements OnInit {
       comment: 'please be on time',
     },
     {
-      appoint_id: 'A-03',
-      service_id: 'S-03',
+      appoint_id: 'A3',
+      service_id: 'S3',
+      user_id: 'U1',
+      event_id: 'E3',
       service_name: 'Photography',
+      event_name: 'Wedding',
       customer_name: 'Arjun',
+      customer_email: 'abc@gmail.com',
+      customer_contact: '0712345678',
       created_date: '22/03/2020',
       created_time: '14:25',
       state: 'confirmed',
@@ -98,6 +113,9 @@ export class AppointmentsComponent implements OnInit {
     }
     this.recievedAppointments = [...pedingAppoints];
     return this.recievedAppointments;
+  }
+
+  showAppointmentDetails(appointId: string) {
   }
 
 

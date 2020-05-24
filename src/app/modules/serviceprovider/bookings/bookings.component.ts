@@ -22,15 +22,18 @@ export class BookingsComponent implements OnInit {
   // Create sample bookings
   bookings: Booking[] = [
     {
-      booking_id: 'B-01',
-      service_id: 'S-01',
-      event_id: null,
+      booking_id: 'B1',
+      service_id: 'S1',
+      user_id: 'U1',
+      event_id: 'E1',
       service_name: 'Manjula Photography',
+      event_name: 'Wedding',
       customer_name: 'Arjun',
+      customer_email: 'abcd@sample.com',
+      customer_contact : '712345678',
       created_date: '22/03/2020',
       created_time: '14:25',
       state: 'pending',
-      rating: 3,
       review: 'Good Service!',
       from_date: '20/3/2020',
       to_date: '22/03/2020',
@@ -44,19 +47,22 @@ export class BookingsComponent implements OnInit {
       amount_paid: 30.0
     },
     {
-      booking_id: 'B-02',
-      service_id: 'S-02',
-      event_id: null,
+      booking_id: 'B2',
+      service_id: 'S2',
+      user_id: 'U2',
+      event_id: 'E1',
       service_name: 'Manjula Photography',
+      event_name: 'Wedding',
       customer_name: 'Arjun',
+      customer_email: 'abcd@sample.com',
+      customer_contact : '712345678',
       created_date: '22/03/2020',
       created_time: '14:25',
       state: 'pending',
-      rating: 1,
       review: 'Good Service!',
-      from_date: '20/03/2020',
-      to_date: '20/03/2020',
-      duration: 1,
+      from_date: '20/3/2020',
+      to_date: '22/03/2020',
+      duration: 2,
       from_time: '08:00',
       to_time: '16:00',
       comment: 'please be on time',
@@ -64,16 +70,20 @@ export class BookingsComponent implements OnInit {
       amount: 215.30,
       commission_due: 22.50,
       amount_paid: 30.0
-    }, {
-      booking_id: 'B-03',
-      service_id: 'S-03',
-      event_id: null,
+    },
+    {
+      booking_id: 'B3',
+      service_id: 'S3',
+      user_id: 'U3',
+      event_id: 'E1',
       service_name: 'Manjula Photography',
+      event_name: 'Wedding',
       customer_name: 'Arjun',
+      customer_email: 'abcd@sample.com',
+      customer_contact : '712345678',
       created_date: '22/03/2020',
       created_time: '14:25',
       state: 'cancelled',
-      rating: 3,
       review: 'Good Service!',
       from_date: '20/3/2020',
       to_date: '22/03/2020',
@@ -128,6 +138,9 @@ export class BookingsComponent implements OnInit {
     }
     this.recievedBookings = [...pendingBookings];
     return this.recievedBookings;
+  }
+
+  showBookingDetails(bookingId: string) {
   }
 
 

@@ -1,1 +1,21 @@
-<p>eventplanner-dash-appointments works!</p>
+<div class="text-center container pd-top">
+  <div class="top-content container-fluid">
+  <h3> Manage Your Visit Appointments at one place..</h3>
+  <h5> You can also manage appointments of a specific event in relavant event plan..</h5>
+  <hr>
+</div>
+
+<div class="container-fluid">
+    <div class="pd-t">
+    <app-planner-appoints [appointmentType] = "'pending'"></app-planner-appoints>
+    </div>
+
+    <div class="pd-t">
+      <app-planner-appoints [appointmentType] = "'confirmed'"></app-planner-appoints>
+      </div>
+
+      <div class="pd-t">
+        <app-planner-appoints [appointmentType] = "'cancelled'"></app-planner-appoints>
+        </div>
+  </div>
+</div>

@@ -18,15 +18,18 @@ export interface BusinessVerify {
 
 
 export interface Booking {
-  booking_id: string; // ref  user.user_id
-  service_id: string;
-  event_id: string;
+  booking_id: string;
+  service_id: string; // fk
+  user_id: string; // fk (created user)
+  event_id: string; // fk
   service_name: string; // retrived from service
+  event_name: string; // retrived from event
   customer_name: string; // retrived from user
+  customer_email: string; // retrived from user
+  customer_contact: string; // retrived from user
   created_date: string;
   created_time: string;
   state: string;
-  rating: number;
   review: string;
   from_date: string;
   to_date: string;
@@ -40,11 +43,17 @@ export interface Booking {
   amount_paid: number;
 }
 
+
 export interface Appointment {
-  appoint_id: string; // ref user.user_id
-  service_id: string;
-  service_name: string;
-  customer_name: string;
+  appoint_id: string;
+  service_id: string; // fk
+  user_id: string; // fk (created user)
+  event_id: string; // fk
+  service_name: string; // retrived from service
+  event_name: string; // retrived from event
+  customer_name: string; // retrived from user
+  customer_email: string; // retrived from user
+  customer_contact: string; // retrived from user
   created_date: string;
   created_time: string;
   state: string;
@@ -52,7 +61,6 @@ export interface Appointment {
   appointed_time: string;
   comment: string;
 }
-
 
 
 export interface Earnings {

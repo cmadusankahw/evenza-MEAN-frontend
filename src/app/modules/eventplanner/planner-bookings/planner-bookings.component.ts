@@ -21,15 +21,15 @@ export class PlannerBookingsComponent implements OnInit {
   // Create sample bookings
   bookings: Booking[] = [
     {
-      booking_id: 'B-01',
-      service_id: 'S-01',
-      event_id: 'E-01',
+      booking_id: 'B1',
+      service_id: 'S1',
+      user_id: 'U1',
+      event_id: 'E1',
       service_name: 'Manjula Photography',
-      customer_name: 'Arjun',
+      event_name: 'Sample Wedding',
       created_date: '22/03/2020',
       created_time: '14:25',
       state: 'pending',
-      rating: 3,
       review: 'Good Service!',
       from_date: '20/3/2020',
       to_date: '22/03/2020',
@@ -45,13 +45,13 @@ export class PlannerBookingsComponent implements OnInit {
     {
       booking_id: 'B-02',
       service_id: 'S-02',
-      event_id: null,
+      user_id: 'U2',
+      event_id: 'E2',
       service_name: 'Manjula Photography',
-      customer_name: 'Arjun',
+      event_name: 'hackX 2019',
       created_date: '22/03/2020',
       created_time: '14:25',
       state: 'pending',
-      rating: 3,
       review: 'Good Service!',
       from_date: '20/3/2020',
       to_date: '22/03/2020',
@@ -64,15 +64,15 @@ export class PlannerBookingsComponent implements OnInit {
       commission_due: 22.50,
       amount_paid: 30.0
     }, {
-      booking_id: 'B-03',
-      service_id: 'S-03',
-      event_id: 'E-01',
+      booking_id: 'B3',
+      service_id: 'S3',
+      user_id:'U3',
+      event_id: 'E1',
       service_name: 'Manjula Photography',
-      customer_name: 'Arjun',
+      event_name: 'Sample Wedding',
       created_date: '22/03/2020',
       created_time: '14:25',
       state: 'cancelled',
-      rating: 3,
       review: 'Good Service!',
       from_date: '20/3/2020',
       to_date: '22/03/2020',
@@ -92,6 +92,12 @@ export class PlannerBookingsComponent implements OnInit {
 
   // booking arrays
   recievedBookings = [];
+
+  // rate and review
+  rateReview = false;
+
+  // add review mode
+  addReview = false;
 
   constructor() { }
 
@@ -122,5 +128,11 @@ export class PlannerBookingsComponent implements OnInit {
     return this.recievedBookings;
   }
 
+  showBookingDetails(bookingId: string) {
+  }
+
+  submitReview(bookingId: string, review: string) {
+    // submit review code here
+  }
 
 }

@@ -9,9 +9,34 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const bcrypt = require ("bcrypt");
 const jwt = require("jsonwebtoken");
+const multer = require ("multer");
 
 //express app declaration
 const auth = express();
+
+
+// multer setup for image upload
+const MIME_TYPE_MAP = {
+  'image/png' : 'png',
+  'image/jpeg' : 'jpg',
+  'image/jpg' : 'jpg',
+  'image/gif' : 'gif'
+};
+const storage = multer.diskStorage({
+  destination: (req, file, cb) =>{
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let error= new Error("Invalid Image");
+    if(isValid){
+      error=null;
+    }
+    cb(error,"src/assets/images/merchant");
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalname.toLowerCase().split(' ').join('-');
+    const ext = MIME_TYPE_MAP[file.mimetype];
+    cb(null, name + '-' + Date.now() + '.' + ext);
+  }
+});
 
 //middleware
 auth.use(bodyParser.json());
@@ -97,6 +122,84 @@ auth.post('/signup/admin', (req, res, next) => {
       });
     });
 });
+
+
+// add profile pic merchant
+auth.post('/merchant/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
+  const url = req.protocol + '://' + req.get("host");
+  imagePath = url+ "/images/merchant/" + req.files[0].filename;
+  res.status(200).json({
+    profile_pic: imagePath
+  });
+});
+
+// add profile pic event planner
+auth.post('/planner/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
+  const url = req.protocol + '://' + req.get("host");
+  imagePath = url+ "/images/planner/" + req.files[0].filename;
+  res.status(200).json({
+    profile_pic: imagePath
+  });
+});
+
+//edit merchant
+auth.post('/merchant',checkAuth, (req, res, next) => {
+  Merchant.updateOne({ user_id: req.userData.user_id}, {
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    profile_pic: req.body.profile_pic,
+    nic: req.body.nic,
+    email: req.body.email,
+    contact_no: req.body.contact_no,
+    address_line1: req.body.address_line1,
+    address_line2: req.body.address_line2,
+    postal_code: req.body.postal_code,
+    gender: req.body.gender,
+    date_of_birth: req.body.date_of_birth,
+    isverified: req.body.isverified,
+  })
+  .then((result) => {
+    console.log(result);
+    res.status(200).json({
+      message: 'merchant updated successfully!',
+    });
+  })
+  .catch(err=>{
+    res.status(500).json({
+      message: 'Profile Details update unsuccessfull! Please Try Again!'
+    });
+  });
+});
+
+
+//edit event planner
+auth.post('/planner',checkAuth, (req, res, next) => {
+  EventPlanner.updateOne({ user_id: req.userData.user_id}, {
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    profile_pic: req.body.profile_pic,
+    email: req.body.email,
+    contact_no: req.body.contact_no,
+    address_line1: req.body.address_line1,
+    address_line2: req.body.address_line2,
+    postal_code: req.body.postal_code,
+    gender: req.body.gender,
+    date_of_birth: req.body.date_of_birth,
+  })
+  .then((result) => {
+    res.status(200).json({
+      message: 'event planner updated successfully!',
+    });
+  })
+  .catch(err=>{
+    res.status(500).json({
+      message: 'Profile Details update unsuccessfull! Please Try Again!'
+    });
+  });
+});
+
+
+
 
 
 

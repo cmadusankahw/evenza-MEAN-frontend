@@ -58,7 +58,8 @@
        <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> ACTION </th>
         <td mat-cell *matCellDef="let row">
-          <button mdbBtn color="purple" text="white" class="btn btn-sm text-center" (click)="bookingOptions.show()">
+          <button mdbBtn color="purple" text="white" class="btn btn-sm text-center"
+          (click)= "showBookingDetails(row.booking_id)" (click)="bookingOptions.show()">
             ACTION
           </button>
          </td>
@@ -118,7 +119,7 @@
               <!--more info-->
               <div class="text-center">
 
-                <section class="text-center dark-grey-text">
+                <section class="text-center dark-grey-text" *ngIf="!rateReview">
                   <!--booking info-->
                   <div class="row ">
                     <div class="col-md-4 info-text">
@@ -200,7 +201,7 @@
                       Event Assigned
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedBookings[0].event_id ? recievedBookings[0].event_id : 'No event Assigned'}}">
+                      <input type="text" matInput disabled value=" {{recievedBookings[0].event_id ? recievedBookings[0].event_id +' : ' + recievedBookings[0].event_name : 'No event Assigned'}}">
                     </div>
                   </div>
 
@@ -213,24 +214,30 @@
                     </div>
                   </div>
 
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                      My Ratings
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedBookings[0].rating}} /5.0">
-                    </div>
-                  </div>
-
-                  <div class="row ">
+                  <hr>
+                  <h5><b> Write a Review</b></h5>
+                  <div class="row">
                     <div class="col-md-4 info-text">
                       My Reviews
                     </div>
                     <div class="col info-input">
-                      <textarea type="text" matInput disabled value=" {{recievedBookings[0].review}}"></textarea>
+                      <textarea type="text" matInput [disabled]= "!addReview" [value]=" recievedBookings[0].review ? recievedBookings[0].review : 'No Reviews Yet'"></textarea>
+                      <br>
+                      <button mdbBtn color="secondary"  class="btn  btn-sm" outline="yes" *ngIf="!addReview"
+                      (click)= "addReview = !addReview">
+                      <span > Add/ Edit Review </span>
+                      </button>
+                      <button mdbBtn color="primary"  class="btn  btn-sm" outline="yes" *ngIf="addReview"
+                      (click)= "addReview = !addReview" (click)= "submitReview(recievedBookings[0].order_id,recievedBookings[0].review)">
+                      <span > Save Changes </span>
+                      </button>
+                      <button mdbBtn color="red"  class="btn  btn-sm" outline="yes" *ngIf="addReview"
+                      (click)= "addReview = !addReview">
+                      <span > Discard </span>
+                      </button>
                     </div>
                   </div>
-
+                 <hr>
                   <div class="row ">
                     <div class="col-md-4 info-text-net">
                       State
@@ -280,11 +287,39 @@
                   </div>
                   <hr>
                 </div>
+                <div class="info-top"  >
+                  <button mdbBtn color="purple" text="white" class="btn  btn-md text-center"
+                  (click)= "rateReview = !rateReview">
+                   <span > <mdb-icon fas icon="star"></mdb-icon> Rate & Review </span>
+                  </button>
 
+                  <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center"
+                  *ngIf="recievedBookings[0].state == 'pending'">
+                    <span>Cancel Booking </span>
+                  </button>
+
+
+                </div>
 
                 </section>
+
+                <div *ngIf="rateReview">
+                  <app-rating-review [type]= "'service'" [id]= "recievedBookings[0].service_id"></app-rating-review>
+                  <hr>
+                  <div class="info-top"  >
+                    <button mdbBtn color="purple" text="white" class="btn  btn-md text-center"
+                    (click)= "rateReview = !rateReview">
+                     <span > Go Back </span>
+                    </button>
+                    </div>
+                </div>
+
+
               </div>
+
+
         </div>
+
 
         <div class="modal-footer">
           <button

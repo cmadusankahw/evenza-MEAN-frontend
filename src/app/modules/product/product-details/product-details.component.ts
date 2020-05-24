@@ -114,7 +114,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     if (this.productSub) {
       this.productSub.unsubscribe();
     }
-    if (this.categorySub){
+    if (this.categorySub) {
       this.categorySub.unsubscribe();
     }
     if (this.quantitySub) {

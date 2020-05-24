@@ -232,6 +232,76 @@ export class AuthService {
    });
   }
 
+  // update merchant
+  updateMerchant(merchant: Merchant, image: File) {
+    if (image) {
+    const newMerchant = new FormData();
+    newMerchant.append('images[]', image, image.name);
+    console.log(newMerchant);
+
+    this.http.post<{profile_pic: string}>(this.url + 'auth/merchant/img', newMerchant )
+    .subscribe ((recievedImage) => {
+    console.log(recievedImage);
+    merchant.profile_pic = recievedImage.profile_pic;
+    this.http.post<{message: string}>(this.url + 'auth/merchant' , merchant)
+    .subscribe((recievedData) => {
+      console.log(recievedData.message);
+      this.merchant = merchant;
+      this.merchantUpdated.next(this.merchant);
+      this.dialog.open(SuccessComponent, {data: {message: 'Your Profile Details Updated Successfully!'}});
+    }, (error) => {
+      console.log(error);
+      });
+    });
+  } else {
+    this.http.post<{message: string}>(this.url + 'auth/merchant' , merchant)
+    .subscribe((recievedData) => {
+      console.log(recievedData.message);
+      this.merchant = merchant;
+      this.merchantUpdated.next(this.merchant);
+      this.dialog.open(SuccessComponent, {data: {message: 'Your Profile Details Updated Successfully!'}});
+    }, (error) => {
+      console.log(error);
+      });
+  }
+  }
+
+
+  // update planner
+  updateEventPlanner(planner: EventPlanner, image: File) {
+    if (image) {
+    const newPlanner = new FormData();
+    newPlanner.append('images[]', image, image.name);
+    console.log(newPlanner);
+
+    this.http.post<{profile_pic: string}>(this.url + 'auth/planner/img', newPlanner )
+    .subscribe ((recievedImage) => {
+    console.log(recievedImage);
+    planner.profile_pic = recievedImage.profile_pic;
+    this.http.post<{message: string}>(this.url + 'auth/planner', planner)
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.eventPlanner = planner;
+        this.eventPlannerUpdated.next(this.eventPlanner);
+        this.dialog.open(SuccessComponent, {data: {message: 'Your Profile Details Updated Successfully!'}});
+      }, (error) => {
+        console.log(error);
+    });
+   });
+  } else {
+    this.http.post<{message: string}>(this.url + 'auth/planner', planner)
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.eventPlanner = planner;
+        this.eventPlannerUpdated.next(this.eventPlanner);
+        this.dialog.open(SuccessComponent, {data: {message: 'Your Profile Details Updated Successfully!'}});
+      }, (error) => {
+        console.log(error);
+    });
+  }
+  }
+
+
  // add a new Merchant Temp
   addMerchantTemp(merchantTemp: MerchantTemp) {
     this.merchantTemp = merchantTemp;

@@ -1,1 +1,21 @@
-<p>eventplanner-dash-orders works!</p>
+<div class="text-center container pd-top">
+  <div class="top-content container-fluid">
+  <h3> Manage Your Orders at one place...</h3>
+  <h5> You can also manage ordered products of a specific event in relavant event plan..</h5>
+  <hr>
+</div>
+
+<div class="container-fluid">
+  <div class="pd-t">
+    <app-planner-orders [orderType]="'pending'"></app-planner-orders>
+  </div>
+
+<div class="pd-t">
+ <app-planner-orders [orderType]="'delivered'"></app-planner-orders>
+</div>
+
+<div class="pd-t">
+<app-planner-orders [orderType]="'cancelled'"></app-planner-orders>
+</div>
+
+</div>

@@ -14,5 +14,10 @@ export class ServiceProviderService {
   constructor(private http: HttpClient,
               private router: Router, ) {}
 
+  // user profile change password
+  changeUserPassword(currentPword: string, newPword: string) {
+  }
+
+
 
 }

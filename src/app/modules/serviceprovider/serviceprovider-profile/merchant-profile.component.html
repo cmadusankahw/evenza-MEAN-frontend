@@ -23,10 +23,11 @@
       </div>
       <div class="row logo-cls">
         <div class="col-md-2">
-            <img src={{serviceProvider[0].profile_pic}} alt="User Pic" class="img-thumbnail logo-img">
+            <img src="{{serviceProvider ? serviceProvider.profile_pic : imageUrl}}"
+            alt="User Pic" class="img-thumbnail logo-img">
         </div>
         <div class="col-md-10">
-          <h2 class="txt-title"> {{serviceProvider[0].first_name}}  {{serviceProvider[0].last_name}} </h2>
+          <h2 class="txt-title"> {{serviceProvider ? serviceProvider.first_name : 'Loading...'}}  {{serviceProvider ? serviceProvider.last_name : ' Loading...'}} </h2>
         </div>
       </div>
 
@@ -45,7 +46,7 @@
                   </div>
 
                   <div class="col-md-7 profile-text">
-                      <span> {{serviceProvider[0].nic}}</span>
+                      <span> {{serviceProvider ? serviceProvider.nic : 'Loading...'}}</span>
                   </div>
                 </div>
               <!--row 1-->
@@ -53,11 +54,11 @@
               <div class="col-md-5 inst-text">
                 <mdb-icon fas icon="envelope"></mdb-icon> <span> Your Email </span>
                 <br>
-                <p class="infotxt"> This is your Primary email-address </p>
+                <p class="infotxt"> This is your Personal email-address </p>
               </div>
 
               <div class="col-md-7 profile-text">
-                  <span> {{serviceProvider[0].email}}</span>
+                  <span> {{serviceProvider ? serviceProvider.email : 'Loading...'}}</span>
               </div>
             </div>
 
@@ -70,7 +71,7 @@
                 </div>
 
                 <div class="col-md-7 profile-text">
-                    <span> {{serviceProvider[0].contact_no}}</span>
+                    <span> {{serviceProvider ? serviceProvider.contact_no : 'Loading...'}}</span>
                 </div>
               </div>
 
@@ -81,7 +82,7 @@
                   </div>
 
                   <div class="col-md-7 profile-text">
-                      <span> {{serviceProvider[0].gender}}</span>
+                      <span> {{serviceProvider ? serviceProvider.gender : 'Loading...'}}</span>
                   </div>
                 </div>
 
@@ -92,7 +93,7 @@
                     </div>
 
                     <div class="col-md-7 profile-text">
-                        <span> {{serviceProvider[0].date_of_birth}}</span>
+                        <span> {{serviceProvider ? serviceProvider.date_of_birth.slice(0,10) : 'Loading...'}}</span>
                     </div>
                   </div>
 
@@ -105,9 +106,11 @@
                       </div>
 
                       <div class="col-md-7 profile-text">
-                          <span> {{serviceProvider[0].address_line1}}</span>
+                          <span> {{serviceProvider ? serviceProvider.address_line1 : 'Loading...'}}</span>
                           <br>
-                          <span> {{serviceProvider[0].address_line2}}</span>
+                          <span> {{serviceProvider ? serviceProvider.address_line2: ' Loading...'}}</span>
+                          <br>
+                          <span> {{serviceProvider ? serviceProvider.postal_code: ' Loading...'}}</span>
                       </div>
                     </div>
                     <br>
@@ -148,7 +151,7 @@
                 </div>
 
                 <div class="col-md-7 profile-text">
-                    <span> {{serviceProvider[0].reg_date}}</span>
+                    <span> {{serviceProvider ? serviceProvider.reg_date.slice(0,10) : 'Loading...'}}</span>
                 </div>
               </div>
                 <hr>
@@ -160,8 +163,10 @@
 
 <!--customize profile section-->
 <div class="container-fluid" *ngIf="editmode">
-  <section class="px-md-5 mx-md-5 dark-grey-text">
 
+  <form class="service-form pd-top-min" #editProfile="ngForm" (submit)= "editUser(editProfile)">
+
+  <section class="px-md-5 mx-md-5 dark-grey-text">
       <!--edit content-->
       <div class="pd-top-min text-center">
 
@@ -170,10 +175,6 @@
           </div>
 
         <hr>
-
-        <!--form-->
-       <form class="service-form pd-top-min">
-
         <!--row1-->
         <div class="row">
 
@@ -182,10 +183,12 @@
           </div>
 
           <div class="col-md-3 text-center">
-            <a role="button" mdbWavesEffect (click)="sidea.click()">
-              <img src="{{serviceProvider[0].profile_pic != null ? serviceProvider[0].profile_pic : './assets/images/serviceProvider/nopic.png'}}" alt="Profile Picture" class="img-thumbnail logo-img-edit">
+            <a role="button" mdbWavesEffect (click)="img.click()">
+              <img [src]="image ? imageUrl : serviceProvider.profile_pic"
+              alt="Profile Picture" class="img-thumbnail logo-img-edit">
             </a>
-            <input type="file" hidden="true" id="sidea" #sidea>
+            <input type="file" hidden="true" id="img" #img
+            ngmodel name="image" accept="image/*" (change) = "onImageUploaded($event)">
             <p><b>Click to Upload</b></p>
           </div>
 
@@ -202,13 +205,17 @@
             <div class="col-md-6">
               <mat-form-field class="service-full-width">
                 <mat-label>First Name </mat-label>
-                <input matInput   value="{{ serviceProvider[0].first_name }}" required>
+                <input matInput [ngModel]="serviceProvider.first_name" required
+                name="first_name" #firstName="ngModel">
+                <mat-error *ngIf="firstName.invalid">Please enter your first name</mat-error>
               </mat-form-field>
             </div>
             <div class="col-md-6">
               <mat-form-field class="service-full-width">
                 <mat-label>Last Name </mat-label>
-                <input matInput   value="{{ serviceProvider[0].last_name }}" required>
+                <input matInput   [ngModel]="serviceProvider.last_name" required
+                #lastName="ngModel" name="last_name">
+                <mat-error *ngIf="lastName.invalid">Please enter your last name</mat-error>
               </mat-form-field>
             </div>
           </div>
@@ -228,7 +235,9 @@
             <div class="col-md-7 text-center">
               <mat-form-field class="service-full-width">
                 <mat-label>NIC Here </mat-label>
-                <input matInput   value="{{ serviceProvider[0].nic }}" required>
+                <input matInput [ngModel]="serviceProvider.nic" required
+                #nic="ngModel" name="nic" pattern="^([0-9]{9}[x|X|v|V]|[0-9]{12})$">
+                <mat-error *ngIf="nic.invalid">Please enter a valid NIC</mat-error>
               </mat-form-field>
             </div>
            </div>
@@ -238,13 +247,15 @@
 
           <div class="col-md-3 inst-text">
             <mdb-icon fas icon="envelope"></mdb-icon> <span> Email Address:</span>
-            <p class="infotxt"> If modified, re-verification required</p>
+            <p class="infotxt"> Note: This will only change your personal email address. Your Sign in address will remain same.</p>
           </div>
 
           <div class="col-md-7 text-center">
             <mat-form-field class="service-full-width">
               <mat-label>Email Address here </mat-label>
-              <input matInput   value="{{ serviceProvider[0].email }}" required>
+              <input matInput [ngModel]="serviceProvider.email" required type="email"
+              #email="ngModel" name="email" ngModel >
+              <mat-error *ngIf="email.invalid">Please enter a valid email address</mat-error>
             </mat-form-field>
           </div>
          </div>
@@ -260,7 +271,9 @@
               <div class="col-md-7 text-center">
                 <mat-form-field class="service-full-width">
                   <mat-label> Contact No here </mat-label>
-                  <input matInput   value="{{ serviceProvider[0].contact_no }}" required>
+                  <input matInput [ngModel]="serviceProvider.contact_no" required
+                  #contactNo="ngModel" minlength="10" maxlength="10" name="contact_no">
+                  <mat-error *ngIf="contactNo.invalid">Contact No must contain 10 digits</mat-error>
                 </mat-form-field>
               </div>
              </div>
@@ -276,9 +289,11 @@
               <div class="col-md-7 text-center">
                 <mat-form-field class="service-full-width">
                   <mat-label>Select Gender</mat-label>
-                  <mat-select [value]="serviceProvider[0].gender" required>
-                    <mat-option value="option1">Male</mat-option>
-                    <mat-option value="option2">Female</mat-option>
+                  <mat-select [ngModel]="serviceProvider.gender" required
+                     ngModel name="gender">
+                    <mat-option value="male">Male</mat-option>
+                    <mat-option value="female">Female</mat-option>
+                    <mat-option value="none">Prefer Not to Say</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -294,12 +309,14 @@
           <div class="col-md-7 text-center">
             <mat-form-field class="service-full-width">
               <mat-label> Select Your Birthday </mat-label>
-              <input matInput [matDatepicker]="picker" />
+              <input matInput [matDatepicker]="picker" required
+              name="date_of_birth" [ngModel]="serviceProvider.date_of_birth" #birthday="ngModel" />
               <mat-datepicker-toggle
                 matSuffix
                 [for]="picker"
               ></mat-datepicker-toggle>
-              <mat-datepicker #picker [startAt]="convertDate(serviceProvider[0].date_of_birth)"></mat-datepicker>
+              <mat-datepicker #picker [startAt]="serviceProvider.date_of_birth"></mat-datepicker>
+              <mat-error *ngIf="birthday.invalid">Please select your Birthday</mat-error>
             </mat-form-field>
           </div>
          </div>
@@ -315,12 +332,20 @@
               <div class="col-md-7 text-center">
                 <mat-form-field class="service-full-width">
                   <mat-label>Address Line 1 </mat-label>
-                  <input matInput value="{{serviceProvider[0].address_line1}}" required>
+                  <input matInput [ngModel]="serviceProvider.address_line1" required
+                  name="address_line1" #addressLine1="ngModel" ngModel>
+                  <mat-error *ngIf="addressLine1.invalid">Address must be provided</mat-error>
                 </mat-form-field>
                 <mat-form-field class="service-full-width">
                   <mat-label>Address Line 2 </mat-label>
-                  <input matInput value="{{serviceProvider[0].address_line2}}">
+                  <input matInput [ngModel]="serviceProvider.address_line2" name="address_line2" ngModel>
                 </mat-form-field >
+                <mat-form-field class="service-full-width">
+                  <mat-label>Postal Code </mat-label>
+                  <input matInput [ngModel]="serviceProvider.postal_code" required
+                  name="postal_code" #postalCode="ngModel" ngModel>
+                  <mat-error *ngIf="postalCode.invalid">Postal Code must be provided</mat-error>
+                </mat-form-field>
               </div>
              </div>
 
@@ -341,10 +366,10 @@
             </div>
 
             <div class="col-md-7 text-center">
-              <div class="verify-stat text-center" *ngIf="serviceProvider[0].isverified">
+              <div class="verify-stat text-center" *ngIf="serviceProvider.isverified">
                 <mdb-icon far icon="check-circle"> </mdb-icon> Identity Verified
               </div>
-              <div class="verify-stat text-center" *ngIf="!serviceProvider[0].isverified" style="color:darkred; ">
+              <div class="verify-stat text-center" *ngIf="!serviceProvider.isverified" style="color:darkred; ">
                 <mdb-icon far icon="times-circle"></mdb-icon> Identity Not Verified
                 <br>
               <a type="button" mdbBtn color="secondary"
@@ -355,17 +380,20 @@
            </div>
            <hr>
            <br>
-         </form>
+
     </div>
   </section>
 
   <!--save buttons-->
   <div class="text-center">
-    <a type="button" mdbBtn color="secondary"
-    class="waves-light btn btn-md  cust-btn btn-tab" mdbWavesEffect (click)="editmode = !editmode">Save Changes</a>
-    <a type="button" mdbBtn color="secondary"
-    class="waves-light btn btn-md  cust-btn btn-tab" mdbWavesEffect outline="yes" (click)="editmode = !editmode">Discard</a>
+    <button type="button" mdbBtn color="secondary"
+    class="waves-light btn btn-md  cust-btn btn-tab" mdbWavesEffect
+    type="submit">Save Changes</button>
+    <button type="button" mdbBtn color="secondary"
+    class="waves-light btn btn-md  cust-btn btn-tab" mdbWavesEffect outline="yes"
+    (click)="editmode = !editmode" (click) ="editProfile.resetForm()">Discard</button>
     </div>
+</form>
 </div>
 
 
@@ -382,6 +410,8 @@
   [config]="{ backdrop: false, ignoreBackdropClick: true }"
   aria-hidden="true"
 >
+<form #pwordForm="ngForm" (submit)="changeUserPassword(pwordForm)">
+
   <div
     class="modal-dialog modal-dialog-centered"
     role="document"
@@ -413,7 +443,9 @@
           <div class="col-md-7 text-center">
             <mat-form-field class="service-full-width">
               <mat-label>Current Password here </mat-label>
-              <input type="password" matInput required>
+              <input type="password" matInput required
+              name="current_password" #currentPword= "ngModel" ngModel>
+              <mat-error *ngIf="currentPword.invalid">Current Password is required</mat-error>
             </mat-form-field>
           </div>
          </div>
@@ -429,7 +461,9 @@
           <div class="col-md-7 text-center">
             <mat-form-field class="service-full-width">
               <mat-label>New Password here </mat-label>
-              <input type="password" matInput required>
+              <input type="password" matInput required
+              name="new_password1"  #newPassword1="ngModel" ngModel>
+              <mat-error *ngIf="newPassword1.invalid">New Password cannot be empty</mat-error>
             </mat-form-field>
           </div>
          </div>
@@ -444,7 +478,10 @@
           <div class="col-md-7 text-center">
             <mat-form-field class="service-full-width">
               <mat-label>Retype Password here </mat-label>
-              <input type="password" matInput required>
+              <input type="password" matInput required
+              name="new_password2" #newPassword2="ngModel" ngModel
+              >
+              <mat-error *ngIf="newPassword2.invalid">Plase re-type the password</mat-error>
             </mat-form-field>
           </div>
          </div>
@@ -453,15 +490,15 @@
 
       <div class="modal-footer">
         <button
-          mdbBtn
+          mdbBtn class="btn btn-md"
           color="secondary"
-          (click)="changePassword.hide()"
+          type="submit"
           mdbWavesEffect
         >
           Change Password
         </button>
         <button
-          mdbBtn
+          mdbBtn class="btn btn-md"
           color="secondary"
           outline="yes"
           (click)="changePassword.hide()"
@@ -472,6 +509,7 @@
       </div>
     </div>
   </div>
+</form>
 </div>
 
 

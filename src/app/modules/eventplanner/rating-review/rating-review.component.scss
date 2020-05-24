@@ -1,0 +1,38 @@
+.pd-top{
+  padding-top:40px;
+}
+
+.pd-top-min{
+  padding-top:20px;
+}
+
+
+//star ratings
+.star {
+  font-size:33px;
+  color: #f9ffa7;
+}
+
+.filled {
+  color: #eeb90d;
+
+}
+.bad {
+  color: #deb0b0;
+}
+.filled.bad {
+  color: #ffa91e;
+}
+
+.rating{
+  text-align:center;
+}
+
+.rt-btn{
+  border-radius:30px;
+  padding-bottom:7px;
+}
+
+.additional-ratings{
+  padding-top:25px;
+}

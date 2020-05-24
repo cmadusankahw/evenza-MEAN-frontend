@@ -23,7 +23,6 @@ export class SellerDashboardComponent implements OnInit, OnDestroy {
    reports = 'txt-white row';
    profile = 'txt-white row';
 
-  private authSubs: Subscription;
 
   private merchantSubs: Subscription;
 
@@ -53,9 +52,6 @@ export class SellerDashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.authSubs) {
-      this.authSubs.unsubscribe();
-    }
     if (this.merchantSubs) {
       this.merchantSubs.unsubscribe();
     }

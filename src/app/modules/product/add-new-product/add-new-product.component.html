@@ -73,12 +73,27 @@
         </div>
       </div>
       <hr>
-        <div class="text-center">
-          <mat-checkbox class="check-margin"
-          ngModel name="pay_on_delivery">Pay on Delivery</mat-checkbox>
+      <div class="text-center">
+        <div class="row container-fluid">
+          <div class="col-md-6">
+            <mat-checkbox class="check-margin"
+            ngModel name="pay_on_delivery">Pay on Delivery</mat-checkbox>
+            </div>
+          <div class="col-md-6">
+            <mat-form-field class="service-full-width-sm">
+              <mat-label >Delivery Service</mat-label>
+              <select matNativeControl required
+              ngModel name="delivery_service">
+               <option [value]="del.delivery_service" *ngFor="let del of deliveryServices" >
+                 {{del.title}}
+               </option>
+              </select>
+            </mat-form-field>
+          </div>
           <br>
           <p class="pay-on-meet"> Note: If <b>Pay on Delivery</b> is selected, <b>no payment</b> will be charged on order. Payment need to be collected manullay. However, <b>system will charge the due commission form you.</b></p>
         </div>
+         </div>
       <hr>
       <div class="enter-txt">
         <p> Upload feature Images of the product (up to 3 images *5MB Max)</p>

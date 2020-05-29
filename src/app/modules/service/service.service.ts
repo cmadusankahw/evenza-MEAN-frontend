@@ -129,17 +129,17 @@ export class ServiceService  {
       }
     }
     console.log(serviceData);
-    this.http.post<{image_01: string, image_02: string, image_03: string}>(this.url + 'service/add/img', serviceData )
+    this.http.post<{imagePaths: string[]}>(this.url + 'service/add/img', serviceData )
       .subscribe ((recievedImages) => {
         console.log(recievedImages);
-        if (recievedImages.image_01 !== null) {
-          service.image_01 = recievedImages.image_01;
+        if (recievedImages.imagePaths[0]) {
+          service.image_01 = recievedImages.imagePaths[0];
         }
-        if (recievedImages.image_02 !== null) {
-          service.image_02 = recievedImages.image_02;
+        if (recievedImages.imagePaths[1]) {
+          service.image_02 = recievedImages.imagePaths[1];
         }
-        if (recievedImages.image_03 !== null) {
-          service.image_03 = recievedImages.image_03;
+        if (recievedImages.imagePaths[2]) {
+          service.image_03 = recievedImages.imagePaths[2];
         }
         this.http.post<{ message: string, result: Service }>(this.url + 'service/add', service)
         .subscribe((recievedData) => {
@@ -154,24 +154,31 @@ export class ServiceService  {
   // update service
   updateService(service: Service, images: File[]) {
     const serviceData = new FormData();
+    const currentImg = [];
+    let j = 0;
     for (const image of images) {
       if (image) {
         serviceData.append('images[]', image, image.name);
+        currentImg.push(j);
       }
+      j++;
     }
     console.log(serviceData);
-    this.http.post<{image_01: string, image_02: string, image_03: string}>(this.url + 'service/add/img', serviceData )
+    this.http.post<{imagePaths: string[]}>(this.url + 'service/add/img', serviceData )
       .subscribe ((recievedImages) => {
       console.log(recievedImages);
-      if (recievedImages.image_01 !== null) {
-        service.image_01 = recievedImages.image_01;
-      }
-      if (recievedImages.image_02 !== null) {
-        service.image_02 = recievedImages.image_02;
-      }
-      if (recievedImages.image_03!== null) {
-        service.image_03 = recievedImages.image_03;
-      }
+      recievedImages.imagePaths.find((img) => {
+        if ( currentImg.includes(2) ) {
+          service.image_03 = img;
+          currentImg.pop();
+        } else if ( currentImg.includes(1)) {
+            service.image_02 = img;
+            currentImg.pop();
+        } else if ( currentImg.includes(0)) {
+            service.image_01 = img;
+            currentImg.pop();
+        }
+      });
       this.http.post<{ message: string, result: Service }>(this.url + 'service/edit', service)
       .subscribe((recievedData) => {
         console.log(recievedData.message);

@@ -1,8 +1,8 @@
 //model imports
-const Service = require("../../../models/service/service.model");
-const ServiceCategories = require("../../../models/service/categories.model");
-const ServiceRates = require("../../../models/service/rates.model");
-const checkAuth = require("../../../middleware/auth-check");
+const Service = require("../../model/service/service.model");
+const ServiceCategories = require("../../model/service/categories.model");
+const ServiceRates = require("../../model/service/rates.model");
+const checkAuth = require("../../middleware/auth-check");
 
 //dependency imports
 const express = require("express");
@@ -263,7 +263,7 @@ service.get('/rt', (req, res, next) => {
   });
 });
 
-
+// to be removed
 //get product id of the last product
 service.get('/last', (req, res, next) => {
   Service.find(function (err, services) {

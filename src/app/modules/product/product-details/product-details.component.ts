@@ -5,6 +5,7 @@ import { NgForm } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
 import { Product, ProductCategories, QuantityTypes } from '../product.model';
+import { DeliveryService } from '../../seller/seller.model';
 import { ProductService } from '../product.service';
 
 
@@ -19,7 +20,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   private productSub: Subscription ;
   private categorySub: Subscription ;
   private quantitySub: Subscription ;
-
+  private deliveryServiceSub: Subscription;
 
   // service is editable by parent comp
   @Input() isowner = false;
@@ -71,6 +72,9 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   // recieved quantities
   quantities: QuantityTypes[] = [];
 
+  // delivery services
+  deliveryServices: DeliveryService[] = [];
+
 
 
   constructor(private router: Router,
@@ -107,6 +111,14 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
          this.quantities = recievedData;
          console.log(this.quantities);
      });
+
+      // import delivery services
+      this.productService.getDeliveryServices();
+      this.deliveryServiceSub = this.productService.getdeliveryServicesUpdateListener()
+         .subscribe((recievedData: DeliveryService[]) => {
+         this.deliveryServices = recievedData;
+         console.log(this.deliveryServices);
+     });
     }
   }
 
@@ -120,12 +132,10 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     if (this.quantitySub) {
       this.quantitySub.unsubscribe();
     }
-    this.image01Url = './assets/images/merchant/nopic.png';
-    this.image02Url = './assets/images/merchant/nopic.png';
-    this.image03Url = './assets/images/merchant/nopic.png';
-    this.image01 = null;
-    this.image02 = null;
-    this.image03 = null;
+    if (this.deliveryServiceSub) {
+      this.deliveryServiceSub.unsubscribe();
+    }
+    this.clearImages();
     this.editmode = false;
     this.removed = false;
   }
@@ -150,7 +160,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         rating: this.product.rating,
         no_of_ratings: this.product.no_of_ratings,
         no_of_orders: this.product.no_of_orders,
-        delivery_service: this.product.delivery_service,
+        delivery_service: updateProductForm.value.delivery_service,
         price:  updateProductForm.value.price,
         pay_on_delivery:  this.booleanValue(updateProductForm.value.pay_on_delivery),
         image_01:  this.product.image_01,
@@ -162,6 +172,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       .subscribe((recievedProduct: Product) => {
         console.log(recievedProduct);
         this.product = recievedProduct;
+        this.clearImages();
       });
       console.log('Product updated successfully!');
       updateProductForm.resetForm();
@@ -173,6 +184,16 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   removeProduct(productId: string) {
     this.productService.removeProduct(productId);
     this.removed = true;
+  }
+
+  // clear image cache
+  clearImages() {
+    this.image01Url = './assets/images/merchant/nopic.png';
+    this.image02Url = './assets/images/merchant/nopic.png';
+    this.image03Url = './assets/images/merchant/nopic.png';
+    this.image01 = null;
+    this.image02 = null;
+    this.image03 = null;
   }
 
 
@@ -230,6 +251,16 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     if (value ===  '' || value === null || value === undefined) {
       return false;
     } else {return value; }
+  }
+
+  showDeliveryService(delService: string): string {
+    let delS = ' Not Assigned';
+    this.deliveryServices.find((del) => {
+      if (del.delivery_service === delService) {
+        delS = del.title;
+      }
+    });
+    return delS;
   }
 
 }

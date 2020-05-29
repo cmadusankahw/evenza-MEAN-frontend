@@ -73,12 +73,6 @@ ngOnDestroy() {
     this.ratesSub.unsubscribe();
   }
 
-  this.image01Url = './assets/images/merchant/nopic.png';
-  this.image02Url = './assets/images/merchant/nopic.png';
-  this.image03Url = './assets/images/merchant/nopic.png';
-  this.image01 = null;
-  this.image02 = null;
-  this.image03 = null;
 }
 
 // add new service
@@ -110,10 +104,18 @@ createService(addServiceForm: NgForm) {
       };
     this.serviceService.addService(service, [this.image01, this.image02, this.image03]);
     addServiceForm.resetForm();
-    this.image01Url = './assets/images/merchant/nopic.png';
-    this.image02Url = './assets/images/merchant/nopic.png';
-    this.image03Url = './assets/images/merchant/nopic.png';
+    this.clearImages();
   }
+}
+
+// clear image cache
+clearImages() {
+  this.image01Url = './assets/images/merchant/nopic.png';
+  this.image02Url = './assets/images/merchant/nopic.png';
+  this.image03Url = './assets/images/merchant/nopic.png';
+  this.image01 = null;
+  this.image02 = null;
+  this.image03 = null;
 }
 
 // to get date for created date

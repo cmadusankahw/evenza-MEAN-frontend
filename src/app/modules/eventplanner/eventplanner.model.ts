@@ -59,10 +59,10 @@ export interface Booking {
   service_id: string; // fk
   user_id: string; // fk (created user)
   event_id: string; // fk
+  // serviceProvider_id: string; // fk
   service_name: string; // retrived from service
   event_name: string; // retrived from event
   created_date: string;
-  created_time: string;
   state: string;
   review: string;
   from_date: string;
@@ -82,10 +82,10 @@ export interface Appointment {
   service_id: string; // fk
   user_id: string; // fk (created user)
   event_id: string; // fk
+  // serviceProvider_id: string; // fk
   service_name: string; // retrived from service
   event_name: string; // retrived from event
   created_date: string;
-  created_time: string;
   state: string;
   appointed_date: string;
   appointed_time: string;

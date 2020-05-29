@@ -19,7 +19,7 @@
         <select matNativeControl required
         ngModel name="category">
           <option [value]="cat.val" *ngFor="let cat of categories"  >
-            {{cat.val}}
+            {{cat ? cat.val : '...'}}
           </option>
         </select>
       </mat-form-field>
@@ -46,7 +46,7 @@
             <select matNativeControl required
             ngModel name="rate_type">
              <option [value]="qty.val" *ngFor="let qty of rates"  >
-               {{qty.val}}
+               {{ qty ? qty.val : '...'}}
              </option>
             </select>
           </mat-form-field>

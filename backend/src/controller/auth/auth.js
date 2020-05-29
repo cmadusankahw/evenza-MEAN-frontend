@@ -1,8 +1,8 @@
 //model imports
-const User = require("../../../models/auth/user.model");
-const EventPlanner = require("../../../models/auth/eventPlanner.model");
-const Merchant = require("../../../models/auth/merchant.model");
-const checkAuth = require("../../../middleware/auth-check");
+const User = require("../../model/auth/user.model");
+const EventPlanner = require("../../model/auth/eventPlanner.model");
+const Merchant = require("../../model/auth/merchant.model");
+const checkAuth = require("../../middleware/auth-check");
 
 //dependency imports
 const express = require("express");

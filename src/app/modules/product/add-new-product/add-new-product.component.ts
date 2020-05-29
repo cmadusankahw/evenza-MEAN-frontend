@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 
 import { Product, ProductCategories, QuantityTypes } from '../product.model';
 import { ProductService } from '../product.service';
+import { DeliveryService } from '../../seller/seller.model';
 
 
 @Component({
@@ -18,6 +19,7 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
   private productSub: Subscription ;
   private categorySub: Subscription ;
   private quantitySub: Subscription ;
+  private deliveryServiceSub: Subscription;
 
   // images to upload
   image01: File;
@@ -36,6 +38,8 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
   // recieved quantities
   quantities: QuantityTypes[] = [];
 
+  // delivery services
+  deliveryServices: DeliveryService[] = [];
 
   constructor(private router: Router,
               public productService: ProductService,
@@ -59,6 +63,14 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
          this.quantities = recievedData;
          console.log(this.quantities);
       });
+
+      // import delivery services
+      this.productService.getDeliveryServices();
+      this.deliveryServiceSub = this.productService.getdeliveryServicesUpdateListener()
+         .subscribe((recievedData: DeliveryService[]) => {
+         this.deliveryServices = recievedData;
+         console.log(this.deliveryServices);
+     });
   }
 
   ngOnDestroy() {
@@ -71,13 +83,11 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
     if (this.quantitySub) {
       this.quantitySub.unsubscribe();
     }
+    if (this.deliveryServiceSub) {
+      this.deliveryServiceSub.unsubscribe();
+    }
 
-    this.image01Url = './assets/images/merchant/nopic.png';
-    this.image02Url = './assets/images/merchant/nopic.png';
-    this.image03Url = './assets/images/merchant/nopic.png';
-    this.image01 = null;
-    this.image02 = null;
-    this.image03 = null;
+
   }
 
     // add new product
@@ -100,7 +110,7 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
           rating: 0,
           no_of_ratings: 0,
           no_of_orders: 0,
-          delivery_service: 'Not Assigned',
+          delivery_service: addProductForm.value.delivery_service,
           price:  addProductForm.value.price,
           pay_on_delivery:  this.booleanValue(addProductForm.value.pay_on_delivery),
           image_01: './assets/images/merchant/nopic.png',
@@ -109,10 +119,18 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
           };
         this.productService.addProduct(product, [this.image01, this.image02, this.image03]);
         addProductForm.resetForm();
-        this.image01Url = './assets/images/merchant/nopic.png';
-        this.image02Url = './assets/images/merchant/nopic.png';
-        this.image03Url = './assets/images/merchant/nopic.png';
+        this.clearImages();
       }
+    }
+
+    // clear images cache
+    clearImages() {
+      this.image01Url = './assets/images/merchant/nopic.png';
+      this.image02Url = './assets/images/merchant/nopic.png';
+      this.image03Url = './assets/images/merchant/nopic.png';
+      this.image01 = null;
+      this.image02 = null;
+      this.image03 = null;
     }
 
     // to get date for created date

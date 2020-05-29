@@ -1,8 +1,9 @@
 //model imports
-const Product = require("../../../models/product/product.model");
-const ProductCategories = require("../../../models/product/categories.model");
-const QuantityTypes = require("../../../models/product/quantities.model");
-const checkAuth = require("../../../middleware/auth-check");
+const Product = require("../../model/product/product.model");
+const ProductCategories = require("../../model/product/categories.model");
+const QuantityTypes = require("../../model/product/quantities.model");
+const DeliveryService = require("../../model/product/deliveryService.model");
+const checkAuth = require("../../middleware/auth-check");
 
 //dependency imports
 const express = require("express");
@@ -43,7 +44,6 @@ product.use(bodyParser.urlencoded({ extended: false }));
 
 
 //add new product
-
 product.post('/add',checkAuth, (req, res, next) => {
   var lastid;
   Product.find(function (err, products) {
@@ -85,20 +85,12 @@ product.post('/add',checkAuth, (req, res, next) => {
 // add product photos
 product.post('/add/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
     const url = req.protocol + '://' + req.get("host");
-    let image01Path, image02Path, image03Path = null;
-    if (req.files[0]){
-      image01Path = url+ "/images/products/" + req.files[0].filename;
-    }
-    if (req.files[1]){
-      image02Path = url+ "/images/products/" + req.files[1].filename;
-    }
-    if (req.files[2]){
-      image03Path = url+ "/images/products/" + req.files[2].filename;
+    let imagePaths = [];
+    for (let f of req.files){
+      imagePaths.push(url+ "/images/products/" + f.filename);
     }
     res.status(200).json({
-      image_01: image01Path,
-      image_02: image02Path,
-      image_03: image03Path
+      imagePaths: imagePaths
     });
 
 });
@@ -266,6 +258,22 @@ product.get('/qt', (req, res, next) => {
 });
 
 
+//get delivery services
+product.get('/delivery', (req, res, next) => {
+
+  DeliveryService.find(function (err, deliveryServices) {
+    console.log(deliveryServices);
+    if (err) return handleError(err);
+    res.status(200).json(
+      {
+        message: 'Delivery Services recieved successfully!',
+        deliveryServices: deliveryServices
+      }
+    );
+  });
+});
+
+// to be removed
 //get product id of the last product
 product.get('/last', (req, res, next) => {
   Product.find(function (err, products) {

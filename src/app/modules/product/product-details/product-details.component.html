@@ -29,7 +29,7 @@
     <div class="row">
       <div class="col-md-7">
         <div class="content-title">
-          {{product.product}}
+          {{product ? product.product: '...'}}
         </div>
         <div class="open-stat" *ngIf="product.availability">
           <a mdbWavesEffect role="button" >
@@ -62,17 +62,22 @@
       <hr>
       <div class="row">
         <div class=" col-md-7 content-text">
-          {{product.description}}
+          {{product ? product.description: '...'}}
           <br>
           <div class="category">
-            <mdb-icon far icon="calendar-alt"></mdb-icon> Categry: {{product.product_category}}
+            <mdb-icon far icon="calendar-alt"></mdb-icon> Categry: {{product ? product.product_category : '...'}}
           </div>
+
+          <div class="category">
+            <mdb-icon far icon="calendar-alt"></mdb-icon> Delivery Service: {{showDeliveryService(product.delivery_service)}}
+          </div>
+
           <div class="notify" >
             <mdb-icon far icon="calendar-check"> </mdb-icon> {{(product.pay_on_delivery) ? 'Pay on Delivery Available' : 'Pay Online'}}
           </div>
           <br>
           <div class="notify" *ngIf="isowner">
-            <mdb-icon fas icon="bookmark"> </mdb-icon> {{product.no_of_orders}} Orderes
+            <mdb-icon fas icon="bookmark"> </mdb-icon> {{product ? product.no_of_orders: '...'}} Orderes
           </div>
         </div>
 
@@ -92,12 +97,12 @@
               </ngb-rating>
               <br>
               <span class="rating-txt">
-                {{product.no_of_ratings}} Recommended
+                {{product ? product.no_of_ratings : '...'}} Recommended
               </span>
             </div>
           <hr>
           <div class="owner text-center" >
-            <span>Owned by {{product.business_name}}</span>
+            <span>Owned by {{product ? product.business_name : '...'}}</span>
             <br>
             <a mdbBtn color="secondary" class="btn btn-md" outline="yes" mdbWavesEffect *ngIf="!isowner"
               (click)="showBprofile()" >View Business</a>
@@ -119,7 +124,7 @@
   <div class="center-txt">
     <div class="row">
       <div class="col-md-8">
-        <p style="line-height:35px;"> You can change the details of <b>{{product.product}}</b> below.</p>
+        <p style="line-height:35px;"> You can change the details of <b>{{product ? product.product : 'Selected Product'}}</b> below.</p>
       </div>
       <div class="col-md-4">
         <a role="button" mdbBtn class="btn btn-sm" color="red" text="white" (click)="removeProduct(product.product_id)"> Remove Product</a>
@@ -196,11 +201,26 @@
       </div>
       <hr>
       <div class="text-center">
-        <mat-checkbox class="check-margin"
-        [ngModel]="product.pay_on_delivery" name="pay_on_delivery">Pay on Delivery</mat-checkbox>
-        <br>
-        <p class="pay-on-meet"> Note: If <b>Pay on Delivery</b> is selected, <b>no payment</b> will be charged on order. Payment need to be collected manullay. However, <b>system will charge the due commission form you.</b></p>
-      </div>
+        <div class="row container-fluid">
+          <div class="col-md-6">
+            <mat-checkbox class="check-margin"
+            [ngModel]="product.pay_on_delivery" name="pay_on_delivery">Pay on Delivery</mat-checkbox>
+              </div>
+          <div class="col-md-6">
+            <mat-form-field class="service-full-width-sm">
+              <mat-label >Delivery Service</mat-label>
+              <select matNativeControl required
+              [ngModel]="product.delivery_service" name="delivery_service">
+               <option [value]="del.delivery_service" *ngFor="let del of deliveryServices" >
+                 {{del.title}}
+               </option>
+              </select>
+            </mat-form-field>
+          </div>
+          <br>
+          <p class="pay-on-meet"> Note: If <b>Pay on Delivery</b> is selected, <b>no payment</b> will be charged on order. Payment need to be collected manullay. However, <b>system will charge the due commission form you.</b></p>
+        </div>
+         </div>
 
       <hr>
       <div class="enter-txt">

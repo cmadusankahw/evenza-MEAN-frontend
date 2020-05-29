@@ -129,6 +129,8 @@ import { EventScheduleComponent } from './modules/event/event-schedule/event-sch
 import { EventParticipantsComponent } from './modules/event/event-participants/event-participants.component';
 import { PlannerProfileComponent } from './modules/eventplanner/planner-profile/planner-profile.component';
 import { RatingReviewComponent } from './modules/eventplanner/rating-review/rating-review.component';
+import { BookingNoteComponent } from './modules/eventplanner/booking-note/booking-note.component';
+import { InvoiceComponent } from './modules/eventplanner/invoice/invoice.component';
 
 
 
@@ -220,6 +222,8 @@ import { RatingReviewComponent } from './modules/eventplanner/rating-review/rati
     EventParticipantsComponent,
     PlannerProfileComponent,
     RatingReviewComponent,
+    BookingNoteComponent,
+    InvoiceComponent,
 
 
 

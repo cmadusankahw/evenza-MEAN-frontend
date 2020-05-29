@@ -54,6 +54,15 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
   // show product details
   success = false;
 
+  // start date (today date)
+  today = new Date().toISOString();
+
+  // selected category
+  selectedCategory = 'Recently Booked';
+
+  // pass to service car and service details comps
+  dates = {fromDate: this.today, toDate: this.today};
+  islogged = true; // must be updated with backend call
 
   // temp town suggessions for loction search FILTER-BUSINESS LOCATION
   towns = [

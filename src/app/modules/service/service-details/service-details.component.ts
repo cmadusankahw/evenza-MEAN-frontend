@@ -6,6 +6,9 @@ import { DatePipe } from '@angular/common';
 
 import { Service, ServiceCategories, ServiceRates } from '../service.model';
 import { ServiceService } from '../service.service';
+import { MatDialog } from '@angular/material';
+import { SuccessComponent } from 'src/app/success/success.component';
+import { EventPlannerService } from '../../eventplanner/eventplanner.service';
 
 @Component({
   selector: 'app-service-details',
@@ -24,11 +27,36 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   // service is editable by parent comp
   @Input() isowner = false;
 
+  // editablity
+  @Input() editable = true;
+
+  // is logged as event planner and booking dates recieved
+  @Input() islogged = true;
+  @Input() dates: {fromDate: any, toDate: any};
+
+  // book now mode
+  bookUser = false;
+
+  // make appointment
+  appoint = false;
+
   // edit mode by parent comp
   editmode = false;
 
-  // editablity
-  @Input() editable = true;
+  // service removed
+  removed = false;
+
+  // booking default times time
+  fromTime = {hour: 8, minute: 0};
+  toTime = {hour: 18, minute: 0};
+
+  // appointment default date and time
+  today = new Date();
+  appointment = {date: this.today, time: {hour: 8, minute: 0} };
+
+  // total amount
+  totalAmount = 0.0;
+  payAmount = 0.0;
 
 
   // images to upload
@@ -38,6 +66,13 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   image02Url: any = './assets/images/merchant/nopic.png';
   image03: File;
   image03Url: any = './assets/images/merchant/nopic.png';
+
+
+  // recieved categories
+  categories: ServiceCategories[] = [];
+
+  // recieved quantities
+  rates: ServiceRates[] = [];
 
   // recieved service (initial declaration)
   service: Service = {
@@ -62,70 +97,57 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
         image_03: null
   };
 
-  // service removed
-  removed = false;
-
-  // recieved categories
-  categories: ServiceCategories[] = [];
-
-  // recieved quantities
-  rates: ServiceRates[] = [];
-
-
 
   constructor(private router: Router,
               public serviceService: ServiceService,
-              public datepipe: DatePipe) { }
+              public eventPlannerService: EventPlannerService,
+              public datepipe: DatePipe,
+              public dialog: MatDialog) { }
 
   ngOnInit() {
-    // get the service
-    this.serviceService.getService();
-    this.serviceSub = this.serviceService.getServiceUpdateListener()
-      .subscribe((recievedService: Service) => {
-        if (recievedService) {
-          this.service = recievedService;
-          console.log(this.service);
-          this.removed = false;
-          this.editmode = false;
-        }
-  });
+      // get the service
+      this.serviceService.getService();
+      this.serviceSub = this.serviceService.getServiceUpdateListener()
+        .subscribe((recievedService: Service) => {
+          if (recievedService) {
+            this.service = recievedService;
+            console.log(this.service);
+            this.removed = false;
+            this.editmode = false;
+          }
+    });
 
-    if (this.editable === true) {
-  // import categories
-    this.serviceService.getCategories();
-    this.categorySub = this.serviceService.getCategoriesUpdateListener()
-      .subscribe((recievedData: ServiceCategories[]) => {
-      this.categories = recievedData;
-      console.log(this.categories);
-  });
+      if (this.editable === true) {
+    // import categories
+      this.serviceService.getCategories();
+      this.categorySub = this.serviceService.getCategoriesUpdateListener()
+        .subscribe((recievedData: ServiceCategories[]) => {
+        this.categories = recievedData;
+        console.log(this.categories);
+    });
 
 
-  // import quantity types
-    this.serviceService.getRates();
-    this.ratesSub = this.serviceService.getRatesUpdateListener()
-       .subscribe((recievedData: ServiceRates[]) => {
-       this.rates = recievedData;
-       console.log(this.rates);
-   });
+    // import quantity types
+      this.serviceService.getRates();
+      this.ratesSub = this.serviceService.getRatesUpdateListener()
+        .subscribe((recievedData: ServiceRates[]) => {
+        this.rates = recievedData;
+        console.log(this.rates);
+    });
+    }
   }
-  }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     if (this.serviceSub) {
       this.serviceSub.unsubscribe();
     }
-    if (this.categorySub){
+    if (this.categorySub) {
       this.categorySub.unsubscribe();
     }
     if (this.ratesSub) {
       this.ratesSub.unsubscribe();
     }
-    this.image01Url = './assets/images/merchant/nopic.png';
-    this.image02Url = './assets/images/merchant/nopic.png';
-    this.image03Url = './assets/images/merchant/nopic.png';
-    this.image01 = null;
-    this.image02 = null;
-    this.image03 = null;
+    this.clearImages();
     this.editmode = false;
     this.removed = false;
 
@@ -163,6 +185,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
       .subscribe((recievedService: Service) => {
         console.log(recievedService);
         this.service = recievedService;
+        this.clearImages();
       });
       console.log('Service updated successfully!');
       updateServiceForm.resetForm();
@@ -176,6 +199,15 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
     this.removed = true;
   }
 
+  // clear image cache
+  clearImages() {
+    this.image01Url = './assets/images/merchant/nopic.png';
+    this.image02Url = './assets/images/merchant/nopic.png';
+    this.image03Url = './assets/images/merchant/nopic.png';
+    this.image01 = null;
+    this.image02 = null;
+    this.image03 = null;
+  }
 
   // to be modified later (optional function)
   showBprofile() {
@@ -197,8 +229,8 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
     };
   }
 
-    // image 02 uploading
-    onImage02Uploaded(event: Event) {
+  // image 02 uploading
+  onImage02Uploaded(event: Event) {
       const file = (event.target as HTMLInputElement).files[0];
       const mimeType = file.type;
       if (mimeType.match(/image\/*/) == null) {
@@ -210,9 +242,9 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
         this.image02 = file;
         this.image02Url = reader.result;
       };
-    }
+  }
 
-      // image 03 uploading
+   // image 03 uploading
   onImage03Uploaded(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
     const mimeType = file.type;
@@ -227,11 +259,86 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
     };
   }
 
-
+  // set boolean value for service update
   booleanValue(value: any) {
     if (value ===  '' || value === null || value === undefined) {
       return false;
     } else {return value; }
+  }
+
+
+  // print a HTML component
+  printBill() {
+
+  }
+
+  // create a booking
+  createBooking(bookingForm: NgForm ) {
+
+  }
+
+  // create an appointment
+  createAppointment( appointForm: NgForm ) {
+
+  }
+
+
+  // check booking availability
+  checkAvailability(fromDate: string, toDate: string) {
+    // this.serviceService.checkAvailability(fromDate: string, toDate: string)
+    this.dialog.open(SuccessComponent,
+      {data: {message: 'Sorry! The Service not available on selected Dates'}});
+  }
+
+
+  // check appointment availability
+  checkAppointAvailability(appointDate: string) {
+      // this.serviceService.checkAppointAvailability(appointDate: string)
+      console.log(this.appointment.date , '   ' , this.appointment.time);
+      this.refactorAppointDates();
+      this.dialog.open(SuccessComponent,
+        {data: {message: 'Sorry! The Service not available on selected Date'}});
+  }
+
+
+  // refactor appointment dates
+  refactorAppointDates() {
+    this.appointment.date.setHours(this.appointment.time.hour, this.appointment.time.minute, 0);
+    const appointedDateString = this.appointment.date.toISOString();
+    console.log(appointedDateString);
+  }
+
+
+  // refactor booking dates
+  refactorDates() {
+    if (this.dates.fromDate instanceof Date) {
+      this.dates.fromDate = this.dates.fromDate.toISOString();
+    }
+    if (this.dates.toDate instanceof Date) {
+      this.dates.toDate = this.dates.toDate.toISOString();
+    }
+  }
+
+
+  // calculate payment for booking
+  calcPayment(rateType: string, rate: number): number {
+    console.log(this.dates.toDate , '  and  ', this.dates.fromDate);
+    const duration = Math.abs(this.fromTime.hour - this.toTime.hour);
+    this.refactorDates();
+    const td = Number(this.dates.toDate.slice(8, 10));
+    const fd = Number(this.dates.fromDate.slice(8, 10));
+    const noOfDays = td - fd + 1; // may require modification
+    console.log(duration);
+    console.log(noOfDays);
+    let newRate = rate;
+    if (rateType === '/Hr') {
+      newRate = rate * duration * noOfDays;
+    } else if (rateType === '/Day') {
+      newRate = rate * noOfDays;
+    }
+    this.totalAmount = newRate;
+    this.payAmount = newRate / 10;
+    return newRate;
   }
 
 }

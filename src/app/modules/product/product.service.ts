@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Product, ProductCategories, QuantityTypes, ProductQuery } from './product.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 import { MatDialog } from '@angular/material';
+import { DeliveryService } from '../seller/seller.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService  {
@@ -15,6 +16,7 @@ export class ProductService  {
   private productsUpdated = new Subject<Product[]>();
   private quantitiesUpdated = new Subject<QuantityTypes[]>();
   private categoriesUpdated = new Subject<ProductCategories[]>();
+  private deliveryServicesUpdated = new Subject<DeliveryService[]>();
 
   // to add products
   private products: Product[] = [];
@@ -31,6 +33,9 @@ export class ProductService  {
 
   // to generate quanitties list
   private categories: ProductCategories[] = [];
+
+  // to get delivery services list
+  private deliveryServices: DeliveryService[] = [];
 
   // api url (to be centralized)
   url = 'http://localhost:3000/api/';
@@ -86,6 +91,15 @@ export class ProductService  {
     });
   }
 
+   // get delivery services
+   getDeliveryServices() {
+    this.http.get<{ message: string, deliveryServices: DeliveryService[] }>(this.url + 'product/delivery')
+    .subscribe((deliveryServiceList) => {
+      this.deliveryServices = deliveryServiceList.deliveryServices;
+      this.deliveryServicesUpdated.next([...this.deliveryServices]);
+    });
+  }
+
 
 
 
@@ -96,6 +110,10 @@ export class ProductService  {
 
   getSellerProductUpdateListener() {
     return this.sellerProductsUpdated.asObservable();
+  }
+
+  getdeliveryServicesUpdateListener() {
+    return this.deliveryServicesUpdated.asObservable();
   }
 
 
@@ -126,17 +144,17 @@ export class ProductService  {
       }
     }
     console.log(productData);
-    this.http.post<{image_01: string, image_02: string, image_03: string}>(this.url + 'product/add/img', productData )
-      .subscribe ((recievedImages) => {
+    this.http.post<{imagePaths: string[]}>(this.url + 'product/add/img', productData )
+        .subscribe ((recievedImages) => {
         console.log(recievedImages);
-        if (recievedImages.image_01 !== null) {
-          product.image_01 = recievedImages.image_01;
+        if (recievedImages.imagePaths[0]) {
+          product.image_01 = recievedImages.imagePaths[0];
         }
-        if (recievedImages.image_02 !== null) {
-          product.image_02 = recievedImages.image_02;
+        if (recievedImages.imagePaths[1]) {
+          product.image_01 = recievedImages.imagePaths[1];
         }
-        if (recievedImages.image_03 !== null) {
-          product.image_03 = recievedImages.image_03;
+        if (recievedImages.imagePaths[2]) {
+          product.image_01 = recievedImages.imagePaths[2];
         }
         this.http.post<{ message: string, result: Product }>(this.url + 'product/add', product)
         .subscribe((recievedData) => {
@@ -151,24 +169,31 @@ export class ProductService  {
   // update product
   updateProduct(product: Product, images: File[]) {
     const productData = new FormData();
+    const currentImg = [];
+    let j = 0;
     for (const image of images) {
       if (image) {
         productData.append('images[]', image, image.name);
+        currentImg.push(j);
       }
+      j++;
     }
     console.log(productData);
-    this.http.post<{image_01: string, image_02: string, image_03: string}>(this.url + 'product/add/img', productData )
+    this.http.post<{imagePaths: string[]}>(this.url + 'product/add/img', productData )
       .subscribe ((recievedImages) => {
       console.log(recievedImages);
-      if (recievedImages.image_01 !== null) {
-        product.image_01 = recievedImages.image_01;
-      }
-      if (recievedImages.image_02 !== null) {
-        product.image_02 = recievedImages.image_02;
-      }
-      if (recievedImages.image_03!== null) {
-        product.image_03 = recievedImages.image_03;
-      }
+      recievedImages.imagePaths.find((img) => {
+        if ( currentImg.includes(2) ) {
+          product.image_03 = img;
+          currentImg.pop();
+        } else if ( currentImg.includes(1)) {
+            product.image_02 = img;
+            currentImg.pop();
+        } else if ( currentImg.includes(0)) {
+            product.image_01 = img;
+            currentImg.pop();
+        }
+      });
       this.http.post<{ message: string, result: Product }>(this.url + 'product/edit', product)
       .subscribe((recievedData) => {
         console.log(recievedData.message);

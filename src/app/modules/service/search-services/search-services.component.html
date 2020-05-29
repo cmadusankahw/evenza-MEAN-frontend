@@ -12,18 +12,7 @@
       <h4 style="padding-left:15px;">Filter Services..</h4>
       <hr>
 
-      <!--category-->
-      <div class="filter-content pd-top-filter">
-        <h6> <mdb-icon fas icon="bookmark"></mdb-icon> By Category</h6>
-          <mat-form-field class="cat-list">
-            <mat-label >Select Category</mat-label>
-            <select matNativeControl required ngModel name="category">
-             <option  [value]="cat.val" *ngFor="let cat of categories">
-                {{cat.val}}</option>
-            </select>
-          </mat-form-field>
-      </div>
-      <hr>
+
       <!--price-->
       <div class="filter-content pd-top-filter">
         <h6> <mdb-icon fas icon="money-bill"></mdb-icon> By Service Rates</h6>
@@ -145,14 +134,72 @@
                     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia">
                   </mat-form-field>
                 </div>
+                <br>
+
           </div>
         </div>
 
         <!--description-->
         <div class="description text-center container pd-top pd-side">
-          <p>Evenza provide you everything for your event. Find services among below categories. You may simply book a service or add a service to your
+          <p>Evenza provide you everything for your event. Please Select the <b>service category</b>, and the <b> period </b> you want to book. <br>
+            Yo can simply book a service or add a service to your
             <b><a routerLink="/ep/dash"> Event Plan</a></b>. Trusted & Top Rated services available islandwide!
           </p>
+          <div class="row container-fluid">
+            <div class="col-md-5">
+                <div class="filter-content search-box-mid shadow">
+                  <h5 class="top-heading"><b> I want to book.. </b></h5>
+                    <mat-form-field class="top-filter">
+                      <select matNativeControl required [(ngModel)]="selectedCategory" name="category" >
+                      <option  [value]="cat.val" *ngFor="let cat of categories">
+                          {{cat.val}}</option>
+                      </select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col">
+
+                <div class="filter-content search-box-mid shadow">
+                  <h5  class="top-heading"><b> From.. </b></h5>
+                  <mat-form-field class="top-filter">
+                    <input matInput
+                    [matDatepicker]="picker1"
+                    required
+                    name="from_date"
+                    #fromDate="ngModel"
+                    [(ngModel)]="dates.fromDate"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="picker1"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker1 [startAt]="dates.fromDate"></mat-datepicker>
+                    <mat-error *ngIf="fromDate.invalid">Please Select a Date</mat-error>
+                  </mat-form-field>
+                  </div>
+          </div>
+          <div class="col">
+
+            <div class="filter-content search-box-mid shadow">
+              <h5  class="top-heading"><b> To..</b></h5>
+              <mat-form-field class="top-filter">
+                <input matInput
+                [matDatepicker]="picker2"
+                required
+                name="to_date"
+                #toDate="ngModel"
+                [(ngModel)]="dates.toDate"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker2"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker2 [startAt]="dates.toDate"></mat-datepicker>
+                <mat-error *ngIf="toDate.invalid">Please Select a Date</mat-error>
+              </mat-form-field>
+              </div>
+          </div>
+          </div>
           <hr>
         </div>
 
@@ -161,7 +208,7 @@
         <div class="container product-cat shadow pd-top-min" >
           <div class="row container-fluid product-cat-h">
             <div class="col-md-6 text-md-left lead">
-                <h3 class="product-cat-heading">Recently Booked...</h3>
+                <h3 class="product-cat-heading">{{selectedCategory}}</h3>
             </div>
             <div class="col-md-6 text-md-right lead product-cat-h" >
                 <a class="btn btn-outline-secondary btn-sm prev" mdbBtn mdbWavesEffect><i class="fa fa-lg fa-chevron-left"></i></a>
@@ -170,7 +217,7 @@
          </div>
             <div class="row">
               <div class="col-md-12">
-                <app-service-card [isowner]="false"></app-service-card>
+                <app-service-card [isowner]="false" [dates]= "dates" [islogged] = "islogged"></app-service-card>
               </div>
             </div>
         </div>
@@ -255,7 +302,7 @@
 
       <div class="modal-body " style="height: 500px; overflow-y: auto;">
 
-        <app-service-details [editable]= "false" [isowner]="false"></app-service-details>
+        <app-service-details [editable]= "false" [isowner]="false" [dates]= "dates" [islogged] = "islogged"></app-service-details>
 
       </div>
 

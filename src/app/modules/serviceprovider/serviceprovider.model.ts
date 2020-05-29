@@ -22,13 +22,13 @@ export interface Booking {
   service_id: string; // fk
   user_id: string; // fk (created user)
   event_id: string; // fk
+  // serviceProvider_id: string;
   service_name: string; // retrived from service
   event_name: string; // retrived from event
   customer_name: string; // retrived from user
   customer_email: string; // retrived from user
   customer_contact: string; // retrived from user
   created_date: string;
-  created_time: string;
   state: string;
   review: string;
   from_date: string;
@@ -49,13 +49,13 @@ export interface Appointment {
   service_id: string; // fk
   user_id: string; // fk (created user)
   event_id: string; // fk
+  // servicProvider_id: string;
   service_name: string; // retrived from service
   event_name: string; // retrived from event
   customer_name: string; // retrived from user
   customer_email: string; // retrived from user
   customer_contact: string; // retrived from user
   created_date: string;
-  created_time: string;
   state: string;
   appointed_date: string;
   appointed_time: string;
@@ -133,27 +133,29 @@ export interface Merchant {
   date_of_birth: string;
   isverified: boolean;
   reg_date: string;
-  // business details
-  // business_created_date: string;
-  // business_title: string;
-  // description: string;
-  // business_email: string;
-  // business_contact_no: string;
-  // business_address_line1: string;
-  // business_address_line2: string;
-  // business_postal_code: string;
-  // business_location: string;
-  // business_isverified: boolean;
-  // br_side_a: string;
-  // br_side_b: string;
-  // open_days: [{ day: number, from_time: string, to_time: string; }];
-  // payment_verified: boolean;
-  // card_no: number;
-  // pin_no: number;
-  // bank: string;
-  // exp_date: string;
-  // feature_img: string;
-  // logo: string;
+  // business: {
+     // business details
+    // business_created_date: string;
+    // business_title: string;
+    // description: string;
+    // business_email: string;
+    // business_contact_no: string;
+    // business_address_line1: string;
+    // business_address_line2: string;
+    // business_postal_code: string;
+    // business_location: string;
+    // business_isverified: boolean;
+    // br_side_a: string;
+    // br_side_b: string;
+    // open_days: [{ day: number, from_time: string, to_time: string; }];
+    // payment_verified: boolean;
+    // card_no: number;
+    // pin_no: number;
+    // bank: string;
+    // exp_date: string;
+    // feature_img: string;
+    // logo: string;
+    // }
 }
 
 // to be removed once merchant is configured

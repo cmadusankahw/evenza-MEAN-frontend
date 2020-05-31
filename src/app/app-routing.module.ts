@@ -47,7 +47,8 @@ const routes: Routes = [
   { path: 'services', component: SearchServicesComponent },
   { path: 'products', component: SearchProductsComponent },
   { path: 'print/booking/:id', component: BookingNoteComponent },
-  { path: 'print/invoice/:id', component: InvoiceComponent },
+  { path: 'print/appoint/:id', component: BookingNoteComponent },
+  { path: 'print/order/:id', component: InvoiceComponent },
   {
     path: 'sp/dash',
     component: DashboardComponent,

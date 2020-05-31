@@ -41,27 +41,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   image03Url: any = './assets/images/merchant/nopic.png';
 
   // recieved product
-  product: Product = {
-        product_id: null,
-        business_name:  null,
-        product: null,
-        product_category: null,
-        qty_type: null,
-        description: null,
-        created_date: null,
-        created_time: null,
-        availability: null,
-        inventory: null,
-        rating: null,
-        no_of_ratings: null,
-        no_of_orders: null,
-        delivery_service: null,
-        price:  null,
-        pay_on_delivery:  null,
-        image_01:  null,
-        image_02:  null,
-        image_03: null
-  };
+  product: Product;
 
   // product removed
   removed = false;

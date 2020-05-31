@@ -1,23 +1,23 @@
-<div class="container-fluid" *ngIf="!editmode && !removed && !bookUser">
+<div class="container-fluid" *ngIf="!editmode && !removed && !bookUser && service">
 
   <div class="row f-image">
 
     <mdb-carousel class="carousel slide carousel-fade" [animation]="'fade'">
       <mdb-carousel-item>
-        <div class="view w-100" *ngIf="service.image_01">
-          <img class="d-block w-100" [src]="service.image_01" alt="Feature Image 2" class="feature-img">
+        <div class="view w-100" >
+          <img class="d-block w-100" [src]="service.image_01 ? service.image_01 : './assets/images/merchant/nopic.png'" alt="Feature Image 2" class="feature-img">
           <div class="mask rgba-black-strong waves-light" mdbWavesEffect></div>
         </div>
       </mdb-carousel-item>
       <mdb-carousel-item>
-        <div class="view w-100" *ngIf="service.image_02">
-          <img class="d-block w-100" [src]="service.image_02" alt="Feature Image 3" class="feature-img">
+        <div class="view w-100" >
+          <img class="d-block w-100" [src]="service.image_02 ? service.image_02 : './assets/images/merchant/nopic.png'" alt="Feature Image 3" class="feature-img">
           <div class="mask rgba-black-slight waves-light" mdbWavesEffect></div>
         </div>
       </mdb-carousel-item>
       <mdb-carousel-item>
-        <div class="view w-100" *ngIf="service.image_03">
-          <img class="d-block w-100" [src]="service.image_03" alt="Feature Image 4" class="feature-img">
+        <div class="view w-100" >
+          <img class="d-block w-100" [src]="service.image_03 ? service.image_03 : './assets/images/merchant/nopic.png'" alt="Feature Image 4" class="feature-img">
           <div class="mask rgba-black-slight waves-light" mdbWavesEffect></div>
         </div>
       </mdb-carousel-item>
@@ -55,7 +55,7 @@
       <!--if only shown to users-->
       <div class="col-md-5 edit-cls" *ngIf="!isowner">
         <a mdbBtn color="secondary" outline="yes" class="btn btn-lg book-btn" mdbWavesEffect [disabled] = "!service.available_booking"
-        (click) = "bookUser = !bookUser" (click)="calcPayment(service.rate_type, service.rate)">Book Now</a>
+        (click) = "bookUser = !bookUser" >Book Now</a>
       </div>
 
     </div>
@@ -334,9 +334,9 @@
 
 
                     <div class="col-md-2 pd-top-min">
-                      <button class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary" (click) = "checkAppointAvailability(appointment.date)">
+                      <a class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary" (click) = "checkAppointAvailability(appointment.date)">
                         Check Availability
-                      </button>
+                      </a>
                     </div>
                 </div>
 
@@ -350,7 +350,7 @@
                 <hr>
                     <div class="btns">
                       <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
-                       type="submit" (click)="bookUser = !bookUser && appoint = false"> Request Appointment</button>
+                       type="submit" > Request Appointment</button>
                     <button mdbBtn color="secondary" class="btn btn-md edtbt" outline="yes" mdbWavesEffect
                     (click)="bookUser = !bookUser && appoint = false && appointForm.resetForm()"  type="button">Cancel</button>
                     </div>
@@ -432,7 +432,7 @@
                       <mat-form-field class="service-full-width">
                         <mat-label> From Date : </mat-label>
                         <input matInput [matDatepicker]="picker1" required
-                        name="from_date" [(ngModel)]="dates.fromDate" #fDate="ngModel" (change) = "checkAvailability(dates.fromDate, dates.toDate)"/>
+                        name="from_date" [(ngModel)]="dates.fromDate" #fDate="ngModel" (dateChange)="calcPayment(service.rate_type, service.rate)"/>
                         <mat-datepicker-toggle
                           matSuffix
                           [for]="picker1"
@@ -446,7 +446,7 @@
                       <mat-form-field class="service-full-width">
                         <mat-label> To Date : </mat-label>
                         <input matInput [matDatepicker]="picker2" required
-                        name="to_date" [(ngModel)]="dates.toDate" #tDate="ngModel" (change) = "checkAvailability(dates.fromDate, dates.toDate)"/>
+                        name="to_date" [(ngModel)]="dates.toDate" #tDate="ngModel" (dateChange)="calcPayment(service.rate_type, service.rate)"/>
                         <mat-datepicker-toggle
                           matSuffix
                           [for]="picker2"
@@ -457,9 +457,9 @@
                     </div>
 
                     <div class="col-md-2">
-                      <button class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary" (click) = "checkAvailability(dates.fromDate, dates.toDate)">
+                      <a class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary" (click) = "checkAvailability(dates.fromDate, dates.toDate)">
                         Check Availability
-                      </button>
+                      </a>
                     </div>
                 </div>
 
@@ -507,9 +507,9 @@
                         <mdb-icon fas icon="list"> </mdb-icon> Card: {{' ...XXXX-XXXX-4419'}} <!--to be modified-->
                       </div>
                       <div class="col-md-5">
-                        <button class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary" (click)="cardDetails.show()">
+                        <a class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary" (click)="cardDetails.show()">
                           Card Details
-                        </button>
+                        </a>
                       </div>
                     </div>
 
@@ -520,8 +520,8 @@
                       <div *ngIf="!service.pay_on_meet">
                       <mat-form-field class="service-full-width" *>
                         <mat-label>Amount (Rs.): </mat-label>
-                        <input matInput disabled  type="number"
-                        [ngModel]="totalAmount" name="amount_paid" >
+                        <input matInput disabled  type="number" min="totalAmount" max="totalAmount"
+                        [ngModel]="payAmount" name="amount_paid" >
                       </mat-form-field>
                     </div>
 
@@ -574,10 +574,10 @@
                     <hr>
 
                     <div class="btns">
-                      <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
-                       type="submit" (click)="bookUser = !bookUser && appoint = false"> Make Payment</button>
+                      <button mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect
+                       type="submit" > Make Payment</button>
                     <button mdbBtn color="secondary" class="btn btn-md edtbt" outline="yes" mdbWavesEffect
-                    (click)="bookUser = !bookUser && appoint = false && bookingForm.resetForm()"  type="button">Cancel</button>
+                    (click)="bookUser = !bookUser && appoint = false && bookingForm.resetForm()" >Cancel</button>
                     </div>
                   </div>
 

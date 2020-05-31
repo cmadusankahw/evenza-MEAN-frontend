@@ -1,5 +1,7 @@
 //model imports
 const Service = require("../../model/service/service.model");
+const Booking = require("../../model/service/booking.model");
+const Appointment = require("../../model/service/appointment.model");
 const ServiceCategories = require("../../model/service/categories.model");
 const ServiceRates = require("../../model/service/rates.model");
 const checkAuth = require("../../middleware/auth-check");
@@ -173,6 +175,123 @@ service.post('/search', (req, res, next) => {
       });
     });
 });
+
+
+
+//add new booking
+service.post('/booking/add',checkAuth, (req, res, next) => {
+  var lastid;
+
+  // generate id
+  Booking.find(function (err, bookings) {
+    if(bookings.length){
+      lastid = bookings[bookings.length-1].booking_id;
+    } else {
+      lastid= 'B0';
+    }
+    let mId = +(lastid.slice(1));
+    ++mId;
+    lastid = 'B' + mId.toString();
+    console.log(lastid);
+    if (err) return handleError(err => {
+      console.log(err);
+      res.status(500).json({
+        message: 'Error occured while generating booking Id! Please Retry!'
+      });
+    });
+  }).then( () => {
+    // get service provider id and incrementing no_of_bookings
+    Service.findOneAndUpdate({'service_id': req.body.service_id},{$inc : {'no_of_bookings':1} },function (err, recievedService) {
+      console.log(recievedService);
+      if (err) return handleError(err => {
+        console.log(err);
+        res.status(500).json({
+          message: 'Error occured while creating Booking! Please Retry!'
+        });
+      });
+  }).then( (recievedService) => {
+    // save created booking
+    let reqBooking = req.body;
+    reqBooking['booking_id']= lastid;
+    reqBooking['serviceProvider_id'] = recievedService.user_id;
+    reqBooking['user_id']= req.userData.user_id;
+    const newBooking = new Booking(reqBooking);
+    console.log(newBooking);
+    newBooking.save().then(result => {
+        res.status(200).json({
+          message: 'Booking created successfully!',
+          bookingId: result.booking_id // booking id as result
+        });
+      })
+      .catch(err=>{
+        console.log(err);
+        res.status(500).json({
+          message: 'Error occured while creating Booking! Please Retry!'
+        });
+      });
+    }); // then 3
+ });
+});
+
+
+
+ //add new appointment
+ service.post('/appoint/add',checkAuth, (req, res, next) => {
+  var lastid;
+
+  // generate id
+  Appointment.find(function (err, appoints) {
+    if(appoints.length){
+      lastid = appoints[appoints.length-1].appoint_id;
+    } else {
+      lastid= 'A0';
+    }
+    let mId = +(lastid.slice(1));
+    ++mId;
+    lastid = 'A' + mId.toString();
+    console.log(lastid);
+    if (err) return handleError(err => {
+      console.log(err);
+      res.status(500).json({
+        message: 'Error occured while generating appointment Id! Please Retry!'
+      });
+    });
+  }).then( () => {
+    // get service provider id
+    Service.findOneAndUpdate({'service_id': req.body.service_id},{$inc : {'no_of_appoints': 1}},function (err, recievedService) {
+      console.log(recievedService);
+      if (err) return handleError(err => {
+        console.log(err);
+        res.status(500).json({
+          message: 'Error occured while creating Appointment! Please Retry!'
+        });
+      });
+  }).then( (recievedService) => {
+    // save created appointment
+    let reqAppoint = req.body;
+    reqAppoint['appoint_id']= lastid;
+    reqAppoint['user_id']= req.userData.user_id;
+    reqAppoint['serviceProvider_id'] = recievedService.user_id;
+    const newAppoint = new Appointment(reqAppoint);
+    console.log(newAppoint);
+    newAppoint.save()
+    .then(result => {
+        res.status(200).json({
+          message: 'Appointment created successfully!',
+          appointId: result.appoint_id // appointment id as result
+        });
+      })
+      .catch(err=>{
+        console.log(err);
+        res.status(500).json({
+          message: 'Error occured while creating Appointment! Please Retry!'
+        });
+      });
+    });
+  });
+ });
+
+
 
 // get methods
 

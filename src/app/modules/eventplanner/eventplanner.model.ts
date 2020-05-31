@@ -16,9 +16,7 @@ export interface EventPlanner {
 export interface Order {
   order_id: string;
   product_id: string; // fk
-  user_id: string; // fk (created user)
   product: string; // retrived from product
-  delivery_service: string; // retrived from product
   qty_type: string; // retrived from product
   delivery_address: string;
   created_date: string;
@@ -27,15 +25,17 @@ export interface Order {
   review: string;
   quantity: number;
   comment: string;
-  payment_type: string;
   amount: number;
   commission_due: number;
   amount_paid: number;
+  seller_id: string;
+  delivery_service: DeliveryService; // retrived from product.delivery_service
 }
 
 export interface DeliveryService {
   delivery_service: string;
   title: string;
+  email: string;
   address: string;
   hotline: string;
   delivery_rate: number;
@@ -57,39 +57,41 @@ export interface ServiceCategories {
 export interface Booking {
   booking_id: string;
   service_id: string; // fk
-  user_id: string; // fk (created user)
   event_id: string; // fk
-  // serviceProvider_id: string; // fk
   service_name: string; // retrived from service
   event_name: string; // retrived from event
+  business_name: string; // retrived from service
+  rate_type: string; // retrived from service
   created_date: string;
   state: string;
   review: string;
   from_date: string;
   to_date: string;
   duration: number;
-  from_time: string;
-  to_time: string;
+  from_time: {hour: number, minute: number, second: number};
+  to_time: {hour: number, minute: number, second: number};
   comment: string;
-  payment_type: string;
   amount: number;
   commission_due: number;
   amount_paid: number;
+  serviceProvider_id: string;
+  user_id: string;
 }
 
 export interface Appointment {
   appoint_id: string;
   service_id: string; // fk
-  user_id: string; // fk (created user)
   event_id: string; // fk
-  // serviceProvider_id: string; // fk
   service_name: string; // retrived from service
   event_name: string; // retrived from event
+  business_name: string; // retrived from service
   created_date: string;
   state: string;
   appointed_date: string;
-  appointed_time: string;
+  appointed_time: {hour: number, minute: number, second: number};
   comment: string;
+  serviceProvider_id: string;
+  user_id: string;
 }
 
 export interface Alert {

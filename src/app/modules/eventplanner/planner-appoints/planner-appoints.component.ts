@@ -19,49 +19,7 @@ export class PlannerAppointsComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   // Create sample bookings
-  appointments: Appointment[] = [
-    {
-      appoint_id: 'A1',
-      service_id: 'S1',
-      user_id: 'U1',
-      event_id: 'E1',
-      service_name: 'Photography',
-      event_name: 'hackX 2019',
-      created_date: '22/03/2020',
-      state: 'pending',
-      appointed_date: '30/03/2020',
-      appointed_time: '08:00',
-      comment: 'please be on time',
-    },
-    {
-      appoint_id: 'A2',
-      service_id: 'S2',
-      user_id: 'U1',
-      event_id: 'E2',
-      service_name: 'Photography',
-      event_name: 'hackX 2019',
-      created_date: '22/03/2020',
-      state: 'cancelled',
-      appointed_date: '30/03/2020',
-      appointed_time: '08:00',
-      comment: 'please be on time',
-    },
-    {
-      appoint_id: 'A3',
-      service_id: 'S3',
-      user_id: 'U1',
-      event_id: 'E3',
-      service_name: 'Photography',
-      event_name: 'hackX 2019',
-      created_date: '22/03/2020',
-      state: 'confirmed',
-      appointed_date: '30/03/2020',
-      appointed_time: '08:00',
-      comment: 'please be on time',
-    },
-
-  ];
-
+  appointments: Appointment[] ;
 
   // booking-states
   @Input() appointmentType = 'pending';

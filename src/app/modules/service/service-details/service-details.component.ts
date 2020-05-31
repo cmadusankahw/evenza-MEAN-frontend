@@ -4,11 +4,11 @@ import { Subscription } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
-import { Service, ServiceCategories, ServiceRates } from '../service.model';
+import { Service, ServiceCategories, ServiceRates, Booking, Appointment } from '../service.model';
 import { ServiceService } from '../service.service';
 import { MatDialog } from '@angular/material';
 import { SuccessComponent } from 'src/app/success/success.component';
-import { EventPlannerService } from '../../eventplanner/eventplanner.service';
+
 
 @Component({
   selector: 'app-service-details',
@@ -47,12 +47,13 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   removed = false;
 
   // booking default times time
-  fromTime = {hour: 8, minute: 0};
-  toTime = {hour: 18, minute: 0};
+  fromTime = {hour: 8, minute: 0, second: 0};
+  toTime = {hour: 18, minute: 0, second: 0};
+  duration = 0;
 
   // appointment default date and time
   today = new Date();
-  appointment = {date: this.today, time: {hour: 8, minute: 0} };
+  appointment = {date: this.today, time: {hour: 8, minute: 0, second: 0} };
 
   // total amount
   totalAmount = 0.0;
@@ -75,32 +76,11 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   rates: ServiceRates[] = [];
 
   // recieved service (initial declaration)
-  service: Service = {
-        service_id: null,
-        service_name: null,
-        business_name: null,
-        description: null,
-        service_category: null,
-        available_booking: null,
-        available_appoints: null,
-        rating: null,
-        no_of_ratings: null,
-        no_of_bookings: null,
-        no_of_appoints: null,
-        created_date: null,
-        created_time: null,
-        rate: null,
-        rate_type: null,
-        pay_on_meet: null,
-        image_01: null,
-        image_02: null,
-        image_03: null
-  };
+  service: Service ;
 
 
   constructor(private router: Router,
               public serviceService: ServiceService,
-              public eventPlannerService: EventPlannerService,
               public datepipe: DatePipe,
               public dialog: MatDialog) { }
 
@@ -114,6 +94,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
             console.log(this.service);
             this.removed = false;
             this.editmode = false;
+            this.calcPayment(this.service.rate_type, this.service.rate);
           }
     });
 
@@ -266,20 +247,56 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
     } else {return value; }
   }
 
-
-  // print a HTML component
-  printBill() {
-
-  }
-
   // create a booking
   createBooking(bookingForm: NgForm ) {
-
+    console.log('reached'); // test only
+    if (bookingForm.invalid) {
+      console.log('Form Invalid');
+    } else {
+      this.calcPayment(this.service.rate_type, this.service.rate);
+      const booking: Booking = {
+        booking_id: 'B0',
+        service_id: this.service.service_id,
+        event_id: 'Not Assigned',
+        created_date: this.today.toISOString(),
+        state: 'pending',
+        review: 'not reviewed yet',
+        from_date: this.dates.fromDate,
+        to_date: this.dates.toDate,
+        duration: this.duration,
+        from_time: this.fromTime,
+        to_time: this.toTime,
+        comment: bookingForm.value.comment,
+        amount: this.totalAmount,
+        commission_due: this.totalAmount / 10,
+        amount_paid: bookingForm.value.amount_paid
+        };
+      this.serviceService.createBooking(booking);
+      // bookingForm.resetForm();
+      this.bookUser = !this.bookUser;
+      this.appoint = false;
+    }
   }
 
   // create an appointment
   createAppointment( appointForm: NgForm ) {
-
+    if (appointForm.invalid) {
+      console.log('Form Invalid');
+    } else {
+      const appointment: Appointment = {
+        appoint_id: 'A0',
+        service_id: this.service.service_id,
+        event_id: 'Not Assigned',
+        created_date: this.today.toISOString(),
+        state: 'pending',
+        appointed_date: this.appointment.date.toISOString(),
+        appointed_time: this.appointment.time,
+        comment: appointForm.value.comment,
+        };
+      this.serviceService.createAppointment(appointment);
+      // appointForm.resetForm();
+      this.appoint = false;
+    }
   }
 
 
@@ -295,18 +312,10 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   checkAppointAvailability(appointDate: string) {
       // this.serviceService.checkAppointAvailability(appointDate: string)
       console.log(this.appointment.date , '   ' , this.appointment.time);
-      this.refactorAppointDates();
       this.dialog.open(SuccessComponent,
         {data: {message: 'Sorry! The Service not available on selected Date'}});
   }
 
-
-  // refactor appointment dates
-  refactorAppointDates() {
-    this.appointment.date.setHours(this.appointment.time.hour, this.appointment.time.minute, 0);
-    const appointedDateString = this.appointment.date.toISOString();
-    console.log(appointedDateString);
-  }
 
 
   // refactor booking dates
@@ -323,18 +332,22 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   // calculate payment for booking
   calcPayment(rateType: string, rate: number): number {
     console.log(this.dates.toDate , '  and  ', this.dates.fromDate);
-    const duration = Math.abs(this.fromTime.hour - this.toTime.hour);
     this.refactorDates();
-    const td = Number(this.dates.toDate.slice(8, 10));
-    const fd = Number(this.dates.fromDate.slice(8, 10));
-    const noOfDays = td - fd + 1; // may require modification
-    console.log(duration);
-    console.log(noOfDays);
+    const date1 = new Date(this.dates.fromDate);
+    const date2 = new Date(this.dates.toDate);
+    const diffDays  = Math.floor((Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate()) -
+                      Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate()) ) / (1000 * 60 * 60 * 24)) + 1;
+    console.log(this.duration);
+    console.log(diffDays);
     let newRate = rate;
     if (rateType === '/Hr') {
-      newRate = rate * duration * noOfDays;
-    } else if (rateType === '/Day') {
-      newRate = rate * noOfDays;
+      this.duration = Math.abs(this.fromTime.hour - this.toTime.hour) * diffDays;
+      newRate = rate * this.duration;
+    }  else if (rateType === '/Day') {
+      newRate = rate * diffDays;
+      this.duration = diffDays;
+    } else  {
+      this.duration = diffDays;
     }
     this.totalAmount = newRate;
     this.payAmount = newRate / 10;

@@ -38,3 +38,33 @@ export interface ServiceQuery {
   payOnMeet: boolean;
   userRating: number;
 }
+
+
+export interface Booking {
+  booking_id: string;
+  service_id: string; // fk
+  event_id: string; // fk
+  created_date: string;
+  state: string;
+  review: string;
+  from_date: string;
+  to_date: string;
+  duration: number;
+  from_time: {hour: number, minute: number, second: number};
+  to_time: {hour: number, minute: number, second: number};
+  comment: string;
+  amount: number;
+  commission_due: number;
+  amount_paid: number;
+}
+
+export interface Appointment {
+  appoint_id: string;
+  service_id: string; // fk
+  event_id: string; // fk
+  created_date: string;
+  state: string;
+  appointed_date: string;
+  appointed_time: {hour: number, minute: number, second: number};
+  comment: string;
+}

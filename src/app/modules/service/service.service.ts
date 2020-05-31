@@ -3,8 +3,9 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 
-import { Service, ServiceCategories, ServiceRates, ServiceQuery } from './service.model';
+import { Service, ServiceCategories, ServiceRates, ServiceQuery, Booking, Appointment } from './service.model';
 import { SuccessComponent } from 'src/app/success/success.component';
+import { Router } from '@angular/router';
 
 
 @Injectable({ providedIn: 'root' })
@@ -42,7 +43,8 @@ export class ServiceService  {
 
 
   constructor(private http: HttpClient,
-              public dialog: MatDialog) { }
+              public dialog: MatDialog,
+              private router: Router) { }
 
 
   // get methods
@@ -220,5 +222,27 @@ export class ServiceService  {
       console.log(serviceList.message);
     });
   }
+
+
+    // create new booking
+    createBooking(booking: Booking) {
+          this.http.post<{ message: string, bookingId: string }>(this.url + 'service/booking/add', booking)
+          .subscribe((recievedData) => {
+            console.log(recievedData.message);
+            this.router.navigate(['/print/booking/' + recievedData.bookingId]);
+            this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
+        });
+    }
+
+    // create new appointment
+    createAppointment(appointment: Appointment) {
+      this.http.post<{ message: string, appointId: string }>(this.url + 'service/appoint/add', appointment)
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.router.navigate(['/print/appoint/' + recievedData.appointId]);
+        this.dialog.open(SuccessComponent, {data: {message: 'Appointment Successfull! Your Appointment Id: ' + recievedData.appointId}});
+    });
+    }
+
 
 }

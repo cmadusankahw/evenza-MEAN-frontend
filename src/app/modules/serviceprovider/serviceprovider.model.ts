@@ -20,9 +20,7 @@ export interface BusinessVerify {
 export interface Booking {
   booking_id: string;
   service_id: string; // fk
-  user_id: string; // fk (created user)
   event_id: string; // fk
-  // serviceProvider_id: string;
   service_name: string; // retrived from service
   event_name: string; // retrived from event
   customer_name: string; // retrived from user
@@ -37,10 +35,10 @@ export interface Booking {
   from_time: string;
   to_time: string;
   comment: string;
-  payment_type: string;
   amount: number;
   commission_due: number;
   amount_paid: number;
+  user_id: string; // fk (created user)
 }
 
 

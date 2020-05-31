@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 
-import { Booking, Appointment, Order } from '../eventplanner/eventplanner.model';
+import { Booking, Appointment } from '../eventplanner/eventplanner.model';
+import { Order } from '../product/product.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 
 
@@ -43,26 +44,6 @@ export class EventPlannerService {
     constructor(private router: Router,
                 public dialog: MatDialog,
                 private http: HttpClient) {}
-
-    // create new booking
-    createBooking(booking: Booking) {
-          this.http.post<{ message: string, bookingId: string }>(this.url + 'planner/booking/add', booking)
-          .subscribe((recievedData) => {
-            console.log(recievedData.message);
-            this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
-        });
-    }
-
-    // create new appointment
-    createAppointment(appointment: Appointment) {
-
-    }
-
-    // create new order
-    createOrder() {
-
-    }
-
 
 
     // change booking stste
@@ -154,9 +135,6 @@ export class EventPlannerService {
         this.orderUpdated.next(this.order);
       });
     }
-
-
-
 
     // listners for subjects
     getBookingsUpdateListener() {

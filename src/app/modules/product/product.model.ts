@@ -45,3 +45,19 @@ export interface ProductQuery {
   payOnDelivery: boolean;
   userRating: number;
 }
+
+
+export interface Order {
+  order_id: string;
+  product_id: string; // fk
+  delivery_address: string;
+  created_date: string;
+  created_time: string;
+  state: string;
+  review: string;
+  quantity: number;
+  comment: string;
+  amount: number;
+  commission_due: number;
+  amount_paid: number;
+}

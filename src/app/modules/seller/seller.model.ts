@@ -92,7 +92,6 @@ export interface ProductCategories {
 export interface Order {
   order_id: string;
   product_id: string; // fk
-  user_id: string; // fk (created user)
   product: string; // retrived from product
   delivery_service: string; // retrived from product
   qty_type: string; // retrived from product
@@ -104,10 +103,10 @@ export interface Order {
   review: string;
   quantity: number;
   comment: string;
-  payment_type: string;
   amount: number;
   commission_due: number;
   amount_paid: number;
+  user_id: string; // fk (created user)
 }
 
 

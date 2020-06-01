@@ -44,6 +44,11 @@ export interface Booking {
   booking_id: string;
   service_id: string; // fk
   event_id: string; // fk
+  service_name: string; // retrived from service
+  event_name: string; // retrived from event
+  business_name: string;
+  rate_type: string;
+  // customer_name: string; // retrived from user
   created_date: string;
   state: string;
   review: string;
@@ -56,15 +61,23 @@ export interface Booking {
   amount: number;
   commission_due: number;
   amount_paid: number;
+  // serviceProvider_id
+  // user_id
 }
 
 export interface Appointment {
   appoint_id: string;
   service_id: string; // fk
   event_id: string; // fk
+  service_name: string; // retrived from service
+  event_name: string; // retrived from event
+  business_name: string;
+  // customer_name: string; // retrived from user
   created_date: string;
   state: string;
   appointed_date: string;
   appointed_time: {hour: number, minute: number, second: number};
   comment: string;
+  // serviceProvider_id
+  // user_id
 }

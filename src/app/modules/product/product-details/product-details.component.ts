@@ -4,9 +4,9 @@ import { Subscription } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
-import { Product, ProductCategories, QuantityTypes } from '../product.model';
-import { DeliveryService } from '../../seller/seller.model';
+import { Product, ProductCategories, QuantityTypes, Order, DeliveryService } from '../product.model';
 import { ProductService } from '../product.service';
+import { MatDialog } from '@angular/material';
 
 
 @Component({
@@ -19,18 +19,28 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   // subscription
   private productSub: Subscription ;
   private categorySub: Subscription ;
-  private quantitySub: Subscription ;
   private deliveryServiceSub: Subscription;
+
+  // created date
+  private today = new Date();
 
   // service is editable by parent comp
   @Input() isowner = false;
 
-  // edit mode by parent comp
-  editmode = false;
-
   // editablity
   @Input() editable = true;
 
+  // recived values
+  @Input() islogged: boolean;
+
+  // edit mode by parent comp
+  editmode = false;
+
+  // product removed
+  removed = false;
+
+  // order enabled
+  orderUser = false;
 
   // images to upload
   image01: File;
@@ -43,9 +53,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   // recieved product
   product: Product;
 
-  // product removed
-  removed = false;
-
   // recieved categories
   categories: ProductCategories[] = [];
 
@@ -55,10 +62,14 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   // delivery services
   deliveryServices: DeliveryService[] = [];
 
+  // total amount
+  totalAmount = 0.0;
+  payAmount = 0.0;
 
 
   constructor(private router: Router,
               public productService: ProductService,
+              public dialog: MatDialog,
               public datepipe: DatePipe) { }
 
   ngOnInit() {
@@ -85,12 +96,8 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
 
     // import quantity types
-      this.productService.getQuantities();
-      this.quantitySub = this.productService.getQuantitiesUpdateListener()
-         .subscribe((recievedData: QuantityTypes[]) => {
-         this.quantities = recievedData;
-         console.log(this.quantities);
-     });
+      this.quantities = this.productService.getQuantities();
+
 
       // import delivery services
       this.productService.getDeliveryServices();
@@ -109,15 +116,41 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     if (this.categorySub) {
       this.categorySub.unsubscribe();
     }
-    if (this.quantitySub) {
-      this.quantitySub.unsubscribe();
-    }
+
     if (this.deliveryServiceSub) {
       this.deliveryServiceSub.unsubscribe();
     }
     this.clearImages();
     this.editmode = false;
     this.removed = false;
+  }
+
+  // create an order
+  createOrder(orderForm: NgForm ) {
+    if (orderForm.invalid) {
+      console.log('Form Invalid');
+    } else {
+      const order: Order = {
+        order_id: 'OR0',
+        product_id: this.product.product_id,
+        product: this.product.product,
+        qty_type: this.product.qty_type,
+        business_name: this.product.business_name,
+        delivery_address: orderForm.value.delivery_address,
+        created_date: this.today.toISOString(),
+        state: 'pending',
+        review: 'not reviewed yet',
+        quantity: orderForm.value.quantity,
+        comment: orderForm.value.comment,
+        amount: this.totalAmount,
+        commission_due: this.totalAmount / 10,
+        amount_paid: orderForm.value.amount_paid,
+        delivery_service: this.getDeliveryService(this.product.delivery_service)
+        };
+      this.productService.createOrder(order);
+      orderForm.resetForm();
+      this.orderUser = !this.orderUser;
+    }
   }
 
 
@@ -165,6 +198,14 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.productService.removeProduct(productId);
     this.removed = true;
   }
+
+
+  // calculate payment for product
+  calcPayment(price: number, quantity: number) {
+    this.totalAmount = price * quantity;
+    this.payAmount = this.totalAmount / 10;
+  }
+
 
   // clear image cache
   clearImages() {
@@ -227,17 +268,19 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     };
   }
 
+  // convert to boolean value
   booleanValue(value: any) {
     if (value ===  '' || value === null || value === undefined) {
       return false;
     } else {return value; }
   }
 
-  showDeliveryService(delService: string): string {
-    let delS = ' Not Assigned';
+  // get delivery service name from it's id
+  getDeliveryService(delService: string): DeliveryService {
+    let delS: DeliveryService;
     this.deliveryServices.find((del) => {
       if (del.delivery_service === delService) {
-        delS = del.title;
+        delS = del;
       }
     });
     return delS;

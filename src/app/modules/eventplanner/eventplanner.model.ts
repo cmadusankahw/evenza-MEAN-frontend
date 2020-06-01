@@ -1,3 +1,5 @@
+import { DeliveryService } from '../product/product.model';
+
 export interface EventPlanner {
   user_id: string;
   first_name: string;
@@ -17,10 +19,10 @@ export interface Order {
   order_id: string;
   product_id: string; // fk
   product: string; // retrived from product
-  qty_type: string; // retrived from product
+  qty_type: string; // retrived from produc
+  business_name: string; // retrived from product
   delivery_address: string;
   created_date: string;
-  created_time: string;
   state: string;
   review: string;
   quantity: number;
@@ -30,17 +32,6 @@ export interface Order {
   amount_paid: number;
   seller_id: string;
   delivery_service: DeliveryService; // retrived from product.delivery_service
-}
-
-export interface DeliveryService {
-  delivery_service: string;
-  title: string;
-  email: string;
-  address: string;
-  hotline: string;
-  delivery_rate: number;
-  min_delivery_time: number;
-  max_delivery_time: number;
 }
 
 
@@ -75,7 +66,6 @@ export interface Booking {
   commission_due: number;
   amount_paid: number;
   serviceProvider_id: string;
-  user_id: string;
 }
 
 export interface Appointment {
@@ -91,7 +81,6 @@ export interface Appointment {
   appointed_time: {hour: number, minute: number, second: number};
   comment: string;
   serviceProvider_id: string;
-  user_id: string;
 }
 
 export interface Alert {
@@ -100,4 +89,10 @@ export interface Alert {
   message: string;
   date: string;
   state: string;
+}
+
+export interface Email {
+  email: string;
+  subject: string;
+  html: string;
 }

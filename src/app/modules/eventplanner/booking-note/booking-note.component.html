@@ -85,7 +85,6 @@
 </div>
 
   <!--appointment-->
-   <!--booking-->
    <div *ngIf="appointment">
     <div class="header-cls text-center pd-top">
         <h3><b> Appointment Note - Appointment ID: {{ appointment.appoint_id }} </b></h3>
@@ -156,11 +155,23 @@
 
 </div>
 
-<div class="container btns text-center">
+<div class="container btns text-center" *ngIf="appointment">
   <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" (click)="backClicked()">
     Go Back
   </button>
-  <button class="btn btn-md" mdbBtn mdbWavesEffect color="primary"  (click)="printData()">
+  <button class="btn btn-md" mdbBtn mdbWavesEffect color="primary"
+  (click) = "sendEmail('Your Appointment on ' + appointment.service_name)" (click)="printData()">
     Print Note
   </button>
   </div>
+
+  <div class="container btns text-center" *ngIf="booking">
+    <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" (click)="backClicked()">
+      Go Back
+    </button>
+    <button class="btn btn-md" mdbBtn mdbWavesEffect color="primary"
+     (click) = "sendEmail('Your Booking on ' + booking.service_name)" (click)="printData()">
+      Print Note
+    </button>
+    </div>
+

@@ -32,22 +32,20 @@ export interface Booking {
   from_date: string;
   to_date: string;
   duration: number;
-  from_time: string;
-  to_time: string;
+  from_time: {hour: number, minute: number, second: number};
+  to_time: {hour: number, minute: number, second: number};
   comment: string;
   amount: number;
   commission_due: number;
   amount_paid: number;
-  user_id: string; // fk (created user)
+  user_id: string;
 }
 
 
 export interface Appointment {
   appoint_id: string;
   service_id: string; // fk
-  user_id: string; // fk (created user)
   event_id: string; // fk
-  // servicProvider_id: string;
   service_name: string; // retrived from service
   event_name: string; // retrived from event
   customer_name: string; // retrived from user
@@ -56,10 +54,10 @@ export interface Appointment {
   created_date: string;
   state: string;
   appointed_date: string;
-  appointed_time: string;
+  appointed_time: {hour: number, minute: number, second: number};
   comment: string;
+  user_id: string;
 }
-
 
 export interface Earnings {
   transaction_id: string;

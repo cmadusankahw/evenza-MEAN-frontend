@@ -18,6 +18,8 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   // service card ownership
   @Input() isowner = false;
 
+  @Input() islogged: boolean;
+
   // filtering
   @Input() category = 'any';
 

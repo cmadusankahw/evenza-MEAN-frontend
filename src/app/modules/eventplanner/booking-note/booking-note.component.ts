@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import {Location} from '@angular/common';
 
 import { EventPlannerService } from '../eventplanner.service';
-import { Booking, Appointment } from '../eventplanner.model';
+import { Booking, Appointment, Email } from '../eventplanner.model';
 
 
 @Component({
@@ -41,6 +41,7 @@ export class BookingNoteComponent implements OnInit, OnDestroy {
       .subscribe((recievedData: Booking) => {
         this.booking = recievedData;
         console.log(this.booking);
+        // this.sendEmail('Booking on ' + this.booking.service_name);
     });
     } else if (this.route.snapshot.url[1].path === 'appoint') {
       this.eventPlannerService.getAppointment(this.Id);
@@ -48,6 +49,7 @@ export class BookingNoteComponent implements OnInit, OnDestroy {
       .subscribe((recievedData: Appointment) => {
         this.appointment = recievedData;
         console.log(this.appointment);
+       // this.sendEmail('Visit Appointment on ' + this.appointment.service_name);
     });
     }
   }
@@ -81,8 +83,18 @@ export class BookingNoteComponent implements OnInit, OnDestroy {
     });
   }
 
+  // sending relavant emails
+  sendEmail(subjectString: string) {
+    const mail: Email = {
+      email: null,
+      subject: subjectString,
+      html: document.getElementById('content').innerHTML
+    };
+    console.log(mail);
+    this.eventPlannerService.sendEmail(mail);
+  }
+
   backClicked() {
     this.location.back();
   }
-
 }

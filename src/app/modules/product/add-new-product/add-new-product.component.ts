@@ -4,9 +4,8 @@ import { Subscription } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
-import { Product, ProductCategories, QuantityTypes } from '../product.model';
+import { Product, ProductCategories, QuantityTypes, DeliveryService } from '../product.model';
 import { ProductService } from '../product.service';
-import { DeliveryService } from '../../seller/seller.model';
 
 
 @Component({
@@ -57,12 +56,7 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
       });
 
     // import quantity types
-      this.productService.getQuantities();
-      this.quantitySub = this.productService.getQuantitiesUpdateListener()
-         .subscribe((recievedData: QuantityTypes[]) => {
-         this.quantities = recievedData;
-         console.log(this.quantities);
-      });
+      this.quantities = this.productService.getQuantities();
 
       // import delivery services
       this.productService.getDeliveryServices();

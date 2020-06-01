@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { DeliveryService } from '../seller.model';
+import { DeliveryService } from '../../product/product.model';
 
 @Component({
   selector: 'app-seller-delivery',
@@ -25,11 +25,12 @@ export class SellerDeliveryComponent implements OnInit {
   // add new delivery service
   addnew = false;
 
-
+ // to be edited
   deliveryServices: DeliveryService[] = [
     {
       delivery_service: 'D-01',
       title: 'DHL',
+      email: 'sample@123.com',
       address: 'Main Street, Colombo 07',
       hotline: '713456678',
       delivery_rate: 300.00,

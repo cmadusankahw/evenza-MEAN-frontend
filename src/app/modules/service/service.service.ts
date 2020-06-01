@@ -29,7 +29,11 @@ export class ServiceService  {
   private serviceProviderServices: Service[] = [];
 
   // to generate rates list
-  private rates: ServiceRates[] = [];
+  private rates: ServiceRates[] = [
+    {id: '1', val: '/Day'},
+    {id: '2', val: '/Hr'},
+    {id: '3', val: '(Fixed'},
+  ];
 
   // to generate quanitties list
   private categories: ServiceCategories[] = [];
@@ -63,14 +67,14 @@ export class ServiceService  {
       });
   }
 
-    // get list of sellers only prodcts
-    getServiceProviderServices() {
+  // get list of sellers only prodcts
+  getServiceProviderServices() {
       this.http.get<{ message: string, services: Service[] }>(this.url + 'service/get/sp')
         .subscribe((serviceList) => {
           this.serviceProviderServices = serviceList.services;
           this.serviceProviderServiceUpdated.next([...this.serviceProviderServices]);
         });
-    }
+  }
 
   // get categories list
   getCategories() {
@@ -83,14 +87,8 @@ export class ServiceService  {
 
    // get quantities list
    getRates() {
-    this.http.get<{ message: string, rates: ServiceRates[] }>(this.url + 'service/rt')
-    .subscribe((ratesList) => {
-      this.rates = ratesList.rates;
-      this.ratesUpdated.next([...this.rates]);
-    });
+    return this.rates;
   }
-
-
 
 
   // listners for subjects
@@ -224,25 +222,25 @@ export class ServiceService  {
   }
 
 
-    // create new booking
-    createBooking(booking: Booking) {
+  // create new booking
+  createBooking(booking: Booking) {
           this.http.post<{ message: string, bookingId: string }>(this.url + 'service/booking/add', booking)
           .subscribe((recievedData) => {
             console.log(recievedData.message);
             this.router.navigate(['/print/booking/' + recievedData.bookingId]);
             this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
         });
-    }
+  }
 
-    // create new appointment
-    createAppointment(appointment: Appointment) {
+  // create new appointment
+   createAppointment(appointment: Appointment) {
       this.http.post<{ message: string, appointId: string }>(this.url + 'service/appoint/add', appointment)
       .subscribe((recievedData) => {
         console.log(recievedData.message);
         this.router.navigate(['/print/appoint/' + recievedData.appointId]);
         this.dialog.open(SuccessComponent, {data: {message: 'Appointment Successfull! Your Appointment Id: ' + recievedData.appointId}});
     });
-    }
+  }
 
 
 }

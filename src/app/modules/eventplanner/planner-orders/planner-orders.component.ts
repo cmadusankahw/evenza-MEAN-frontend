@@ -3,7 +3,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { Order, DeliveryService } from '../eventplanner.model';
+import { Order } from '../eventplanner.model';
+import { DeliveryService } from '../../product/product.model';
 
 @Component({
   selector: 'app-planner-orders',
@@ -71,19 +72,8 @@ export class PlannerOrdersComponent implements OnInit {
   }
 
   getDeliveryService(dsId: string) {
-
       // function to get delivery service details here
-      this.recievedDeliveryService = {
-        delivery_service: 'D-01',
-        email:'dhl@gmail.com',
-        title: 'DHL',
-        address: 'Main Street, Colombo 07',
-        hotline: '713456678',
-        delivery_rate: 300.00,
-        min_delivery_time: 1,
-        max_delivery_time: 3
-
-      };
+      this.recievedDeliveryService = this.orders[0].delivery_service; // to be modified
   }
 
   submitReview(orderId: string, review: string) {

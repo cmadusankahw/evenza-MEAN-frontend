@@ -119,11 +119,11 @@
 
 
 <!--editnew service-->
-<div class="container-fluid text-center" *ngIf="editmode && !removed && !bookUser">
+<div class="container-fluid text-center" *ngIf="editmode && !removed && !bookUser && service">
   <div class="center-txt">
     <div class="row">
       <div class="col-md-8">
-        <p style="line-height:35px;"> You can change the details of <b>{{service ? service.service_name : '...'}}</b> below.</p>
+        <p style="line-height:35px;"> You can change the details of <b>{{service.service_name}}</b> below.</p>
       </div>
       <div class="col-md-4">
         <a role="button" mdbBtn class="btn btn-sm" color="red" text="white" (click)="removeService(service.service_id)"> Remove Service</a>
@@ -240,10 +240,7 @@
 
 
     <!--book service-->
-    <div class="container-fluid" *ngIf="!editmode && !removed && bookUser && islogged">
-      <div class="container-fluid">
-
-
+    <div class="container-fluid" *ngIf="!editmode && !removed && bookUser && islogged && service">
 
                 <!-- Appointment-->
                 <div class="appointment" *ngIf="appoint">
@@ -359,8 +356,6 @@
 
 
                 <!-- Booking-->
-
-
                 <div class="booking" *ngIf="!appoint">
 
                       <!-- create an appointment-->
@@ -377,7 +372,7 @@
 
 
                   <div class="text-center pd-top-min">
-                    <h4> <b> Create a Booking for {{service ? service.service_name : '...'}} </b></h4>
+                    <h4> <b> Create a Booking for {{service.service_name}} </b></h4>
                     <p> Please check the below service details are correct, and provide required information.
                       <hr>
                   </div>
@@ -484,7 +479,7 @@
 
                     <div class="pd-top-min" style="text-align:right;">
                       <p style="margin:0px;">Service Rate</p>
-                      <span class="duration-cls">Rs. {{service ? service.rate + service.rate_type : '...'}} </span>
+                      <span class="duration-cls">Rs. {{service.rate + service.rate_type}} </span>
                     </div>
 
 
@@ -584,7 +579,6 @@
                   </form>
                 </div>
 
-        </div>
       </div>
 
       <!-- iF NOT LOGGED IN FOR BOOKING-->
@@ -641,7 +635,7 @@
           <span aria-hidden="true">×</span>
         </button>
         <h4 class="modal-title w-100" id="myModalLabel" >
-          <mat-icon>service</mat-icon>Service Details
+          <mat-icon>service</mat-icon>Card Details
         </h4>
       </div>
 
@@ -665,4 +659,3 @@
     </div>
   </div>
 </div>
-

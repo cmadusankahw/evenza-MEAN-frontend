@@ -46,13 +46,27 @@ export interface ProductQuery {
   userRating: number;
 }
 
+export interface DeliveryService {
+  delivery_service: string;
+  title: string;
+  email: string;
+  address: string;
+  hotline: string;
+  delivery_rate: number;
+  min_delivery_time: number;
+  max_delivery_time: number;
+}
+
 
 export interface Order {
   order_id: string;
   product_id: string; // fk
+  product: string; // retrived from product
+  qty_type: string; // retrived from produc
+  business_name: string; // retrived from product
+  // customer_name: string; // retrived from user
   delivery_address: string;
   created_date: string;
-  created_time: string;
   state: string;
   review: string;
   quantity: number;
@@ -60,4 +74,7 @@ export interface Order {
   amount: number;
   commission_due: number;
   amount_paid: number;
+  delivery_service: DeliveryService; // retrived from product.delivery_service
+  // seller_id
+  // user_id: string;
 }

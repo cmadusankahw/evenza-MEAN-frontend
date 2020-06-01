@@ -53,6 +53,9 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
   // show product details
   success = false;
 
+  // log in state
+  islogged = true;
+
 
   constructor(private breakpointObserver: BreakpointObserver,
               public productService: ProductService) { }

@@ -1,16 +1,15 @@
 //model imports
-const Product = require("../../model/product/product.model");
-const Service = require("../../model/service/service.model");
 const Order = require("../../model/product/order.model");
 const Booking = require("../../model/service/booking.model");
 const Appointment = require ("../../model/service/appointment.model");
-const Merchant = require("../../model/auth/merchant.model");
+const DeliveryService = require ("../../model/product/deliveryService.model");
 const checkAuth = require("../../middleware/auth-check");
 
 //dependency imports
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require ("multer");
+const nodemailer = require("nodemailer");
 
 //express app declaration
 const eventPlanner = express();
@@ -84,6 +83,26 @@ eventPlanner.get('/booking/get',checkAuth, (req, res, next) => {
   });
 });
 
+
+//get list of orders
+eventPlanner.get('/order/get',checkAuth, (req, res, next) => {
+  Order.find({'user_id': req.userData.user_id},function (err, orders) {
+    console.log(orders);
+    if (err) return handleError(err => {
+      res.status(500).json(
+        { message: 'No Orders Found!'}
+        );
+    });
+    res.status(200).json(
+      {
+        message: 'orders list recieved successfully!',
+        orders: orders
+      }
+    );
+  });
+});
+
+
 //get list of appointments
 eventPlanner.get('/appoint/get',checkAuth, (req, res, next) => {
   Appointment.find({'user_id': req.userData.user_id},function (err, appointments) {
@@ -104,7 +123,7 @@ eventPlanner.get('/appoint/get',checkAuth, (req, res, next) => {
 
 
 //get selected booking
-eventPlanner.get('/booking/get/:id', (req, res, next) => {
+eventPlanner.get('/booking/get/:id',checkAuth, (req, res, next) => {
 
   Booking.findOne({ booking_id: req.params.id }, function (err,recievedBooking) {
     if (err) return handleError(err => {
@@ -113,33 +132,18 @@ eventPlanner.get('/booking/get/:id', (req, res, next) => {
         { message: 'Error while loading Booking Details! Please Retry!'}
         );
     });
-
-  }).then((recievedBooking) => {
-    Service.findOne({'service_id': recievedBooking.service_id}, function (err, recievedService){
-      if (err) return handleError(err => {
-        console.log(err);
-        res.status(500).json(
-          { message: 'Error while loading Booking Details! Please Retry!'}
-          );
-      });
-      recievedBooking = recievedBooking.toObject();
-      recievedBooking.service_name = recievedService.service_name;
-      recievedBooking.business_name = recievedService.business_name;
-      recievedBooking.rate_type = recievedService.rate_type;
-      recievedBooking.event_name = 'Not Assigned'; // to be modified
-      console.log(recievedBooking);
-      res.status(200).json(
-        {
-          message: 'Booking recieved successfully!',
-          booking: recievedBooking
-        }
-      );
-    });
+    console.log(recievedBooking);
+    res.status(200).json(
+      {
+        message: 'Booking recieved successfully!',
+        booking: recievedBooking
+      }
+    );
   });
 });
 
 //get selected appointment
-eventPlanner.get('/appoint/get/:id', (req, res, next) => {
+eventPlanner.get('/appoint/get/:id',checkAuth, (req, res, next) => {
 
   Appointment.findOne({ appoint_id: req.params.id }, function (err,recievedAppoint) {
     if (err) return handleError(err => {
@@ -148,29 +152,90 @@ eventPlanner.get('/appoint/get/:id', (req, res, next) => {
         { message: 'Error while loading Appointment Details! Please Retry!'}
         );
     });
-  }).then((recievedAppoint) => {
-    Service.findOne({'service_id': recievedAppoint.service_id}, function (err, recievedService){
-      if (err) return handleError(err => {
-        console.log(err);
-        res.status(500).json(
-          { message: 'Error while loading Booking Details! Please Retry!'}
-          );
-      });
-      recievedAppoint = recievedAppoint.toObject();
-      recievedAppoint.service_name = recievedService.service_name;
-      recievedAppoint.business_name = recievedService.business_name;
-      recievedAppoint.rate_type = recievedService.rate_type;
-      recievedAppoint.event_name = 'Not Assigned'; // to be modified
-      console.log(recievedAppoint);
-      res.status(200).json(
-        {
-          message: 'Appointment recieved successfully!',
-          appointment: recievedAppoint
-        }
-      );
-    });
+    console.log(recievedAppoint);
+    res.status(200).json(
+      {
+        message: 'Appointment recieved successfully!',
+        appointment: recievedAppoint
+      }
+    );
   });
 });
+
+//get selected order
+eventPlanner.get('/order/get/:id',checkAuth, (req, res, next) => {
+  Order.findOne({ order_id: req.params.id }, function (err,recievedOrder) {
+    if (err) return handleError(err => {
+      console.log(err);
+      res.status(500).json(
+        { message: 'Error while loading Order Details! Please Retry!'}
+        );
+    });
+    console.log(recievedOrder);
+    res.status(200).json(
+      {
+        message: 'Order recieved successfully!',
+        order: recievedOrder
+      }
+    );
+  });
+});
+
+
+// send an  email
+eventPlanner.post("/mail", checkAuth, (req,res,next) => {
+  let mail = req.body;
+  mail.email = req.userData.email;
+  console.log(mail);
+  sendMail(mail, info => {
+    res.status(200).json(
+      {
+        message: 'mail sent successfully!',
+        info: info
+      }
+    );
+  }).catch(err => {
+    console.log(err);
+    res.status(500).json(
+      {
+        message: 'mail sending failed!',
+      }
+    );
+  })
+});
+
+
+// nodemailer send email function
+async function sendMail(mail, callback) {
+
+  let testAccount = await nodemailer.createTestAccount();
+
+  // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: 'chiran.hw@gmail.com',
+      pass: 'chim2cls2ppt'
+    }
+  });
+
+  let mailOptions = {
+    from: '"Evenza HelpDesk "<support@evenza.biz>', // sender address
+    to: mail.email, // list of receivers
+    subject: mail.subject, // Subject line
+    html: mail.html
+  };
+
+  // send mail with defined transport object
+  let info = await transporter.sendMail(mailOptions);
+
+  callback(info);
+}
+
+
+
 
 
 

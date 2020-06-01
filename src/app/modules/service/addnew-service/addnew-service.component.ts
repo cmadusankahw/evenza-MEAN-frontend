@@ -54,12 +54,7 @@ export class AddnewServiceComponent implements OnInit, OnDestroy {
     });
 
   // import quantity types
-    this.serviceService.getRates();
-    this.ratesSub = this.serviceService.getRatesUpdateListener()
-      .subscribe((recievedData: ServiceRates[]) => {
-      this.rates = recievedData;
-      console.log(this.rates);
-    });
+    this.rates = this.serviceService.getRates();
 }
 
 ngOnDestroy() {

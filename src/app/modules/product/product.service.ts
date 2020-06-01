@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import { Product, ProductCategories, QuantityTypes, ProductQuery } from './product.model';
+import { Product, ProductCategories, QuantityTypes, ProductQuery, DeliveryService, Order } from './product.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 import { MatDialog } from '@angular/material';
-import { DeliveryService } from '../seller/seller.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService  {
@@ -29,7 +28,12 @@ export class ProductService  {
   private sellerProducts: Product[] = [];
 
   // to generate quanitties list
-  private quantities: QuantityTypes[] = [];
+  private quantities: QuantityTypes[] =  [
+    {id: '1', val: 'Units'},
+    {id: '2', val: 'Kg'},
+    {id: '3', val: 'Ltr'},
+    {id: '4', val: 'm'},
+   ];
 
   // to generate quanitties list
   private categories: ProductCategories[] = [];
@@ -84,11 +88,7 @@ export class ProductService  {
 
    // get quantities list
    getQuantities() {
-    this.http.get<{ message: string, quantities: QuantityTypes[] }>(this.url + 'product/qt')
-    .subscribe((quantityList) => {
-      this.quantities = quantityList.quantities;
-      this.quantitiesUpdated.next([...this.quantities]);
-    });
+     return this.quantities;
   }
 
    // get delivery services
@@ -235,6 +235,10 @@ export class ProductService  {
     });
   }
 
+  // create an order
+  createOrder(order: Order) {
+
+  }
 
 
 }

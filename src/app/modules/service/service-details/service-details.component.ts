@@ -21,8 +21,8 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
 // subscription
   private serviceSub: Subscription ;
   private categorySub: Subscription ;
-  private ratesSub: Subscription ;
 
+  private today = new Date();
 
   // service is editable by parent comp
   @Input() isowner = false;
@@ -52,7 +52,6 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   duration = 0;
 
   // appointment default date and time
-  today = new Date();
   appointment = {date: this.today, time: {hour: 8, minute: 0, second: 0} };
 
   // total amount
@@ -107,14 +106,8 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
         console.log(this.categories);
     });
 
-
     // import quantity types
-      this.serviceService.getRates();
-      this.ratesSub = this.serviceService.getRatesUpdateListener()
-        .subscribe((recievedData: ServiceRates[]) => {
-        this.rates = recievedData;
-        console.log(this.rates);
-    });
+      this.rates = this.serviceService.getRates();
     }
   }
 
@@ -124,9 +117,6 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
     }
     if (this.categorySub) {
       this.categorySub.unsubscribe();
-    }
-    if (this.ratesSub) {
-      this.ratesSub.unsubscribe();
     }
     this.clearImages();
     this.editmode = false;
@@ -179,6 +169,81 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
     this.serviceService.removeService(serviceId);
     this.removed = true;
   }
+
+    // create a booking
+    createBooking(bookingForm: NgForm ) {
+      if (bookingForm.invalid) {
+        console.log('Form Invalid');
+      } else {
+        this.calcPayment(this.service.rate_type, this.service.rate);
+        const booking: Booking = {
+          booking_id: 'B0',
+          service_id: this.service.service_id,
+          event_id: 'Not Assigned',
+          service_name: this.service.service_name,
+          event_name: 'Not Assigned',
+          business_name: this.service.business_name,
+          rate_type: this.service.rate_type,
+          created_date: this.today.toISOString(),
+          state: 'pending',
+          review: 'not reviewed yet',
+          from_date: this.dates.fromDate,
+          to_date: this.dates.toDate,
+          duration: this.duration,
+          from_time: this.fromTime,
+          to_time: this.toTime,
+          comment: bookingForm.value.comment,
+          amount: this.totalAmount,
+          commission_due: this.totalAmount / 10,
+          amount_paid: bookingForm.value.amount_paid
+          };
+        this.serviceService.createBooking(booking);
+        // bookingForm.resetForm();
+        this.bookUser = !this.bookUser;
+        this.appoint = false;
+      }
+    }
+
+    // create an appointment
+    createAppointment( appointForm: NgForm ) {
+      if (appointForm.invalid) {
+        console.log('Form Invalid');
+      } else {
+        const appointment: Appointment = {
+          appoint_id: 'A0',
+          service_id: this.service.service_id,
+          event_id: 'Not Assigned',
+          service_name: this.service.service_name,
+          event_name: 'Not Assigned',
+          business_name: this.service.business_name,
+          created_date: this.today.toISOString(),
+          state: 'pending',
+          appointed_date: this.appointment.date.toISOString(),
+          appointed_time: this.appointment.time,
+          comment: appointForm.value.comment,
+          };
+        this.serviceService.createAppointment(appointment);
+        // appointForm.resetForm();
+        this.appoint = false;
+      }
+    }
+
+
+    // check booking availability
+    checkAvailability(fromDate: string, toDate: string) {
+      // this.serviceService.checkAvailability(fromDate: string, toDate: string)
+      this.dialog.open(SuccessComponent,
+        {data: {message: 'Sorry! The Service not available on selected Dates'}});
+    }
+
+
+    // check appointment availability
+    checkAppointAvailability(appointDate: string) {
+        // this.serviceService.checkAppointAvailability(appointDate: string)
+        console.log(this.appointment.date , '   ' , this.appointment.time);
+        this.dialog.open(SuccessComponent,
+          {data: {message: 'Sorry! The Service not available on selected Date'}});
+    }
 
   // clear image cache
   clearImages() {
@@ -246,77 +311,6 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
       return false;
     } else {return value; }
   }
-
-  // create a booking
-  createBooking(bookingForm: NgForm ) {
-    console.log('reached'); // test only
-    if (bookingForm.invalid) {
-      console.log('Form Invalid');
-    } else {
-      this.calcPayment(this.service.rate_type, this.service.rate);
-      const booking: Booking = {
-        booking_id: 'B0',
-        service_id: this.service.service_id,
-        event_id: 'Not Assigned',
-        created_date: this.today.toISOString(),
-        state: 'pending',
-        review: 'not reviewed yet',
-        from_date: this.dates.fromDate,
-        to_date: this.dates.toDate,
-        duration: this.duration,
-        from_time: this.fromTime,
-        to_time: this.toTime,
-        comment: bookingForm.value.comment,
-        amount: this.totalAmount,
-        commission_due: this.totalAmount / 10,
-        amount_paid: bookingForm.value.amount_paid
-        };
-      this.serviceService.createBooking(booking);
-      // bookingForm.resetForm();
-      this.bookUser = !this.bookUser;
-      this.appoint = false;
-    }
-  }
-
-  // create an appointment
-  createAppointment( appointForm: NgForm ) {
-    if (appointForm.invalid) {
-      console.log('Form Invalid');
-    } else {
-      const appointment: Appointment = {
-        appoint_id: 'A0',
-        service_id: this.service.service_id,
-        event_id: 'Not Assigned',
-        created_date: this.today.toISOString(),
-        state: 'pending',
-        appointed_date: this.appointment.date.toISOString(),
-        appointed_time: this.appointment.time,
-        comment: appointForm.value.comment,
-        };
-      this.serviceService.createAppointment(appointment);
-      // appointForm.resetForm();
-      this.appoint = false;
-    }
-  }
-
-
-  // check booking availability
-  checkAvailability(fromDate: string, toDate: string) {
-    // this.serviceService.checkAvailability(fromDate: string, toDate: string)
-    this.dialog.open(SuccessComponent,
-      {data: {message: 'Sorry! The Service not available on selected Dates'}});
-  }
-
-
-  // check appointment availability
-  checkAppointAvailability(appointDate: string) {
-      // this.serviceService.checkAppointAvailability(appointDate: string)
-      console.log(this.appointment.date , '   ' , this.appointment.time);
-      this.dialog.open(SuccessComponent,
-        {data: {message: 'Sorry! The Service not available on selected Date'}});
-  }
-
-
 
   // refactor booking dates
   refactorDates() {

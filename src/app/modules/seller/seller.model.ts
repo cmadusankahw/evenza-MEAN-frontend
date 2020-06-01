@@ -1,3 +1,4 @@
+import { DeliveryService } from '../product/product.model';
 
 export interface BusinessVerify {
   isverified: string;
@@ -38,16 +39,6 @@ export interface PayStat {
   overdue: boolean;
   last_payment: number;
   last_pay_date: string;
-}
-
-export interface DeliveryService {
-  delivery_service: string;
-  title: string;
-  address: string;
-  hotline: string;
-  delivery_rate: number;
-  min_delivery_time: number;
-  max_delivery_time: number;
 }
 
 
@@ -93,12 +84,11 @@ export interface Order {
   order_id: string;
   product_id: string; // fk
   product: string; // retrived from product
-  delivery_service: string; // retrived from product
-  qty_type: string; // retrived from product
+  qty_type: string; // retrived from produc
+  business_name: string; // retrived from product
   customer_name: string; // retrived from user
   delivery_address: string;
   created_date: string;
-  created_time: string;
   state: string;
   review: string;
   quantity: number;
@@ -106,7 +96,8 @@ export interface Order {
   amount: number;
   commission_due: number;
   amount_paid: number;
-  user_id: string; // fk (created user)
+  delivery_service: DeliveryService; // retrived from product.delivery_service
+  user_id: string;
 }
 
 

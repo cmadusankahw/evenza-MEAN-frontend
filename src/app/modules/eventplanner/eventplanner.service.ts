@@ -1,11 +1,10 @@
 import { OnDestroy, Injectable } from '@angular/core';
-import { Subscription, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 
-import { Booking, Appointment } from '../eventplanner/eventplanner.model';
-import { Order } from '../product/product.model';
+import { Booking, Appointment, Email, Order } from '../eventplanner/eventplanner.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 
 
@@ -74,6 +73,16 @@ export class EventPlannerService {
           this.orderUpdated.next(this.order);
           console.log(recievedData.message);
         });
+    }
+
+
+    // send emails
+    sendEmail(mail: Email) {
+      this.http.post<{ message: string }>(this.url + 'planner/mail', mail)
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+    });
     }
 
 

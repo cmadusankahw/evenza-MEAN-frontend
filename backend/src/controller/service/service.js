@@ -4,6 +4,7 @@ const Booking = require("../../model/service/booking.model");
 const Appointment = require("../../model/service/appointment.model");
 const ServiceCategories = require("../../model/service/categories.model");
 const ServiceRates = require("../../model/service/rates.model");
+const EventPlanner = require ("../../model/auth/eventPlanner.model");
 const checkAuth = require("../../middleware/auth-check");
 
 //dependency imports
@@ -181,7 +182,8 @@ service.post('/search', (req, res, next) => {
 //add new booking
 service.post('/booking/add',checkAuth, (req, res, next) => {
   var lastid;
-
+  let reqBooking = req.body;
+  reqBooking['user_id']= req.userData.user_id; // user id
   // generate id
   Booking.find(function (err, bookings) {
     if(bookings.length){
@@ -193,6 +195,7 @@ service.post('/booking/add',checkAuth, (req, res, next) => {
     ++mId;
     lastid = 'B' + mId.toString();
     console.log(lastid);
+    reqBooking['booking_id']= lastid; // last id
     if (err) return handleError(err => {
       console.log(err);
       res.status(500).json({
@@ -203,42 +206,53 @@ service.post('/booking/add',checkAuth, (req, res, next) => {
     // get service provider id and incrementing no_of_bookings
     Service.findOneAndUpdate({'service_id': req.body.service_id},{$inc : {'no_of_bookings':1} },function (err, recievedService) {
       console.log(recievedService);
+      reqBooking['serviceProvider_id'] = recievedService.user_id; // serviceProvider id
       if (err) return handleError(err => {
         console.log(err);
         res.status(500).json({
           message: 'Error occured while creating Booking! Please Retry!'
         });
       });
-  }).then( (recievedService) => {
-    // save created booking
-    let reqBooking = req.body;
-    reqBooking['booking_id']= lastid;
-    reqBooking['serviceProvider_id'] = recievedService.user_id;
-    reqBooking['user_id']= req.userData.user_id;
-    const newBooking = new Booking(reqBooking);
-    console.log(newBooking);
-    newBooking.save().then(result => {
-        res.status(200).json({
-          message: 'Booking created successfully!',
-          bookingId: result.booking_id // booking id as result
-        });
-      })
-      .catch(err=>{
+  }).then( () => {
+    // get customer name
+    EventPlanner.findOne({'user_id': req.userData.user_id}, function (err, recievedPlanner) {
+      console.log(recievedPlanner);
+      reqBooking['customer_name'] = recievedPlanner.first_name + ' ' + recievedPlanner.last_name; // serviceProvider name
+      if (err) return handleError(err => {
         console.log(err);
         res.status(500).json({
           message: 'Error occured while creating Booking! Please Retry!'
         });
       });
+      const newBooking = new Booking(reqBooking);
+      console.log( ' final booking ', newBooking);
+      newBooking.save().then(result => {
+          res.status(200).json({
+            message: 'Booking created successfully!',
+            bookingId: result.booking_id // booking id as result
+          });
+        });
+      });
+    }).catch (err => {
+      console.log('then 2 ', err);
+      res.status(500).json({
+        message: 'Error occured while creating Booking! Please Retry!'
+      });
     }); // then 3
+ }).catch (err => {
+   console.log('then 1 ', err);
+   res.status(500).json({
+    message: 'Error occured while creating Booking! Please Retry!'
+  });
  });
 });
 
 
-
- //add new appointment
- service.post('/appoint/add',checkAuth, (req, res, next) => {
+//add new appointment
+service.post('/appoint/add',checkAuth, (req, res, next) => {
   var lastid;
-
+  let reqAppoint = req.body;
+  reqAppoint['user_id']= req.userData.user_id; // user id
   // generate id
   Appointment.find(function (err, appoints) {
     if(appoints.length){
@@ -250,46 +264,57 @@ service.post('/booking/add',checkAuth, (req, res, next) => {
     ++mId;
     lastid = 'A' + mId.toString();
     console.log(lastid);
+    reqAppoint['appoint_id']= lastid; // last id
     if (err) return handleError(err => {
       console.log(err);
       res.status(500).json({
-        message: 'Error occured while generating appointment Id! Please Retry!'
+        message: 'Error occured while generating Appointment Id! Please Retry!'
       });
     });
   }).then( () => {
-    // get service provider id
-    Service.findOneAndUpdate({'service_id': req.body.service_id},{$inc : {'no_of_appoints': 1}},function (err, recievedService) {
+    // get service provider id and incrementing no_of_appoints
+    Service.findOneAndUpdate({'service_id': req.body.service_id},{$inc : {'no_of_appoints':1} },function (err, recievedService) {
       console.log(recievedService);
+      reqAppoint['serviceProvider_id'] = recievedService.user_id; // serviceProvider id
       if (err) return handleError(err => {
         console.log(err);
         res.status(500).json({
           message: 'Error occured while creating Appointment! Please Retry!'
         });
       });
-  }).then( (recievedService) => {
-    // save created appointment
-    let reqAppoint = req.body;
-    reqAppoint['appoint_id']= lastid;
-    reqAppoint['user_id']= req.userData.user_id;
-    reqAppoint['serviceProvider_id'] = recievedService.user_id;
-    const newAppoint = new Appointment(reqAppoint);
-    console.log(newAppoint);
-    newAppoint.save()
-    .then(result => {
-        res.status(200).json({
-          message: 'Appointment created successfully!',
-          appointId: result.appoint_id // appointment id as result
-        });
-      })
-      .catch(err=>{
+  }).then( () => {
+    // get customer name
+    EventPlanner.findOne({'user_id': req.userData.user_id}, function (err, recievedPlanner) {
+      console.log(recievedPlanner);
+      reqAppoint['customer_name'] = recievedPlanner.first_name + ' ' + recievedPlanner.last_name; // serviceProvider name
+      if (err) return handleError(err => {
         console.log(err);
         res.status(500).json({
           message: 'Error occured while creating Appointment! Please Retry!'
         });
       });
-    });
+      const newAppoint = new Appointment(reqAppoint);
+      console.log(' final appointment ', newAppoint);
+      newAppoint.save().then(result => {
+          res.status(200).json({
+            message: 'Appointment created successfully!',
+            appointId: result.appoint_id // booking id as result
+          });
+        });
+      });
+    }).catch (err => {
+      console.log('then 2 ', err);
+      res.status(500).json({
+        message: 'Error occured while creating Appointment! Please Retry!'
+      });
+    }); // then 3
+ }).catch (err => {
+   console.log('then 1 ', err);
+   res.status(500).json({
+    message: 'Error occured while creating Appointment! Please Retry!'
   });
  });
+});
 
 
 

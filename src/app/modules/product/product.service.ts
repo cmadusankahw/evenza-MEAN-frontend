@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material';
+import { Router } from '@angular/router';
 
 import { Product, ProductCategories, QuantityTypes, ProductQuery, DeliveryService, Order } from './product.model';
 import { SuccessComponent } from 'src/app/success/success.component';
-import { MatDialog } from '@angular/material';
+
 
 @Injectable({ providedIn: 'root' })
 export class ProductService  {
@@ -13,7 +15,6 @@ export class ProductService  {
   private sellerProductsUpdated = new Subject<Product[]>();
   private searchedProductUpdated = new Subject<Product[]>();
   private productsUpdated = new Subject<Product[]>();
-  private quantitiesUpdated = new Subject<QuantityTypes[]>();
   private categoriesUpdated = new Subject<ProductCategories[]>();
   private deliveryServicesUpdated = new Subject<DeliveryService[]>();
 
@@ -41,15 +42,16 @@ export class ProductService  {
   // to get delivery services list
   private deliveryServices: DeliveryService[] = [];
 
-  // api url (to be centralized)
-  url = 'http://localhost:3000/api/';
-
   // to render selected product
   private product: Product;
 
+  // api url (to be centralized)
+  url = 'http://localhost:3000/api/';
+
 
   constructor(private http: HttpClient,
-              public dialog: MatDialog) { }
+              public dialog: MatDialog,
+              private router: Router) { }
 
 
   // get methods
@@ -123,10 +125,6 @@ export class ProductService  {
 
   getProductsUpdateListener() {
     return this.productsUpdated.asObservable();
-  }
-
-  getQuantitiesUpdateListener() {
-    return this.quantitiesUpdated.asObservable();
   }
 
   getCategoriesUpdateListener() {
@@ -237,7 +235,12 @@ export class ProductService  {
 
   // create an order
   createOrder(order: Order) {
-
+    this.http.post<{ message: string, orderId: string }>(this.url + 'product/order/add', order)
+    .subscribe((recievedData) => {
+      console.log(recievedData.message);
+      this.router.navigate(['/print/order/' + recievedData.orderId]);
+      this.dialog.open(SuccessComponent, {data: {message: 'Order Successfull! Your Order Id: ' + recievedData.orderId}});
+  });
   }
 
 

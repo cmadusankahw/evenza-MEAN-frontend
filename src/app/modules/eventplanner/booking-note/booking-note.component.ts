@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import {Location} from '@angular/common';
 
 import { EventPlannerService } from '../eventplanner.service';
-import { Booking, Appointment, Email } from '../eventplanner.model';
+import { Booking, Appointment, Email, Order } from '../eventplanner.model';
 
 
 @Component({
@@ -18,6 +18,7 @@ export class BookingNoteComponent implements OnInit, OnDestroy {
 
   private bookingUpdated: Subscription;
   private appointmentUpdated: Subscription;
+  private orderUpdated: Subscription;
 
   // stored booking id from active route
   Id: string;
@@ -27,6 +28,9 @@ export class BookingNoteComponent implements OnInit, OnDestroy {
 
   // recieved appointment
   appointment: Appointment;
+
+  // recieved order
+  order: Order;
 
   constructor(private eventPlannerService: EventPlannerService,
               private route: ActivatedRoute,
@@ -51,7 +55,15 @@ export class BookingNoteComponent implements OnInit, OnDestroy {
         console.log(this.appointment);
        // this.sendEmail('Visit Appointment on ' + this.appointment.service_name);
     });
-    }
+    } else if (this.route.snapshot.url[1].path === 'order') {
+      this.eventPlannerService.getOrder(this.Id);
+      this.orderUpdated = this.eventPlannerService.getOrderUpdatedListender()
+      .subscribe((recievedData: Order) => {
+        this.order = recievedData;
+        console.log(this.order);
+       // this.sendEmail('Visit Appointment on ' + this.appointment.service_name);
+    });
+   }
   }
 
   ngOnDestroy() {
@@ -61,10 +73,14 @@ export class BookingNoteComponent implements OnInit, OnDestroy {
     if (this.appointmentUpdated) {
       this.appointmentUpdated.unsubscribe();
     }
+    if (this.orderUpdated) {
+      this.orderUpdated.unsubscribe();
+    }
     this.booking = undefined;
     this.appointment = undefined;
   }
 
+  // print the document
   public printData() {
     const data = document.getElementById('content');
     html2canvas(data).then(canvas => {

@@ -54,7 +54,8 @@
       <!--if only shown to users-->
       <div class="col-md-5 edit-cls" *ngIf="!isowner">
         <a mdbBtn color="secondary" outline="yes" class="btn btn-lg book-btn" mdbWavesEffect
-        [disabled] = "!product.availability && (product.inventory == 0)" (click) = "orderUser = !orderUser">Order Now</a>
+        [disabled] = "!product.availability && (product.inventory == 0)" (click) = "orderUser = !orderUser"
+        (click) = "calcPayment(product.price, qty)">Order Now</a>
       </div>
 
     </div>
@@ -314,7 +315,7 @@
       <mat-form-field class="service-full-width">
         <mat-label>Delivered By: </mat-label>
         <input matInput disabled style="font-weight:bold;"
-        [ngModel]="getDeliveryService(product.delivery_service)" >
+        [ngModel]="delService.title" name="delivery_title">
       </mat-form-field>
     </div>
 
@@ -329,21 +330,20 @@
   <!-- payment input-->
   <div class="col-md-8">
     <h5>Place your Order: </h5>
-    <p> Available Now: {{ product.inventory +' ' + product.qty_type +'(s)'}} </p>
+    <p style="margin:0px;"> Available Now: {{ product.inventory +' ' + product.qty_type +'(s)'}} </p>
     <mat-form-field class="service-full-width pd-top-min" >
       <mat-label>Quantity: </mat-label>
-      <input matInput required #qtyInput="ngModel" type="number"  [min] = "1" [max]="product.inventory" value="1"
-      ngModel name="quantity" >
+      <input matInput required #qtyInput="ngModel" type="number"  [min] = "1" [max]="product.inventory"
+      [(ngModel)] ="qty" name="quantity" (change) = "calcPayment(product.price, qty)">
     </mat-form-field>
     <mat-error *ngIf="qtyInput.invalid"> Please Enter the quantity </mat-error>
-
-    <p *ngIf="product.pay_on_delivery"> Note: Minimum of 10% of the Total amount should be paid now. Rest can be paid on delivery. </p>
-    <p *ngIf="!product.pay_on_delivery"> Note: Full payment should be paid on booking. </p>
 
     <!-- card details-->
     <div class="row">
       <div class="col-md-7">
-        <mdb-icon fas icon="list"> </mdb-icon> Card: {{' ...XXXX-XXXX-4419'}} <!--to be modified-->
+        <div style="padding-top:15px;">
+          <mdb-icon fas icon="list"> </mdb-icon> Card: {{' ...XXXX-XXXX-4419'}} <!--to be modified-->
+        </div>
       </div>
       <div class="col-md-5">
         <a class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary" (click)="cardDetails.show()">
@@ -356,25 +356,30 @@
 
     <div class="amount-pay">
       <!-- full payment-->
-      <div *ngIf="!product.pay_on_delivery">
-      <mat-form-field class="service-full-width" *>
-        <mat-label>Amount (Rs.): </mat-label>
-        <input matInput disabled  type="number" min="totalAmount" max="totalAmount"
-        [ngModel]="payAmount" name="amount_paid" >
+      <div *ngIf="product.pay_on_delivery == false">
+        <p>This item does not accept payment on delivery. <br>
+        <b> Full payment should be paid now.</b></p>
+      <mat-form-field class="service-full-width">
+        <mat-label>Paying Amount (Rs.): </mat-label>
+        <input matInput readonly required type="number" [min]="totalAmount" [max]="totalAmount" class="amount-input"
+        [(ngModel)]="totalAmount" name="amount_paid" >
       </mat-form-field>
-    </div>
+      </div>
 
       <!-- Partial payment-->
       <div *ngIf="product.pay_on_delivery">
+
+    <p> Minimum of 10% of the Total amount should be paid now. <br>
+      Rest can be paid on delivery. </p>
       <mat-form-field class="service-full-width" >
-        <mat-label>Amount (Rs.): </mat-label>
-        <input matInput required #payInput2="ngModel" type="number" [min]="totalAmount / 10" [max]="totalAmount"
+        <mat-label>Paying Amount (Rs.): </mat-label>
+        <input matInput required #payInput2="ngModel" type="number" [min]="totalAmount / 10" [max]="totalAmount" class="amount-input"
         [(ngModel)]="payAmount" name="amount_paid" >
       </mat-form-field>
       <mat-error *ngIf="payInput2.invalid"> Please Enter a valid amount ( Min: Rs.{{totalAmount/10}} Max: Rs.{{totalAmount}} ) </mat-error>
     </div>
+
     </div>
-    <hr>
   </div>
 
   <!-- payment display-->
@@ -385,12 +390,17 @@
         <span class="duration-cls">Rs. {{product.price + ' /' + product.qty_type }} </span>
       </div>
 
-      <div class="pay-dispaly pd-top-min" style="text-align:right;">
+      <div style="text-align:right; padding-top:12px;" >
+        <p style="margin:0px;">Delivery Charges: </p>
+        <span class="duration-cls">Rs. {{delService.delivery_rate }} </span>
+      </div>
+
+      <div class="pay-dispaly" style="text-align:right; padding-top:12px;">
         <p style="margin:0px;"> Total Amount:</p>
         <span class="payment-cls"> <b> Rs. {{totalAmount}}</b></span>
       </div>
 
-      <div class="pay-dispaly pd-top-min" style="text-align:right;" *ngIf="!product.pay_on_delivery">
+      <div class="pay-dispaly" style="text-align:right; padding-top:12px;" *ngIf="!product.pay_on_delivery">
         <p style="margin:0px;"> Now Paying:</p>
         <span class="payment-cls"> <b> Rs. {{totalAmount}}</b></span>
       </div>
@@ -402,7 +412,7 @@
 
       <div class="pay-dispaly pd-top-min" style="text-align:right;" *ngIf="product.pay_on_delivery">
         <p style="margin:0px;"> To be Paid:</p>
-        <span class="payment-cls-min"> <b> Rs. {{totalAmount - payAmount > 0 ? totalAmount- payAmount : 0}}</b></span>
+        <span class="payment-cls-min"> <b> Rs. {{totalAmount - payAmount > 0 ? totalAmount : 0}}</b></span>
       </div>
 
   </div>
@@ -411,9 +421,16 @@
 
     <hr>
     <div class="comment-cls pd-top-min">
+      <h5><b>Delivery Address: </b></h5>
+      <mat-form-field class="service-full-width">
+        <textarea type="text" matInput ngModel name="delivery_address" placeholder="Address to delivery with Postal Code..."
+        required #deliveryAddress = "ngModel"></textarea>
+        <mat-error *ngIf="deliveryAddress.invalid"> Please Enter a valid address  </mat-error>
+      </mat-form-field>
+      <br><br>
       <h5> Add a comment...</h5>
       <mat-form-field class="service-full-width">
-        <textarea type="text" matInput ngModel name="appointed_comment" placeholder="Please deliver with good quality"></textarea>
+        <textarea type="text" matInput ngModel name="comment" placeholder="Please deliver with good quality"></textarea>
       </mat-form-field>
     </div>
     <hr>

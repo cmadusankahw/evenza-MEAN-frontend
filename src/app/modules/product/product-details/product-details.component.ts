@@ -62,9 +62,13 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   // delivery services
   deliveryServices: DeliveryService[] = [];
 
+  // delivery service of the product
+  delService: DeliveryService;
+
   // total amount
   totalAmount = 0.0;
   payAmount = 0.0;
+  qty=1;
 
 
   constructor(private router: Router,
@@ -82,31 +86,31 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
             console.log(this.product);
             this.removed = false;
             this.editmode = false;
+
+            if (this.editable === true) {
+              // import categories
+                this.productService.getCategories();
+                this.categorySub = this.productService.getCategoriesUpdateListener()
+                  .subscribe((recievedData: ProductCategories[]) => {
+                  this.categories = recievedData;
+                  console.log(this.categories);
+              });
+
+              // import quantity types
+                this.quantities = this.productService.getQuantities();
+
+                // import delivery services
+                this.productService.getDeliveryServices();
+                this.deliveryServiceSub = this.productService.getdeliveryServicesUpdateListener()
+                  .subscribe((recievedData: DeliveryService[]) => {
+                  this.deliveryServices = recievedData;
+                  console.log(this.deliveryServices);
+                  this.delService = this.getDeliveryService(this.product.delivery_service);
+              });
+              }
           }
     });
 
-      if (this.editable === true) {
-    // import categories
-      this.productService.getCategories();
-      this.categorySub = this.productService.getCategoriesUpdateListener()
-        .subscribe((recievedData: ProductCategories[]) => {
-        this.categories = recievedData;
-        console.log(this.categories);
-    });
-
-
-    // import quantity types
-      this.quantities = this.productService.getQuantities();
-
-
-      // import delivery services
-      this.productService.getDeliveryServices();
-      this.deliveryServiceSub = this.productService.getdeliveryServicesUpdateListener()
-         .subscribe((recievedData: DeliveryService[]) => {
-         this.deliveryServices = recievedData;
-         console.log(this.deliveryServices);
-     });
-    }
   }
 
   ngOnDestroy() {
@@ -130,6 +134,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     if (orderForm.invalid) {
       console.log('Form Invalid');
     } else {
+      this.calcPayment(this.product.price, this.qty);
       const order: Order = {
         order_id: 'OR0',
         product_id: this.product.product_id,
@@ -140,15 +145,15 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         created_date: this.today.toISOString(),
         state: 'pending',
         review: 'not reviewed yet',
-        quantity: orderForm.value.quantity,
+        quantity: this.qty,
         comment: orderForm.value.comment,
         amount: this.totalAmount,
         commission_due: this.totalAmount / 10,
         amount_paid: orderForm.value.amount_paid,
         delivery_service: this.getDeliveryService(this.product.delivery_service)
         };
+      console.log(order);
       this.productService.createOrder(order);
-      orderForm.resetForm();
       this.orderUser = !this.orderUser;
     }
   }
@@ -202,7 +207,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   // calculate payment for product
   calcPayment(price: number, quantity: number) {
-    this.totalAmount = price * quantity;
+    this.totalAmount = (price * quantity) + this.delService.delivery_rate;
     this.payAmount = this.totalAmount / 10;
   }
 
@@ -276,10 +281,10 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   // get delivery service name from it's id
-  getDeliveryService(delService: string): DeliveryService {
+  getDeliveryService(delServiceId: string): DeliveryService {
     let delS: DeliveryService;
     this.deliveryServices.find((del) => {
-      if (del.delivery_service === delService) {
+      if (del.delivery_service === delServiceId) {
         delS = del;
       }
     });

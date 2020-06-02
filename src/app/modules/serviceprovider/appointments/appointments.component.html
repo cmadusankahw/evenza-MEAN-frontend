@@ -6,7 +6,7 @@
   </h4>
   <h4 *ngIf="appointmentType == 'confirmed'">
     <mat-icon>check_circle</mat-icon>
-   <b> Approved Appointments</b>
+   <b> Confirmed Appointments</b>
   </h4>
   <h4 *ngIf="appointmentType == 'cancelled'" >
     <mat-icon>block</mat-icon>
@@ -170,23 +170,7 @@
                       </div>
                     </div>
 
-                    <div class="row ">
-                      <div class="col-md-4 info-text">
-                        Customer email
-                      </div>
-                      <div class="col info-input">
-                        <input type="text" matInput disabled value=" {{recievedAppointments[0].customer_email}}">
-                      </div>
-                    </div>
 
-                    <div class="row ">
-                      <div class="col-md-4 info-text">
-                        Customer Contact No
-                      </div>
-                      <div class="col info-input">
-                        <input type="text" matInput disabled value=" {{recievedAppointments[0].customer_contact}}">
-                      </div>
-                    </div>
 
                     <hr>
                    </div>
@@ -197,7 +181,8 @@
                       Created Date & Time
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedAppointments[0].created_date }}">
+                      <input type="text" matInput disabled value=" {{recievedAppointments[0].created_date.slice(0,10) + ' '
+                    + recievedAppointments[0].creeated_date.slice(11,19) }}">
                     </div>
                   </div>
 
@@ -243,7 +228,8 @@
                    <span > Approve Appointment </span>
                   </button>
 
-                  <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center" >
+                  <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center"
+                  (click) = "cancelAppoint.show()" >
                     <span>Cancel Appointment </span>
                   </button>
                 </div>
@@ -265,6 +251,78 @@
       </div>
     </div>
   </div>
+
+
+  <!--cancel appoint Modal-->
+<div
+mdbModal
+#cancelAppoint="mdbModal"
+class="modal fade"
+tabindex="-1"
+role="dialog"
+aria-labelledby="myBasicModalLabel"
+[config]="{ backdrop: false, ignoreBackdropClick: true }"
+aria-hidden="true"
+
+
+>
+<div
+  class="modal-dialog modal-dialog-centered modal-lg"
+  role="document"
+  style="overflow-y: initial !important"
+>
+  <div class="modal-content"   *ngIf = "recievedAppointments.length">
+    <div class="modal-header">
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="cancelAppoint.hide()"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+      <h4 class="modal-title w-100" id="myModalLabel" >
+        <mat-icon>service</mat-icon>Cancel Appointment: {{ recievedAppointments[0].appoint_id}}
+      </h4>
+    </div>
+
+    <div class="modal-body " style="height: 450px; overflow-y: auto;">
+
+      <div class="pd-top-min-2" id="content">
+        <h4><b>Cancellation Notice: </b> </h4>
+        <p> Appointment (Id: {{recievedAppointments[0].appoint_id}}) placed for
+          {{recievedAppointments[0].service_name }} on {{recievedAppointments[0].appointed_date.slice(0,10)}}
+        </p>
+        <br>
+        <h5>Reason for cancellation:</h5>
+        <mat-form-field>
+          <textarea matInput rows="4" placeholder="I will not provide service due to.."></textarea>
+        </mat-form-field>
+
+        <hr>
+        <div class="btns text-center">
+          <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" style="margin:0 auto;">
+          Confirm Cancellation</button>
+        </div>
+      </div>
+
+
+
+    </div>
+
+    <div class="modal-footer">
+      <button
+        mdbBtn
+        color="link"
+        (click)="cancelAppoint.hide()"
+        mdbWavesEffect
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+</div>
 
 
   <!--Success Modal-->

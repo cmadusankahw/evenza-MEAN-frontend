@@ -8,7 +8,7 @@
       <p> EVENZA - Event Management & Resourcing Corportion </p>
       <div class="row container-fluid pd-top-min">
         <div class="col-md-6 left-top">
-            <b>Customer: {{ booking.user_id }} </b>
+            <b>Customer: {{ booking.customer_name }} </b>
         </div>
         <div class="col-md-6 right-top" >
           <b>Date: {{ booking.created_date.slice(0,10) + ' ' +  booking.created_date.slice(11,19)}} </b>
@@ -91,7 +91,7 @@
         <p> EVENZA - Event Management & Resourcing Corportion </p>
         <div class="row container-fluid pd-top-min">
           <div class="col-md-6 left-top">
-              <b>Customer: {{ appointment.user_id }} </b>
+              <b>Customer: {{ appointment.customer_name }} </b>
           </div>
           <div class="col-md-6 right-top" >
             <b>Date: {{ appointment.created_date.slice(0,10) + ' ' +  appointment.created_date.slice(11,19)}} </b>
@@ -152,6 +152,162 @@
     </div>
   </div>
 
+   <!--order-->
+   <div *ngIf="order">
+    <div class="header-cls text-center pd-top-min">
+        <h3><b> Reciept - Order ID: {{ order.order_id }} </b></h3>
+        <p> EVENZA - Event Management & Resourcing Corportion </p>
+        <div class="row container-fluid pd-top-min">
+          <div class="col-md-6 left-top">
+              <b>Customer: {{ order.customer_name }} </b>
+          </div>
+          <div class="col-md-6 right-top" >
+            <b>Date: {{ order.created_date.slice(0,10) + ' ' +  order.created_date.slice(11,19)}} </b>
+          </div>
+        </div>
+        <hr>
+      </div>
+
+    <div class="middle-cls pd-top-min">
+      <table class="table-striped">
+        <thead>
+          <tr>
+            <th >
+              ID
+            </th>
+            <th >
+              Description
+            </th>
+            <th>
+              Quantity
+            </th>
+            <th >
+              Amount
+            </th>
+          </tr>
+        </thead>
+          <tbody>
+            <tr style="padding-bottom:10px;">
+              <td>
+                #1
+              </td>
+              <td>
+                Order:: {{ order.product }} - {{ order.business_name}}
+                <br>
+              </td>
+              <td style="text-align:right;">
+                  {{ order.quantity + ' ' + order.qty_type + '(s)'}}
+              </td>
+              <td style="text-align:right;">
+                Rs. {{order.amount - order.delivery_service.delivery_rate}}
+              </td>
+            </tr>
+            <tr style="padding-bottom:30px;">
+              <td>
+                #2
+              </td>
+              <td>
+                Delivery : paid {{ order.delivery_service.title}}  -  (Islandwide Delivery)
+              </td>
+              <td>
+              </td>
+              <td style="text-align:right;">
+                Rs. {{order.delivery_service.delivery_rate}}
+              </td>
+            </tr>
+            <tr>
+              <td> - </td>
+              <td></td>
+              <td class="amounts">
+                Total:
+              </td>
+              <td class="amounts">
+                Rs. {{order.amount }}
+              </td>
+            </tr>
+            <tr>
+              <td> - </td>
+              <td></td>
+              <td class="amounts">
+                Amount Paid:
+              </td>
+              <td class="amounts">
+                Rs. {{order.amount_paid }}
+              </td>
+            </tr>
+            <tr *ngIf="order.amount - order.amount_paid > 0">
+              <td> - </td>
+              <td></td>
+              <td class="amounts">
+                Balance to Pay:
+              </td>
+              <td class="amounts-pay">
+                Rs. {{order.amount - order.amount_paid}}
+              </td>
+            </tr>
+          </tbody>
+      </table>
+    </div>
+    <hr>
+    <div class="pd-top-min">
+      <h3><b> Delivery Service Details:</b></h3>
+      <div class="row">
+        <div class="col-md-4 delivery-text">
+          <mdb-icon fas icon="calendar-check"></mdb-icon>  Title :
+        </div>
+        <div class="col-md-7 delivery-text-sm">
+          {{order.delivery_service.title}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 delivery-text">
+          <mdb-icon fas icon="home"></mdb-icon>  Address :
+        </div>
+        <div class="col-md-7 delivery-text-sm">
+          {{order.delivery_service.address}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 delivery-text">
+          <mdb-icon fas icon="envelope"></mdb-icon>   Email :
+        </div>
+        <div class="col-md-7 delivery-text-sm">
+          <a href="mailto:{{order.delivery_service.email}}">{{order.delivery_service.email}} </a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 delivery-text">
+          <mdb-icon fas icon="phone"></mdb-icon>  Hotline :
+        </div>
+        <div class="col-md-7 delivery-text-sm">
+          {{order.delivery_service.hotline}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 delivery-text">
+          <mdb-icon fas icon="clock"></mdb-icon>  Estimated Delivery Time :
+        </div>
+        <div class="col-md-7 delivery-text-sm">
+          {{order.delivery_service.min_delivery_time}} to  {{order.delivery_service.max_delivery_time}} Days
+        </div>
+      </div>
+
+
+    </div>
+    <hr>
+    <div class="footer-cls text-center pd-top">
+
+      <h5><b> Thank you for your business! </b></h5>
+      <p><b> Any remaining balance should be paid on delivery. <br>
+           </b></p>
+      <br>
+      <p> <b>For any Inquries or complaint regarding your order, Please contact your administrator:
+        <a href="mailto:support@evenza.biz"> support@evenza.biz</a> </b></p>
+      <hr>
+    </div>
+  </div>
+
+
 
 </div>
 
@@ -172,6 +328,17 @@
     <button class="btn btn-md" mdbBtn mdbWavesEffect color="primary"
      (click) = "sendEmail('Your Booking on ' + booking.service_name)" (click)="printData()">
       Print Note
+    </button>
+    </div>
+
+
+  <div class="container btns text-center" *ngIf="order">
+    <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" (click)="backClicked()">
+      Go Back
+    </button>
+    <button class="btn btn-md" mdbBtn mdbWavesEffect color="primary"
+     (click) = "sendEmail('Your Order on ' + order.product)" (click)="printData()">
+      Print Reciept
     </button>
     </div>
 

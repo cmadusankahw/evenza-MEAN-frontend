@@ -3,14 +3,15 @@ const Service = require("../../model/service/service.model");
 const Booking = require("../../model/service/booking.model");
 const Appointment = require("../../model/service/appointment.model");
 const ServiceCategories = require("../../model/service/categories.model");
-const ServiceRates = require("../../model/service/rates.model");
 const EventPlanner = require ("../../model/auth/eventPlanner.model");
+const Merchant = require("../../model/auth/merchant.model");
 const checkAuth = require("../../middleware/auth-check");
 
 //dependency imports
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require ("multer");
+const nodemailer = require("nodemailer");
 
 //express app declaration
 const service = express();
@@ -224,15 +225,36 @@ service.post('/booking/add',checkAuth, (req, res, next) => {
           message: 'Error occured while creating Booking! Please Retry!'
         });
       });
-      const newBooking = new Booking(reqBooking);
-      console.log( ' final booking ', newBooking);
-      newBooking.save().then(result => {
-          res.status(200).json({
-            message: 'Booking created successfully!',
-            bookingId: result.booking_id // booking id as result
+      }).then(()=>{
+        Merchant.findOne({'user_id': reqBooking.serviceProvider_id}, function (err, recievedMerchant){
+          if (err) return handleError(err => {
+            console.log(err);
+            res.status(500).json({
+              message: 'Error occured while creating Booking! Please Retry!'
+            });
           });
-        });
+          const mail= {
+            email:recievedMerchant.email,
+            subject: "New Booking on " + req.body.service_name,
+            html: createHTML('Booking',req.body)
+          }
+          console.log(mail);
+          const newBooking = new Booking(reqBooking);
+          console.log(' final booking ', newBooking);
+          newBooking.save().then(result => {
+            sendMail(mail, () => {});
+            res.status(200).json({
+                message: 'Booking created successfully!',
+                bookingId: result.booking_id // booking id as result
+            });
+          });
+         });
+      }).catch (err => {
+      console.log('then 2 ', err);
+      res.status(500).json({
+        message: 'Error occured while creating Booking! Please Retry!'
       });
+    });
     }).catch (err => {
       console.log('then 2 ', err);
       res.status(500).json({
@@ -293,13 +315,35 @@ service.post('/appoint/add',checkAuth, (req, res, next) => {
           message: 'Error occured while creating Appointment! Please Retry!'
         });
       });
-      const newAppoint = new Appointment(reqAppoint);
-      console.log(' final appointment ', newAppoint);
-      newAppoint.save().then(result => {
-          res.status(200).json({
-            message: 'Appointment created successfully!',
-            appointId: result.appoint_id // booking id as result
+
+      }).then(() => {
+        Merchant.findOne({'user_id': reqAppoint.serviceProvider_id}, function (err, recievedMerchant){
+          if (err) return handleError(err => {
+            console.log(err);
+            res.status(500).json({
+              message: 'Error occured while creating Appointment! Please Retry!'
+            });
           });
+          const mail= {
+            email:recievedMerchant.email,
+            subject: "New Appointment on " + req.body.service_name,
+            html: createHTML('Appointment',req.body)
+          }
+          console.log(mail);
+          const newAppoint = new Appointment(reqAppoint);
+          console.log(' final appointment ', newAppoint);
+          newAppoint.save().then(result => {
+            sendMail(mail, () => {});
+            res.status(200).json({
+                message: 'Appointment created successfully!',
+                appointId: result.appoint_id // booking id as result
+            });
+          });
+         });
+      }).catch (err => {
+        console.log('then 2 ', err);
+        res.status(500).json({
+          message: 'Error occured while creating Appointment! Please Retry!'
         });
       });
     }).catch (err => {
@@ -392,20 +436,6 @@ service.get('/cat', (req, res, next) => {
   });
 });
 
-//get service rates
-service.get('/rt', (req, res, next) => {
-
-  ServiceRates.find(function (err, rates) {
-    console.log(rates);
-    if (err) return handleError(err);
-    res.status(200).json(
-      {
-        message: 'Quantity types recieved successfully!',
-        rates: rates
-      }
-    );
-  });
-});
 
 // to be removed
 //get product id of the last product
@@ -426,5 +456,54 @@ service.get('/last', (req, res, next) => {
     );
   });
 });
+
+
+// nodemailer send email function
+async function sendMail(mail, callback) {
+
+  // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: 'chiran.hw@gmail.com',
+      pass: 'chim2cls2ppt'
+    }
+  });
+
+  let mailOptions = {
+    from: '"Evenza HelpDesk "<support@evenza.biz>', // sender address
+    to: mail.email, // list of receivers
+    subject: mail.subject, // Subject line
+    html: mail.html
+  };
+
+  // send mail with defined transport object
+  let info = await transporter.sendMail(mailOptions);
+
+  callback(info);
+}
+
+// create custom HTML
+function createHTML(mailType,content) {
+  if(mailType == 'Booking'){
+    const message = "<h3> You have new "+ mailType + " on " + content.service_name + "</h3><hr><h4>" + mailType + " ID : <b> " +
+    content.booking_id
+    + "</b></h4><h4>Booked Date : <b> " +
+   content.from_date.slice(0,10)
+    + " </b></h4><h4>Duration : <b> " + content.duration + ' ' + content.rate_type.slice(1) + "(s) </b></h4><hr><div class='text-center'><p><b> Please log in to view more details.<br><br><a class='btn btn-lg' href='evenza.biz//login'>Log In</a></b></p></div>"
+   return message;
+  } else if (mailType == 'Appointment'){
+    const message = "<h3> You have new "+ mailType + " on " + content.service_name + "</h3><hr><h4>" + mailType + " ID : <b> " +
+    content.appoint_id
+    + "</b></h4><h4>Appointed Date : <b> " +
+   content.appointed_date.slice(0,10)
+    + " </b></h4><h4>Appointed Time : <b> " + content.appointed_time.hour + ':' + content.appointed_time.minute + " Hrs </b></h4><hr><div class='text-center'><p><b> Please log in to view more details.<br><br><a class='btn btn-lg' href='evenza.biz//login'>Log In</a></b></p></div>"
+   return message;
+  }
+
+  }
+
 
 module.exports = service;

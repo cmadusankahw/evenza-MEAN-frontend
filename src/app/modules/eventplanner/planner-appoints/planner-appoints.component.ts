@@ -31,9 +31,11 @@ export class PlannerAppointsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource(this.addAppointments(this.appointments, this.appointmentType));
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    if (this.appointments) {
+      this.dataSource = new MatTableDataSource(this.addAppointments(this.appointments, this.appointmentType));
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }
   }
 
 

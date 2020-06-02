@@ -130,7 +130,7 @@ import { EventParticipantsComponent } from './modules/event/event-participants/e
 import { PlannerProfileComponent } from './modules/eventplanner/planner-profile/planner-profile.component';
 import { RatingReviewComponent } from './modules/eventplanner/rating-review/rating-review.component';
 import { BookingNoteComponent } from './modules/eventplanner/booking-note/booking-note.component';
-import { InvoiceComponent } from './modules/eventplanner/invoice/invoice.component';
+
 
 
 
@@ -223,7 +223,7 @@ import { InvoiceComponent } from './modules/eventplanner/invoice/invoice.compone
     PlannerProfileComponent,
     RatingReviewComponent,
     BookingNoteComponent,
-    InvoiceComponent,
+
 
 
 

@@ -21,6 +21,7 @@ export interface Order {
   product: string; // retrived from product
   qty_type: string; // retrived from produc
   business_name: string; // retrived from product
+  customer_name: string; // retrived from Event Planner
   delivery_address: string;
   created_date: string;
   state: string;
@@ -52,6 +53,7 @@ export interface Booking {
   service_name: string; // retrived from service
   event_name: string; // retrived from event
   business_name: string; // retrived from service
+  customer_name: string; // retrived from Event Planner
   rate_type: string; // retrived from service
   created_date: string;
   state: string;
@@ -75,6 +77,7 @@ export interface Appointment {
   service_name: string; // retrived from service
   event_name: string; // retrived from event
   business_name: string; // retrived from service
+  customer_name: string; // retrived from Event Planner
   created_date: string;
   state: string;
   appointed_date: string;

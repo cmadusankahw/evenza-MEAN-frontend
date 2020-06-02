@@ -1,5 +1,39 @@
 
 
+// booking and appointment
+.pd-top-min{
+  padding-top:25px;
+}
+
+.appointment-top {
+  background-color: lightgray;
+  padding-top:15px;
+  padding-bottom:10px;
+}
+
+.duration-cls {
+  font-weight: bold;
+  font-size: 22px;
+  color:darkgreen;
+}
+
+.payment-cls {
+  font-weight: bold;
+  font-size: 28px;
+  color:darkmagenta;
+}
+
+.payment-cls-min {
+  font-weight: bold;
+  font-size: 25px;
+  color:darkorchid;
+}
+
+.comment-cls{
+  width:90%;
+  margin:0 auto;
+}
+
 
 .txt-title{
   line-height:400%;
@@ -164,4 +198,12 @@
 .pay-on-meet{
   padding-left:15%;
   padding-right:15%;
+}
+
+// order view
+
+.amount-input{
+  font-size:24px;
+  font-weight:bold;
+  color:darkmagenta !important;
 }

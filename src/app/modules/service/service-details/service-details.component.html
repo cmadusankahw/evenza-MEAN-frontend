@@ -515,8 +515,8 @@
                       <div *ngIf="!service.pay_on_meet">
                       <mat-form-field class="service-full-width" *>
                         <mat-label>Amount (Rs.): </mat-label>
-                        <input matInput disabled  type="number" min="totalAmount" max="totalAmount"
-                        [ngModel]="payAmount" name="amount_paid" >
+                        <input matInput readonly  type="number" min="totalAmount" max="totalAmount" class="amount-input"
+                        [(ngModel)]="totalAmount" name="amount_paid" >
                       </mat-form-field>
                     </div>
 
@@ -524,7 +524,7 @@
                       <div *ngIf="service.pay_on_meet">
                       <mat-form-field class="service-full-width" >
                         <mat-label>Amount (Rs.): </mat-label>
-                        <input matInput required #payInput2="ngModel" type="number" [min]="totalAmount / 10" [max]="totalAmount"
+                        <input matInput required #payInput2="ngModel" type="number" [min]="totalAmount / 10" [max]="totalAmount" class="amount-input"
                         [(ngModel)]="payAmount" name="amount_paid" >
                       </mat-form-field>
                       <mat-error *ngIf="payInput2.invalid"> Please Enter a valid amount ( Min: Rs.{{totalAmount/10}} Max: Rs.{{totalAmount}} ) </mat-error>

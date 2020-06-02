@@ -21,6 +21,7 @@ const orderSchema = mongoose.Schema(
     delivery_service: { type: {
       delivery_service: String,
       title: String,
+      email: String,
       address: String,
       hotline: String,
       delivery_rate: Number,

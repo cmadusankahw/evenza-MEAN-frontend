@@ -36,11 +36,14 @@ export class PlannerBookingsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource(this.addBookings(this.bookings, this.bookingType));
-    console.log(this.recievedBookings);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    if (this.bookings) {
+      this.dataSource = new MatTableDataSource(this.addBookings(this.bookings, this.bookingType));
+      console.log(this.recievedBookings);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+     }
   }
+
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

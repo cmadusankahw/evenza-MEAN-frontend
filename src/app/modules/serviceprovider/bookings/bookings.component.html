@@ -1,12 +1,12 @@
-<div class="pd-top-min">
+<div class="pd-top-min" >
 
 <h4 *ngIf="bookingType == 'pending'">
   <mat-icon>library_books</mat-icon>
  <b> Pending Bookings</b>
 </h4>
-<h4 *ngIf="bookingType == 'confirmed'">
+<h4 *ngIf="bookingType == 'completed'">
   <mat-icon>check_circle</mat-icon>
- <b> Confirmed Bookings</b>
+ <b> Completed Bookings</b>
 </h4>
 <h4 *ngIf="bookingType == 'cancelled'" >
   <mat-icon>block</mat-icon>
@@ -228,23 +228,7 @@
                   </div>
                 </div>
 
-                <div class="row ">
-                  <div class="col-md-4 info-text">
-                    Customer Email
-                  </div>
-                  <div class="col info-input">
-                    <input type="text" matInput disabled value=" {{recievedBookings[0].customer_email}}">
-                  </div>
-                </div>
 
-                <div class="row ">
-                  <div class="col-md-4 info-text">
-                    Customer Contact No
-                  </div>
-                  <div class="col info-input">
-                    <input type="text" matInput disabled value=" {{recievedBookings[0].customer_contact}}">
-                  </div>
-                </div>
 
                 <hr>
                 </div>
@@ -254,7 +238,8 @@
                     Created Date & Time
                   </div>
                   <div class="col info-input">
-                    <input type="text" matInput disabled value=" {{recievedBookings[0].created_date }}">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].created_date.slice(0,10) + ' '
+                    + recievedBookings[0].creeated_date.slice(11,19) }}">
                   </div>
                 </div>
 
@@ -286,14 +271,7 @@
                   </div>
                 </div>
 
-                <div class="row ">
-                  <div class="col-md-4 info-text">
-                    Payment Type
-                  </div>
-                  <div class="col info-input">
-                    <input type="text" matInput disabled value=" {{recievedBookings[0].payment_type}}">
-                  </div>
-                </div>
+
                 <hr>
 
                 <div *ngIf="bookingType != 'cancelled'">
@@ -338,10 +316,11 @@
                 <!--pending bookings -->
                 <div class="info-top" *ngIf="recievedBookings[0].state == 'pending'" >
                 <button mdbBtn color="purple" text="white" class="btn  btn-md text-center">
-                 <span > Approve Booking </span>
+                 <span > Mark As Completed </span>
                 </button>
 
-                <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center" >
+                <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center"
+                (click)="cancelBooking.show()">
                   <span>Cancel Booking </span>
                 </button>
               </div>
@@ -356,6 +335,84 @@
           mdbBtn
           color="link"
           (click)="bookingOptions.hide()"
+          mdbWavesEffect
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--cancel booking Modal-->
+<div
+  mdbModal
+  #cancelBooking="mdbModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-hidden="true"
+
+
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-lg"
+    role="document"
+    style="overflow-y: initial !important"
+  >
+    <div class="modal-content"   *ngIf = "recievedBookings.length">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="cancelBooking.hide()"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel" >
+          <mat-icon>service</mat-icon>Cancel Booking: {{ recievedBookings[0].booking_id}}
+        </h4>
+      </div>
+
+      <div class="modal-body " style="height: 450px; overflow-y: auto;">
+        <div class="inner-content pd-top-min-2 text-center">
+          <p><b> Note: If you cancel this booking full paid amount of Rs. {{recievedBookings[0].amount_paid}} will be refund to the
+            customer. 10% of the paid amount will be charged from you as a panely.
+          </b></p>
+          <hr>
+        </div>
+        <div class="pd-top-min-2" id="content">
+          <h4><b>Cancellation Notice: </b> </h4>
+          <p> Booking (Id: {{recievedBookings[0].booking_id}}) placed for
+            {{recievedBookings[0].service_name }} from {{recievedBookings[0].from_date.slice(0,10)}} to
+            {{ recievedBookings[0].to_date.slice(0,10)}}
+          </p>
+          <br>
+          <h5>Reason for cancellation:</h5>
+          <mat-form-field>
+            <textarea matInput rows="4" placeholder="I will not provide service due to.."></textarea>
+          </mat-form-field>
+
+          <hr>
+          <div class="btns text-center">
+            <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" style="margin:0 auto;">
+            Confirm Cancellation</button>
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <div class="modal-footer">
+        <button
+          mdbBtn
+          color="link"
+          (click)="cancelBooking.hide()"
           mdbWavesEffect
         >
           Close

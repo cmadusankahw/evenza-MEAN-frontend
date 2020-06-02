@@ -34,7 +34,6 @@ import { EventplannerDashProfileComponent } from './modules/eventplanner/eventpl
 import { EventplannerDashboardComponent } from './modules/eventplanner/eventplannerdash/eventplanner-dashboard/eventplanner-dashboard.component';
 import { EventplannerDashHomeComponent } from './modules/eventplanner/eventplannerdash/pages/eventplanner-dash-home/eventplanner-dash-home.component';
 import { BookingNoteComponent } from './modules/eventplanner/booking-note/booking-note.component';
-import { InvoiceComponent } from './modules/eventplanner/invoice/invoice.component';
 
 
 const routes: Routes = [
@@ -48,7 +47,7 @@ const routes: Routes = [
   { path: 'products', component: SearchProductsComponent },
   { path: 'print/booking/:id', component: BookingNoteComponent },
   { path: 'print/appoint/:id', component: BookingNoteComponent },
-  { path: 'print/order/:id', component: InvoiceComponent },
+  { path: 'print/order/:id', component: BookingNoteComponent },
   {
     path: 'sp/dash',
     component: DashboardComponent,

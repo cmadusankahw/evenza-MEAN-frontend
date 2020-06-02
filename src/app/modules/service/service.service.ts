@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
+import { Router } from '@angular/router';
 
 import { Service, ServiceCategories, ServiceRates, ServiceQuery, Booking, Appointment } from './service.model';
 import { SuccessComponent } from 'src/app/success/success.component';
-import { Router } from '@angular/router';
+
 
 
 @Injectable({ providedIn: 'root' })
@@ -15,7 +16,6 @@ export class ServiceService  {
   private serviceProviderServiceUpdated = new Subject<Service[]>();
   private searchedServiceUpdated = new Subject<Service[]>();
   private servicesUpdated = new Subject<Service[]>();
-  private ratesUpdated = new Subject<ServiceRates[]>();
   private categoriesUpdated = new Subject<ServiceCategories[]>();
 
   // to add services
@@ -28,6 +28,12 @@ export class ServiceService  {
   // list of service provider services
   private serviceProviderServices: Service[] = [];
 
+  // to generate quanitties list
+  private categories: ServiceCategories[] = [];
+
+  // to render selected service
+  private service: Service;
+
   // to generate rates list
   private rates: ServiceRates[] = [
     {id: '1', val: '/Day'},
@@ -35,14 +41,9 @@ export class ServiceService  {
     {id: '3', val: '(Fixed'},
   ];
 
-  // to generate quanitties list
-  private categories: ServiceCategories[] = [];
-
   // api url (to be centralized)
   url = 'http://localhost:3000/api/';
 
-  // to render selected service
-  private service: Service;
 
 
 
@@ -109,9 +110,6 @@ export class ServiceService  {
     return this.servicesUpdated.asObservable();
   }
 
-  getRatesUpdateListener() {
-    return this.ratesUpdated.asObservable();
-  }
 
   getCategoriesUpdateListener() {
     return this.categoriesUpdated.asObservable();

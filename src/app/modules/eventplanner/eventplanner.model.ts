@@ -21,7 +21,6 @@ export interface Order {
   product: string; // retrived from product
   qty_type: string; // retrived from produc
   business_name: string; // retrived from product
-  customer_name: string; // retrived from Event Planner
   delivery_address: string;
   created_date: string;
   state: string;
@@ -31,8 +30,9 @@ export interface Order {
   amount: number;
   commission_due: number;
   amount_paid: number;
-  seller_id: string;
   delivery_service: DeliveryService; // retrived from product.delivery_service
+  seller: {seller_id: string, email: string, name: string};
+  user: { user_id: string, email: string, name: string};
 }
 
 
@@ -53,7 +53,6 @@ export interface Booking {
   service_name: string; // retrived from service
   event_name: string; // retrived from event
   business_name: string; // retrived from service
-  customer_name: string; // retrived from Event Planner
   rate_type: string; // retrived from service
   created_date: string;
   state: string;
@@ -67,7 +66,8 @@ export interface Booking {
   amount: number;
   commission_due: number;
   amount_paid: number;
-  serviceProvider_id: string;
+  serviceProvider: {serviceProvider_id: string, email: string, name: string};
+  user: { user_id: string, email: string, name: string};
 }
 
 export interface Appointment {
@@ -77,13 +77,13 @@ export interface Appointment {
   service_name: string; // retrived from service
   event_name: string; // retrived from event
   business_name: string; // retrived from service
-  customer_name: string; // retrived from Event Planner
   created_date: string;
   state: string;
   appointed_date: string;
   appointed_time: {hour: number, minute: number, second: number};
   comment: string;
-  serviceProvider_id: string;
+  serviceProvider: {serviceProvider_id: string, email: string, name: string};
+  user: { user_id: string, email: string, name: string};
 }
 
 export interface Alert {

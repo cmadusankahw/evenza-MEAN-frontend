@@ -8,7 +8,6 @@ const orderSchema = mongoose.Schema(
     product: {type: String, required: true},
     qty_type: {type: String, required: true},
     business_name: {type: String, required: true},
-    customer_name:{type: String, required: true},
     delivery_address: {type: String, required: true},
     created_date: {type: String, required: true},
     state: {type: String, required: true},
@@ -28,8 +27,12 @@ const orderSchema = mongoose.Schema(
       min_delivery_time: Number,
       max_delivery_time: Number,
     }, required: true },
-    seller_id: {type: String, required: true},
-    user_id: {type: String, required: true},
+    seller: {type: {seller_id: String,
+                    email:String,
+                    name: String}, required: true},
+    user: {type: {user_id: String,
+                  email: String,
+                  name: String}, required: true},
   },
   { collection : 'Order' }
 );

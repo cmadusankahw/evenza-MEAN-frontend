@@ -8,7 +8,7 @@
       <p> EVENZA - Event Management & Resourcing Corportion </p>
       <div class="row container-fluid pd-top-min">
         <div class="col-md-6 left-top">
-            <b>Customer: {{ booking.customer_name }} </b>
+            <b>Customer: {{ booking.user.name }} </b>
         </div>
         <div class="col-md-6 right-top" >
           <b>Date: {{ booking.created_date.slice(0,10) + ' ' +  booking.created_date.slice(11,19)}} </b>
@@ -91,7 +91,7 @@
         <p> EVENZA - Event Management & Resourcing Corportion </p>
         <div class="row container-fluid pd-top-min">
           <div class="col-md-6 left-top">
-              <b>Customer: {{ appointment.customer_name }} </b>
+              <b>Customer: {{ appointment.user.name }} </b>
           </div>
           <div class="col-md-6 right-top" >
             <b>Date: {{ appointment.created_date.slice(0,10) + ' ' +  appointment.created_date.slice(11,19)}} </b>
@@ -159,7 +159,7 @@
         <p> EVENZA - Event Management & Resourcing Corportion </p>
         <div class="row container-fluid pd-top-min">
           <div class="col-md-6 left-top">
-              <b>Customer: {{ order.customer_name }} </b>
+              <b>Customer: {{ order.user.name }} </b>
           </div>
           <div class="col-md-6 right-top" >
             <b>Date: {{ order.created_date.slice(0,10) + ' ' +  order.created_date.slice(11,19)}} </b>

@@ -26,26 +26,17 @@ export class SellerDeliveryComponent implements OnInit {
   addnew = false;
 
  // to be edited
-  deliveryServices: DeliveryService[] = [
-    {
-      delivery_service: 'D-01',
-      title: 'DHL',
-      email: 'sample@123.com',
-      address: 'Main Street, Colombo 07',
-      hotline: '713456678',
-      delivery_rate: 300.00,
-      min_delivery_time: 1,
-      max_delivery_time: 3
-    },
-  ];
+  deliveryServices: DeliveryService[] = [];
 
 
   constructor() { }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource(this.deliveryServices);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    if (this.deliveryServices) {
+      this.dataSource = new MatTableDataSource(this.deliveryServices);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }
   }
 
 
@@ -55,15 +46,6 @@ export class SellerDeliveryComponent implements OnInit {
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
-    }
-  }
-
-
-  hasData() {
-    if (this.deliveryServices.length) {
-      return true;
-    } else {
-      return false;
     }
   }
 

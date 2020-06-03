@@ -15,8 +15,12 @@ const appointmntSchema = mongoose.Schema(
     appointed_date: {type: String, required: true},
     appointed_time: {type: {hour: Number, minute: Number, second: Number}, required: true},
     comment: {type: String},
-    serviceProvider_id: {type: String, required: true},
-    user_id: {type: String, required: true},
+    serviceProvider: {type: {serviceProvider_id: String,
+                            email: String,
+                            name: String}, required: true},
+    user: {type: {user_id: String,
+                  email: String,
+                  name: String}, required: true},
   },
   { collection : 'Appointment' }
 );

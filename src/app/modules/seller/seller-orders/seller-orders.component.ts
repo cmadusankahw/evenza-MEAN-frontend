@@ -21,8 +21,6 @@ export class SellerOrdersComponent implements OnInit {
   // Create sample bookings
   orders: Order[] ;
 
-
-
   // order types
   @Input() orderType = 'pending';
 

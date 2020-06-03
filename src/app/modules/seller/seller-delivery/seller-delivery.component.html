@@ -23,7 +23,7 @@
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. DHL" >
   </mat-form-field>
 
-  <div class="mat-elevation-z8" *ngIf="hasData()">
+  <div class="mat-elevation-z8" *ngIf="deliveryServices.length">
     <table class="table-responsive" mat-table [dataSource]="dataSource" matSort>
 
       <!-- ID Column -->
@@ -70,7 +70,7 @@
     <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
   </div>
 
-  <div class="text-center pd-top-min"  *ngIf="!hasData()">
+  <div class="text-center pd-top-min"  *ngIf="!deliveryServices.length">
     No Dervices Found
   </div>
 
@@ -96,7 +96,7 @@
       role="document"
       style="overflow-y: initial !important"
     >
-      <div class="modal-content" *ngIf="hasData()">
+      <div class="modal-content" *ngIf="deliveryServices.length">
         <div class="modal-header">
           <button
             type="button"

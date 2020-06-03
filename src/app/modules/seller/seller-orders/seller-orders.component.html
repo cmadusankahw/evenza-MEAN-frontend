@@ -162,7 +162,7 @@
                       Customer
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedOrders[0].customer_name}}">
+                      <input type="text" matInput disabled value=" {{recievedOrders[0].user.name}}">
                     </div>
                   </div>
 
@@ -217,15 +217,6 @@
                   <hr>
                   <div class="row ">
                     <div class="col-md-4 info-text">
-                      Payment type
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedOrders[0].payment_type}}">
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
                       Due Commission
                     </div>
                     <div class="col info-input-net">
@@ -263,7 +254,7 @@
                   <!--pending bookings -->
                   <div class="info-top" *ngIf="recievedOrders[0].state == 'pending'" >
                   <button mdbBtn color="purple" text="white" class="btn  btn-md text-center">
-                   <span > Send to Delivery </span>
+                   <span > Mark as Delivered </span>
                   </button>
 
                   <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center" >

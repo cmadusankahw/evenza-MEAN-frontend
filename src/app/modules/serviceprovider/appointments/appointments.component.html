@@ -51,7 +51,7 @@
       <!-- Progress Column -->
       <ng-container matColumnDef="customer_name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header > Customer </th>
-        <td mat-cell *matCellDef="let row"> {{row.customer_name}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.user.name}} </td>
       </ng-container>
 
 
@@ -157,7 +157,7 @@
                         Customer Name
                       </div>
                       <div class="col info-input">
-                        <input type="text" matInput disabled value=" {{recievedAppointments[0].customer_name}}">
+                        <input type="text" matInput disabled value=" {{recievedAppointments[0].user.name}}">
                       </div>
                     </div>
 

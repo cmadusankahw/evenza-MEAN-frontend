@@ -4,7 +4,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { Order } from '../eventplanner.model';
-import { DeliveryService } from '../../product/product.model';
 
 @Component({
   selector: 'app-planner-orders',
@@ -28,8 +27,6 @@ export class PlannerOrdersComponent implements OnInit {
   // recieved orders
   recievedOrders = [];
 
-  recievedDeliveryService: DeliveryService;
-
   // rate and review
   rateReview = false;
 
@@ -39,9 +36,12 @@ export class PlannerOrdersComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource(this.addOrders(this.orders, this.orderType ));
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    if (this.orders) {
+      this.dataSource = new MatTableDataSource(this.addOrders(this.orders, this.orderType ));
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }
+
   }
 
   applyFilter(event: Event) {
@@ -65,16 +65,6 @@ export class PlannerOrdersComponent implements OnInit {
     return this.recievedOrders;
   }
 
-  showOrderDetails(orderId: string) {
-    if (this.orderType !== 'cancelled') {
-      this.getDeliveryService(null); // this shoud retrive relavant delivery service
-    }
-  }
-
-  getDeliveryService(dsId: string) {
-      // function to get delivery service details here
-      this.recievedDeliveryService = this.orders[0].delivery_service; // to be modified
-  }
 
   submitReview(orderId: string, review: string) {
     // submit review code here

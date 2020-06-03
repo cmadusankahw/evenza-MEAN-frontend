@@ -90,14 +90,6 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
     }
   }
 
-  hasData() {
-    if (this.products.length) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
   }

@@ -184,7 +184,7 @@ service.post('/search', (req, res, next) => {
 service.post('/booking/add',checkAuth, (req, res, next) => {
   var lastid;
   let reqBooking = req.body;
-  reqBooking['user_id']= req.userData.user_id; // user id
+  let serviceProviderId;
   // generate id
   Booking.find(function (err, bookings) {
     if(bookings.length){
@@ -207,7 +207,7 @@ service.post('/booking/add',checkAuth, (req, res, next) => {
     // get service provider id and incrementing no_of_bookings
     Service.findOneAndUpdate({'service_id': req.body.service_id},{$inc : {'no_of_bookings':1} },function (err, recievedService) {
       console.log(recievedService);
-      reqBooking['serviceProvider_id'] = recievedService.user_id; // serviceProvider id
+      serviceProviderId = recievedService.user_id; // serviceProvider id
       if (err) return handleError(err => {
         console.log(err);
         res.status(500).json({
@@ -218,7 +218,11 @@ service.post('/booking/add',checkAuth, (req, res, next) => {
     // get customer name
     EventPlanner.findOne({'user_id': req.userData.user_id}, function (err, recievedPlanner) {
       console.log(recievedPlanner);
-      reqBooking['customer_name'] = recievedPlanner.first_name + ' ' + recievedPlanner.last_name; // serviceProvider name
+      reqBooking.user = {
+        'user_id':req.userData.user_id,
+        'email': recievedPlanner.email,
+        'name': recievedPlanner.first_name + ' ' + recievedPlanner.last_name
+      }
       if (err) return handleError(err => {
         console.log(err);
         res.status(500).json({
@@ -226,7 +230,12 @@ service.post('/booking/add',checkAuth, (req, res, next) => {
         });
       });
       }).then(()=>{
-        Merchant.findOne({'user_id': reqBooking.serviceProvider_id}, function (err, recievedMerchant){
+        Merchant.findOne({'user_id': serviceProviderId}, function (err, recievedMerchant){
+             reqBooking.serviceProvider = {
+            'serviceProvider_id':serviceProviderId,
+            'email': recievedMerchant.email,
+            'name': recievedMerchant.first_name + ' ' + recievedMerchant.last_name
+          }
           if (err) return handleError(err => {
             console.log(err);
             res.status(500).json({
@@ -274,7 +283,7 @@ service.post('/booking/add',checkAuth, (req, res, next) => {
 service.post('/appoint/add',checkAuth, (req, res, next) => {
   var lastid;
   let reqAppoint = req.body;
-  reqAppoint['user_id']= req.userData.user_id; // user id
+  let serviceProviderId;
   // generate id
   Appointment.find(function (err, appoints) {
     if(appoints.length){
@@ -297,7 +306,7 @@ service.post('/appoint/add',checkAuth, (req, res, next) => {
     // get service provider id and incrementing no_of_appoints
     Service.findOneAndUpdate({'service_id': req.body.service_id},{$inc : {'no_of_appoints':1} },function (err, recievedService) {
       console.log(recievedService);
-      reqAppoint['serviceProvider_id'] = recievedService.user_id; // serviceProvider id
+      serviceProviderId = recievedService.user_id; // serviceProvider id
       if (err) return handleError(err => {
         console.log(err);
         res.status(500).json({
@@ -308,7 +317,11 @@ service.post('/appoint/add',checkAuth, (req, res, next) => {
     // get customer name
     EventPlanner.findOne({'user_id': req.userData.user_id}, function (err, recievedPlanner) {
       console.log(recievedPlanner);
-      reqAppoint['customer_name'] = recievedPlanner.first_name + ' ' + recievedPlanner.last_name; // serviceProvider name
+      reqAppoint.user = {
+        'user_id':req.userData.user_id,
+        'email': recievedPlanner.email,
+        'name': recievedPlanner.first_name + ' ' + recievedPlanner.last_name
+      }
       if (err) return handleError(err => {
         console.log(err);
         res.status(500).json({
@@ -317,7 +330,12 @@ service.post('/appoint/add',checkAuth, (req, res, next) => {
       });
 
       }).then(() => {
-        Merchant.findOne({'user_id': reqAppoint.serviceProvider_id}, function (err, recievedMerchant){
+        Merchant.findOne({'user_id': serviceProviderId}, function (err, recievedMerchant){
+          reqAppoint.serviceProvider = {
+            'serviceProvider_id':serviceProviderId,
+            'email': recievedMerchant.email,
+            'name': recievedMerchant.first_name + ' ' + recievedMerchant.last_name
+          }
           if (err) return handleError(err => {
             console.log(err);
             res.status(500).json({

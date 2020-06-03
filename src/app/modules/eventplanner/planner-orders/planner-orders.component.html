@@ -44,7 +44,7 @@
       <!-- Color Column -->
       <ng-container matColumnDef="quantity">
         <th mat-header-cell *matHeaderCellDef mat-sort-header > Quantity </th>
-        <td mat-cell *matCellDef="let row" > {{row.quantity + row.qty_type}} </td>
+        <td mat-cell *matCellDef="let row" > {{row.quantity + ' '+ row.qty_type + '(s)'}} </td>
       </ng-container>
 
        <!-- Color Column -->
@@ -59,7 +59,7 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> ACTION </th>
         <td mat-cell *matCellDef="let row">
           <button mdbBtn color="purple" text="white" class="btn btn-sm text-center"
-          (click) = "showOrderDetails(row.order_id)" (click)="orderOptions.show()">
+           (click)="orderOptions.show()">
             ACTION
           </button>
          </td>
@@ -157,7 +157,7 @@
                     </div>
                   </div>
 
-                  <div *ngIf="recievedDeliveryService">
+                  <div *ngIf="recievedOrders[0].delivery_service">
                     <hr>
                     <h5> <b>Delivery Service Details</b> </h5>
                     <br>
@@ -167,7 +167,7 @@
                         Delivery Service
                       </div>
                       <div class="col info-input">
-                        <input type="text" matInput disabled value=" {{recievedDeliveryService.delivery_service}}">
+                        <input type="text" matInput disabled value=" {{recievedOrders[0].delivery_service.title}}">
                       </div>
                     </div>
 
@@ -176,7 +176,7 @@
                         Hotline (For Inquries)
                       </div>
                       <div class="col info-input">
-                        <input type="text" matInput disabled value=" {{recievedDeliveryService.hotline}}">
+                        <input type="text" matInput disabled value=" {{recievedOrders[0].delivery_service.hotline}}">
                       </div>
                     </div>
 
@@ -185,7 +185,7 @@
                         E-mail (For Inquries)
                       </div>
                       <div class="col info-input">
-                        <input type="text" matInput disabled value=" {{recievedDeliveryService.email}}">
+                        <input type="text" matInput disabled value=" {{recievedOrders[0].delivery_servcie.email}}">
                       </div>
                     </div>
 
@@ -205,7 +205,7 @@
                       </div>
                       <div class="col info-input">
                         <input type="text" matInput disabled
-                        value=" {{recievedDeliveryService.min_delivery_time + ' to ' + recievedDeliveryService.max_delivery_time}}">
+                        value=" {{recievedOrders[0].delivery_service.min_delivery_time + ' to ' + recievedOrders[0].delivery_service.max_delivery_time}}">
                       </div>
                     </div>
 
@@ -309,13 +309,7 @@
                    <span > <mdb-icon fas icon="star"></mdb-icon> Rate Product </span>
                   </button>
 
-                  <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center"
-                  *ngIf="recievedOrders[0].state == 'pending'" >
-                    <span>Cancel Order </span>
-                  </button>
                 </div>
-
-
 
                 </section>
 

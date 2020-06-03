@@ -86,7 +86,6 @@ export interface Order {
   product: string; // retrived from product
   qty_type: string; // retrived from produc
   business_name: string; // retrived from product
-  customer_name: string; // retrived from user
   delivery_address: string;
   created_date: string;
   state: string;
@@ -97,7 +96,8 @@ export interface Order {
   commission_due: number;
   amount_paid: number;
   delivery_service: DeliveryService; // retrived from product.delivery_service
-  user_id: string;
+  seller: {seller_id: string, email: string, name: string};
+  user: { user_id: string, email: string, name: string};
 }
 
 

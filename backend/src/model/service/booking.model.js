@@ -10,7 +10,6 @@ const bookingSchema = mongoose.Schema(
     event_name: {type: String, required: true},
     business_name: {type: String, required: true},
     rate_type: {type: String, required: true},
-    customer_name: {type: String, required: true},
     created_date: {type: String, required: true},
     state: {type: String, required: true},
     review:{type: String},
@@ -23,8 +22,12 @@ const bookingSchema = mongoose.Schema(
     amount: {type: Number, required: true},
     commission_due: {type: Number, required: true},
     amount_paid: {type: Number, required: true},
-    serviceProvider_id: {type: String, required: true},
-    user_id: {type: String, required: true},
+    serviceProvider: {type: {serviceProvider_id: String,
+                             email: String,
+                             name: String}, required: true},
+    user: {type: {user_id: String,
+                  email: String,
+                  name: String}, required: true},
   },
   { collection : 'Booking' }
 );

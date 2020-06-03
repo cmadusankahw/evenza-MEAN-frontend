@@ -148,7 +148,7 @@
                   </div>
                 </div>
 
-                <div *ngIf="recievedBookings[0].duration > 1">
+                <div *ngIf=" recievedBookings[0].rate_type=='/Day' &&  recievedBookings[0].duration > 1">
                 <div class="row ">
                   <div class="col-md-4 info-text">
                     Booked Date (from)
@@ -168,7 +168,7 @@
                 </div>
                 </div>
 
-                <div *ngIf="recievedBookings[0].duration == 1">
+                <div *ngIf="recievedBookings[0].rate_type=='/Day' && recievedBookings[0].duration == 1">
                   <div class="row ">
                     <div class="col-md-4 info-text">
                       Booked Date
@@ -202,7 +202,7 @@
                     Duration
                   </div>
                   <div class="col info-input">
-                    <input type="text" matInput disabled value=" {{recievedBookings[0].duration}} {{recievedBookings[0].duration == 1 ? 'Hrs' : 'Days'}}">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].duration}} {{ recievedBookings[0].rate_type.slice(1)+ '(s)'}}">
                   </div>
                 </div>
 
@@ -215,7 +215,7 @@
                     Customer Name
                   </div>
                   <div class="col info-input">
-                    <input type="text" matInput disabled value=" {{recievedBookings[0].customer_name}}">
+                    <input type="text" matInput disabled value=" {{recievedBookings[0].user.name}}">
                   </div>
                 </div>
 
@@ -381,7 +381,7 @@
       <div class="modal-body " style="height: 450px; overflow-y: auto;">
         <div class="inner-content pd-top-min-2 text-center">
           <p><b> Note: If you cancel this booking full paid amount of Rs. {{recievedBookings[0].amount_paid}} will be refund to the
-            customer. 10% of the paid amount will be charged from you as a panely.
+            customer. 5% of the paid amount will be charged from you as a panely.
           </b></p>
           <hr>
         </div>

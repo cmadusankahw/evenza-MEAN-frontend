@@ -156,7 +156,7 @@
       </div>
 
       <!--search results-->
-      <div class="search-results container" *ngIf="searching && hasData()">
+      <div class="search-results container" *ngIf="searching && products.length">
         <div class="row search-result shadow container-fluid" mdbWavesEffect *ngFor="let product of products">
           <div class="col-md-3">
             <img [src]="product.image_01" style="width:260px" alt="product.product" title="product.product">
@@ -186,7 +186,7 @@
         </div>
       </div>
 
-      <div class="text-center pd-top-min" *ngIf="searching && !hasData()">
+      <div class="text-center pd-top-min" *ngIf="searching && !products.length">
         No Products Found
       </div>
 

@@ -197,7 +197,7 @@ product.post('/order/add',checkAuth, (req, res, next) => {
     });
   }).then( () => {
     // get service provider id and incrementing no_of_appoints
-    Product.findOneAndUpdate({'product_id': req.body.product_id},{$inc : {'no_of_orders':1} , $dec: {'inventory': 1}},function (err, recievedProduct) {
+    Product.findOneAndUpdate({'product_id': req.body.product_id},{$inc : {'no_of_orders':1} , $inc: {'inventory': -1}},function (err, recievedProduct) {
       console.log(recievedProduct);
       sellerId = recievedProduct.user_id; // serviceProvider id
       if (err) return handleError(err => {

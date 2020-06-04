@@ -62,12 +62,50 @@ eventPlanner.post('/add/img',checkAuth, multer({storage:storage}).array("images[
 
 });
 
+// submit a review for booking
+eventPlanner.post('/booking/review/:id',checkAuth, (req, res, next) => {
+  Booking.findOneAndUpdate({'booking_id': req.params.id},{'review':req.body.msg},function (err, booking) {
+    console.log(booking);
+    if (err) return handleError(err => {
+      console.log(err);
+      res.status(500).json(
+        { message: 'Booking not Found! Review was not added!'}
+        );
+    });
+    res.status(200).json(
+      {
+        message: 'Your booking reviewed Successfully!',
+        review: booking.review
+      }
+    );
+  });
+});
+
+// submit a review for booking
+eventPlanner.post('/order/review/:id',checkAuth, (req, res, next) => {
+  Order.findOneAndUpdate({'order_id': req.params.id},{'review':req.body.msg},function (err, order) {
+    console.log(order);
+    if (err) return handleError(err => {
+      console.log(err);
+      res.status(500).json(
+        { message: 'Order not Found! Review was not added!'}
+        );
+    });
+    res.status(200).json(
+      {
+        message: 'Your Order reviewed Successfully!',
+        review: order.review
+      }
+    );
+  });
+});
+
 
 // get methods
 
 //get list of bookings
 eventPlanner.get('/booking/get',checkAuth, (req, res, next) => {
-  Booking.find({'user_id': req.userData.user_id},function (err, bookings) {
+  Booking.find({'user.user_id': req.userData.user_id},function (err, bookings) {
     console.log(bookings);
     if (err) return handleError(err => {
       res.status(500).json(
@@ -86,7 +124,7 @@ eventPlanner.get('/booking/get',checkAuth, (req, res, next) => {
 
 //get list of orders
 eventPlanner.get('/order/get',checkAuth, (req, res, next) => {
-  Order.find({'user_id': req.userData.user_id},function (err, orders) {
+  Order.find({'user.user_id': req.userData.user_id},function (err, orders) {
     console.log(orders);
     if (err) return handleError(err => {
       res.status(500).json(
@@ -105,7 +143,7 @@ eventPlanner.get('/order/get',checkAuth, (req, res, next) => {
 
 //get list of appointments
 eventPlanner.get('/appoint/get',checkAuth, (req, res, next) => {
-  Appointment.find({'user_id': req.userData.user_id},function (err, appointments) {
+  Appointment.find({'user.user_id': req.userData.user_id},function (err, appointments) {
     console.log(appointments);
     if (err) return handleError(err => {
       res.status(500).json(
@@ -114,7 +152,7 @@ eventPlanner.get('/appoint/get',checkAuth, (req, res, next) => {
     });
     res.status(200).json(
       {
-        message: 'booking list recieved successfully!',
+        message: 'appoitment list recieved successfully!',
         appointments: appointments
       }
     );
@@ -125,7 +163,7 @@ eventPlanner.get('/appoint/get',checkAuth, (req, res, next) => {
 //get selected booking
 eventPlanner.get('/booking/get/:id',checkAuth, (req, res, next) => {
 
-  Booking.findOne({ booking_id: req.params.id }, function (err,recievedBooking) {
+  Booking.findOne({ 'booking_id': req.params.id }, function (err,recievedBooking) {
     if (err) return handleError(err => {
       console.log(err);
       res.status(500).json(
@@ -145,7 +183,7 @@ eventPlanner.get('/booking/get/:id',checkAuth, (req, res, next) => {
 //get selected appointment
 eventPlanner.get('/appoint/get/:id',checkAuth, (req, res, next) => {
 
-  Appointment.findOne({ appoint_id: req.params.id }, function (err,recievedAppoint) {
+  Appointment.findOne({ 'appoint_id': req.params.id }, function (err,recievedAppoint) {
     if (err) return handleError(err => {
       console.log(err);
       res.status(500).json(
@@ -164,7 +202,7 @@ eventPlanner.get('/appoint/get/:id',checkAuth, (req, res, next) => {
 
 //get selected order
 eventPlanner.get('/order/get/:id',checkAuth, (req, res, next) => {
-  Order.findOne({ order_id: req.params.id }, function (err,recievedOrder) {
+  Order.findOne({ 'order_id': req.params.id }, function (err,recievedOrder) {
     if (err) return handleError(err => {
       console.log(err);
       res.status(500).json(

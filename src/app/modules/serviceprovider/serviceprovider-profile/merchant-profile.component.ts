@@ -7,7 +7,6 @@ import { Router, NavigationEnd } from '@angular/router';
 
 
 import { ErrorComponent } from 'src/app/error/error.component';
-import { ServiceProviderService } from '../serviceprovider.service';
 import { DatePipe } from '@angular/common';
 import { Merchant } from '../serviceprovider.model';
 
@@ -36,7 +35,6 @@ export class MerchantProfileComponent implements OnInit, OnDestroy {
 
   constructor(private authService: AuthService,
               public dialog: MatDialog,
-              private serviceProviderService: ServiceProviderService,
               public datepipe: DatePipe,
               private router: Router) { }
 

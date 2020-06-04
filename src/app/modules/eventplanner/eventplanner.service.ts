@@ -45,37 +45,6 @@ export class EventPlannerService {
                 private http: HttpClient) {}
 
 
-    // change booking stste
-    changeBookingState(bookingState: {bookingId: string, state: string}) {
-      this.http.post<{ message: string, booking: Booking }>(this.url + 'planner/booking/edit/', bookingState)
-        .subscribe((recievedData) => {
-          this.booking = recievedData.booking;
-          this.bookingUpdated.next(this.booking);
-          console.log(recievedData.message);
-        });
-    }
-
-    // change appointment stste
-    changeAppointmentState(appointState: {appointId: string, state: string}) {
-      this.http.post<{ message: string, appointment: Appointment }>(this.url + 'planner/appoint/edit/', appointState)
-        .subscribe((recievedData) => {
-          this.appointment = recievedData.appointment;
-          this.appointmentUpdated.next(this.appointment);
-          console.log(recievedData.message);
-        });
-    }
-
-    // change order stste
-    changeOrderState(orderState: {orderId: string, state: string}) {
-      this.http.post<{ message: string, order: Order }>(this.url + 'planner/order/edit/', orderState)
-        .subscribe((recievedData) => {
-          this.order = recievedData.order;
-          this.orderUpdated.next(this.order);
-          console.log(recievedData.message);
-        });
-    }
-
-
     // send emails
     sendEmail(mail: Email) {
       this.http.post<{ message: string }>(this.url + 'planner/mail', mail)
@@ -83,6 +52,25 @@ export class EventPlannerService {
         console.log(recievedData.message);
         this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
     });
+    }
+
+    // submit a review on booking
+    submitReview(id: string, review: string, type: string) {
+      const newReview = {msg: review};
+      if (type === 'booking') {
+        this.http.post<{ message: string, review: string }>(this.url + 'planner/booking/review/' + id, newReview)
+        .subscribe((recievedData) => {
+          console.log(recievedData.review);
+          this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+       });
+      } else if (type === 'order') {
+        this.http.post<{ message: string, review: string }>(this.url + 'planner/order/review/' + id, newReview)
+        .subscribe((recievedData) => {
+          console.log(recievedData.review);
+          this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+       });
+      }
+
     }
 
 
@@ -108,9 +96,9 @@ export class EventPlannerService {
 
     // get list of appointments of an event planner
     getAppointments() {
-      this.http.get<{ message: string, appoitments: Appointment[] }>(this.url + 'planner/appoint/get')
+      this.http.get<{ message: string, appointments: Appointment[] }>(this.url + 'planner/appoint/get')
       .subscribe((recievedAppointments) => {
-        this.appointments = recievedAppointments.appoitments;
+        this.appointments = recievedAppointments.appointments;
         this.appointmentsUpdated.next([...this.appointments]);
       });
     }

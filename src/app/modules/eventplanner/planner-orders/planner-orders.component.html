@@ -38,7 +38,7 @@
       <!-- Name Column -->
       <ng-container matColumnDef="date_ordered">
         <th mat-header-cell *matHeaderCellDef mat-sort-header > Date Orderd </th>
-        <td mat-cell *matCellDef="let row"> {{row.created_date + row.created_time}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.created_date.slice(0,10)}} </td>
       </ng-container>
 
       <!-- Color Column -->
@@ -59,7 +59,7 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> ACTION </th>
         <td mat-cell *matCellDef="let row">
           <button mdbBtn color="purple" text="white" class="btn btn-sm text-center"
-           (click)="orderOptions.show()">
+          (click)= "showOrderDetails(row.order_id)" (click)="orderOptions.show()">
             ACTION
           </button>
          </td>
@@ -99,7 +99,7 @@
       role="document"
       style="overflow-y: initial !important"
     >
-      <div class="modal-content" *ngIf="recievedOrders.length">
+      <div class="modal-content" *ngIf="selectedOrder">
         <div class="modal-header">
           <button
             type="button"
@@ -110,7 +110,7 @@
             <span aria-hidden="true">×</span>
           </button>
           <h4 class="modal-title w-100" id="myModalLabel" >
-            <mat-icon>service</mat-icon>Order: {{recievedOrders[0].order_id}} Details
+            <mat-icon>service</mat-icon>Order: {{selectedOrder.order_id}} Details
           </h4>
         </div>
 
@@ -126,7 +126,7 @@
                       Order ID
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedOrders[0].order_id}}">
+                      <input type="text" matInput disabled value=" {{selectedOrder.order_id}}">
                     </div>
                   </div>
 
@@ -135,7 +135,7 @@
                       Product ID
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedOrders[0].product_id}}">
+                      <input type="text" matInput disabled value=" {{selectedOrder.product_id}}">
                     </div>
                   </div>
 
@@ -144,7 +144,7 @@
                       Product
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedOrders[0].product}}">
+                      <input type="text" matInput disabled value=" {{selectedOrder.product}}">
                     </div>
                   </div>
 
@@ -153,11 +153,11 @@
                       Quantity
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedOrders[0].quantity + recievedOrders[0].qty_type}}">
+                      <input type="text" matInput disabled value=" {{selectedOrder.quantity + selectedOrder.qty_type}}">
                     </div>
                   </div>
 
-                  <div *ngIf="recievedOrders[0].delivery_service">
+                  <div *ngIf="selectedOrder.delivery_service">
                     <hr>
                     <h5> <b>Delivery Service Details</b> </h5>
                     <br>
@@ -167,7 +167,7 @@
                         Delivery Service
                       </div>
                       <div class="col info-input">
-                        <input type="text" matInput disabled value=" {{recievedOrders[0].delivery_service.title}}">
+                        <input type="text" matInput disabled value=" {{selectedOrder.delivery_service.title}}">
                       </div>
                     </div>
 
@@ -176,7 +176,7 @@
                         Hotline (For Inquries)
                       </div>
                       <div class="col info-input">
-                        <input type="text" matInput disabled value=" {{recievedOrders[0].delivery_service.hotline}}">
+                        <input type="text" matInput disabled value=" {{selectedOrder.delivery_service.hotline}}">
                       </div>
                     </div>
 
@@ -185,7 +185,7 @@
                         E-mail (For Inquries)
                       </div>
                       <div class="col info-input">
-                        <input type="text" matInput disabled value=" {{recievedOrders[0].delivery_servcie.email}}">
+                        <input type="text" matInput disabled value=" {{selectedOrder.delivery_service.email}}">
                       </div>
                     </div>
 
@@ -195,7 +195,7 @@
                       </div>
                       <div class="col info-input">
                         <textarea type="text" matInput disabled
-                        value=" {{recievedOrders[0].delivery_address}}"> </textarea>
+                        value=" {{selectedOrder.delivery_address}}"> </textarea>
                       </div>
                     </div>
 
@@ -205,13 +205,13 @@
                       </div>
                       <div class="col info-input">
                         <input type="text" matInput disabled
-                        value=" {{recievedOrders[0].delivery_service.min_delivery_time + ' to ' + recievedOrders[0].delivery_service.max_delivery_time}}">
+                        value=" {{selectedOrder.delivery_service.min_delivery_time + ' to ' + selectedOrder.delivery_service.max_delivery_time + ' Days'}}">
                       </div>
                     </div>
 
                     <div class="row " >
                       <div class="col-md-4 info-text">
-                        Order state
+                        Delivery state
                       </div>
                       <div class="col info-input">
                         <input type="text" matInput disabled value=" {{orderType == 'delivered' ? 'On Delivery' : 'Not Delivered yet' }}">
@@ -228,24 +228,26 @@
                       Order Date & Time
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedOrders[0].created_date + recievedOrders[0].created_time}}">
+                      <input type="text" matInput disabled value=" {{selectedOrder.created_date.slice(0,10) + ' '
+                    + selectedOrder.created_date.slice(11,19)}}">
                     </div>
                   </div>
                   <hr>
                   <h5><b> Write a Review</b></h5>
+                  <from #rForm ngForm="rForm">
                   <div class="row ">
                     <div class="col-md-4 info-text">
                       My Reviews
                     </div>
                     <div class="col info-input">
-                      <textarea type="text" matInput [disabled]="!addReview" [value]=" recievedOrders[0].review ? recievedOrders[0].review : 'No Reviewes yet'"></textarea>
-                      <br>
+                      <textarea type="text" matInput [disabled]= "!addReview" [(ngModel)]="selectedOrder.review"
+                      name="reviewMsg" placeholder="Your review here..."></textarea>  <br>
                       <button mdbBtn color="secondary"  class="btn  btn-sm" outline="yes" *ngIf="!addReview"
                        (click)= "addReview = !addReview">
                        <span > Add/ Edit Review </span>
                      </button>
                     <button mdbBtn color="primary"  class="btn  btn-sm" outline="yes" *ngIf="addReview"
-                    (click)= "addReview = !addReview" (click)= "submitReview(recievedOrders[0].order_id,recievedOrders[0].review)">
+                    (click)= "addReview = !addReview" (click)= "submitReview(selectedOrder.order_id,selectedOrder.review)">
                     <span > Save Changes </span>
                     </button>
                     <button mdbBtn color="red"  class="btn  btn-sm" outline="yes" *ngIf="addReview"
@@ -253,25 +255,18 @@
                     <span > Discard </span>
                     </button>
                     </div>
-
                   </div>
+                </from>
 
                   <hr>
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                      Payment type
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedOrders[0].payment_type}}">
-                    </div>
-                  </div>
+
 
                   <div class="row ">
                     <div class="col-md-4 info-text">
                       Due Commission
                     </div>
                     <div class="col info-input-net">
-                      <input type="text" matInput disabled value=" Rs. {{recievedOrders[0].commission_due}}">
+                      <input type="text" matInput disabled value=" Rs. {{selectedOrder.commission_due}}">
                     </div>
                   </div>
 
@@ -280,7 +275,7 @@
                       Total Amount
                     </div>
                     <div class="col info-input-net">
-                      <input type="text" matInput disabled value=" Rs. {{recievedOrders[0].amount}}">
+                      <input type="text" matInput disabled value=" Rs. {{selectedOrder.amount}}">
                     </div>
                   </div>
 
@@ -289,7 +284,7 @@
                       Amount Paid
                     </div>
                     <div class="col info-input-net">
-                      <b><input type="text" matInput disabled value=" Rs. {{recievedOrders[0].amount_paid}}"></b>
+                      <b><input type="text" matInput disabled value=" Rs. {{selectedOrder.amount_paid}}"></b>
                     </div>
                   </div>
                   <hr>
@@ -298,7 +293,7 @@
                       State
                     </div>
                     <div class="col info-input-net" style="color:darkmagenta;">
-                      <b><input type="text" matInput disabled value=" {{recievedOrders[0].state}}"></b>
+                      <b><input type="text" matInput disabled value=" {{selectedOrder.state}}"></b>
                     </div>
                   </div>
 
@@ -314,7 +309,7 @@
                 </section>
 
                 <div *ngIf="rateReview">
-                  <app-rating-review [type] = "'product'" [id]= "recievedOrders[0].product_id"></app-rating-review>
+                  <app-rating-review [type] = "'product'" [id]= "selectedOrder.product_id"></app-rating-review>
                   <hr>
                   <div class="info-top"  >
                     <button mdbBtn color="purple" text="white" class="btn  btn-md text-center"
@@ -338,6 +333,9 @@
           </button>
         </div>
       </div>
+      <div class="modal-content" *ngIf = "!selectedOrder">
+        <app-not-found-page></app-not-found-page>>
+       </div>
     </div>
   </div>
 

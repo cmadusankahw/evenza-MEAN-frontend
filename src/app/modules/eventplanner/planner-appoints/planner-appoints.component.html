@@ -39,7 +39,7 @@
         <!-- Name Column -->
         <ng-container matColumnDef="appointed_date">
           <th mat-header-cell *matHeaderCellDef mat-sort-header > Appointment Date </th>
-          <td mat-cell *matCellDef="let row"> {{row.appointed_date}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.appointed_date.slice(0,10)}} </td>
         </ng-container>
 
         <!-- Color Column -->
@@ -100,7 +100,7 @@
         role="document"
         style="overflow-y: initial !important"
       >
-        <div class="modal-content"  *ngIf = "recievedAppointments.length">
+        <div class="modal-content"  *ngIf = "selectedAppointment">
           <div class="modal-header">
             <button
               type="button"
@@ -111,7 +111,7 @@
               <span aria-hidden="true">×</span>
             </button>
             <h4 class="modal-title w-100" id="myModalLabel" >
-              <mat-icon>service</mat-icon>Visit Appoinment: {{recievedAppointments[0].appoint_id}} Details
+              <mat-icon>service</mat-icon>Visit Appoinment: {{selectedAppointment.appoint_id}} Details
             </h4>
           </div>
 
@@ -127,7 +127,7 @@
                         Appointment ID
                       </div>
                       <div class="col info-input">
-                        <input type="text" matInput disabled value=" {{recievedAppointments[0].appoint_id}}">
+                        <input type="text" matInput disabled value=" {{selectedAppointment.appoint_id}}">
                       </div>
                     </div>
 
@@ -136,7 +136,7 @@
                         Service Name
                       </div>
                       <div class="col info-input">
-                        <input type="text" matInput disabled value=" {{recievedAppointments[0].service_name}}">
+                        <input type="text" matInput disabled value=" {{selectedAppointment.service_name}}">
                       </div>
                     </div>
 
@@ -145,7 +145,7 @@
                         Event Assigned
                       </div>
                       <div class="col info-input">
-                        <input type="text" matInput disabled value=" {{recievedAppointments[0].event_id ? recievedAppointments[0].event_id +' : ' + recievedAppointments[0].event_name : 'No event Assigned'}}">
+                        <input type="text" matInput disabled value=" {{selectedAppointment.event_id +' : ' + selectedAppointment.event_name}}">
                       </div>
                     </div>
 
@@ -155,8 +155,8 @@
                         Created Date & Time
                       </div>
                       <div class="col info-input">
-                        <input type="text" matInput disabled value=" {{recievedAppointments[0].created_date.slice(0,10) + ' '
-                        + recievedAppointments[0].creeated_date.slice(11,19) }}">
+                        <input type="text" matInput disabled value=" {{selectedAppointment.created_date.slice(0,10) + ' '
+                        + selectedAppointment.created_date.slice(11,19) }}">
                       </div>
                     </div>
 
@@ -165,7 +165,7 @@
                         Appointed Date
                       </div>
                       <div class="col info-input">
-                        <input type="text" matInput disabled value=" {{recievedAppointments[0].appointed_date}}">
+                        <input type="text" matInput disabled value=" {{selectedAppointment.appointed_date}}">
                       </div>
                     </div>
 
@@ -174,7 +174,7 @@
                         Appointed Visit Time
                       </div>
                       <div class="col info-input">
-                        <input type="text" matInput disabled value=" {{recievedAppointments[0].appointed_time}}">
+                        <input type="text" matInput disabled value=" {{selectedAppointment.appointed_time}}">
                       </div>
                     </div>
 
@@ -183,7 +183,7 @@
                         Comments
                       </div>
                       <div class="col info-input">
-                        <textarea type="text" matInput disabled value=" {{recievedAppointments[0].comment}}"></textarea>
+                        <textarea type="text" matInput disabled value=" {{selectedAppointment.comment}}"></textarea>
                       </div>
                     </div>
                     <hr>
@@ -192,7 +192,7 @@
                         State
                       </div>
                       <div class="col info-input-net" style="color:darkmagenta;">
-                        <b><input type="text" matInput disabled value=" {{recievedAppointments[0].state}}"></b>
+                        <b><input type="text" matInput disabled value=" {{selectedAppointment.state}}"></b>
                       </div>
                     </div>
                     <hr>
@@ -200,7 +200,7 @@
                     <div class="info-top"  >
 
                     <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center"
-                    *ngIf="recievedAppointments[0].state == 'pending'" (click)="cancelAppoints.show()">
+                    *ngIf="selectedAppointment.state == 'pending'" (click)="cancelAppoints.show()">
                       <span>Send Cancel Request </span>
                     </button>
 
@@ -220,6 +220,10 @@
               Close
             </button>
           </div>
+        </div>
+
+        <div class="modal-content" *ngIf = "!selectedAppointment">
+         <app-not-found-page></app-not-found-page>>
         </div>
       </div>
     </div>
@@ -244,7 +248,7 @@ aria-hidden="true"
   role="document"
   style="overflow-y: initial !important"
 >
-  <div class="modal-content"   *ngIf = "recievedAppointments.length">
+  <div class="modal-content"   *ngIf = "selectedAppointment">
     <div class="modal-header">
       <button
         type="button"
@@ -255,11 +259,12 @@ aria-hidden="true"
         <span aria-hidden="true">×</span>
       </button>
       <h4 class="modal-title w-100" id="myModalLabel" >
-        <mat-icon>service</mat-icon>Send cancel reuest for Appointment: {{ recievedAppointments[0].appoint_id}}
+        <mat-icon>service</mat-icon>Send cancel reuest for Appointment: {{ selectedAppointment.appoint_id}}
       </h4>
     </div>
 
-    <div class="modal-body " style="height: 450px; overflow-y: auto;">
+    <div class="modal-body" style="height: 450px; overflow-y: auto;">
+      <div class="container">
       <div class="inner-content pd-top-min-2 text-center">
         <p><b> Note: Your request will be send to the relavant Service Provider. They will manually review and cancel your appointment.
           After cancellation you will notified.
@@ -270,20 +275,26 @@ aria-hidden="true"
       </div>
       <div class="pd-top-min-2" id="content">
         <h4><b>Cancellation Notice: </b> </h4>
-        <p> Bokking (Id: {{recievedAppointments[0].appoint_id}}) placed for
-          {{recievedAppointments[0].service_name }} on {{recievedAppointments[0].apointed_date.slice(0,10)}}
+        <p> <b>{{ selectedAppointment.user.name }} (User ID:{{selectedAppointment.user.user_id}}) </b> requesting cancellation on
+        <br><b>Appointment (Id: {{selectedAppointment.appoint_id}}) </b>placed for
+         <b>{{selectedAppointment.service_name }}</b>  on <b>{{selectedAppointment.appointed_date.slice(0,10)}}</b>
         </p>
         <br>
         <h5>Reason for cancellation:</h5>
+       </div>
         <mat-form-field>
-          <textarea matInput rows="4" placeholder="I will not provide service due to.."></textarea>
+          <textarea matInput rows="4"  [(ngModel)]="cancelMsg" placeholder="Please state your reason for cancellation.."></textarea>
         </mat-form-field>
 
         <hr>
         <div class="btns text-center">
-          <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" style="margin:0 auto;">
+          <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" (click)="sendCacelRequest()" >
           Send Request</button>
+          <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary"  outline="yes" (click)="cancelMsg = null"
+          (click) ="cancelAppoints.hide()" id="discardBtn">
+            Discard</button>
         </div>
+
       </div>
 
 

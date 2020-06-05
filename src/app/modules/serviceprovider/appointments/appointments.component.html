@@ -38,13 +38,13 @@
       <!-- Name Column -->
       <ng-container matColumnDef="appointed_date">
         <th mat-header-cell *matHeaderCellDef mat-sort-header > Appointment Date </th>
-        <td mat-cell *matCellDef="let row"> {{row.appointed_date}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.appointed_date.slice(0,10)}} </td>
       </ng-container>
 
       <!-- Color Column -->
       <ng-container matColumnDef="duration">
         <th mat-header-cell *matHeaderCellDef mat-sort-header > Appointed time </th>
-        <td mat-cell *matCellDef="let row" > {{row.appointed_time}} </td>
+        <td mat-cell *matCellDef="let row" > {{row.appointed_time.hour > 9 ? '' + row.appointed_time.hour: '0' + row.appointed_time.hour}} : {{row.appointed_time.minute > 9 ? '' + row.appointed_time.minute: '0' + row.appointed_time.minute}}</td>
       </ng-container>
 
 
@@ -99,7 +99,7 @@
       role="document"
       style="overflow-y: initial !important"
     >
-      <div class="modal-content"  *ngIf = "recievedAppointments.length">
+      <div class="modal-content"  *ngIf = "selectedAppointment">
         <div class="modal-header">
           <button
             type="button"
@@ -110,7 +110,7 @@
             <span aria-hidden="true">×</span>
           </button>
           <h4 class="modal-title w-100" id="myModalLabel" >
-            <mat-icon>service</mat-icon>Visit Appoinment: {{recievedAppointments[0].appoint_id}} Details
+            <mat-icon>service</mat-icon>Visit Appoinment: {{selectedAppointment.appoint_id}} Details
           </h4>
         </div>
 
@@ -126,7 +126,7 @@
                       Appointment ID
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedAppointments[0].appoint_id}}">
+                      <input type="text" matInput disabled value=" {{selectedAppointment.appoint_id}}">
                     </div>
                   </div>
 
@@ -135,7 +135,7 @@
                       Service ID
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedAppointments[0].service_id}}">
+                      <input type="text" matInput disabled value=" {{selectedAppointment.service_id}}">
                     </div>
                   </div>
 
@@ -144,7 +144,7 @@
                       Service Name
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedAppointments[0].service_name}}">
+                      <input type="text" matInput disabled value=" {{selectedAppointment.service_name}}">
                     </div>
                   </div>
 
@@ -157,7 +157,7 @@
                         Customer Name
                       </div>
                       <div class="col info-input">
-                        <input type="text" matInput disabled value=" {{recievedAppointments[0].user.name}}">
+                        <input type="text" matInput disabled value=" {{selectedAppointment.user.name}}">
                       </div>
                     </div>
 
@@ -166,7 +166,7 @@
                         Assigned Event
                       </div>
                       <div class="col info-input">
-                        <input type="text" matInput disabled value=" {{recievedAppointments[0].event_name}}">
+                        <input type="text" matInput disabled value=" {{selectedAppointment.event_name}}">
                       </div>
                     </div>
 
@@ -181,8 +181,8 @@
                       Created Date & Time
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedAppointments[0].created_date.slice(0,10) + ' '
-                    + recievedAppointments[0].creeated_date.slice(11,19) }}">
+                      <input type="text" matInput disabled value=" {{selectedAppointment.created_date.slice(0,10) + ' '
+                    + selectedAppointment.created_date.slice(11,19) }}">
                     </div>
                   </div>
 
@@ -191,7 +191,7 @@
                       Appointed Date
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedAppointments[0].appointed_date}}">
+                      <input type="text" matInput disabled value=" {{selectedAppointment.appointed_date.slice(0,10)}}">
                     </div>
                   </div>
 
@@ -200,7 +200,7 @@
                       Appointed Visit Time
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedAppointments[0].appointed_time}}">
+                      <input type="text" matInput disabled value="{{selectedAppointment.appointed_time.hour > 9 ? '' + selectedAppointment.appointed_time.hour: '0' + selectedAppointment.appointed_time.hour}} : {{selectedAppointment.appointed_time.minute > 9 ? '' + selectedAppointment.appointed_time.minute: '0' + selectedAppointment.appointed_time.minute}}">
                     </div>
                   </div>
 
@@ -209,7 +209,7 @@
                       Comments
                     </div>
                     <div class="col info-input">
-                      <textarea type="text" matInput disabled value=" {{recievedAppointments[0].comment}}"></textarea>
+                      <textarea type="text" matInput disabled value=" {{selectedAppointment.comment}}"></textarea>
                     </div>
                   </div>
                   <hr>
@@ -218,13 +218,14 @@
                       State
                     </div>
                     <div class="col info-input-net" style="color:darkmagenta;">
-                      <b><input type="text" matInput disabled value=" {{recievedAppointments[0].state}}"></b>
+                      <b><input type="text" matInput disabled value=" {{selectedAppointment.state}}"></b>
                     </div>
                   </div>
 
                   <!--pending bookings -->
-                  <div class="info-top" *ngIf="recievedAppointments[0].state == 'pending'" >
-                  <button mdbBtn color="purple" text="white" class="btn  btn-md text-center">
+                  <div class="info-top" *ngIf="selectedAppointment.state == 'pending'" >
+                  <button mdbBtn color="purple" text="white" class="btn  btn-md text-center"
+                  (click)="confirmDialog.show()">
                    <span > Approve Appointment </span>
                   </button>
 
@@ -249,6 +250,9 @@
           </button>
         </div>
       </div>
+      <div class="modal-content" *ngIf = "!selectedAppointment">
+        <app-not-found-page></app-not-found-page>
+       </div>
     </div>
   </div>
 
@@ -271,7 +275,7 @@ aria-hidden="true"
   role="document"
   style="overflow-y: initial !important"
 >
-  <div class="modal-content"   *ngIf = "recievedAppointments.length">
+  <div class="modal-content"   *ngIf = "selectedAppointment">
     <div class="modal-header">
       <button
         type="button"
@@ -282,29 +286,38 @@ aria-hidden="true"
         <span aria-hidden="true">×</span>
       </button>
       <h4 class="modal-title w-100" id="myModalLabel" >
-        <mat-icon>service</mat-icon>Cancel Appointment: {{ recievedAppointments[0].appoint_id}}
+        <mat-icon>service</mat-icon>Cancel Appointment: {{ selectedAppointment.appoint_id}}
       </h4>
     </div>
 
     <div class="modal-body " style="height: 450px; overflow-y: auto;">
-
+      <div class="inner-content pd-top-min-2 text-center">
+        <p> <b> <span style="color:darkred;"> Note: Once cancelled you Cannot make the appointment active again!</span></b>
+        </p>
+        <hr>
+      </div>
       <div class="pd-top-min-2" id="content">
         <h4><b>Cancellation Notice: </b> </h4>
-        <p> Appointment (Id: {{recievedAppointments[0].appoint_id}}) placed for
-          {{recievedAppointments[0].service_name }} on {{recievedAppointments[0].appointed_date.slice(0,10)}}
+        <p> Appointment <b>(Id: {{selectedAppointment.appoint_id}}) </b>  placed for
+          <b> {{selectedAppointment.service_name }} on {{selectedAppointment.appointed_date.slice(0,10)}}</b> will be cancelled.
         </p>
         <br>
         <h5>Reason for cancellation:</h5>
+      </div>
         <mat-form-field>
-          <textarea matInput rows="4" placeholder="I will not provide service due to.."></textarea>
+          <textarea matInput rows="4" [(ngModel)]="cancelMsg" placeholder="Please state your reason for cancellation.."></textarea>
         </mat-form-field>
 
         <hr>
         <div class="btns text-center">
-          <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" style="margin:0 auto;">
+          <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" style="margin:0 auto;"
+          (click) = "cancelDialog.show()">
           Confirm Cancellation</button>
+          <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary"  outline="yes"
+          (click) ="cancelAppoint.hide()" (click)="cancelMsg = null" id="discardBtn">
+            Discard</button>
         </div>
-      </div>
+
 
 
 
@@ -325,35 +338,110 @@ aria-hidden="true"
 </div>
 
 
-  <!--Success Modal-->
-  <div mdbModal #bookingSuccess="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
-   [config]='{backdrop: false, ignoreBackdropClick: true}'   aria-hidden="true">
-   <div class="modal-dialog modal-notify modal-success modal-dialog-centered" role="document">
+
+<!-- cancel booking dialog-->
+<div mdbModal #cancelDialog="mdbModal"
+class="modal fade top"
+id="frameModalTop" tabindex="-1" role="dialog"
+[config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-labelledby="myModalLabel" aria-hidden="true" >
+  <div class="modal-dialog modal-notify modal-danger  modal-dialog-centered" role="document">
     <!--Content-->
     <div class="modal-content">
       <!--Header-->
       <div class="modal-header">
-        <p class="heading lead">Appointment Approved!</p>
+        <p class="heading">Cancel Appointment</p>
 
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="bookingSuccess.hide()">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelDialog.hide()">
           <span aria-hidden="true" class="white-text">&times;</span>
         </button>
       </div>
 
       <!--Body-->
       <div class="modal-body">
-        <div class="text-center">
-          <mdb-icon fas icon="check" size="4x" class="mb-3 animated rotateIn"></mdb-icon>
-          <p>Service Provider has approved your Appointment!</p>
+
+        <div class="row">
+          <div class="col-3">
+            <p></p>
+            <p class="text-center">
+              <mdb-icon fas icon="ban" size="3x" class="mb-3 animated rotateIn"></mdb-icon>
+            </p>
+          </div>
+
+          <div class="col-9">
+            <h5>Are you sure want to cancel this appointment?</h5>
+          </div>
         </div>
       </div>
 
       <!--Footer-->
       <div class="modal-footer justify-content-center">
-        <a type="button" mdbBtn color="success" class="waves-effect" mdbWavesEffect (click)="bookingSuccess.hide()">Okay
+        <a type="button" mdbBtn color="danger" class="waves-effect"
+        (click)="changeAppointmntState(selectedAppointment.appoint_id, 'cancelled')"
+        (click)="cancelDialog.hide()" (click)="cancelAppoint.hide()" (click)="bookingOptions.hide()"
+        mdbWavesEffect>Cancel Appointment
+          <mdb-btn far icon="ban" class="ml-1"></mdb-btn>
         </a>
+        <a type="button" mdbBtn color="danger" outline="true" class="waves-effect" mdbWavesEffect
+        (click)="cancelDialog.hide()"
+          data-dismiss="modal">No, thanks</a>
       </div>
     </div>
     <!--/.Content-->
   </div>
-  </div >
+</div>
+
+
+<!-- confirm appointment dialog-->
+<div mdbModal #confirmDialog="mdbModal"
+class="modal fade top"
+id="frameModalTop" tabindex="-1" role="dialog"
+[config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-labelledby="myModalLabel" aria-hidden="true"
+   >
+  <div class="modal-dialog modal-notify modal-success modal-dialog-centered" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <p class="heading">Approve Appointment</p>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="confirmDialog.hide()">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+
+        <div class="row">
+          <div class="col-3">
+            <p></p>
+            <p class="text-center">
+              <mdb-icon fas icon="check" size="3x" class="mb-3 animated rotateIn"></mdb-icon>
+            </p>
+          </div>
+
+          <div class="col-9">
+            <h5>Are you sure want to approve this Appointmnet?</h5>
+          </div>
+        </div>
+      </div>
+
+      <!--Footer-->
+      <div class="modal-footer justify-content-center">
+        <a type="button" mdbBtn color="success" class="waves-effect"
+        (click) = "changeAppointmntState(selectedAppointment.appoint_id, 'confirmed')"
+        (click)="confirmDialog.hide()" (click)="bookingOptions.hide()"
+        mdbWavesEffect> Approve Appointment
+          <mdb-btn far icon="check" class="ml-1"></mdb-btn>
+        </a>
+        <a type="button" mdbBtn color="success" outline="true" class="waves-effect" mdbWavesEffect
+        (click)="confirmDialog.hide()"
+          data-dismiss="modal">No, thanks</a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+

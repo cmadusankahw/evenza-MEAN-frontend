@@ -31,7 +31,7 @@ export class SellerService {
 
   // change order stste
   changeOrderState(orderState: {orderId: string, state: string}) {
-    this.http.post<{ message: string, order: Order }>(this.url + 'seller/order/edit/', orderState)
+    this.http.post<{ message: string, order: Order }>(this.url + 'seller/order/edit' , orderState)
       .subscribe((recievedData) => {
         this.order = recievedData.order;
         this.orderUpdated.next(this.order);
@@ -65,7 +65,7 @@ export class SellerService {
 
     // get single order
     getOrder(orderId: string) {
-      this.http.get<{ message: string, order: Order }>(this.url + 'planner/order/get/' + orderId)
+      this.http.get<{ message: string, order: Order }>(this.url + 'seller/order/get/' + orderId)
       .subscribe((recievedOrder) => {
         this.order = recievedOrder.order;
         this.orderUpdated.next(this.order);

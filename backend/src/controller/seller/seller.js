@@ -59,6 +59,26 @@ seller.post('/add/img',checkAuth, multer({storage:storage}).array("images[]"), (
 });
 
 
+//update order state
+seller.post('/order/edit',checkAuth, (req, res, next) => {
+
+  Order.findOneAndUpdate({ 'order_id': req.body.orderId},{'state':req.body.state}, function (err,recievedOrder) {
+    if (err) return handleError(err => {
+      console.log(err);
+      res.status(500).json(
+        { message: 'Error while updating Order State! Please Retry!'}
+        );
+    });
+    console.log(recievedOrder);
+    res.status(200).json(
+      {
+        message: 'Order state updated successfully!',
+        order: recievedOrder
+      }
+    );
+  });
+});
+
 
 // get methods
 

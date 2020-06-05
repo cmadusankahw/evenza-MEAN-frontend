@@ -42,7 +42,7 @@ export class ServiceProviderService {
 
   // change booking stste
   changeBookingState(bookingState: {bookingId: string, state: string}) {
-    this.http.post<{ message: string, booking: Booking }>(this.url + 'sp/booking/edit/' + bookingState.bookingId, bookingState)
+    this.http.post<{ message: string, booking: Booking }>(this.url + 'sp/booking/edit' , bookingState)
       .subscribe((recievedData) => {
         this.booking = recievedData.booking;
         this.bookingUpdated.next(this.booking);
@@ -52,11 +52,11 @@ export class ServiceProviderService {
 
   // change appointment stste
   changeAppointmentState(appointState: {appointId: string, state: string}) {
-    this.http.post<{ message: string, appointment: Appointment }>(this.url + 'sp/appoint/edit/' + appointState.appointId, appointState)
+    this.http.post<{ message: string, appointment: Appointment }>(this.url + 'sp/appoint/edit', appointState)
       .subscribe((recievedData) => {
         this.appointment = recievedData.appointment;
         this.appointmentUpdated.next(this.appointment);
-        this.dialog.open(SuccessComponent, {data: {message: 'recievedData.message'}});
+        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
       });
   }
 

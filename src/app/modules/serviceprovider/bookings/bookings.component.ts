@@ -101,7 +101,7 @@ export class BookingsComponent implements OnInit, OnDestroy {
   }
 
    // cancel a booking
-   cancelBooking() {
+   sendCancelMail() {
     const cancelledMessage = document.getElementById('content').innerHTML;
     console.log(cancelledMessage);
     const mail: Email = {
@@ -122,9 +122,14 @@ export class BookingsComponent implements OnInit, OnDestroy {
       state
     };
     this.serviceProviderService.changeBookingState(bookingState);
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate(['/sp/dash/bookings']);
+    if (state === 'cancelled') {
+      this.sendCancelMail();
+    }
+    setTimeout(() => {
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate(['/sp/dash/bookings']);
+    }, 1000);
   }
 
 }

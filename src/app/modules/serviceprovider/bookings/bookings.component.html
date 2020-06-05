@@ -415,9 +415,6 @@
               Discard</button>
           </div>
 
-
-
-
       </div>
 
       <div class="modal-footer">
@@ -434,9 +431,11 @@
   </div>
 </div>
 
-<!-- cancel booking confirmation-->
+
+
+<!-- cancel booking dialog-->
 <div mdbModal #cancelDialog="mdbModal"
-class="modal fade right"
+class="modal fade top"
 id="frameModalTop" tabindex="-1" role="dialog"
 [config]="{ backdrop: false, ignoreBackdropClick: true }"
   aria-labelledby="myModalLabel" aria-hidden="true" >
@@ -472,7 +471,7 @@ id="frameModalTop" tabindex="-1" role="dialog"
       <!--Footer-->
       <div class="modal-footer justify-content-center">
         <a type="button" mdbBtn color="danger" class="waves-effect"
-        (click) = "cancelBooking()" (click)="changeBookingState(selectedBooking.booking_id, 'cancelled')"
+         (click)="changeBookingState(selectedBooking.booking_id, 'cancelled')"
         (click)="cancelDialog.hide()" (click)="cancelBookingModal.hide()" (click)="bookingOptions.hide()"
         mdbWavesEffect>Cancel Booking
           <mdb-btn far icon="ban" class="ml-1"></mdb-btn>
@@ -487,7 +486,7 @@ id="frameModalTop" tabindex="-1" role="dialog"
 </div>
 
 
-
+<!-- confirm booking dialog-->
 <div mdbModal #confirmDialog="mdbModal"
 class="modal fade top"
 id="frameModalTop" tabindex="-1" role="dialog"

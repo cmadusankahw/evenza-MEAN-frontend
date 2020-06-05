@@ -146,9 +146,9 @@ serviceProvider.get('/appoint/get/:id',checkAuth, (req, res, next) => {
 // post methods
 
 //update booking state
-serviceProvider.post('/booking/edit/:id',checkAuth, (req, res, next) => {
+serviceProvider.post('/booking/edit',checkAuth, (req, res, next) => {
 
-  Booking.findOneAndUpdate({ 'booking_id': req.params.id },{'state':req.body.state}, function (err,recievedBooking) {
+  Booking.findOneAndUpdate({ 'booking_id': req.body.bookingId },{'state':req.body.state}, function (err,recievedBooking) {
     if (err) return handleError(err => {
       console.log(err);
       res.status(500).json(
@@ -167,9 +167,9 @@ serviceProvider.post('/booking/edit/:id',checkAuth, (req, res, next) => {
 
 
 //update appointment state
-serviceProvider.post('/appoint/edit/:id',checkAuth, (req, res, next) => {
+serviceProvider.post('/appoint/edit',checkAuth, (req, res, next) => {
 
-  Appointment.findOneAndUpdate({ 'appoint_id': req.params.id },{'state':req.body.state}, function (err,recievedAppoint) {
+  Appointment.findOneAndUpdate({ 'appoint_id': req.body.appointId },{'state':req.body.state}, function (err,recievedAppoint) {
     if (err) return handleError(err => {
       console.log(err);
       res.status(500).json(

@@ -166,3 +166,11 @@ part 8 - additional features - recommendations/ rating
        - azure cognetive service - chat bot
        - adavanced analytical reports with tensorflow js
        - cloud deplyment azure, evenza.biz domain
+
+
+**Note:-
+Booking is placed when booking, service provider can only complete them
+
+Appointment will not be hecked with bookings (even while having a booking an appointment can be made)
+
+Appointments need to be approved by the service provider

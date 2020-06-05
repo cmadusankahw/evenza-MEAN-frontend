@@ -38,19 +38,19 @@
       <!-- Name Column -->
       <ng-container matColumnDef="date_ordered">
         <th mat-header-cell *matHeaderCellDef mat-sort-header > Date Orderd </th>
-        <td mat-cell *matCellDef="let row"> {{row.created_date + row.created_time}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.created_date.slice(0,10) + ' ' + row.created_date.slice(11,19)}} </td>
       </ng-container>
 
       <!-- Color Column -->
       <ng-container matColumnDef="quantity">
         <th mat-header-cell *matHeaderCellDef mat-sort-header > Quantity </th>
-        <td mat-cell *matCellDef="let row" > {{row.quantity + row.qty_type}} </td>
+        <td mat-cell *matCellDef="let row" > {{row.quantity + ' ' + row.qty_type  +'(s)'}} </td>
       </ng-container>
 
        <!-- Color Column -->
        <ng-container matColumnDef="amount_paid">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header > Amount Paid </th>
-        <td mat-cell *matCellDef="let row" > {{row.amount_paid}}  </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Total Amount</th>
+        <td mat-cell *matCellDef="let row" > {{row.amount}}  </td>
       </ng-container>
 
 
@@ -58,7 +58,8 @@
        <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> ACTION </th>
         <td mat-cell *matCellDef="let row">
-          <button mdbBtn color="purple" text="white" class="btn btn-sm text-center" (click)="orderOptions.show()">
+          <button mdbBtn color="purple" text="white" class="btn btn-sm text-center"
+          (click) ="showOrderDetails(row.order_id)" (click)="orderOptions.show()">
             ACTION
           </button>
          </td>
@@ -98,7 +99,7 @@
       role="document"
       style="overflow-y: initial !important"
     >
-      <div class="modal-content" *ngIf="recievedOrders.length">
+      <div class="modal-content" *ngIf="selectedOrder">
         <div class="modal-header">
           <button
             type="button"
@@ -109,7 +110,7 @@
             <span aria-hidden="true">×</span>
           </button>
           <h4 class="modal-title w-100" id="myModalLabel" >
-            <mat-icon>service</mat-icon>Order: {{recievedOrders[0].order_id}} Details
+            <mat-icon>service</mat-icon>Order: {{selectedOrder.order_id}} Details
           </h4>
         </div>
 
@@ -125,7 +126,7 @@
                       Order ID
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedOrders[0].order_id}}">
+                      <input type="text" matInput disabled value=" {{selectedOrder.order_id}}">
                     </div>
                   </div>
 
@@ -134,7 +135,7 @@
                       Product ID
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedOrders[0].product_id}}">
+                      <input type="text" matInput disabled value=" {{selectedOrder.product_id}}">
                     </div>
                   </div>
 
@@ -143,7 +144,7 @@
                       Product
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedOrders[0].product}}">
+                      <input type="text" matInput disabled value=" {{selectedOrder.product}}">
                     </div>
                   </div>
 
@@ -152,17 +153,17 @@
                       Quantity
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedOrders[0].quantity + recievedOrders[0].qty_type}}">
+                      <input type="text" matInput disabled value=" {{selectedOrder.quantity + ' ' + selectedOrder.qty_type + '(s)'}}">
                     </div>
                   </div>
 
 
                   <div class="row ">
                     <div class="col-md-4 info-text">
-                      Customer
+                      Customer Name
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedOrders[0].user.name}}">
+                      <input type="text" matInput disabled value=" {{selectedOrder.user.name}}">
                     </div>
                   </div>
 
@@ -171,16 +172,16 @@
                       Delivery Service
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedOrders[0].delivery_service}}">
+                      <input type="text" matInput disabled value=" ID : {{selectedOrder.delivery_service.delivery_service}}  Title: {{selectedOrder.delivery_service.title}}">
                     </div>
                   </div>
 
                   <div class="row " *ngIf="orderType != 'cancelled'">
                     <div class="col-md-4 info-text">
-                      Address for Delivery
+                      Address to Delivery
                     </div>
                     <div class="col info-input">
-                      <textarea type="text" matInput disabled value=" {{recievedOrders[0].delivery_address}}" >
+                      <textarea type="text" matInput disabled value=" {{selectedOrder.delivery_address}}" >
                         </textarea>
                     </div>
                   </div>
@@ -190,17 +191,17 @@
                       Order Date & Time
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{recievedOrders[0].created_date + recievedOrders[0].created_time}}">
+                      <input type="text" matInput disabled value=" {{selectedOrder.created_date.slice(0,10) + ' ' + selectedOrder.created_date.slice(11,19)}}">
                     </div>
                   </div>
 
 
                   <div class="row ">
                     <div class="col-md-4 info-text">
-                      Comments
+                      Customer Comments
                     </div>
                     <div class="col info-input">
-                      <textarea type="text" matInput disabled value=" {{recievedOrders[0].comment}}"></textarea>
+                      <textarea type="text" matInput disabled value=" {{selectedOrder.comment}}"></textarea>
                     </div>
                   </div>
 
@@ -210,26 +211,27 @@
                     Customer Review
                   </div>
                   <div class="col info-input">
-                    <textarea type="text" matInput disabled value=" {{recievedOrders[0].review ? recievedOrders[0].review : 'Not Reviewed yet'}}"></textarea>
+                    <textarea type="text" matInput disabled value=" {{selectedOrder.review ? selectedOrder.review : 'Not Reviewed yet'}}"></textarea>
                   </div>
                 </div>
 
                   <hr>
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                      Due Commission
-                    </div>
-                    <div class="col info-input-net">
-                      <input type="text" matInput disabled value=" Rs. {{recievedOrders[0].commission_due}}">
-                    </div>
-                  </div>
 
                   <div class="row ">
                     <div class="col-md-4 info-text-net">
                       Total Amount
                     </div>
                     <div class="col info-input-net">
-                      <input type="text" matInput disabled value=" Rs. {{recievedOrders[0].amount}}">
+                      <input type="text" matInput disabled value=" Rs. {{selectedOrder.amount}}">
+                    </div>
+                  </div>
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Due Commission
+                    </div>
+                    <div class="col info-input-net">
+                      <input type="text" matInput disabled value=" Rs. {{selectedOrder.commission_due}}">
                     </div>
                   </div>
 
@@ -238,7 +240,7 @@
                       Amount Paid
                     </div>
                     <div class="col info-input-net">
-                      <b><input type="text" matInput disabled value=" Rs. {{recievedOrders[0].amount_paid}}"></b>
+                      <b><input type="text" matInput disabled value=" Rs. {{selectedOrder.amount_paid}}"></b>
                     </div>
                   </div>
                   <hr>
@@ -247,17 +249,19 @@
                       State
                     </div>
                     <div class="col info-input-net" style="color:darkmagenta;">
-                      <b><input type="text" matInput disabled value=" {{recievedOrders[0].state}}"></b>
+                      <b><input type="text" matInput disabled value=" {{selectedOrder.state}}"></b>
                     </div>
                   </div>
 
                   <!--pending bookings -->
-                  <div class="info-top" *ngIf="recievedOrders[0].state == 'pending'" >
-                  <button mdbBtn color="purple" text="white" class="btn  btn-md text-center">
+                  <div class="info-top" *ngIf="selectedOrder.state == 'pending'" >
+                  <button mdbBtn color="purple" text="white" class="btn  btn-md text-center"
+                  (click)="confirmDialog.show()">
                    <span > Mark as Delivered </span>
                   </button>
 
-                  <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center" >
+                  <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center"
+                  (click)="cancelOrderModal.show()" >
                     <span>Cancel Order </span>
                   </button>
                 </div>
@@ -277,39 +281,197 @@
           </button>
         </div>
       </div>
+      <div class="modal-content" *ngIf = "!selectedOrder">
+        <app-not-found-page></app-not-found-page>
+       </div>
     </div>
   </div>
 
 
-  <!--Success Modal-->
-  <div mdbModal #bookingSuccess="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
-   [config]='{backdrop: false, ignoreBackdropClick: true}'   aria-hidden="true">
-   <div class="modal-dialog modal-notify modal-success modal-dialog-centered" role="document">
-    <!--Content-->
-    <div class="modal-content">
-      <!--Header-->
-      <div class="modal-header">
-        <p class="heading lead">Order Approved!</p>
 
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="bookingSuccess.hide()">
-          <span aria-hidden="true" class="white-text">&times;</span>
-        </button>
+<!--cancel booking Modal-->
+<div
+mdbModal
+#cancelOrderModal="mdbModal"
+class="modal fade"
+tabindex="-1"
+role="dialog"
+aria-labelledby="myBasicModalLabel"
+[config]="{ backdrop: false, ignoreBackdropClick: true }"
+aria-hidden="true"
+
+
+>
+<div
+  class="modal-dialog modal-dialog-centered modal-lg"
+  role="document"
+  style="overflow-y: initial !important"
+>
+  <div class="modal-content"   *ngIf = "selectedOrder">
+    <div class="modal-header">
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="cancelOrderModal.hide()"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+      <h4 class="modal-title w-100" id="myModalLabel" >
+        <mat-icon>service</mat-icon>Cancel Order: {{ selectedOrder.order_id}}
+      </h4>
+    </div>
+
+    <div class="modal-body container" style="height: 450px; overflow-y: auto;">
+      <div class="inner-content pd-top-min-2 text-center">
+        <p><b> Note: If you cancel this order, full paid amount of Rs. {{selectedOrder.amount_paid}} will be refund to the
+          customer. <br> 5% of the paid amount will be charged from you as a panely.
+          <br>
+        </b></p>
+        <hr>
       </div>
+      <div class="pd-top-min-2" id="content">
+        <h4><b>Cancellation Notice: </b> </h4>
+        <p><b>Order (Id: {{selectedOrder.order_id}})</b>  placed for
+          <b> {{selectedOrder.product }} </b> will be cancelled.
+        </p>
+        <br>
+        <h5>Reason for cancellation:</h5>
+       </div>
+        <mat-form-field>
+          <textarea matInput rows="4" [(ngModel)]="cancelMsg" placeholder="Please state your reason for cancellation.."></textarea>
+        </mat-form-field>
 
-      <!--Body-->
-      <div class="modal-body">
-        <div class="text-center">
-          <mdb-icon fas icon="check" size="4x" class="mb-3 animated rotateIn"></mdb-icon>
-          <p>Order was approved and sent to delivery!</p>
+        <hr>
+        <div class="btns text-center">
+          <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" style="margin:0 auto;"
+          (click) = "cancelDialog.show()">
+          Confirm Cancellation</button>
+          <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary"  outline="yes"
+          (click) ="cancelOrderModal.hide()" (click)="cancelMsg = null" id="discardBtn">
+            Discard</button>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button
+        mdbBtn
+        color="link"
+        (click)="cancelOrderModal.hide()"
+        mdbWavesEffect
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+<!-- cancel order dialog-->
+<div mdbModal #cancelDialog="mdbModal"
+class="modal fade top"
+id="frameModalTop" tabindex="-1" role="dialog"
+[config]="{ backdrop: false, ignoreBackdropClick: true }"
+aria-labelledby="myModalLabel" aria-hidden="true" >
+<div class="modal-dialog modal-notify modal-danger  modal-dialog-centered" role="document">
+  <!--Content-->
+  <div class="modal-content">
+    <!--Header-->
+    <div class="modal-header">
+      <p class="heading">Cancel Order</p>
+
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelDialog.hide()">
+        <span aria-hidden="true" class="white-text">&times;</span>
+      </button>
+    </div>
+
+    <!--Body-->
+    <div class="modal-body">
+
+      <div class="row">
+        <div class="col-3">
+          <p></p>
+          <p class="text-center">
+            <mdb-icon fas icon="ban" size="3x" class="mb-3 animated rotateIn"></mdb-icon>
+          </p>
+        </div>
+
+        <div class="col-9">
+          <h5>Are you sure want to cancel this order?</h5>
         </div>
       </div>
+    </div>
 
-      <!--Footer-->
-      <div class="modal-footer justify-content-center">
-        <a type="button" mdbBtn color="success" class="waves-effect" mdbWavesEffect (click)="bookingSuccess.hide()">Okay
-        </a>
+    <!--Footer-->
+    <div class="modal-footer justify-content-center">
+      <a type="button" mdbBtn color="danger" class="waves-effect"
+       (click)="changeOrderState(selectedOrder.order_id, 'cancelled')"
+      (click)="cancelDialog.hide()" (click)="cancelOrderModal.hide()" (click)="orderOptions.hide()"
+      mdbWavesEffect>Cancel Order
+        <mdb-btn far icon="ban" class="ml-1"></mdb-btn>
+      </a>
+      <a type="button" mdbBtn color="danger" outline="true" class="waves-effect" mdbWavesEffect
+      (click)="cancelDialog.hide()"
+        data-dismiss="modal">No, thanks</a>
+    </div>
+  </div>
+  <!--/.Content-->
+</div>
+</div>
+
+
+<!-- confirm order deliveery dialog-->
+<div mdbModal #confirmDialog="mdbModal"
+class="modal fade top"
+id="frameModalTop" tabindex="-1" role="dialog"
+[config]="{ backdrop: false, ignoreBackdropClick: true }"
+aria-labelledby="myModalLabel" aria-hidden="true"
+ >
+<div class="modal-dialog modal-notify modal-success modal-dialog-centered" role="document">
+  <!--Content-->
+  <div class="modal-content">
+    <!--Header-->
+    <div class="modal-header">
+      <p class="heading">Mark as Delivered</p>
+
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="confirmDialog.hide()">
+        <span aria-hidden="true" class="white-text">&times;</span>
+      </button>
+    </div>
+
+    <!--Body-->
+    <div class="modal-body">
+
+      <div class="row">
+        <div class="col-3">
+          <p></p>
+          <p class="text-center">
+            <mdb-icon fas icon="check" size="3x" class="mb-3 animated rotateIn"></mdb-icon>
+          </p>
+        </div>
+
+        <div class="col-9">
+          <h5>Are you sure want to mark this order as <b>delivered</b> ?</h5>
+        </div>
       </div>
     </div>
-    <!--/.Content-->
+
+    <!--Footer-->
+    <div class="modal-footer justify-content-center">
+      <a type="button" mdbBtn color="success" class="waves-effect"
+      (click) = "changeOrderState(selectedOrder.order_id, 'delivered')"
+      (click)="confirmDialog.hide()" (click)="orderOptions.hide()"
+      mdbWavesEffect> Mark as Delivered
+        <mdb-btn far icon="check" class="ml-1"></mdb-btn>
+      </a>
+      <a type="button" mdbBtn color="success" outline="true" class="waves-effect" mdbWavesEffect
+      (click)="confirmDialog.hide()"
+        data-dismiss="modal">No, thanks</a>
+    </div>
   </div>
-  </div >
+  <!--/.Content-->
+</div>
+</div>

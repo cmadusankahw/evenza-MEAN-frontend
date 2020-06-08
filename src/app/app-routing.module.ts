@@ -6,7 +6,7 @@ import { SignupComponent } from './modules/auth/signup/signup.component';
 import { SignupSelectComponent } from './modules/auth/signup-select/signup-select.component';
 import { SignupMerchantComponent } from './modules/auth/signup-merchant/signup-merchant.component';
 import { DashboardComponent } from './modules/serviceprovider/serviceprovider-dash/dashboard/dashboard.component';
-import { BprofileComponent } from './modules/serviceprovider/business-profile/bprofile/bprofile.component';
+import { BprofileComponent } from './modules/auth/business-profile/bprofile/bprofile.component';
 import { DashAppointmentsComponent } from './modules/serviceprovider/serviceprovider-dash/pages/dash-appointments/dash-appointments.component';
 import { DashBusinessProfileComponent } from './modules/serviceprovider/serviceprovider-dash/pages/dash-business-profile/dash-business-profile.component';
 import { DashBookingsComponent } from './modules/serviceprovider/serviceprovider-dash/pages/dash-bookings/dash-bookings.component';

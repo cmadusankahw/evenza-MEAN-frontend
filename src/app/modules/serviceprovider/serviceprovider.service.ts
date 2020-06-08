@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 
-import { Booking, Appointment } from './serviceprovider.model';
+import { Booking, Appointment, DashStat, PayStat } from './serviceprovider.model';
 import { Email } from '../eventplanner/eventplanner.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 
@@ -21,6 +21,8 @@ export class ServiceProviderService {
 
   private bookingUpdated = new Subject<Booking>();
   private appointmentUpdated = new Subject<Appointment>();
+  private dashStatUpdated = new Subject<DashStat>();
+  private payStatUpdated = new Subject<PayStat>();
 
   // recieved bookings
   private bookings: Booking[];
@@ -33,6 +35,12 @@ export class ServiceProviderService {
 
    // recieved single appointment
   private appointment: Appointment;
+
+  // dashboard stat
+  private dashstat: DashStat;
+
+  // payment stat
+  private paystat: PayStat;
 
 
   constructor(private http: HttpClient,
@@ -60,10 +68,6 @@ export class ServiceProviderService {
       });
   }
 
-
-  // user profile change password
-  changeUserPassword(currentPword: string, newPword: string) {
-  }
 
    // send emails
    sendEmail(mail: Email) {
@@ -112,6 +116,25 @@ export class ServiceProviderService {
     });
   }
 
+  // get dashboard stat
+  getDashStat() {
+    this.http.get<{ message: string, dashstat: DashStat }>(this.url + 'sp/dashstat/get')
+    .subscribe((recievedData) => {
+      this.dashstat = recievedData.dashstat;
+      this.dashStatUpdated.next(this.dashstat);
+    });
+  }
+
+  // get dashboard stat
+  getPaymentStat() {
+    this.http.get<{ message: string, paystat: PayStat }>(this.url + 'sp/paystat/get')
+    .subscribe((recievedData) => {
+      this.paystat = recievedData.paystat;
+      this.payStatUpdated.next(this.paystat);
+    });
+  }
+
+
   // listners for subjects
   getBookingsUpdateListener() {
     return this.bookingsUpdated.asObservable();
@@ -128,5 +151,14 @@ export class ServiceProviderService {
   getAppointmentUpdatedListener() {
     return this.appointmentUpdated.asObservable();
   }
+
+  getDashStatUpdatedListener() {
+    return this.dashStatUpdated.asObservable();
+  }
+
+  getPayStatUpdatedListener() {
+    return this.payStatUpdated.asObservable();
+  }
+
 
 }

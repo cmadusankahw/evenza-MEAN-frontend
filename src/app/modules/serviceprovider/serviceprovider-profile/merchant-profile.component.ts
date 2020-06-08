@@ -8,7 +8,8 @@ import { Router, NavigationEnd } from '@angular/router';
 
 import { ErrorComponent } from 'src/app/error/error.component';
 import { DatePipe } from '@angular/common';
-import { Merchant } from '../serviceprovider.model';
+import { Merchant } from '../../auth/auth.model';
+
 
 @Component({
   selector: 'app-merchant-profile',
@@ -84,7 +85,8 @@ export class MerchantProfileComponent implements OnInit, OnDestroy {
         gender: editForm.value.gender,
         date_of_birth: editForm.value.date_of_birth,
         reg_date: this.serviceProvider.reg_date,
-        isverified: this.serviceProvider.isverified // to be modified later
+        id_verification: this.serviceProvider.id_verification,
+        business: this.serviceProvider.business
         };
       this.authService.updateMerchant(merchant, this.image);
       this.merchantSubs = this.authService.getMerchantUpdateListener()

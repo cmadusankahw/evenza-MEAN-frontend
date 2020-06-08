@@ -22,8 +22,8 @@ mongoose.connect('mongodb://localhost:27017/evenza',
     console.log('Connection to database failed!');
   });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({ limit: '50mb',extended: false }));
 app.use("/images",express.static(path.join("src/assets/images/")));
 
 //Allow CROS

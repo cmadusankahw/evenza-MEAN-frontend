@@ -366,10 +366,10 @@
             </div>
 
             <div class="col-md-7 text-center">
-              <div class="verify-stat text-center" *ngIf="serviceProvider.isverified">
+              <div class="verify-stat text-center" *ngIf="serviceProvider.id_verification.isverified">
                 <mdb-icon far icon="check-circle"> </mdb-icon> Identity Verified
               </div>
-              <div class="verify-stat text-center" *ngIf="!serviceProvider.isverified" style="color:darkred; ">
+              <div class="verify-stat text-center" *ngIf="!serviceProvider.id_verification.isverified" style="color:darkred; ">
                 <mdb-icon far icon="times-circle"></mdb-icon> Identity Not Verified
                 <br>
               <a type="button" mdbBtn color="secondary"

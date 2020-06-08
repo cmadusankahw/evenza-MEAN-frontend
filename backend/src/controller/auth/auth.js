@@ -127,7 +127,7 @@ auth.post('/signup/admin', (req, res, next) => {
 // add profile pic merchant
 auth.post('/merchant/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
   const url = req.protocol + '://' + req.get("host");
-  imagePath = url+ "/images/merchant/" + req.files[0].filename;
+  imagePath = url+ "/images/merchant/" +  req.files[0].filename;
   res.status(200).json({
     profile_pic: imagePath
   });
@@ -136,7 +136,7 @@ auth.post('/merchant/img',checkAuth, multer({storage:storage}).array("images[]")
 // add profile pic event planner
 auth.post('/planner/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
   const url = req.protocol + '://' + req.get("host");
-  imagePath = url+ "/images/merchant/" + req.files[0].filename;
+  imagePath = url+ "/images/merchant/"+  req.files[0].filename;
   res.status(200).json({
     profile_pic: imagePath
   });
@@ -156,7 +156,8 @@ auth.post('/merchant',checkAuth, (req, res, next) => {
     postal_code: req.body.postal_code,
     gender: req.body.gender,
     date_of_birth: req.body.date_of_birth,
-    isverified: req.body.isverified,
+    id_verification: req.body.id_verification,
+    business: req.body.business
   })
   .then((result) => {
     console.log(result);
@@ -201,6 +202,45 @@ auth.post('/planner',checkAuth, (req, res, next) => {
 });
 
 
+// add merchant business profile photos
+auth.post('/business/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
+  const url = req.protocol + '://' + req.get("host");
+  let imagePaths = [];
+  for (let f of req.files){
+    imagePaths.push(url+ "/images/merchant/"+ f.filename);
+  }
+  res.status(200).json({imagePaths: imagePaths});
+});
+
+
+// add merchant photos a single image only
+auth.post('/business/single/img',checkAuth, multer({storage:storage}).single("images"), (req, res, next) => {
+  const url = req.protocol + '://' + req.get("host");
+    imagePath = url+ "/images/merchant/"  + f.filename;
+  res.status(200).json({imagePath: imagePath});
+});
+
+
+// update mrchant business profile
+auth.post('/business/edit',checkAuth, (req, res, next) => {
+const newBusiness = req.body;
+console.log(newBusiness);
+Merchant.updateOne({ user_id: req.userData.user_id}, {
+  business: newBusiness
+})
+.then(result=>{
+  res.status(200).json({
+    message: 'Business Profile updated successfully!',
+    result: result
+  });
+})
+.catch(err=>{
+  console.log(err);
+  res.status(500).json({
+    message: 'Business profile update was unsuccessful! Please try Again!'
+  });
+});
+});
 
 
 
@@ -315,6 +355,7 @@ auth.get('/get/header',checkAuth, (req, res, next) => {
         res.status(200).json(
           {
             user_type: req.userData.user_type,
+            user_name: planner.first_name,
             profile_pic: planner.profile_pic
           }
         );
@@ -325,6 +366,7 @@ auth.get('/get/header',checkAuth, (req, res, next) => {
       res.status(200).json(
         {
           user_type: req.userData.user_type,
+          user_name: merchant.first_name,
           profile_pic: merchant.profile_pic
         }
       );

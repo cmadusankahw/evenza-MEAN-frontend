@@ -5,7 +5,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { Router, NavigationStart } from '@angular/router';
 import { AuthService } from 'src/app/modules/auth/auth.service';
 
-import { Merchant } from 'src/app/modules/serviceprovider/serviceprovider.model';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -24,10 +24,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
    profile = 'txt-white row';
 
 
-  private merchantSubs: Subscription;
+  private headerSubs: Subscription;
 
   // recieved merchant
-  merchant: Merchant;
+  headerDetails: {userType: string, userName: string, profilePic: string};
 
 
   // create new service
@@ -45,17 +45,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.routerEvents();
-    this.authService.getMerchant();
-    this.merchantSubs = this.authService.getMerchantUpdateListener().subscribe (
+    this.authService.getHeaderDetails();
+    this.headerSubs = this.authService.getHeaderDetailsListener().subscribe (
       merchant => {
-          this.merchant = merchant;
+          this.headerDetails = merchant;
       });
   }
 
 
   ngOnDestroy() {
-    if (this.merchantSubs) {
-      this.merchantSubs.unsubscribe();
+    if (this.headerSubs) {
+      this.headerSubs.unsubscribe();
     }
   }
 

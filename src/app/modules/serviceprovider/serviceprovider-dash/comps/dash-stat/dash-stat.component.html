@@ -8,7 +8,7 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 br-back stat-num">
           <span class="stat-no">
-            {{dashStat[0].pending_bookings}}
+            {{ dashStat ? dashStat.pending_bookings: '0'}}
           </span>
         </div>
 
@@ -20,7 +20,7 @@
           <hr />
           Latest request on:
           <br />
-          <span class="date-text">{{dashStat[0].last_book_date}}</span>
+          <span class="date-text">{{ dashStat ? dashStat.last_book_date : 'loading...'}}</span>
         </div>
       </div>
     </mat-card-body>
@@ -36,7 +36,7 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 ar-back stat-num">
           <span class="stat-no">
-            {{dashStat[0].pending_appointments}}
+            {{dashStat ? dashStat.pending_appointments : 0}}
           </span>
         </div>
 
@@ -47,7 +47,7 @@
           <hr />
           Latest reservation on:
           <br />
-          <span class="date-text">{{dashStat[0].last_appointment_date}}</span>
+          <span class="date-text">{{dashStat ? dashStat.last_appointment_date : 'loading...'}}</span>
         </div>
       </div>
     </mdb-card>
@@ -62,18 +62,18 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 cb-back stat-num">
           <span class="stat-no">
-            {{dashStat[0].confirmed_bookings}}
+            {{dashStat ? dashStat.completed_bookings : 0}}
           </span>
         </div>
 
         <div class="col-md-9 stat-text">
           <span class="stat-title">
-            Confimed Bookings
+            Completed Bookings
           </span>
           <hr />
           Latest booking on:
           <br />
-          <span class="date-text">{{dashStat[0].last_confirmed_book_date}}</span>
+          <span class="date-text">{{dashStat ? dashStat.last_completed_book_date: 'loading...'}}</span>
         </div>
       </div>
     </mdb-card>
@@ -88,7 +88,7 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 er-back stat-num">
           <span class="stat-no">
-            {{dashStat[0].approved_appointments}}
+            {{dashStat ? dashStat.approved_appointments: 0}}
           </span>
         </div>
 
@@ -99,7 +99,7 @@
           <hr />
           Latest Approval on:
           <br />
-          <span class="date-text">{{dashStat[0].last_approved_appointment_date}}</span>
+          <span class="date-text">{{dashStat ? dashStat.last_approved_appointment_date: 'loading...'}}</span>
         </div>
       </div>
     </mdb-card>

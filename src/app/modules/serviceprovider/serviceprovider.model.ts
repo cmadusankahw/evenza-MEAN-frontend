@@ -90,12 +90,10 @@ export interface BusinessStat {
 }
 
 export interface DashStat {
-  business_id: string;
-  merchant_id: string;
   pending_bookings: number;
   last_book_date: string;
-  confirmed_bookings: number;
-  last_confirmed_book_date: string;
+  completed_bookings: number;
+  last_completed_book_date: string;
   pending_appointments: number;
   last_appointment_date: string;
   approved_appointments: number;
@@ -111,62 +109,4 @@ export interface PayStat {
   last_pay_date: string;
 }
 
-export interface Merchant {
-  user_id: string;
-  user_type: string;
-  first_name: string;
-  last_name: string;
-  profile_pic: string;
-  nic: string;
-  email: string;
-  contact_no: string;
-  address_line1: string;
-  address_line2: string;
-  postal_code: string;
-  gender: string;
-  date_of_birth: string;
-  isverified: boolean;
-  reg_date: string;
-  // business: {
-     // business details
-    // business_created_date: string;
-    // business_title: string;
-    // description: string;
-    // business_email: string;
-    // business_contact_no: string;
-    // business_address_line1: string;
-    // business_address_line2: string;
-    // business_postal_code: string;
-    // business_location: string;
-    // business_isverified: boolean;
-    // br_side_a: string;
-    // br_side_b: string;
-    // open_days: [{ day: number, from_time: string, to_time: string; }];
-    // payment_verified: boolean;
-    // card_no: number;
-    // pin_no: number;
-    // bank: string;
-    // exp_date: string;
-    // feature_img: string;
-    // logo: string;
-    // }
-}
 
-// to be removed once merchant is configured
-export interface Business {
-  id: string;
-  merchant_type: string;
-  title: string;
-  description: string;
-  email: string;
-  contact_no: string;
-  address_line1: string;
-  address_line2: string;
-  postal_code: string;
-  location: string;
-  isverified: boolean;
-  isopened: boolean;
-  payment_verified: boolean;
-  feature_img: string;
-  logo: string;
-}

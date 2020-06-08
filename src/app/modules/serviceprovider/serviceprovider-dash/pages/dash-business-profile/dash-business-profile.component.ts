@@ -7,9 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashBusinessProfileComponent implements OnInit {
 
-  iscreated = true;
   isowner = true;
-  idverified = false;
 
   constructor() { }
 

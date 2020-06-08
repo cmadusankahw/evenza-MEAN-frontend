@@ -7,9 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SellerDashBprofileComponent implements OnInit {
 
-  idverified = false;
-  iscreated = true;
   isowner = true;
+
 
   constructor() { }
 

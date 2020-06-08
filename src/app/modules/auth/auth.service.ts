@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import { Merchant, EventPlanner, User, MerchantTemp, LogIn } from './auth.model';
+import { Merchant, EventPlanner, User, MerchantTemp, LogIn, Business } from './auth.model';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { SuccessComponent } from 'src/app/success/success.component';
@@ -41,9 +41,9 @@ export class AuthService {
   private authStatusListener = new Subject<boolean>();
 
   // details for app header
-  private headerDetailsListener = new Subject<{userType: string, profilePic: string}>();
+  private headerDetailsListener = new Subject<{userType: string, userName: string, profilePic: string}>();
 
-  private headerDetails: {userType: string, profilePic: string};
+  private headerDetails: {userType: string, userName: string, profilePic: string};
 
   // user login status
   private isAuthenticated = false;
@@ -80,9 +80,6 @@ export class AuthService {
     .subscribe((recievedMerchant) => {
       this.merchant = recievedMerchant.merchant;
       this.merchantUpdated.next(this.merchant);
-    }, (error) => {
-      this.router.navigate(['/']);
-      console.log(error);
     });
   }
 
@@ -92,9 +89,6 @@ export class AuthService {
       .subscribe((recievedMerchant) => {
         this.eventPlanner = recievedMerchant.eventPlanner;
         this.eventPlannerUpdated.next(this.eventPlanner);
-    }, (error) => {
-      this.router.navigate(['/']);
-      console.log(error);
     });
   }
 
@@ -102,10 +96,11 @@ export class AuthService {
   // get details for header
   getHeaderDetails() {
     if (this.token) {
-      this.http.get<{user_type: string, profile_pic: string}>(this.url + 'auth/get/header')
+      this.http.get<{user_type: string, user_name: string, profile_pic: string}>(this.url + 'auth/get/header')
       .subscribe((recievedHeader) => {
         this.headerDetails = {
           userType: recievedHeader.user_type,
+          userName: recievedHeader.user_name,
           profilePic: recievedHeader.profile_pic};
         this.headerDetailsListener.next(this.headerDetails);
     });
@@ -263,7 +258,48 @@ export class AuthService {
     }, (error) => {
       console.log(error);
       });
+   }
   }
+
+  // update merchant buiness profile
+  updateBusinessProfile(business: Business, imgArray: File[]) {
+    const imageData = new FormData();
+    const currentImg = [];
+    let j = 0;
+    for (const image of imgArray) {
+      if (image) {
+        imageData.append('images[]', image, image.name);
+        currentImg.push(j);
+      }
+      j++;
+    }
+    console.log(imageData);
+    console.log(currentImg);
+    this.http.post<{imagePaths: string[]}>(this.url + 'auth/business/img', imageData )
+      .subscribe ((recievedImages) => {
+        console.log(recievedImages);
+        recievedImages.imagePaths.find((img) => {
+          if ( currentImg.includes(3) ) {
+            business.business_verification.br_side_b = img;
+            currentImg.pop();
+          } else if ( currentImg.includes(2)) {
+            business.business_verification.br_side_a = img;
+            currentImg.pop();
+          } else if ( currentImg.includes(1)) {
+            business.logo = img;
+            currentImg.pop();
+          } else if ( currentImg.includes(0)) {
+            business.feature_img = img;
+            currentImg.pop();
+          }
+        });
+        this.http.post<{ message: string, result: Merchant }>(this.url + 'auth/business/edit', business)
+        .subscribe((recievedData) => {
+          console.log(recievedData.message);
+          console.log(recievedData.result);
+          this.dialog.open(SuccessComponent, {data: {message: 'Business Profile Successfully Updated!'}});
+      });
+    });
   }
 
 
@@ -301,6 +337,10 @@ export class AuthService {
   }
   }
 
+
+  // user profile change password
+  changeUserPassword(userType: string, currentPword: string, newPword: string) {
+  }
 
  // add a new Merchant Temp
   addMerchantTemp(merchantTemp: MerchantTemp) {

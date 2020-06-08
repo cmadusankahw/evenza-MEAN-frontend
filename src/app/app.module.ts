@@ -35,6 +35,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import {MatSliderModule} from '@angular/material/slider';
 import { DatePipe } from '@angular/common';
+import { AgmCoreModule } from '@agm/core';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -48,7 +49,7 @@ import { FooterComponent } from './modules/home/footer/footer.component';
 import { HomepageComponent } from './modules/home/homepage/homepage.component';
 import { SignupMerchantComponent } from './modules/auth/signup-merchant/signup-merchant.component';
 import { CardDetailsComponent } from './modules/auth/card-details/card-details.component';
-import { IdVerifyComponent } from './modules/serviceprovider/id-verify/id-verify.component';
+import { IdVerifyComponent } from './modules/auth/id-verify/id-verify.component';
 import { EventNewsComponent } from './modules/event/event-news/event-news.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -64,14 +65,13 @@ import { DashBookingsComponent } from './modules/serviceprovider/serviceprovider
 import { DashAppointmentsComponent } from './modules/serviceprovider/serviceprovider-dash/pages/dash-appointments/dash-appointments.component';
 import { DashReportsComponent } from './modules/serviceprovider/serviceprovider-dash/pages/dash-reports/dash-reports.component';
 import { DashProfileComponent } from './modules/serviceprovider/serviceprovider-dash/pages/dash-profile/dash-profile.component';
-import { BusinessVerifyComponent } from './modules/serviceprovider/business-profile/business-verify/business-verify.component';
-import { NoBprofileComponent } from './modules/serviceprovider/business-profile/no-bprofile/no-bprofile.component';
-import { BprofileComponent } from './modules/serviceprovider/business-profile/bprofile/bprofile.component';
+import { BusinessVerifyComponent } from './modules/auth/business-profile/business-verify/business-verify.component';
+import { BprofileComponent } from './modules/auth/business-profile/bprofile/bprofile.component';
 import { ServiceCardComponent } from './modules/service/service-card/service-card.component';
 import { EarningsComponent } from './modules/serviceprovider/earnings/earnings.component';
 import { ServiceDetailsComponent } from './modules/service/service-details/service-details.component';
 import { BusinessStatComponent } from './modules/serviceprovider/serviceprovider-dash/comps/business-stat/business-stat.component';
-import { BusinessOpenDaysComponent } from './modules/serviceprovider/business-profile/business-open-days/business-open-days.component';
+import { BusinessOpenDaysComponent } from './modules/auth/business-profile/business-open-days/business-open-days.component';
 import { AppointmentsComponent } from './modules/serviceprovider/appointments/appointments.component';
 import { CalendarComponent } from './modules/serviceprovider/calendar/calendar.component';
 import { DashCalendarComponent } from './modules/serviceprovider/serviceprovider-dash/pages/dash-calendar/dash-calendar.component';
@@ -88,13 +88,8 @@ import { SellerDashBprofileComponent } from './modules/seller/seller-dash/pages/
 import { SellerDashInventoryComponent } from './modules/seller/seller-dash/pages/seller-dash-inventory/seller-dash-inventory.component';
 import { SellerDashReportsComponent } from './modules/seller/seller-dash/pages/seller-dash-reports/seller-dash-reports.component';
 import { SellerDashProfileComponent } from './modules/seller/seller-dash/pages/seller-dash-profile/seller-dash-profile.component';
-import { SellerBprofileComponent } from './modules/seller/business-profile/seller-bprofile/seller-bprofile.component';
-import { SellerNoBprofileComponent } from './modules/seller/business-profile/seller-no-bprofile/seller-no-bprofile.component';
-import { SellerBusinessVerifyComponent } from './modules/seller/business-profile/seller-business-verify/seller-business-verify.component';
 import { SellerProfileComponent } from './modules/seller/seller-profile/seller-profile.component';
-import { SellerIdVerifyComponent } from './modules/seller/seller-id-verify/seller-id-verify.component';
 import { SellerEarningsComponent } from './modules/seller/seller-earnings/seller-earnings.component';
-import { SellerBusinessOpenDaysComponent } from './modules/seller/business-profile/seller-business-open-days/seller-business-open-days.component';
 import { ProductDetailsComponent } from './modules/product/product-details/product-details.component';
 import { NotFoundPageComponent } from './modules/home/not-found-page/not-found-page.component';
 import { SellerDashOrdersComponent } from './modules/seller/seller-dash/pages/seller-dash-orders/seller-dash-orders.component';
@@ -130,6 +125,7 @@ import { EventParticipantsComponent } from './modules/event/event-participants/e
 import { PlannerProfileComponent } from './modules/eventplanner/planner-profile/planner-profile.component';
 import { RatingReviewComponent } from './modules/eventplanner/rating-review/rating-review.component';
 import { BookingNoteComponent } from './modules/eventplanner/booking-note/booking-note.component';
+import { LocationSearchComponent } from './modules/service/location-search/location-search.component';
 
 
 
@@ -160,7 +156,6 @@ import { BookingNoteComponent } from './modules/eventplanner/booking-note/bookin
     DashReportsComponent,
     DashProfileComponent,
     BusinessVerifyComponent,
-    NoBprofileComponent,
     BprofileComponent,
     ServiceCardComponent,
     EarningsComponent,
@@ -183,13 +178,8 @@ import { BookingNoteComponent } from './modules/eventplanner/booking-note/bookin
     SellerDashInventoryComponent,
     SellerDashReportsComponent,
     SellerDashProfileComponent,
-    SellerBprofileComponent,
-    SellerNoBprofileComponent,
-    SellerBusinessVerifyComponent,
     SellerProfileComponent,
-    SellerIdVerifyComponent,
     SellerEarningsComponent,
-    SellerBusinessOpenDaysComponent,
     ProductDetailsComponent,
     NotFoundPageComponent,
     SellerDashOrdersComponent,
@@ -223,6 +213,7 @@ import { BookingNoteComponent } from './modules/eventplanner/booking-note/bookin
     PlannerProfileComponent,
     RatingReviewComponent,
     BookingNoteComponent,
+    LocationSearchComponent,
 
 
 
@@ -270,7 +261,11 @@ import { BookingNoteComponent } from './modules/eventplanner/booking-note/bookin
     FullCalendarModule,
     CarouselModule,
     MatSliderModule,
-    MatDialogModule
+    MatDialogModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyB4MIX31RUspo9HAkq90KM3W3Ltyw4UIx0',
+      libraries: ['places']
+    })
 
   ],
   schemas: [NO_ERRORS_SCHEMA],

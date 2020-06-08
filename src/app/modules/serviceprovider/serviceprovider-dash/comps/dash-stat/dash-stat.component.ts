@@ -1,31 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { DashStat } from '../../../serviceprovider.model';
+import { ServiceProviderService } from '../../../serviceprovider.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dash-stat',
   templateUrl: './dash-stat.component.html',
   styleUrls: ['./dash-stat.component.scss']
 })
-export class DashStatComponent implements OnInit {
+export class DashStatComponent implements OnInit, OnDestroy {
 
-  dashStat: DashStat[] = [
-    {business_id: 'B-01',
-    merchant_id: 'M-01',
-    pending_bookings: 3,
-    last_book_date: '22/03/2020',
-    confirmed_bookings: 5,
-    last_confirmed_book_date: '20/03/2020',
-    pending_appointments:4,
-    last_appointment_date: '11/02/2020',
-    approved_appointments: 1,
-    last_approved_appointment_date: '13/03/2020'
-  },
-  ];
+  // subscribers
+  private dashStatSub: Subscription;
 
-  constructor() { }
+  dashStat: DashStat;
+
+  constructor(private serviceProviderService: ServiceProviderService ) { }
 
   ngOnInit() {
+    this.serviceProviderService.getDashStat();
+    this.dashStatSub = this.serviceProviderService.getDashStatUpdatedListener()
+          .subscribe((recievedData: DashStat) => {
+              this.dashStat = recievedData;
+              console.log(this.dashStat);
+      });
+  }
+
+  ngOnDestroy(){
+    if (this.dashStatSub) {
+      this.dashStatSub.unsubscribe();
+    }
   }
 
 }

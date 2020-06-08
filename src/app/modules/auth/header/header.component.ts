@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false;
 
   // get signed user type
-  headerDetails: {userType: string, profilePic: string};
+  headerDetails: {userType: string, userName: string, profilePic: string};
 
 
 

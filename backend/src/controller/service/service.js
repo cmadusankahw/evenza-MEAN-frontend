@@ -89,20 +89,11 @@ service.post('/add',checkAuth, (req, res, next) => {
 service.post('/add/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
     const url = req.protocol + '://' + req.get("host");
     let image01Path, image02Path, image03Path = null;
-    if (req.files[0]){
-      image01Path = url+ "/images/services/" + req.files[0].filename;
+    let imagePaths = [];
+    for (let f of req.files){
+      imagePaths.push(url+ "/images/services/" + f.filename);
     }
-    if (req.files[1]){
-      image02Path = url+ "/images/services/" + req.files[1].filename;
-    }
-    if (req.files[2]){
-      image03Path = url+ "/images/services/" + req.files[2].filename;
-    }
-    res.status(200).json({
-      image_01: image01Path,
-      image_02: image02Path,
-      image_03: image03Path
-    });
+    res.status(200).json({imagePaths: imagePaths});
 
 });
 

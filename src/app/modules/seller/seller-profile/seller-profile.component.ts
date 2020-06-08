@@ -5,10 +5,10 @@ import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { Router, NavigationEnd } from '@angular/router';
 
-import { Merchant } from '../seller.model';
 import { ErrorComponent } from 'src/app/error/error.component';
 import { SellerService } from '../seller.service';
 import { DatePipe } from '@angular/common';
+import { Merchant } from '../../auth/auth.model';
 
 @Component({
   selector: 'app-seller-profile',
@@ -90,7 +90,8 @@ export class SellerProfileComponent implements OnInit, OnDestroy {
         gender: editForm.value.gender,
         date_of_birth: editForm.value.date_of_birth,
         reg_date: this.seller.reg_date,
-        isverified: this.seller.isverified // to be modified later
+        id_verification: this.seller.id_verification,
+        business: this.seller.business
         };
       this.authService.updateMerchant(merchant, this.image);
       this.merchantSubs = this.authService.getMerchantUpdateListener()

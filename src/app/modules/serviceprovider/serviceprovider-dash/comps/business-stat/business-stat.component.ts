@@ -10,7 +10,7 @@ import { BusinessStat } from '../../../serviceprovider.model';
 })
 export class BusinessStatComponent implements OnInit {
 
-  @Input() iscreated;
+ iscreated = true;
 
   businessStat: BusinessStat[] = [
     {

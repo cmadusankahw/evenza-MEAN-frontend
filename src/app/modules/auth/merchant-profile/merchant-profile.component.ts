@@ -8,7 +8,7 @@ import { Router, NavigationEnd } from '@angular/router';
 
 import { ErrorComponent } from 'src/app/error/error.component';
 import { DatePipe } from '@angular/common';
-import { Merchant } from '../../auth/auth.model';
+import { Merchant } from '../auth.model';
 
 
 @Component({
@@ -72,7 +72,7 @@ export class MerchantProfileComponent implements OnInit, OnDestroy {
     } else {
       const merchant: Merchant = {
         user_id: this.serviceProvider.user_id,
-        user_type: 'serviceProvider',
+        user_type: this.serviceProvider.user_type,
         nic: editForm.value.nic,
         first_name: editForm.value.first_name,
         last_name: editForm.value.last_name,
@@ -97,9 +97,16 @@ export class MerchantProfileComponent implements OnInit, OnDestroy {
       console.log('Merchant updated successfully!');
       editForm.resetForm();
       this.editmode = false;
-      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-      this.router.onSameUrlNavigation = 'reload';
-      this.router.navigate(['/sp/dash/profile']);
+      setTimeout(() => {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        if (this.serviceProvider.user_type === 'serviceProvider'){
+          this.router.navigate(['/sp/dash/profile']);
+        }
+        if (this.serviceProvider.user_type === 'seller'){
+          this.router.navigate(['/sel/dash/profile']);
+        }
+      }, 1200);
     }
   }
 

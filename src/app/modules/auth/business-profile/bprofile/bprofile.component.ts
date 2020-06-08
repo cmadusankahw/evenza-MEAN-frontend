@@ -195,7 +195,7 @@ updateBusinessProfile(updateeBprofileForm: NgForm) {
         this.router.navigate(['/sp/dash/bprofile']);
       }
       if (this.recievedMerchant.user_type === 'seller') {
-        this.router.navigate(['/seller/dash/bprodile']);
+        this.router.navigate(['/sel/dash/bprofile']);
       }
     }, 1500);
 

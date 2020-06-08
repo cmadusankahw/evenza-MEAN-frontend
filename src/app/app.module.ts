@@ -75,7 +75,7 @@ import { BusinessOpenDaysComponent } from './modules/auth/business-profile/busin
 import { AppointmentsComponent } from './modules/serviceprovider/appointments/appointments.component';
 import { CalendarComponent } from './modules/serviceprovider/calendar/calendar.component';
 import { DashCalendarComponent } from './modules/serviceprovider/serviceprovider-dash/pages/dash-calendar/dash-calendar.component';
-import { MerchantProfileComponent } from './modules/serviceprovider/serviceprovider-profile/merchant-profile.component';
+import { MerchantProfileComponent } from './modules/auth/merchant-profile/merchant-profile.component';
 import { ProductCardComponent } from './modules/product/product-card/product-card.component';
 import { ContactUsComponent } from './modules/home/contact-us/contact-us.component';
 import { SellerDashboardComponent } from './modules/seller/seller-dash/seller-dashboard/seller-dashboard.component';
@@ -88,7 +88,6 @@ import { SellerDashBprofileComponent } from './modules/seller/seller-dash/pages/
 import { SellerDashInventoryComponent } from './modules/seller/seller-dash/pages/seller-dash-inventory/seller-dash-inventory.component';
 import { SellerDashReportsComponent } from './modules/seller/seller-dash/pages/seller-dash-reports/seller-dash-reports.component';
 import { SellerDashProfileComponent } from './modules/seller/seller-dash/pages/seller-dash-profile/seller-dash-profile.component';
-import { SellerProfileComponent } from './modules/seller/seller-profile/seller-profile.component';
 import { SellerEarningsComponent } from './modules/seller/seller-earnings/seller-earnings.component';
 import { ProductDetailsComponent } from './modules/product/product-details/product-details.component';
 import { NotFoundPageComponent } from './modules/home/not-found-page/not-found-page.component';
@@ -178,7 +177,6 @@ import { LocationSearchComponent } from './modules/service/location-search/locat
     SellerDashInventoryComponent,
     SellerDashReportsComponent,
     SellerDashProfileComponent,
-    SellerProfileComponent,
     SellerEarningsComponent,
     ProductDetailsComponent,
     NotFoundPageComponent,

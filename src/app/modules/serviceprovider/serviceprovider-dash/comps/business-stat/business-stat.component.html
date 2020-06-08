@@ -29,16 +29,16 @@
         Total Earnings:
       </div>
       <div class="col earn-amt">
-        Rs. {{businessStat[0].earnings}}
+        Rs. {{amounts.totalEarning}}
       </div>
     </div>
 
     <div class="row pd-top" >
       <div class="col-md-7 earn-text">
-        Active Services:
+        Commision Due:
       </div>
       <div class="col earn-serve">
-         {{businessStat[0].active_services}}
+        Rs. {{amounts.totalCommisionDue}}
       </div>
     </div>
     <div class="row pd-top ">
@@ -53,10 +53,10 @@
       </div>
     </div>
       <div class="row pd-top container-fluid">
-        <mat-progress-bar mode="determinate" value="{{businessStat[0].performance_value}}"></mat-progress-bar>
+        <mat-progress-bar mode="determinate" [value]="performanceValue"></mat-progress-bar>
       </div>
       <div class="scroll-text pd-top">
-        {{businessValue(businessStat[0].performance_value)}}
+        {{performanceValue}}
       </div>
       <div class="row pd-top pd-top">
         <button mdbBtn mdbWavesEffect role="buton" class="btn btn-primary btn-md cnt-center ">
@@ -106,7 +106,7 @@
 
       <div class="modal-body " style="height: 400px; overflow-y: auto;">
 
-        <app-earnings></app-earnings>
+        <app-earnings (amountsEmit) = "setAmounts($event)"></app-earnings>
 
       </div>
 

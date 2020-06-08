@@ -231,7 +231,8 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
 
     // check booking availability
     checkAvailability(fromDate: string, toDate: string) {
-      // this.serviceService.checkAvailability(fromDate: string, toDate: string)
+      this.refactorDates();
+      this.serviceService.checkBookingAvailability(this.dates.fromDate, this.dates.toDate);
       this.dialog.open(SuccessComponent,
         {data: {message: 'Sorry! The Service not available on selected Dates'}});
     }
@@ -239,9 +240,14 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
 
     // check appointment availability
     checkAppointAvailability(appointDate: string) {
-        // this.serviceService.checkAppointAvailability(appointDate: string)
-        console.log(this.appointment.date , '   ' , this.appointment.time);
-        this.dialog.open(SuccessComponent,
+      const newappointedDate = new Date(Number(appointDate.slice(0, 4)),
+                                     Number(appointDate.slice(5, 7)) - 1,
+                                     Number(appointDate.slice(8, 10)),
+                                     this.appointment.time.hour,
+                                     this.appointment.time.minute,
+                                     this.appointment.time.second, ).toISOString();
+      this.serviceService.checkAppointAvailability(newappointedDate);
+      this.dialog.open(SuccessComponent,
           {data: {message: 'Sorry! The Service not available on selected Date'}});
     }
 

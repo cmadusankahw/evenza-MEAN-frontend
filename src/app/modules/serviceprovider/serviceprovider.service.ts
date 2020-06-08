@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 
-import { Booking, Appointment, DashStat, PayStat } from './serviceprovider.model';
+import { Booking, Appointment, DashStat, PayStat, CalendarBooking } from './serviceprovider.model';
 import { Email } from '../eventplanner/eventplanner.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 
@@ -18,6 +18,7 @@ export class ServiceProviderService {
   // subjects
   private bookingsUpdated = new Subject<Booking[]>();
   private appointmentsUpdated = new Subject<Appointment[]>();
+  private calendarBookingsUpdated = new Subject<CalendarBooking[]>();
 
   private bookingUpdated = new Subject<Booking>();
   private appointmentUpdated = new Subject<Appointment>();
@@ -29,6 +30,9 @@ export class ServiceProviderService {
 
   // recieved appointments
   private appointments: Appointment[];
+
+  // recieved calendar bookings
+  private calendarBookings: CalendarBooking[] = [];
 
    // recieved single booking
    private booking: Booking;
@@ -79,6 +83,17 @@ export class ServiceProviderService {
   }
 
   // get methods
+
+  // get list of bookings of an event planner
+  getCalendarBookings() {
+    this.http.get<{ message: string, bookings: Booking[] }>(this.url + 'sp/calbooking/get')
+      .subscribe((recievedBookings) => {
+        for (const book of recievedBookings.bookings) {
+          this.calendarBookings.push({ title: book.event_name, start: book.from_date, end: book.to_date});
+        }
+        this.calendarBookingsUpdated.next([...this.calendarBookings]);
+      });
+    }
 
    // get list of bookings of an event planner
    getBookings() {
@@ -158,6 +173,10 @@ export class ServiceProviderService {
 
   getPayStatUpdatedListener() {
     return this.payStatUpdated.asObservable();
+  }
+
+  getCalendarBookingsUpdatedListener() {
+    return this.calendarBookingsUpdated.asObservable();
   }
 
 

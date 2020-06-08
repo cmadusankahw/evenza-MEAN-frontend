@@ -230,6 +230,15 @@ export class ServiceService  {
         });
   }
 
+   // create new calendar booking
+   createCalendarBooking(booking: Booking) {
+    this.http.post<{ message: string, bookingId: string }>(this.url + 'service/calbooking/add', booking)
+    .subscribe((recievedData) => {
+      console.log(recievedData.message);
+      this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
+  });
+}
+
   // create new appointment
    createAppointment(appointment: Appointment) {
       this.http.post<{ message: string, appointId: string }>(this.url + 'service/appoint/add', appointment)
@@ -238,6 +247,17 @@ export class ServiceService  {
         this.router.navigate(['/print/appoint/' + recievedData.appointId]);
         this.dialog.open(SuccessComponent, {data: {message: 'Appointment Successfull! Your Appointment Id: ' + recievedData.appointId}});
     });
+  }
+
+  // check booking availability
+  checkBookingAvailability(fromDate: string, toDate: string) {
+
+  }
+
+
+  // check appointment availability
+  checkAppointAvailability(appointedDate: string) {
+
   }
 
 

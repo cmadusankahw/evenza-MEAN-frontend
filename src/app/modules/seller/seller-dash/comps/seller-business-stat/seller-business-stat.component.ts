@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 
 import { BusinessStat } from '../../../seller.model';
 
@@ -7,21 +7,29 @@ import { BusinessStat } from '../../../seller.model';
   templateUrl: './seller-business-stat.component.html',
   styleUrls: ['./seller-business-stat.component.scss']
 })
-export class SellerBusinessStatComponent implements OnInit {
+export class SellerBusinessStatComponent implements OnInit, OnChanges {
 
   iscreated = true;
 
-  businessStat: BusinessStat[] = [
-    {
-      business_id: 'B-01', earnings: '0.0', performance_value: 65, onselling_products: 3,
-      fb_link: 'fb/com/sampleBusiness', insta_link: 'instagram.com/sampleBusinss', twitter_link: 'twitter.com/sampleBusiness'
-    },
-  ];
+  amounts = {
+    totalCommisionDue: 0,
+    totalEarning: 0
+  };
 
+  performanceValue = 0;
 
   constructor() { }
 
   ngOnInit() {
+    if (this.amounts.totalCommisionDue > 0 && this.amounts.totalEarning > 0) {
+      this.performanceValue = Math.floor((this.amounts.totalCommisionDue / this.amounts.totalEarning) * 100) ;
+    }
+  }
+
+  ngOnChanges() {
+    if (this.amounts.totalCommisionDue > 0 && this.amounts.totalEarning > 0) {
+      this.performanceValue = Math.floor((this.amounts.totalCommisionDue / this.amounts.totalEarning) * 100) ;
+    }
   }
 
 
@@ -39,6 +47,11 @@ export class SellerBusinessStatComponent implements OnInit {
     } else if (val > 0) {
       return '1.0 Poor';
     }
+  }
+
+   // recieve earning values
+   setAmounts(event){
+    this.amounts = event;
   }
 
 }

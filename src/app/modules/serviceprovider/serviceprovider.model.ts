@@ -109,4 +109,8 @@ export interface PayStat {
   last_pay_date: string;
 }
 
-
+export interface CalendarBooking {
+  title: string;
+  start: string;
+  end: string;
+}

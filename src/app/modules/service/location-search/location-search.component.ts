@@ -16,10 +16,16 @@ export class LocationSearchComponent implements OnInit {
   public searchElementRef: ElementRef;
 
   // recieved location
-  @Input() recievedLocation: BusinessLocation;
+  @Input() recievedLocation: BusinessLocation  = {
+    lat: 0,
+    lang: 0,
+    homeTown : ''
+  }
 
   // set location mode
   @Input() setLocation = false;
+
+  @Input() searchMode = false;
 
   // exporting business location data
   @Output() buusinessLocationEmit = new EventEmitter<BusinessLocation>();
@@ -29,6 +35,13 @@ export class LocationSearchComponent implements OnInit {
 
   // initial map address
   address: string;
+
+  // recieved locations
+  recievedLocations: BusinessLocation[] = [
+    {lat: 80.123456, lang: 60.55678 , homeTown: 'Akurana'},
+    {lat: 77.123456, lang: 62.55678 , homeTown: 'Akurana'}
+  ];
+
 
 
 

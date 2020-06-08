@@ -74,7 +74,7 @@ service.post('/add',checkAuth, (req, res, next) => {
     .then(result => {
         res.status(200).json({
           message: 'service added successfully!',
-          ressult: result
+          result: result
         });
       })
       .catch(err=>{
@@ -268,6 +268,53 @@ service.post('/booking/add',checkAuth, (req, res, next) => {
   });
  });
 });
+
+
+//add new calendar booking
+service.post('/calbooking/add',checkAuth, (req, res, next) => {
+  var lastid;
+  let reqBooking = req.body;
+  // generate id
+  Booking.find(function (err, bookings) {
+    if(bookings.length){
+      lastid = bookings[bookings.length-1].booking_id;
+    } else {
+      lastid= 'B0';
+    }
+    let mId = +(lastid.slice(1));
+    ++mId;
+    lastid = 'B' + mId.toString();
+    console.log(lastid);
+    reqBooking['booking_id']= lastid; // last id
+    if (err) return handleError(err => {
+      console.log(err);
+      res.status(500).json({
+        message: 'Error occured while generating booking Id! Please Retry!'
+      });
+    });
+  }).then( () => {
+    reqBooking['user'] = {user_id:'', email:'' ,name: ''};
+    reqBooking['serviceProvider'] = {
+      serviceProvider_id : req.userData.user_id,
+      email: req.userData.email,
+      name: null
+    };
+    const newBooking = new Booking(reqBooking);
+    console.log(' final booking ', newBooking);
+    newBooking.save().then(result => {
+      res.status(200).json({
+          message: 'Booking created successfully!',
+          bookingId: result.booking_id // booking id as result
+      });
+    });
+  }).catch (err => {
+    console.log('then 2 ', err);
+    res.status(500).json({
+      message: 'Error occured while creating Booking! Please Retry!'
+    });
+  });
+});
+
 
 
 //add new appointment

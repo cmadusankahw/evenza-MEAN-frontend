@@ -145,7 +145,26 @@ serviceProvider.get('/appoint/get/:id',checkAuth, (req, res, next) => {
   });
 });
 
-//get sdashboard stats
+//get calendar bookings
+serviceProvider.get('/calbooking/get',checkAuth, (req, res, next) => {
+  Booking.find({ 'serviceProvider.serviceProvider_id': req.userData.user_id, 'state': {$ne: 'cancelled'} }, function (err,recievedBookings) {
+    if (err) return handleError(err => {
+      console.log(err);
+      res.status(500).json(
+        { message: 'Error while loading Calendar Booking Details! Please Retry!'}
+        );
+    });
+    console.log(recievedBookings);
+    res.status(200).json(
+      {
+        message: 'Appointment recieved successfully!',
+        bookings: recievedBookings
+      }
+    );
+  });
+});
+
+//get dashboard stats
 serviceProvider.get('/dashstat/get',checkAuth, (req, res, next) => {
   let pBook, cBook, pAppoint, cAppoint = 0;
   let pbDate, cbDate, paDate, caDate = '';

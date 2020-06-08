@@ -331,7 +331,7 @@
 
 
                     <div class="col-md-2 pd-top-min">
-                      <a class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary" (click) = "checkAppointAvailability(appointment.date)">
+                      <a class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary" (click) = "checkAppointAvailability(appointment.date.toISOString())">
                         Check Availability
                       </a>
                     </div>
@@ -427,7 +427,8 @@
                       <mat-form-field class="service-full-width">
                         <mat-label> From Date : </mat-label>
                         <input matInput [matDatepicker]="picker1" required
-                        name="from_date" [(ngModel)]="dates.fromDate" #fDate="ngModel" (dateChange)="calcPayment(service.rate_type, service.rate)"/>
+                        name="from_date" [(ngModel)]="dates.fromDate" #fDate="ngModel"
+                        (dateChange) = "dates.toDate = dates.fromDate"  (dateChange)="calcPayment(service.rate_type, service.rate)"/>
                         <mat-datepicker-toggle
                           matSuffix
                           [for]="picker1"
@@ -452,7 +453,7 @@
                     </div>
 
                     <div class="col-md-2">
-                      <a class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary" (click) = "checkAvailability(dates.fromDate, dates.toDate)">
+                      <a class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary" (click) = "checkAvailability()">
                         Check Availability
                       </a>
                     </div>

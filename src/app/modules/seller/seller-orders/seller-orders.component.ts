@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { Order } from '../seller.model';
 import { SellerService } from '../seller.service';
 import { Email } from '../../eventplanner/eventplanner.model';
+import { ProductCategories } from '../../product/product.model';
+import { ProductService } from '../../product/product.service';
 
 @Component({
   selector: 'app-seller-orders',
@@ -26,6 +28,7 @@ export class SellerOrdersComponent implements OnInit, OnDestroy {
 
   // subscription
   private orderSub: Subscription;
+  private catSub: Subscription;
 
   // order types
   @Input() orderType = 'pending';
@@ -39,6 +42,9 @@ export class SellerOrdersComponent implements OnInit, OnDestroy {
   // selected order
   selectedOrder: Order;
 
+  // categories
+  categories: ProductCategories[] = [];
+
   // cancel message
   cancelMsg: string;
 
@@ -46,6 +52,7 @@ export class SellerOrdersComponent implements OnInit, OnDestroy {
 
 
   constructor(private sellerService: SellerService,
+              private productService: ProductService,
               private router: Router) { }
 
   ngOnInit() {
@@ -61,11 +68,20 @@ export class SellerOrdersComponent implements OnInit, OnDestroy {
               this.updateCount(this.orders);
            }
       });
+    this.productService.getCategories();
+    this.catSub = this.productService.getCategoriesUpdateListener()
+            .subscribe((res: ProductCategories[]) => {
+                this.categories = res;
+                console.log(this.categories);
+        });
   }
 
   ngOnDestroy() {
     if (this.orderSub) {
       this.orderSub.unsubscribe();
+    }
+    if (this.catSub) {
+      this.catSub.unsubscribe();
     }
   }
 

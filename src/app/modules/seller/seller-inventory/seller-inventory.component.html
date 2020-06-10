@@ -9,7 +9,7 @@
     <mat-form-field class="service-full-width-sm">
       <mat-label >Filter by Category</mat-label>
       <select matNativeControl required (change)= "applyFilter($event)" >
-       <option  value={{pcat.val}} *ngFor="let pcat of categories" >
+       <option  [value]="pcat.val" *ngFor="let pcat of categories" >
           {{pcat.val}}</option>
       </select>
     </mat-form-field>
@@ -19,10 +19,10 @@
     <mat-label>
       <mat-icon>search</mat-icon>
       Search Prdoducts</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. wedding" >
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Audio Systems" >
   </mat-form-field>
 
-  <div class="mat-elevation-z8" *ngIf="hasData()">
+  <div class="mat-elevation-z8" *ngIf="products.length">
     <table class="table-responsive" mat-table [dataSource]="dataSource" matSort>
 
       <!-- ID Column -->
@@ -46,7 +46,7 @@
       <!-- Color Column -->
       <ng-container matColumnDef="current_inventory">
         <th mat-header-cell *matHeaderCellDef mat-sort-header > On-hand </th>
-        <td mat-cell *matCellDef="let row" > {{row.inventory + row.qty_type}} </td>
+        <td mat-cell *matCellDef="let row" > {{row.inventory + ' ' + row.qty_type}} </td>
       </ng-container>
 
        <!-- Color Column -->
@@ -60,7 +60,8 @@
        <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> ACTION </th>
         <td mat-cell *matCellDef="let row">
-          <button mdbBtn color="purple" text="white" class="btn btn-sm text-center" (click)="inventoryOptions.show()">
+          <button mdbBtn color="purple" text="white" class="btn btn-sm text-center" (click)="inventoryOptions.show()"
+          (click) ="showProductDetaails(row.product_id)">
             ACTION
           </button>
          </td>
@@ -74,7 +75,7 @@
     <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
   </div>
 
-  <div class="text-center pd-top-min"  *ngIf="!hasData()">
+  <div class="text-center pd-top-min"  *ngIf="!products.length">
     No Products Found
   </div>
 
@@ -100,7 +101,8 @@
       role="document"
       style="overflow-y: initial !important"
     >
-      <div class="modal-content" *ngIf="hasData()">
+    <form #inventoryForm = "ngForm">
+      <div class="modal-content" *ngIf="selectedProduct">
         <div class="modal-header">
           <button
             type="button"
@@ -127,7 +129,7 @@
                       Product ID
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{products[0].product_id}}">
+                      <input type="text" matInput disabled [value]="selectedProduct.product_id">
                     </div>
                   </div>
 
@@ -136,7 +138,7 @@
                       Product
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{products[0].product}}">
+                      <input type="text" matInput disabled [value]="selectedProduct.product">
                     </div>
                   </div>
 
@@ -146,7 +148,7 @@
                       Product Category
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{products[0].product_category}}">
+                      <input type="text" matInput disabled [value]="selectedProduct.product_category">
                     </div>
                   </div>
 
@@ -156,16 +158,16 @@
                       Price (Rs.)
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{products[0].price }}">
+                      <input type="text" matInput disabled [value]="selectedProduct.price">
                     </div>
                   </div>
 
                   <div class="row " >
                     <div class="col-md-4 info-text">
-                      Delivery Service
+                      Delivery Service ID
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{products[0].delivery_service}}">
+                      <input type="text" matInput disabled [value]="selectedProduct.delivery_service">
                     </div>
                   </div>
 
@@ -179,8 +181,8 @@
                       Product Availability
                     </div>
                     <div class="col info-input">
-                      <mat-checkbox class="check-margin" [checked]="products[0].availability"
-                    (change)="products[0].availability = !products[0].availability">Available for Sale</mat-checkbox>
+                      <mat-checkbox class="check-margin" [checked]="selectedProduct.availability"
+                    (change)="selectedProduct.availability = !selectedProduct.availability">Available for Sale</mat-checkbox>
                     </div>
                   </div>
                   <br>
@@ -190,8 +192,8 @@
                     </div>
                     <div class="col info-input" >
                       <mat-form-field style="width:200px;">
-                      <input type="number" matInput placeholder="Set Inventory" value="{{products[0].inventory}}"
-                      [disabled]="!products[0].availability" min="0" >
+                      <input type="number" matInput placeholder="Set Inventory" [(ngModel)]="selectedProduct.inventory"
+                      [disabled]="!selectedProduct.availability" min="0" name="inventory">
                       </mat-form-field>
                     </div>
                   </div>
@@ -201,48 +203,77 @@
         </div>
 
         <div class="modal-footer">
-            <button mdbBtn color="purple" text="white" class="btn  btn-md text-center" (click)="inventoryOptions.hide()">
+            <button mdbBtn color="purple" text="white" class="btn  btn-md text-center"
+            (click)="updateInventory.show()">
              <span > Update Inventory</span>
             </button>
 
-            <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center" (click)="inventoryOptions.hide()">
+            <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center" (click)="inventoryOptions.hide()"
+            (click) =" inventoryForm.resetForm()">
               <span>Discard</span>
             </button>
         </div>
+      </div>
+    </form>
+      <div class="modal-content" *ngIf="!selectedProduct">
+        <app-not-found-page></app-not-found-page>
       </div>
     </div>
   </div>
 
 
-  <!--Success Modal-->
-  <div mdbModal #bookingSuccess="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
-   [config]='{backdrop: false, ignoreBackdropClick: true}'   aria-hidden="true">
-   <div class="modal-dialog modal-notify modal-success modal-dialog-centered" role="document">
+
+
+
+<!-- confirm booking dialog-->
+<div mdbModal #updateInventory="mdbModal"
+class="modal fade top"
+id="frameModalTop" tabindex="-1" role="dialog"
+[config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-labelledby="myModalLabel" aria-hidden="true"
+   >
+  <div class="modal-dialog modal-notify modal-success modal-dialog-centered" role="document">
     <!--Content-->
     <div class="modal-content">
       <!--Header-->
       <div class="modal-header">
-        <p class="heading lead">Inventory Updated!</p>
+        <p class="heading">Confirm Inventory Update</p>
 
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="bookingSuccess.hide()">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="updateInventory.hide()">
           <span aria-hidden="true" class="white-text">&times;</span>
         </button>
       </div>
 
       <!--Body-->
       <div class="modal-body">
-        <div class="text-center">
-          <mdb-icon fas icon="check" size="4x" class="mb-3 animated rotateIn"></mdb-icon>
-          <p>New Inventory {{24}} has been updated!</p>
+
+        <div class="row">
+          <div class="col-3">
+            <p></p>
+            <p class="text-center">
+              <mdb-icon fas icon="check" size="3x" class="mb-3 animated rotateIn"></mdb-icon>
+            </p>
+          </div>
+
+          <div class="col-9">
+            <h5>Are you sure want to update Inventory of <b>{{selectedProduct ? selectedProduct.product: ' this Prodduct '}}</b> ?</h5>
+          </div>
         </div>
       </div>
 
       <!--Footer-->
       <div class="modal-footer justify-content-center">
-        <a type="button" mdbBtn color="success" class="waves-effect" mdbWavesEffect (click)="bookingSuccess.hide()">Okay
+        <a type="button" mdbBtn color="success" class="waves-effect"
+        (click) = "updateProduct(selectedProduct)"
+        (click)="updateInventory.hide()" (click)="inventoryOptions.hide()"
+        mdbWavesEffect> Update Inventory
+          <mdb-btn far icon="check" class="ml-1"></mdb-btn>
         </a>
+        <a type="button" mdbBtn color="success" outline="true" class="waves-effect" mdbWavesEffect
+        (click)="inventoryOptions.hide()"
+          data-dismiss="modal">Discard</a>
       </div>
     </div>
     <!--/.Content-->
   </div>
-  </div >
+</div>

@@ -1,8 +1,9 @@
 <div class="container-fluid text-center"
 style="padding-left: 30px; padding-right:30px; padding-top:10px; padding-bottom:10px;">
-<h2 mat-dialog-title> An Error Occured!</h2>
+<h2 mat-dialog-title style="color:darkred;"> An Error Occured!</h2>
 <div mat-dialog-content>
-  <p class="mat-body-1">{{ data.message }}</p>
+	<span style="font-size:40px; font-weight:bold; color: darkred;">  <mdb-icon fas icon="exclamation-triangle"> </mdb-icon> </span>
+  <p class="mat-body-1" style="color:darkred;">{{ data.message }}</p>
 </div>
 <div mat-dialog-actions class="text-center">
   <button mat-button style="margin:0 auto;" mat-dialog-close> Okay </button>

@@ -100,6 +100,7 @@ export class CalendarComponent implements OnInit {
       service_id: 'SPBook',
       event_id: 'SPBook',
       service_name: 'SPBook',
+      service_category: 'SPBook',
       event_name: newEvent.title,
       business_name: 'SPBook',
       rate_type: 'SPBook',

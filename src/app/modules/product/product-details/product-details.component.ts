@@ -140,6 +140,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         product_id: this.product.product_id,
         product: this.product.product,
         qty_type: this.product.qty_type,
+        product_category: this.product.product_category,
         business_name: this.product.business_name,
         delivery_address: orderForm.value.delivery_address,
         created_date: this.today.toISOString(),

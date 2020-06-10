@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material';
 import { Order } from './seller.model';
 import { Email } from '../eventplanner/eventplanner.model';
 import { SuccessComponent } from 'src/app/success/success.component';
+import { Product } from '../product/product.model';
 
 @Injectable({providedIn: 'root'})
 export class SellerService {
@@ -14,12 +15,16 @@ export class SellerService {
   // subject
   private ordersUpdated = new Subject<Order[]>();
   private orderUpdated = new Subject<Order>();
+  private productsUpdated = new Subject<Product[]>();
 
   // recieved orders
   private orders: Order[];
 
   // recieved single order
   private order: Order;
+
+  // recieved products
+  private products: Product[];
 
   url = 'http://localhost:3000/api/';
 
@@ -80,6 +85,9 @@ export class SellerService {
 
   getOrderUpdateListener() {
     return this.orderUpdated.asObservable();
+  }
+  getProductsUpdateListener() {
+    return this.productsUpdated.asObservable();
   }
 
 

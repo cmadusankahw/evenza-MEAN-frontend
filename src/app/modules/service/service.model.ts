@@ -44,6 +44,7 @@ export interface Booking {
   service_id: string; // fk
   event_id: string; // fk
   service_name: string; // retrived from service
+  service_category: string;
   event_name: string; // retrived from event
   business_name: string;
   rate_type: string;

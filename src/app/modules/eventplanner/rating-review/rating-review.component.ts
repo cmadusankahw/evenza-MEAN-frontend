@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
 import { Product } from '../../product/product.model';
 import { Service } from '../../service/service.model';
@@ -27,7 +28,7 @@ export class RatingReviewComponent implements OnInit, OnDestroy {
 
   additionalRatingVal = 0;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     if (this.type === 'product') {
@@ -35,6 +36,13 @@ export class RatingReviewComponent implements OnInit, OnDestroy {
     } else if (this.type === 'service') {
       this.getService(this.id);
     }
+    // router scroll
+    this.router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+          return;
+      }
+      window.scrollTo(0, 0);
+  });
   }
 
   ngOnDestroy() {

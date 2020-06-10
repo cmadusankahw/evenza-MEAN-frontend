@@ -12,8 +12,18 @@
   <mat-icon>block</mat-icon>
  <b> Cancelled Bookings</b>
 </h4>
-<mat-form-field>
+<hr>
+<div class="text-center">
+  <mat-form-field style="width:80%;" *ngIf="categories.length && recievedBookings.length">
+    <mat-label >Filter by Category</mat-label>
+    <select matNativeControl required (change)= "applyFilter($event)" >
+     <option  [value]="pcat.val" *ngFor="let pcat of categories" >
+        {{pcat.val}}</option>
+    </select>
+  </mat-form-field>
+</div>
 
+<mat-form-field>
   <mat-label>
     <mat-icon>search</mat-icon>
     Search Bookings</mat-label>
@@ -43,8 +53,8 @@
 
     <!-- Color Column -->
     <ng-container matColumnDef="duration">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header > Duration </th>
-      <td mat-cell *matCellDef="let row" > {{row.duration}} {{ row.rate_type == "/Hr" ? ' Hrs' : ' Days'}} </td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header > Category </th>
+      <td mat-cell *matCellDef="let row" > {{row.service_category}} </td>
     </ng-container>
 
      <!-- Color Column -->

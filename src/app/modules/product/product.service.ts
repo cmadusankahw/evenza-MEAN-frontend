@@ -204,6 +204,20 @@ export class ProductService  {
   });
   }
 
+  // update product
+  updateOnlyProduct(product: Product) {
+    this.http.post<{ message: string, result: Product }>(this.url + 'product/edit', product)
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        console.log(recievedData.result);
+        this.product = product;
+        this.productUpdated.next(this.product);
+        this.getSellerProducts();
+        this.dialog.open(SuccessComponent, {data: {message: 'Product Updated Successfully!'}});
+    });
+
+  }
+
   // remove product
   removeProduct(productId: string) {
     console.log(productId);

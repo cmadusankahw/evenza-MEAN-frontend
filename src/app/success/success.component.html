@@ -1,8 +1,9 @@
 <div class="container-fluid text-center"
 style="padding-left: 30px; padding-right:30px; padding-top:10px; padding-bottom:10px; z-index:100;">
-<h2 mat-dialog-title> Evenza says</h2>
+<h2 mat-dialog-title style="color:darkgreen"> Evenza says</h2>
 <div mat-dialog-content>
-  <p class="mat-body-1">{{ data.message }}</p>
+	<span style="font-size:40px; font-weight:bold; color: green;">  <mdb-icon fas icon="info-circle"> </mdb-icon> </span>
+  <p class="mat-body-1" style="color:darkgreen;">{{ data.message }}</p>
 </div>
 <div mat-dialog-actions class="text-center">
   <button mat-raised-button style="margin:0 auto;" color="primary" mat-dialog-close> Okay </button>

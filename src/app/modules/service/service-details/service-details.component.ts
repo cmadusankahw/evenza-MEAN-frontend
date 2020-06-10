@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NgForm, FormGroup, Validators, FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -100,6 +100,14 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
 
     });
 
+    // router scroll
+    this.router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+          return;
+      }
+      window.scrollTo(0, 0);
+     });
+
       if (this.editable === true) {
     // import categories
       this.serviceService.getCategories();
@@ -185,6 +193,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
           service_id: this.service.service_id,
           event_id: 'Not Assigned',
           service_name: this.service.service_name,
+          service_category: this.service.service_category,
           event_name: 'Not Assigned',
           business_name: this.service.business_name,
           rate_type: this.service.rate_type,

@@ -1,49 +1,72 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { ProductInventory, ProductCategories } from '../seller.model';
+import { Product, DeliveryService, ProductCategories } from '../../product/product.model';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { ProductService } from '../../product/product.service';
 
 @Component({
   selector: 'app-seller-inventory',
   templateUrl: './seller-inventory.component.html',
   styleUrls: ['./seller-inventory.component.scss']
 })
-export class SellerInventoryComponent implements OnInit {
+export class SellerInventoryComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['id', 'product', 'category', 'current_inventory', 'availability', 'action'];
-  dataSource: MatTableDataSource<ProductInventory>;
+  dataSource: MatTableDataSource<Product>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-
-  products: ProductInventory[] = [
-    { product_id: 'P-01',
-      product: 'Setty Back',
-      product_category: 'Wedding Eq',
-      qty_type: 'Units',
-      availability: true,
-      inventory: 24,
-      delivery_service: 'DHL',
-      price: 12499.00},
-  ];
-
-  categories: ProductCategories[] = [
-    {id: '1', val: 'Wedding Eq'},
-    {id: '1', val: 'Flowers'},
-    {id: '1', val: 'Catering'},
-    {id: '1', val: 'Tents'},
-  ];
+  // subscriptions
+  private productSub: Subscription;
+  private categorySub: Subscription;
 
 
-  constructor() { }
+  products: Product[] = [];
+
+  deliveryServices: DeliveryService[] = [];
+
+  categories: ProductCategories[] = [];
+
+  selectedProduct: Product;
+
+
+  constructor(private router: Router,
+              private productService: ProductService) { }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource(this.products);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.productService.getSellerProducts();
+    this.productSub = this.productService.getSellerProductUpdateListener()
+          .subscribe((res: Product[]) => {
+            this.products = res;
+            console.log(this.products);
+            if (this.products) {
+              this.dataSource = new MatTableDataSource(this.products);
+              this.dataSource.paginator = this.paginator;
+              this.dataSource.sort = this.sort;
+           }
+      });
+    this.productService.getCategories();
+    this.categorySub = this.productService.getCategoriesUpdateListener()
+        .subscribe ((res: ProductCategories[]) => {
+          if (res) {
+            this.categories = res;
+            console.log(this.categories);
+          }
+      });
+  }
+
+  ngOnDestroy() {
+    if(this.productSub) {
+      this.productSub.unsubscribe();
+    }
+    if (this.categorySub) {
+      this.categorySub.unsubscribe();
+    }
   }
 
   applyFilter(event: Event) {
@@ -55,15 +78,20 @@ export class SellerInventoryComponent implements OnInit {
     }
   }
 
-
-  hasData() {
-    if (this.products.length) {
-      return true;
-    } else {
-      return false;
+  // get selected product details
+  showProductDetaails(prodId: string) {
+    for (const app of this.products) {
+      if (app.product_id === prodId) {
+        this.selectedProduct = app;
+      }
     }
+    console.log(this.selectedProduct);
   }
 
+  // update inventory
+  updateProduct(prod: Product) {
+    this.productService.updateOnlyProduct(prod);
+  }
 
 
 }

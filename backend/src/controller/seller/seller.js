@@ -100,6 +100,26 @@ seller.get('/order/get',checkAuth, (req, res, next) => {
   });
 });
 
+
+//get list of products
+seller.get('/product/get',checkAuth, (req, res, next) => {
+  Product.find({'user_id': req.userData.user_id},function (err, prods) {
+    console.log(prods);
+    if (err) return handleError(err => {
+      res.status(500).json(
+        { message: 'No Products Found!'}
+        );
+    });
+    res.status(200).json(
+      {
+        message: 'product list recieved successfully!',
+        products: prods
+      }
+    );
+  });
+});
+
+
 //get selected order
 seller.get('/order/get/:id',checkAuth, (req, res, next) => {
   Order.findOne({ 'order_id': req.params.id }, function (err,recievedOrder) {

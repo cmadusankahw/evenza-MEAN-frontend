@@ -8,6 +8,8 @@ import { Subscription } from 'rxjs';
 import { ServiceProviderService } from '../serviceprovider.service';
 import { Email } from '../../eventplanner/eventplanner.model';
 import { Router } from '@angular/router';
+import { ServiceService } from '../../service/service.service';
+import { ServiceCategories } from '../../service/service.model';
 
 
 
@@ -26,6 +28,7 @@ export class BookingsComponent implements OnInit, OnDestroy {
 
   // subscritions
   private bookingSub: Subscription;
+  private catSub: Subscription;
 
   @Output() countEmit = new EventEmitter<any>();
 
@@ -50,8 +53,12 @@ export class BookingsComponent implements OnInit, OnDestroy {
    // cancel message
    cancelMsg: string;
 
+   // service categories
+   categories: ServiceCategories[] = [];
+
 
   constructor(private serviceProviderService: ServiceProviderService,
+              private serviceService: ServiceService,
               private router: Router) {
 
   }
@@ -69,11 +76,20 @@ export class BookingsComponent implements OnInit, OnDestroy {
               this.updateCount(this.bookings);
            }
       });
+    this.serviceService.getCategories();
+    this.catSub = this.serviceService.getCategoriesUpdateListener()
+              .subscribe((res: ServiceCategories[]) => {
+                  this.categories = res;
+                  console.log(this.categories);
+          });
   }
 
   ngOnDestroy() {
     if (this.bookingSub) {
       this.bookingSub.unsubscribe();
+    }
+    if (this.catSub) {
+      this.catSub.unsubscribe();
     }
   }
 

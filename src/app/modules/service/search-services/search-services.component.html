@@ -12,6 +12,16 @@
       <h4 style="padding-left:15px;">Filter Services..</h4>
       <hr>
 
+      <div class="filter-content pd-top-filter">
+        <h6> <mdb-icon fas icon="list"></mdb-icon> By Service Category</h6>
+      <mat-form-field>
+        <select matNativeControl required [(ngModel)]="selectedCategory" name="category" >
+          <option disabled > Recently Booked </option>
+        <option  [value]="cat.val" *ngFor="let cat of categories">
+            {{cat.val}}</option>
+        </select>
+      </mat-form-field>
+      </div>
 
       <!--price-->
       <div class="filter-content pd-top-filter">
@@ -166,12 +176,13 @@
                 <div class="filter-content search-box-mid shadow">
                   <h5  class="top-heading"><b> From.. </b></h5>
                   <mat-form-field class="top-filter">
-                    <input matInput
+                    <input matInput [min] = "today"
                     [matDatepicker]="picker1"
                     required
                     name="from_date"
                     #fromDate="ngModel"
                     [(ngModel)]="dates.fromDate"
+                    (dateChange) = "dates.toDate = dates.fromDate"
                     />
                     <mat-datepicker-toggle
                       matSuffix
@@ -187,7 +198,7 @@
             <div class="filter-content search-box-mid shadow">
               <h5  class="top-heading"><b> To..</b></h5>
               <mat-form-field class="top-filter">
-                <input matInput
+                <input matInput [min] = "today"
                 [matDatepicker]="picker2"
                 required
                 name="to_date"

@@ -148,7 +148,7 @@
                   </div>
                 </div>
 
-                <div *ngIf=" selectedBooking.rate_type=='/Day' &&  selectedBooking.duration > 1">
+                <div *ngIf="selectedBooking.rate_type=='/Hr' || selectedBooking.rate_type=='/Day' &&  selectedBooking.duration > 1">
                 <div class="row ">
                   <div class="col-md-4 info-text">
                     Booked Date (from)

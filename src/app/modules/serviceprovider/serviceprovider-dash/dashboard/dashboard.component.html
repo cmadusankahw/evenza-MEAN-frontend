@@ -25,7 +25,7 @@
 
 
       <a class="txt-white row" mat-list-item  [ngClass] ="bprofile"
-      (click)="navBprofile()"   (click)="showSubMenu = !showSubMenu" routerLink="/sp/dash/bprofile">
+      (click)="navBprofile()"    routerLink="/sp/dash/bprofile">
         <div class="col-md-11 side-start">
           <mat-icon >business_centert</mat-icon>
           <span class="side-text">  Business Profile</span>
@@ -35,11 +35,6 @@
       </div>
       </a>
 
-
-      <a class="txt-white side-end" mat-list-item *ngIf="showSubMenu" (click)="serviceDetailsShow.show()">
-        <mat-icon>add</mat-icon>
-        Add New Service
-      </a>
 
       <a class="txt-white row" mat-list-item [ngClass] ="bookings"
       (click)="navBookings()"  routerLink="/sp/dash/bookings">
@@ -133,55 +128,3 @@
 
 
 
-
-<!--View Service Modal-->
-<div
-  mdbModal
-  #serviceDetailsShow="mdbModal"
-  class="modal fade"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="myBasicModalLabel"
-  [config]="{ backdrop: false, ignoreBackdropClick: true }"
-  aria-hidden="true"
-
->
-  <div
-    class="modal-dialog modal-dialog-centered modal-lg"
-    role="document"
-    style="overflow-y: initial !important"
-  >
-    <div class="modal-content">
-      <div class="modal-header">
-        <button
-          type="button"
-          class="close pull-right"
-          aria-label="Close"
-          (click)="serviceDetailsShow.hide()"
-        >
-          <span aria-hidden="true">×</span>
-        </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
-          <mat-icon>add</mat-icon> Create New Service
-        </h4>
-      </div>
-
-      <div class="modal-body " style="height: 450px; overflow-y: auto;">
-
-        <app-addnew-service></app-addnew-service>
-
-      </div>
-
-      <div class="modal-footer">
-        <button
-          mdbBtn
-          color="link"
-          (click)="serviceDetailsShow.hide()"
-          mdbWavesEffect
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>

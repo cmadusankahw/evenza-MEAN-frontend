@@ -156,7 +156,9 @@ product.post('/search', (req, res, next) => {
   Product.find({product_category: req.body.category,
                 price: {$gte: req.body.minPrice},
                 pay_on_delivery:req.body.payOnDelivery,
-                rating: {$gte: req.body.userRating}})
+                rating: {$gte: req.body.userRating},
+                'availability': true,
+                'inventory': {$gte: 1}})
   .then(result => {
       res.status(200).json({
         message: 'products recieved successfully!',
@@ -197,7 +199,7 @@ product.post('/order/add',checkAuth, (req, res, next) => {
     });
   }).then( () => {
     // get service provider id and incrementing no_of_appoints
-    Product.findOneAndUpdate({'product_id': req.body.product_id},{$inc : {'no_of_orders':1} , $inc: {'inventory': -1}},function (err, recievedProduct) {
+    Product.findOneAndUpdate({'product_id': req.body.product_id},{$inc : {no_of_orders: 1} , $inc: {inventory: -(reqOrder.quantity/2)}},function (err, recievedProduct) {
       console.log(recievedProduct);
       sellerId = recievedProduct.user_id; // serviceProvider id
       if (err) return handleError(err => {
@@ -276,7 +278,8 @@ product.post('/order/add',checkAuth, (req, res, next) => {
 
 //get list of products for search
 product.get('/get', (req, res, next) => {
-  Product.find(function (err, products) {
+  Product.find({'availability': true,
+                'inventory': {$gte: 1}},function (err, products) {
     console.log(products);
     if (err) return handleError(err => {
       res.status(500).json(

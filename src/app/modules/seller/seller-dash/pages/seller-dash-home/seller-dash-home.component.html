@@ -1,5 +1,5 @@
 <!--header row-->
-<app-seller-dash-stat></app-seller-dash-stat>
+<app-seller-dash-stat [(orderCounts)] = "orderCounts" ></app-seller-dash-stat>
 
 
 <!--component row-->
@@ -7,7 +7,7 @@
 
   <!--left component-->
   <div class="col-md-8">
-    <app-seller-orders></app-seller-orders>
+    <app-seller-orders (countEmit) = "setCounts($event)"></app-seller-orders>
   </div>
 
   <!--right component-->

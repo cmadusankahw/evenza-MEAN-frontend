@@ -32,7 +32,6 @@ export interface ServiceRates {
 
 export interface ServiceQuery {
   category: string;
-  location: string;
   minPrice: number;
   maxPrice: number;
   payOnMeet: boolean;

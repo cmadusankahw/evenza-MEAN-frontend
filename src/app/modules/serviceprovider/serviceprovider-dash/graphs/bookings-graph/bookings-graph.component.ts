@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-bookings-graph',
@@ -7,11 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BookingsGraphComponent implements OnInit {
 
+  @Input() bookingMonths = {jan:0, feb: 0 ,mar:0, apr: 0, may:0, jun: 0, jul: 0, aug:0 ,sep:0, oct:0, nov:0, dec:0};
+
+  @Input() appointMonths = {jan:0, feb: 0 ,mar:0, apr: 0, may:0, jun: 0, jul: 0, aug:0 ,sep:0, oct:0, nov:0, dec:0};
+
   public chartType = 'line';
 
   public chartDatasets: Array<any> = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'My First dataset' },
-    { data: [28, 48, 40, 19, 86, 27, 90], label: 'My Second dataset' }
+    { data: [], label: 'Bookings' },
+    { data: [], label: 'Appointments' }
   ];
 
   public chartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
@@ -34,10 +38,10 @@ export class BookingsGraphComponent implements OnInit {
   };
 
 
-
   constructor() { }
 
   ngOnInit() {
+
   }
 
 

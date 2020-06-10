@@ -22,6 +22,9 @@ export class ServiceCardComponent implements OnInit, OnDestroy {
   // filtering
   @Input() category = 'any';
 
+  // business name
+  @Input() businessName: string;
+
   // to pass to the service details
   @Input() islogged: boolean;
   @Input() dates: {fromDate: any, toDate: any};

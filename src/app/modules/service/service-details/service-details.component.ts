@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup, Validators, FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
 import { Service, ServiceCategories, ServiceRates, Booking, Appointment } from '../service.model';
@@ -46,6 +46,11 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   // service removed
   removed = false;
 
+  // total amount
+  totalAmount = 0.0;
+  payAmount = 0.0;
+
+
   // booking default times time
   fromTime = {hour: 8, minute: 0, second: 0};
   toTime = {hour: 18, minute: 0, second: 0};
@@ -54,10 +59,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   // appointment default date and time
   appointment = {date: this.today, time: {hour: 8, minute: 0, second: 0} };
 
-  // total amount
-  totalAmount = 0.0;
-  payAmount = 0.0;
-
+  tday = new Date();
 
   // images to upload
   image01: File;
@@ -95,6 +97,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
             this.editmode = false;
             this.calcPayment(this.service.rate_type, this.service.rate);
           }
+
     });
 
       if (this.editable === true) {
@@ -123,6 +126,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
     this.removed = false;
 
   }
+
 
 
   // update product
@@ -263,7 +267,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
 
   // to be modified later (optional function)
   showBprofile() {
-    this.router.navigate(['/sp/bprofile']);
+   // this.router.navigate(['/sp/bprofile']);
   }
 
   // image 01 uploading

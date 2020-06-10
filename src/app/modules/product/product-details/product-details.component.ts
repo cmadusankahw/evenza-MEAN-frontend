@@ -225,7 +225,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   // to be modified later (optional function)
   showBprofile() {
-    this.router.navigate(['/sp/bprofile']);
+   // this.router.navigate(['/sp/bprofile']);
   }
 
   // image 01 uploading

@@ -17,6 +17,7 @@ export class ServiceService  {
   private searchedServiceUpdated = new Subject<Service[]>();
   private servicesUpdated = new Subject<Service[]>();
   private categoriesUpdated = new Subject<ServiceCategories[]>();
+  private bookingsUpdated = new Subject<Booking[]>();
 
   // to add services
   private services: Service[] = [];
@@ -30,6 +31,9 @@ export class ServiceService  {
 
   // to generate quanitties list
   private categories: ServiceCategories[] = [];
+
+  // recieved bookings
+  private bookings: Booking[] = [];
 
   // to render selected service
   private service: Service;
@@ -92,10 +96,25 @@ export class ServiceService  {
   }
 
 
+   // get list of bookings
+   getBookings() {
+    this.http.get<{ message: string, bookings: Booking[] }>(this.url + 'service/booking/get')
+      .subscribe((recievedBookings) => {
+        this.bookings = recievedBookings.bookings;
+        this.bookingsUpdated.next([...this.bookings]);
+      });
+    }
+
+
   // listners for subjects
   getServiceUpdateListener() {
     return this.serviceUpdated.asObservable();
   }
+
+  getBookingsUpdateListener() {
+    return this.bookingsUpdated.asObservable();
+  }
+
 
   getSearchedServiceUpdatedListener() {
     return this.searchedServiceUpdated.asObservable();
@@ -206,6 +225,11 @@ export class ServiceService  {
     this.service = service;
     this.serviceUpdated.next(this.service);
     return true;
+  }
+
+  // return current services
+  getUpdatedServices(){
+    return this.services;
   }
 
 

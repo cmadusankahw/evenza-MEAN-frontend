@@ -9,9 +9,11 @@ export class DashBusinessProfileComponent implements OnInit {
 
   isowner = true;
 
+
   constructor() { }
 
   ngOnInit() {
   }
+
 
 }

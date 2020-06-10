@@ -1,5 +1,9 @@
-
-<div class="card-deck" *ngIf="hasData()">
+<div class="pd-top-min" *ngIf="isowner" >
+  <button mdbBtn mdbWavesEffect color="secondary" class="btn btn-md" (click)= "addNewService.show()" style="margin-bottom:20px; margin-left:0px;">
+    + Add New Service
+  </button>
+</div>
+<div class="card-deck " *ngIf="hasData()">
   <!-- Card -->
 
   <mdb-card *ngFor="let service of services">
@@ -111,3 +115,55 @@
   </div>
 </div>
 
+
+<!--View Service Modal-->
+<div
+  mdbModal
+  #addNewService="mdbModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-hidden="true"
+
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-lg"
+    role="document"
+    style="overflow-y: initial !important"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="addNewService.hide()"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel" >
+          <mat-icon>add</mat-icon> Create New Service
+        </h4>
+      </div>
+
+      <div class="modal-body " style="height: 450px; overflow-y: auto;">
+
+        <app-addnew-service [businessName] = "businessName"></app-addnew-service>
+
+      </div>
+
+      <div class="modal-footer">
+        <button
+          mdbBtn
+          color="link"
+          (click)="addNewService.hide()"
+          mdbWavesEffect
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

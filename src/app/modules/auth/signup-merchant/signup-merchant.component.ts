@@ -60,7 +60,7 @@ export class SignupMerchantComponent implements OnInit, OnDestroy {
           postal_code: signupForm.value.postalCode,
           gender: signupForm.value.gender,
           date_of_birth: signupForm.value.birthday,  // check
-          id_verification: {isverified: false, id_sideA: null, id_sideB: null, issuer: null},
+          id_verification: {isverified: true, id_sideA: null, id_sideB: null, issuer: null},
           reg_date: this.merchantTemp.reg_date,
           business: null
         };

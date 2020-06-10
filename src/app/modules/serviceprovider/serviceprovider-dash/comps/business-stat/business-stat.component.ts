@@ -7,13 +7,14 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
   templateUrl: './business-stat.component.html',
   styleUrls: ['./business-stat.component.scss']
 })
-export class BusinessStatComponent implements OnInit, OnChanges {
+export class BusinessStatComponent implements OnInit  {
 
  iscreated = true;
 
  amounts = {
    totalCommisionDue: 0,
-   totalEarning: 0
+   totalEarning: 0,
+   no_of_bookings: 0
  };
 
  performanceValue = 2.8;
@@ -21,16 +22,8 @@ export class BusinessStatComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
-    if (this.amounts.totalCommisionDue > 0 && this.amounts.totalEarning > 0) {
-      this.performanceValue = (this.amounts.totalCommisionDue / this.amounts.totalEarning) * 100 ;
-    }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.amounts.totalCommisionDue > 0 && this.amounts.totalEarning > 0) {
-      this.performanceValue = Math.floor((this.amounts.totalCommisionDue / this.amounts.totalEarning) * 100) ;
-    }
-  }
 
   businessValue(val) {
     if (val > 85) {

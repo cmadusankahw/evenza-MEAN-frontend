@@ -29,7 +29,7 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
   image03Url: any = './assets/images/merchant/nopic.png';
 
   // business name is send by parent comp for adding a new product
-  @Input() businessName = 'Test Business';
+  @Input() businessName: string;
 
   // recieved categories
   categories: ProductCategories[] = [];

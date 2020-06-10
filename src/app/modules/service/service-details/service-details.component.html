@@ -263,7 +263,7 @@
                       <hr>
                   </div>
 
-                  <form class="service-form" (submit)="createAppointment(appointForm)" #appointForm ="ngForm">
+                  <form class="service-form" (submit)="createAppointment(appointForm)" #appointForm ="ngForm" >
                     <h5> Service Details : </h5>
                     <br>
                     <div class="row container-fluid">
@@ -312,7 +312,7 @@
                     <div class="col-md-5">
                       <p> Appointment Date: </p>
                       <mat-form-field class="service-full-width">
-                        <input matInput [matDatepicker]="pickera" required
+                        <input matInput [matDatepicker]="pickera" required [min]="tday"
                         name="appointed_date" [(ngModel)]="appointment.date" #aDate="ngModel" />
                         <mat-datepicker-toggle
                           matSuffix
@@ -377,7 +377,7 @@
                       <hr>
                   </div>
 
-                  <form class="service-form" (submit)="createBooking(bookingForm)" #bookingForm ="ngForm">
+                  <form class="service-form" (submit)="createBooking(bookingForm)" #bookingForm ="ngForm" >
                     <h5> Service Details : </h5>
                     <br>
                     <div class="row container-fluid">
@@ -426,7 +426,7 @@
                     <div class="col-md-5">
                       <mat-form-field class="service-full-width">
                         <mat-label> From Date : </mat-label>
-                        <input matInput [matDatepicker]="picker1" required
+                        <input matInput [matDatepicker]="picker1" required [min]="tday"
                         name="from_date" [(ngModel)]="dates.fromDate" #fDate="ngModel"
                         (dateChange) = "dates.toDate = dates.fromDate"  (dateChange)="calcPayment(service.rate_type, service.rate)"/>
                         <mat-datepicker-toggle
@@ -441,7 +441,7 @@
                     <div class="col-md-5">
                       <mat-form-field class="service-full-width">
                         <mat-label> To Date : </mat-label>
-                        <input matInput [matDatepicker]="picker2" required
+                        <input matInput [matDatepicker]="picker2" required [min]="tday"
                         name="to_date" [(ngModel)]="dates.toDate" #tDate="ngModel" (dateChange)="calcPayment(service.rate_type, service.rate)"/>
                         <mat-datepicker-toggle
                           matSuffix
@@ -517,7 +517,7 @@
                       <mat-form-field class="service-full-width" *>
                         <mat-label>Amount (Rs.): </mat-label>
                         <input matInput readonly  type="number" min="totalAmount" max="totalAmount" class="amount-input"
-                        [(ngModel)]="totalAmount" name="amount_paid" >
+                        [(ngModel)]="totalAmount" name="amount_paid">
                       </mat-form-field>
                     </div>
 

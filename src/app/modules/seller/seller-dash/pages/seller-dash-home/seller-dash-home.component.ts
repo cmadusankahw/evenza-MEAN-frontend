@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SellerDashHomeComponent implements OnInit {
 
+  orderCounts: any;
+
   constructor() { }
 
   ngOnInit() {
   }
+
+  setCounts(event) {
+    this.orderCounts = event;
+    console.log(this.orderCounts);
+  }
+
 
 }

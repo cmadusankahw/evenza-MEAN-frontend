@@ -34,7 +34,7 @@ export class SellerEarningsComponent implements OnInit, OnDestroy {
   totalAmountPaid = 0;
   totalCommissionDue = 0;
   totalEarning = 0;
-
+  noOfBookings = 0;
 
 
   constructor(private sellerService : SellerService) {}
@@ -54,6 +54,7 @@ export class SellerEarningsComponent implements OnInit, OnDestroy {
                 this.totalAmountPaid += book.amount_paid;
                 this.totalCommissionDue += book.commission_due;
                 this.totalEarning += book.amount;
+                this.noOfBookings++;
               }
               this.updateAmounts();
       });
@@ -79,6 +80,7 @@ export class SellerEarningsComponent implements OnInit, OnDestroy {
     this.amountsEmit.emit({
       totalCommisionDue: this.totalCommissionDue,
       totalEarning: this.totalEarning,
+      no_of_bookings: this.noOfBookings
     });
   }
 

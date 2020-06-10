@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
 import { Router } from '@angular/router';
 
 import { Booking, Appointment, DashStat, PayStat, CalendarBooking } from './serviceprovider.model';
@@ -46,10 +46,14 @@ export class ServiceProviderService {
   // payment stat
   private paystat: PayStat;
 
+  private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+
 
   constructor(private http: HttpClient,
               private router: Router,
-              public dialog: MatDialog) {}
+              public dialog: MatDialog,
+              private _snackBar: MatSnackBar) {}
 
 
   // change booking stste
@@ -59,6 +63,20 @@ export class ServiceProviderService {
         this.booking = recievedData.booking;
         this.bookingUpdated.next(this.booking);
         this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+      });
+  }
+
+   // change booking stste
+   updateBookingState(bookingState: {bookingId: string, state: string}) {
+    this.http.post<{ message: string, booking: Booking }>(this.url + 'sp/booking/edit' , bookingState)
+      .subscribe((recievedData) => {
+        this._snackBar.open('Booking ' + recievedData.booking.booking_id
+                            + ' was due on ' + recievedData.booking.to_date.slice(0, 10)
+                            + ' updated as Completed', 'Dismiss', {
+          duration: 1500,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
       });
   }
 
@@ -149,6 +167,35 @@ export class ServiceProviderService {
     });
   }
 
+  // get list of bookings of an event planner
+  updateBookings() {
+    this.http.get<{ message: string, bookings: Booking[] }>(this.url + 'sp/booking/get')
+      .subscribe((recievedBookings) => {
+        this.checkBookings(recievedBookings.bookings);
+      });
+    }
+
+    async checkBookings(recievedBookings: Booking[]) {
+      const tday = new Date();
+      const newBookings: Booking[] = recievedBookings;
+      for (const book of recievedBookings) {
+        const toDate = new Date(book.to_date);
+        if (book.state === 'pending' && toDate <= tday) {
+          console.log ( 'found', book.booking_id);
+          this.updateBookingState({bookingId: book.booking_id, state: 'completed'});
+          newBookings.splice(recievedBookings.indexOf(book));
+        }
+      }
+      await this.addData(newBookings);
+    }
+
+    addData(recievedBookings: Booking[]) {
+      return new Promise ( resolve => {
+                this.bookings = recievedBookings;
+                this.bookings = recievedBookings;
+                this.bookingsUpdated.next([...this.bookings]);
+          });
+    }
 
   // listners for subjects
   getBookingsUpdateListener() {

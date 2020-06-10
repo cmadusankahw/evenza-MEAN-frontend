@@ -7,13 +7,14 @@ import { BusinessStat } from '../../../seller.model';
   templateUrl: './seller-business-stat.component.html',
   styleUrls: ['./seller-business-stat.component.scss']
 })
-export class SellerBusinessStatComponent implements OnInit, OnChanges {
+export class SellerBusinessStatComponent implements OnInit {
 
   iscreated = true;
 
   amounts = {
     totalCommisionDue: 0,
-    totalEarning: 0
+    totalEarning: 0,
+    no_of_bookings: 0
   };
 
   performanceValue = 0;
@@ -21,16 +22,8 @@ export class SellerBusinessStatComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
-    if (this.amounts.totalCommisionDue > 0 && this.amounts.totalEarning > 0) {
-      this.performanceValue = Math.floor((this.amounts.totalCommisionDue / this.amounts.totalEarning) * 100) ;
-    }
   }
 
-  ngOnChanges() {
-    if (this.amounts.totalCommisionDue > 0 && this.amounts.totalEarning > 0) {
-      this.performanceValue = Math.floor((this.amounts.totalCommisionDue / this.amounts.totalEarning) * 100) ;
-    }
-  }
 
 
   businessValue(val) {

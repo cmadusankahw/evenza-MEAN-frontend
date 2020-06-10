@@ -53,10 +53,10 @@
       </div>
     </div>
       <div class="row pd-top container-fluid">
-        <mat-progress-bar mode="determinate" [value]="performanceValue"></mat-progress-bar>
+        <mat-progress-bar mode="determinate" [value]="amounts.no_of_bookings" ></mat-progress-bar>
       </div>
       <div class="scroll-text pd-top">
-        {{performanceValue}}
+        {{businessValue(amounts.no_of_bookings)}}
       </div>
       <div class="row pd-top pd-top">
         <button mdbBtn mdbWavesEffect role="buton" class="btn btn-primary btn-md cnt-center ">

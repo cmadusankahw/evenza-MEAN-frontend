@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 
 
 
-import {Service, ServiceCategories, ServiceQuery } from '../service.model';
+import {Service, ServiceCategories, ServiceQuery, Booking } from '../service.model';
 import { ServiceService } from '../service.service';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
@@ -23,9 +23,11 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
   private serviceSub: Subscription ;
   private categorySub: Subscription ;
   private searchedServiceSub: Subscription;
-
+  private bookingSub: Subscription;
 
   services: Service[] = [];
+
+  bookings: Booking[] = [];
 
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -55,13 +57,13 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
   success = false;
 
   // start date (today date)
-  today = new Date().toISOString();
+  today = new Date();
 
   // selected category
   selectedCategory = 'Recently Booked';
 
   // pass to service car and service details comps
-  dates = {fromDate: this.today, toDate: this.today};
+  dates = {fromDate: this.today.toISOString(), toDate: this.today.toISOString()};
   islogged = true; // must be updated with backend call
 
   // temp town suggessions for loction search FILTER-BUSINESS LOCATION
@@ -107,6 +109,9 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
     if (this.searchedServiceSub) {
       this.searchedServiceSub.unsubscribe();
     }
+    if (this.bookingSub) {
+      this.bookingSub.unsubscribe();
+    }
   }
 
   // location search auto complete
@@ -135,8 +140,7 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
 
   searchServices(filterForm: NgForm) {
     const searchQuery: ServiceQuery = {
-      category: filterForm.value.category,
-      location: filterForm.value.location, // location
+      category: this.selectedCategory,
       minPrice: this.priceStart,
       maxPrice: this.priceEnd,
       payOnMeet: this.booleanValue(filterForm.value.pay_on_meet),
@@ -148,6 +152,7 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
     .subscribe((recievedData: Service[]) => {
     this.services = recievedData;
     console.log(this.services);
+   // this.changeSettings(this.dates.fromDate, this.dates.toDate);
     this.searching = !this.searching;
    });
   }
@@ -161,5 +166,34 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
   sendService(service: Service) {
     this.success = this.serviceService.setService(service);
    }
+
+   // get available list of services
+  changeSettings(fromDate: string, toDate: string){
+    const tDate = new Date(toDate);
+    const fDate = new Date(fromDate);
+    let services: Service[] = this.serviceService.getUpdatedServices();
+    let serviceIds: string[] = [];
+
+    this.serviceService.getBookings();
+    this.bookingSub = this.serviceService.getBookingsUpdateListener()
+    .subscribe((recievedData: Booking[]) => {
+      console.log(recievedData);
+      for (const book of recievedData) {
+        const bookfDate = new Date(book.from_date);
+        const booktDate = new Date(book.to_date);
+        console.log(tDate, fDate, bookfDate, booktDate);
+        if (bookfDate >= fDate && booktDate <= tDate) {
+          if (!serviceIds.includes(book.service_id)) {
+            serviceIds.push(book.service_id);
+          }
+        }
+      }
+      console.log(serviceIds);
+      for (const sid of serviceIds) {
+        this.services.filter(s => s.service_id === sid);
+      }
+      console.log('final', this.services);
+   });
+  }
 
 }

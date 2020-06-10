@@ -67,15 +67,27 @@
 
 
               <br>
+              <div class="serv" *ngIf="recievedMerchant.user_type == 'serviceProvider'">
                  <!--service cards-->
-                <div class="content-title page-content">
+              <div class="content-title page-content">
                   <span>Services</span>
 
                   </div>
                   <hr>
                   <!--service & product comps-->
-                  <app-service-card [isowner] = "true">  </app-service-card>
+                  <app-service-card [isowner] = "true" [businessName] = "recievedMerchant.business.title">  </app-service-card>
+                </div>
 
+                <div class="sel" *ngIf="recievedMerchant.user_type == 'seller'">
+                  <!--product cards-->
+               <div class="content-title page-content">
+                   <span>Products</span>
+
+                   </div>
+                   <hr>
+                   <!--service & product comps-->
+                   <app-product-card [isowner] = "true" [businessName] = "recievedMerchant.business.title">  </app-product-card>
+                 </div>
           </div>
 
           <!--right content-->

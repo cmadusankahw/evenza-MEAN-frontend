@@ -23,6 +23,9 @@ export class ProductCardComponent implements OnInit, OnDestroy {
   // filtering
   @Input() category = 'any';
 
+  // business name
+  @Input() businessName: string;
+
   // products list
   products: Product[] = [];
 

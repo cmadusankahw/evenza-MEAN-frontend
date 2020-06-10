@@ -155,7 +155,8 @@ service.post('/search', (req, res, next) => {
   Service.find({service_category: req.body.category,
                 rate: {$gte: req.body.minPrice},
                 pay_on_meet:req.body.payOnMeet,
-                rating: {$gte: req.body.userRating}})
+                rating: {$gte: req.body.userRating},
+                available_booking: true})
   .then(result => {
       res.status(200).json({
         message: 'services recieved successfully!',
@@ -423,7 +424,7 @@ service.post('/appoint/add',checkAuth, (req, res, next) => {
 
 //get list of services
 service.get('/get', (req, res, next) => {
-  Service.find(function (err, services) {
+  Service.find({available_booking: true},function (err, services) {
     console.log(services);
     if (err) return handleError(err => {
       res.status(500).json(
@@ -458,6 +459,23 @@ service.get('/get/sp',checkAuth, (req, res, next) => {
   });
 });
 
+//get list of bookings
+service.get('/booking/get',checkAuth, (req, res, next) => {
+  Booking.find({state: 'pending'},function (err, bookings) {
+    console.log(bookings);
+    if (err) return handleError(err => {
+      res.status(500).json(
+        { message: 'No bookings Found!'}
+        );
+    });
+    res.status(200).json(
+      {
+        message: 'booking list recieved successfully!',
+        bookings: bookings
+      }
+    );
+  });
+});
 
 //get selected service
 service.get('/get/:id', (req, res, next) => {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { ServiceProviderService } from '../serviceprovider.service';
 import { Email } from '../../eventplanner/eventplanner.model';
 import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -25,6 +26,13 @@ export class BookingsComponent implements OnInit, OnDestroy {
 
   // subscritions
   private bookingSub: Subscription;
+
+  @Output() countEmit = new EventEmitter<any>();
+
+  @Output() datesEmit = new EventEmitter<any>();
+
+  bookingCounts = { pendingBookings: 0, completedBooking: 0, pendingBookingDate: '', completedBookingDate: ''};
+  bookingMonths = {jan:0, feb: 0 ,mar:0, apr: 0, may:0, jun: 0, jul: 0, aug:0 ,sep:0, oct:0, nov:0, dec:0};
 
 
   // Create sample bookings
@@ -49,15 +57,16 @@ export class BookingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.serviceProviderService.getBookings();
+    this.serviceProviderService.updateBookings();
     this.bookingSub = this.serviceProviderService.getBookingsUpdateListener()
           .subscribe((recievedBookings: Booking[]) => {
-              this.bookings = recievedBookings;
-              console.log(this.bookings);
-              if (this.bookings) {
+            this.bookings = recievedBookings;
+            console.log(this.bookings);
+            if (this.bookings) {
               this.dataSource = new MatTableDataSource(this.addBookings(this.bookings, this.bookingType));
               this.dataSource.paginator = this.paginator;
               this.dataSource.sort = this.sort;
+              this.updateCount(this.bookings);
            }
       });
   }
@@ -67,6 +76,8 @@ export class BookingsComponent implements OnInit, OnDestroy {
       this.bookingSub.unsubscribe();
     }
   }
+
+
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -130,6 +141,60 @@ export class BookingsComponent implements OnInit, OnDestroy {
       this.router.onSameUrlNavigation = 'reload';
       this.router.navigate(['/sp/dash/bookings']);
     }, 1000);
+  }
+
+ async updateCount(bookiings: Booking[]){
+    for (const book of bookiings) {
+      const month = book.to_date.slice(5, 7) ;
+      if (book.state === 'pending'){
+        this.bookingCounts.pendingBookings++;
+        this.bookingCounts.pendingBookingDate = book.created_date.slice(0, 10);
+      }
+      if (book.state === 'completed'){
+        this.bookingCounts.completedBooking++;
+        this.bookingCounts.completedBookingDate = book.created_date.slice(0, 10);
+      }
+      if ( month === '01') {
+        this.bookingMonths.jan++;
+      } else if ( month === '02') {
+        this.bookingMonths.feb++;
+      } else if ( month === '03') {
+        this.bookingMonths.mar++;
+      } else if ( month === '04') {
+        this.bookingMonths.apr++;
+      } else if ( month === '05') {
+        this.bookingMonths.may++;
+      } else if ( month === '06') {
+        this.bookingMonths.jun++;
+      } else if ( month === '07') {
+        this.bookingMonths.jul++;
+      } else if ( month === '08') {
+        this.bookingMonths.aug++;
+      } else if ( month === '09') {
+        this.bookingMonths.sep++;
+      } else if ( month === '10') {
+        this.bookingMonths.oct++;
+      } else if ( month === '11') {
+        this.bookingMonths.nov++;
+      } else if ( month === '12') {
+        this.bookingMonths.dec++;
+      }
+    }
+    console.log(this.bookingCounts);
+    console.log(this.bookingMonths);
+    setTimeout( () => {
+      this.setCountEmit();
+      this.setDatesEmit();
+    }, 1500);
+
+  }
+
+  setCountEmit() {
+    this.countEmit.emit(this.bookingCounts);
+  }
+
+  setDatesEmit() {
+    this.datesEmit.emit(this.bookingMonths);
   }
 
 }

@@ -8,7 +8,7 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 br-back stat-num">
           <span class="stat-no">
-            {{dashStat[0].pending_orders}}
+            {{orderCounts ? orderCounts.pendingOrders : 0}}
           </span>
         </div>
 
@@ -20,7 +20,7 @@
           <hr />
           Latest order on:
           <br />
-          <span class="date-text">{{dashStat[0].last_order_date}}</span>
+          <span class="date-text">{{orderCounts ? orderCounts.pendingOrderDate: ''}}</span>
         </div>
       </div>
     </mat-card-body>
@@ -36,18 +36,18 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 ar-back stat-num">
           <span class="stat-no">
-            {{dashStat[0].to_delivery_orders}}
+            {{orderCounts? orderCounts.completedOrders: 0}}
           </span>
         </div>
 
         <div class="col-md-9 stat-text">
           <span class="stat-title">
-            To be Delivered
+            Delivered Orders
           </span>
           <hr />
-            Next delivery on:
+            Last order on:
           <br />
-          <span class="date-text">{{dashStat[0].next_delivery_date}}</span>
+          <span class="date-text">{{orderCounts ? orderCounts.completedOrderDate : ''}}</span>
         </div>
       </div>
     </mdb-card>
@@ -62,18 +62,18 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 cb-back stat-num">
           <span class="stat-no">
-            {{dashStat[0].completed_orders}}
+            {{orderCounts ? orderCounts.cancelledOrders : 0}}
           </span>
         </div>
 
         <div class="col-md-9 stat-text">
           <span class="stat-title">
-            Delivered Orders
+            Cancelled Orders
           </span>
           <hr />
-          Last delivery on:
+          Cancelled on:
           <br />
-          <span class="date-text">{{dashStat[0].last_completed_date}}</span>
+          <span class="date-text">{{orderCounts? orderCounts.cancelledOrderDate: ''}}</span>
         </div>
       </div>
     </mdb-card>
@@ -88,7 +88,7 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 er-back stat-num">
           <span class="stat-no">
-            {{dashStat[0].inventory}}
+            {{9}}
           </span>
         </div>
 
@@ -99,7 +99,7 @@
           <hr />
           Latest Modified:
           <br />
-          <span class="date-text">{{dashStat[0].lasT_modified_date}}</span>
+          <span class="date-text">{{'2020-06-11'}}</span>
         </div>
       </div>
     </mdb-card>

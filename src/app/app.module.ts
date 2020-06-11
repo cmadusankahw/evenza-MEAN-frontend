@@ -125,6 +125,8 @@ import { PlannerProfileComponent } from './modules/eventplanner/planner-profile/
 import { RatingReviewComponent } from './modules/eventplanner/rating-review/rating-review.component';
 import { BookingNoteComponent } from './modules/eventplanner/booking-note/booking-note.component';
 import { LocationSearchComponent } from './modules/service/location-search/location-search.component';
+import { EventSelectComponent } from './modules/event/event-select/event-select.component';
+
 
 
 
@@ -212,6 +214,8 @@ import { LocationSearchComponent } from './modules/service/location-search/locat
     RatingReviewComponent,
     BookingNoteComponent,
     LocationSearchComponent,
+    EventSelectComponent,
+
 
 
 

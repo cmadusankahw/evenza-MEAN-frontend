@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 
 import { Service, ServiceCategories, ServiceRates, ServiceQuery, Booking, Appointment } from './service.model';
 import { SuccessComponent } from 'src/app/success/success.component';
+import { Merchant, BusinessLocation } from '../auth/auth.model';
 
 
 
@@ -18,6 +19,7 @@ export class ServiceService  {
   private servicesUpdated = new Subject<Service[]>();
   private categoriesUpdated = new Subject<ServiceCategories[]>();
   private bookingsUpdated = new Subject<Booking[]>();
+  private locationsUpdated = new Subject<{location: BusinessLocation, business: string}[]>();
 
   // to add services
   private services: Service[] = [];
@@ -34,6 +36,9 @@ export class ServiceService  {
 
   // recieved bookings
   private bookings: Booking[] = [];
+
+  // recieved locations
+  private locations: {location: BusinessLocation, business: string}[] = [];
 
   // to render selected service
   private service: Service;
@@ -106,6 +111,23 @@ export class ServiceService  {
     }
 
 
+      // get list of locations
+   getLocations() {
+    this.http.get<{ message: string, locations: Merchant[] }>(this.url + 'service/location/get')
+      .subscribe((res) => {
+        console.log(res.locations);
+        for (const book of res.locations) {
+          this.locations.push({location: book.business.location, business: book.business.title});
+        }
+        setTimeout(() => {
+          this.locationsUpdated.next([...this.locations]);
+          console.log(this.locations);
+        }, 1000);
+      });
+    }
+
+
+
   // listners for subjects
   getServiceUpdateListener() {
     return this.serviceUpdated.asObservable();
@@ -133,6 +155,11 @@ export class ServiceService  {
   getCategoriesUpdateListener() {
     return this.categoriesUpdated.asObservable();
   }
+
+  getLocationsUpdateListener() {
+    return this.locationsUpdated.asObservable();
+  }
+
 
 
   // crud methods
@@ -275,13 +302,19 @@ export class ServiceService  {
 
   // check booking availability
   checkBookingAvailability(fromDate: string, toDate: string) {
-
+    this.http.post<{ message: string, availability: boolean }>(this.url + 'service/booking/check', {fromDate, toDate})
+    .subscribe((recievedData) => {
+      console.log(recievedData.message);
+    });
   }
 
 
   // check appointment availability
   checkAppointAvailability(appointedDate: string) {
-
+    this.http.post<{ message: string, availability: boolean }>(this.url + 'service/appoint/check', {appointedDate})
+    .subscribe((recievedData) => {
+      console.log(recievedData.message);
+    });
   }
 
 

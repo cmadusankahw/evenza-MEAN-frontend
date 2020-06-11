@@ -101,7 +101,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
     });
 
     // router scroll
-    this.router.events.subscribe((evt) => {
+      this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
           return;
       }
@@ -158,6 +158,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
         created_time: this.service.created_time,
         rate: updateServiceForm.value.rate,
         rate_type: updateServiceForm.value.rate_type,
+        capacity: updateServiceForm.value.capacity,
         pay_on_meet: this.booleanValue(updateServiceForm.value.pay_on_meet),
         image_01:  this.service.image_01,
         image_02:  this.service.image_02,

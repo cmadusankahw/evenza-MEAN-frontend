@@ -10,7 +10,10 @@
           <div class="nav-top-back" style="position:absolute; top:0; bottom:0; left:0; right:0;">
             <div class="pd-img">
               <img [src]="eventPlanner ? eventPlanner.profile_pic: './assets/images/merchant/nopic.png'"
-              alt="Event Planner Pic" class="img-thumbnail" style="border-radius:50%;">
+              alt="Event Planner Pic" class="img-thumbnail" style="border-radius:50%; ">
+            </div>
+            <div class="text-center font-weight-bold" style="padding-top:12px; color: white;">
+              <h3><b>{{eventPlanner ? eventPlanner.first_name : '...'}}</b></h3>
             </div>
           </div>
        </div>

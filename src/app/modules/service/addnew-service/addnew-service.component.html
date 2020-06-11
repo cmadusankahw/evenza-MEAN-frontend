@@ -13,16 +13,28 @@
         <mat-error *ngIf="addNewServiceName.invalid">Please enter service title</mat-error>
       </mat-form-field>
       <br>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label >Select Service Category</mat-label>
+            <select matNativeControl required
+            ngModel name="category">
+              <option [value]="cat.val" *ngFor="let cat of categories"  >
+                {{cat ? cat.val : '...'}}
+              </option>
+            </select>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label> Capacity per Day</mat-label>
+            <input matInput placeholder="Service capacity here" required type="number"
+            ngModel name="capacity" #capacity="ngModel">
+            <mat-error *ngIf="capacity.invalid">Please enter a capacity </mat-error>
+          </mat-form-field>
+         </div>
+      </div>
 
-      <mat-form-field class="service-full-width">
-        <mat-label >Select Service Category</mat-label>
-        <select matNativeControl required
-        ngModel name="category">
-          <option [value]="cat.val" *ngFor="let cat of categories"  >
-            {{cat ? cat.val : '...'}}
-          </option>
-        </select>
-      </mat-form-field>
       <br>
       <div class="check-cls">
         <mat-label class="check-label">Service Availability</mat-label>

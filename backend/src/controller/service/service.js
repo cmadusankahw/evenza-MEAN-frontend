@@ -116,6 +116,7 @@ service.post('/edit',checkAuth, (req, res, next) => {
     created_time: req.body.created_time,
     rate: req.body.rate,
     rate_type: req.body.rate_type,
+    capacity: req.body.capacity,
     pay_on_meet: req.body.pay_on_meet,
     image_01: req.body.image_01,
     image_02: req.body.image_02,
@@ -472,6 +473,24 @@ service.get('/booking/get',checkAuth, (req, res, next) => {
       {
         message: 'booking list recieved successfully!',
         bookings: bookings
+      }
+    );
+  });
+});
+
+
+//get list of bookings
+service.get('/location/get',checkAuth, (req, res, next) => {
+  Merchant.find({business:{$ne : null}},function (err, businesses) {
+    if (err) return handleError(err => {
+      res.status(500).json(
+        { message: 'No Businesses Found!'}
+        );
+    });
+    res.status(200).json(
+      {
+        message: 'locaion list recieved successfully!',
+        locations: businesses
       }
     );
   });

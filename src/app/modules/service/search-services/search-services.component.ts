@@ -10,6 +10,7 @@ import {Service, ServiceCategories, ServiceQuery, Booking } from '../service.mod
 import { ServiceService } from '../service.service';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
+import { BusinessLocation } from '../../auth/auth.model';
 
 @Component({
   selector: 'app-search-services',
@@ -24,6 +25,7 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
   private categorySub: Subscription ;
   private searchedServiceSub: Subscription;
   private bookingSub: Subscription;
+  private locationSub: Subscription;
 
   services: Service[] = [];
 
@@ -62,6 +64,9 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
   // selected category
   selectedCategory = 'Recently Booked';
 
+  // recieved locations
+  recievedLocations: {location: BusinessLocation, business: string}[]  = [];
+
   // pass to service car and service details comps
   dates = {fromDate: this.today.toISOString(), toDate: this.today.toISOString()};
   islogged = true; // must be updated with backend call
@@ -97,6 +102,13 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
      this.categories = recievedData;
      console.log(this.categories);
  });
+
+    this.serviceService.getLocations();
+    this.locationSub = this.serviceService.getLocationsUpdateListener()
+      .subscribe((recievedData: {location: BusinessLocation, business: string}[]) => {
+      this.recievedLocations = recievedData;
+      console.log(this.recievedLocations);
+    });
   }
 
   ngOnDestroy() {
@@ -111,6 +123,9 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
     }
     if (this.bookingSub) {
       this.bookingSub.unsubscribe();
+    }
+    if (this.locationSub) {
+      this.locationSub.unsubscribe();
     }
   }
 
@@ -168,11 +183,11 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
    }
 
    // get available list of services
-  changeSettings(fromDate: string, toDate: string){
+  changeSettings(fromDate: string, toDate: string) {
     const tDate = new Date(toDate);
     const fDate = new Date(fromDate);
-    let services: Service[] = this.serviceService.getUpdatedServices();
-    let serviceIds: string[] = [];
+    const services: Service[] = this.serviceService.getUpdatedServices();
+    const serviceIds: string[] = [];
 
     this.serviceService.getBookings();
     this.bookingSub = this.serviceService.getBookingsUpdateListener()

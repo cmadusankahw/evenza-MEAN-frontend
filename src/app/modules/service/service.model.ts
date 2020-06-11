@@ -14,6 +14,7 @@ export interface Service {
   created_time: string;
   rate: number;
   rate_type: string;
+  capacity: number;
   pay_on_meet: boolean;
   image_01: string;
   image_02: string;

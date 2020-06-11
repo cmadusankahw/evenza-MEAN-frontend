@@ -37,12 +37,10 @@ export class LocationSearchComponent implements OnInit {
   address: string;
 
   // recieved locations
-  recievedLocations: BusinessLocation[] = [
-    {lat: 80.123456, lang: 60.55678 , homeTown: 'Akurana'},
-    {lat: 77.123456, lang: 62.55678 , homeTown: 'Akurana'}
-  ];
+  @Input() recievedLocations: {location: BusinessLocation, business: string}[] = [];
 
-
+  // agm label color
+  color = '#223456';
 
 
   private geoCoder;
@@ -75,6 +73,7 @@ export class LocationSearchComponent implements OnInit {
         });
       });
     });
+
   }
 
  // set current location
@@ -87,6 +86,7 @@ export class LocationSearchComponent implements OnInit {
         this.getAddress(this.recievedLocation.lat, this.recievedLocation.lang);
       });
     }
+    console.log(this.recievedLocations);
   }
 
   // marker dragging is completed

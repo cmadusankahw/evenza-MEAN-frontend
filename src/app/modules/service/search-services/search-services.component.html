@@ -69,10 +69,10 @@
         <!--business-->
         <div class="filter-content pd-top-filter">
           <h6> <mdb-icon fas icon="building"></mdb-icon> By Business Location</h6>
-          <button class="btn btn-md" color="secondary" mdbBtn mdbWavesEffect (click) ="locationSearchModal.show()"
+          <a class="btn btn-md" color="secondary" mdbBtn mdbWavesEffect (click) ="locationSearchModal.show()"
           style="margin:0 auto;">
             Search by Location
-          </button>
+          </a>
           <mat-form-field class="cat-list">
             <mat-label><span class="location-label">Start typing city or town</span></mat-label>
             <input matInput
@@ -277,7 +277,8 @@
          <!--find out more--->
             <div class="text-center pd-top">
               <hr>
-              Find more services to book <a class="btn btn-lg" color="secondary" mdbBtn mdbWavesEffect style="margin-left:40px;">Find more</a>
+              Find more services to book <a class="btn btn-lg" color="secondary" mdbBtn mdbWavesEffect
+              style="margin-left:40px;" (click) ="searching = !searching">Go Back</a>
             </div>
 
   </mat-sidenav-content>
@@ -370,7 +371,7 @@
       </div>
 
       <div class="modal-body " style="height: 500px; overflow-y: auto;">
-        <app-location-search [searchMode] = "true"></app-location-search>
+        <app-location-search [searchMode] = "true" [(recievedLocations)] = "recievedLocations"></app-location-search>
       </div>
 
       <div class="modal-footer">

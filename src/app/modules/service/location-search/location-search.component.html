@@ -22,11 +22,19 @@
   <agm-marker
   [latitude]="recievedLocation.lat"
   [longitude]="recievedLocation.lang"
-  (dragEnd)="markerDragEnd($event)" ></agm-marker>
+  (dragEnd)="markerDragEnd($event)"
+ ></agm-marker>
 
   <agm-marker *ngFor="let loc of recievedLocations"
-  [latitude]="loc.lat"
-  [longitude]="loc.lang"  ></agm-marker>
+  [latitude]="loc.location.lat"
+  [longitude]="loc.location.lang"
+  [color] = "color"
+  [label] = "{
+    color: 'blue',
+    fontSize: '14px',
+    fontWeight: 'bold',
+    text: loc.business
+    }"  ></agm-marker>
 </agm-map>
 
 <br>

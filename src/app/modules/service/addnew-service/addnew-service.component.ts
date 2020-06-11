@@ -92,6 +92,7 @@ createService(addServiceForm: NgForm) {
       created_time: this.convertTime(),
       rate:  addServiceForm.value.rate,
       rate_type: addServiceForm.value.rate_type,
+      capacity: addServiceForm.value.capacity,
       pay_on_meet:  this.booleanValue(addServiceForm.value.pay_on_meet),
       image_01: './assets/images/merchant/nopic.png',
       image_02: './assets/images/merchant/nopic.png',

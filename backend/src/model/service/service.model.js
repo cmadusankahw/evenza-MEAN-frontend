@@ -17,6 +17,7 @@ const serviceSchema = mongoose.Schema(
     created_time:{type: String, required: true},
     rate: {type: Number, required: true},
     rate_type: {type: String, required: true},
+    capacity:{ type: Number, required: true},
     pay_on_meet:{type: Boolean, required: true, default: false},
     image_01: {type: String},
     image_02: {type: String},

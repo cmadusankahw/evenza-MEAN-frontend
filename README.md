@@ -1,4 +1,4 @@
-# Evenza - Smart Event Management & Ressourcing Platform
+# Evenza - Smart Event Management & Resourcing Platform
 
 This is my Third Year Design & Development Project
 

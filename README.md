@@ -1,4 +1,6 @@
-# EvenzaMdbFrontend
+# Evenza - Smart Event Management & Ressourcing Platform
+
+This is my Third Year Design & Development Project
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.8.
 
@@ -6,11 +8,11 @@ This project use `Angular MDBoostrap`
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-Run `npm start` to run development server with open in browser.
+Run `ng serve` to run frontend development server and  `npm run serve` to run backend development server seperately.
 
-Run `npm run serve` to run backend development server
+**CROS** Policy has been enabled.
 
 ## Code scaffolding
 

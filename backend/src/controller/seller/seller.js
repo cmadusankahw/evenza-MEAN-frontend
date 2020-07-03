@@ -2,6 +2,7 @@ const Product = require ("../../model/product/product.model");
 const Merchant = require ("../../model/auth/merchant.model");
 const Order = require("../../model/product/order.model");
 const checkAuth = require("../../middleware/auth-check");
+const Login = require("../../../data/user/emailAuthentication.json");
 
 //dependency imports
 const express = require("express");
@@ -174,8 +175,8 @@ async function sendMail(mail, callback) {
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
-      user: 'chiran.hw@gmail.com',
-      pass: 'chim2cls2ppt'
+      user: Login.user,
+      pass: Login.pass
     }
   });
 

@@ -227,6 +227,11 @@ export class ProductService  {
         this.sellerProducts = updatedProducts;
         this.sellerProductsUpdated.next([...this.sellerProducts]);
         console.log(recievedData.message);
+        this.dialog.open(SuccessComponent,
+          {data: {message: 'Product has Removed!'}});
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/sel/dash/bprofile']);
       });
   }
 

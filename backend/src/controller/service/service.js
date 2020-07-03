@@ -6,6 +6,7 @@ const ServiceCategories = require("../../model/service/categories.model");
 const EventPlanner = require ("../../model/auth/eventPlanner.model");
 const Merchant = require("../../model/auth/merchant.model");
 const checkAuth = require("../../middleware/auth-check");
+const Login = require("../../../data/user/emailAuthentication.json");
 
 //dependency imports
 const express = require("express");
@@ -150,7 +151,7 @@ service.delete('/edit/:id',checkAuth, (req, res, next) => {
 });
 
 
-//search products
+//search services
 service.post('/search', (req, res, next) => {
 
   Service.find({service_category: req.body.category,
@@ -172,6 +173,8 @@ service.post('/search', (req, res, next) => {
 });
 
 
+// modify !!!!!!!!!!!!!!!! check for a booking date-time before adding
+// !!!!!!!!!!!!!!!!!!!!! add aggrogation
 
 //add new booking
 service.post('/booking/add',checkAuth, (req, res, next) => {
@@ -318,6 +321,7 @@ service.post('/calbooking/add',checkAuth, (req, res, next) => {
 });
 
 
+// !!!!!!!!!! add aggrogate
 
 //add new appointment
 service.post('/appoint/add',checkAuth, (req, res, next) => {
@@ -479,7 +483,7 @@ service.get('/booking/get',checkAuth, (req, res, next) => {
 });
 
 
-//get list of bookings
+//get business locations // !!!!!!!!!!! update if possible
 service.get('/location/get',checkAuth, (req, res, next) => {
   Merchant.find({business:{$ne : null}},function (err, businesses) {
     if (err) return handleError(err => {
@@ -530,27 +534,6 @@ service.get('/cat', (req, res, next) => {
 });
 
 
-// to be removed
-//get product id of the last product
-service.get('/last', (req, res, next) => {
-  Service.find(function (err, services) {
-    var lastid;
-    if(services.length){
-      lastid = services[services.length-1].service_id;
-    } else {
-      lastid= 'S0';
-    }
-    console.log(lastid);
-    if (err) return handleError(err);
-    res.status(200).json(
-      {
-        lastid: lastid
-      }
-    );
-  });
-});
-
-
 // nodemailer send email function
 async function sendMail(mail, callback) {
 
@@ -560,8 +543,8 @@ async function sendMail(mail, callback) {
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
-      user: 'chiran.hw@gmail.com',
-      pass: 'chim2cls2ppt'
+      user: Login.user,
+      pass: Login.pass
     }
   });
 

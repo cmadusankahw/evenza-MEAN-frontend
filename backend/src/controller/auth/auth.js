@@ -89,7 +89,7 @@ auth.post('/signup/merchant', (req, res, next) => {
     });
 });
 
-// signup evvent planner
+// signup event planner
 auth.post('/signup/planner', (req, res, next) => {
   const eventPlanner = new EventPlanner (req.body);
   console.log(eventPlanner);
@@ -278,7 +278,7 @@ auth.post('/signin', (req, res, next) => {
     res.status(200).json({
       message: 'user authentication successfull!',
       token:token,
-      expiersIn: 7200,
+      expiersIn: 15000,
       user_type: fetchedUser.user_type,
     });
   })

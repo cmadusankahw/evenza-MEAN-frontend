@@ -202,7 +202,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   // remove product
   removeProduct(productId: string) {
     this.productService.removeProduct(productId);
-    this.removed = true;
   }
 
 

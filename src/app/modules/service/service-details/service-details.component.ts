@@ -44,7 +44,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   editmode = false;
 
   // service removed
-  removed = false;
+  @Input() removed = false;
 
   // total amount
   totalAmount = 0.0;
@@ -117,7 +117,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
         console.log(this.categories);
     });
 
-    // import quantity types
+    // import rate types
       this.rates = this.serviceService.getRates();
     }
   }
@@ -180,7 +180,6 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   // remove service
   removeService(serviceId: string) {
     this.serviceService.removeService(serviceId);
-    this.removed = true;
   }
 
     // create a booking

@@ -244,6 +244,11 @@ export class ServiceService  {
         this.serviceProviderServices = updatedServices;
         this.serviceProviderServiceUpdated.next([...this.serviceProviderServices]);
         console.log(recievedData.message);
+        this.dialog.open(SuccessComponent,
+          {data: {message: 'Service has Removed!'}});
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/sp/dash/bprofile']);
       });
   }
 

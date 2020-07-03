@@ -112,9 +112,17 @@ export class BprofileComponent implements OnInit, OnDestroy {
   isOpened(openDays: { day: number, from_time: number, to_time: number; }[]): boolean {
     const today = new Date();
     const HrIndex = today.getHours();
-    const DayIndex = today.getDate();
+    let DayIndex = today.getDate();
+    if (DayIndex > 21 ){
+      DayIndex = DayIndex-21;
+    } else if (DayIndex >14){
+      DayIndex = DayIndex -14;
+    } else if (DayIndex > 7){
+      DayIndex= DayIndex - 7;
+    }
     for (const od of openDays) {
-      if (od. day === DayIndex) {
+
+      if (od.day === DayIndex - 1) {
         if (od.from_time <= HrIndex  && HrIndex <= od.to_time ){
           return true;
         }

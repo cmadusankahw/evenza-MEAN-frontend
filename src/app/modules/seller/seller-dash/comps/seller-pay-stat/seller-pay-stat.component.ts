@@ -10,8 +10,8 @@ import { PayStat } from '../../../seller.model';
 export class SellerPayStatComponent implements OnInit {
 
   payStat: PayStat[] = [
-    { business_id: 'B-01', pay_amount: 123.55, pay_due_date: '22/04/2020', overdue: true,
-     last_payment: 11.34, last_pay_date: '22/03/2020' },
+    { business_id: 'B-01', pay_amount: 0, pay_due_date: '12/07/2020', overdue: false,
+     last_payment: 0, last_pay_date: '212/06/2020' },
   ];
 
 

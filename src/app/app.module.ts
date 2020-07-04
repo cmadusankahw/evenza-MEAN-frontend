@@ -126,6 +126,7 @@ import { RatingReviewComponent } from './modules/eventplanner/rating-review/rati
 import { BookingNoteComponent } from './modules/eventplanner/booking-note/booking-note.component';
 import { LocationSearchComponent } from './modules/service/location-search/location-search.component';
 import { EventSelectComponent } from './modules/event/event-select/event-select.component';
+import { TeramsConditionsComponent } from './modules/home/terams-conditions/terams-conditions.component';
 
 
 
@@ -215,6 +216,7 @@ import { EventSelectComponent } from './modules/event/event-select/event-select.
     BookingNoteComponent,
     LocationSearchComponent,
     EventSelectComponent,
+    TeramsConditionsComponent,
 
 
 

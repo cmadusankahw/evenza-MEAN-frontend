@@ -153,21 +153,34 @@ service.delete('/edit/:id',checkAuth, (req, res, next) => {
 
 //search services
 service.post('/search', (req, res, next) => {
-
   Service.find({service_category: req.body.category,
                 rate: {$gte: req.body.minPrice},
                 pay_on_meet:req.body.payOnMeet,
                 rating: {$gte: req.body.userRating},
                 available_booking: true})
-  .then(result => {
+  .then( result => {
+      for ( const doc of result) {
+         Booking.find({service_id: doc.service_id,
+                       from_date: { $gte : req.body.fromDate  },
+                       to_date: { $lte : req.body.toDate },
+                     }).then(books => {
+                       console.log('Bookings : ',books);
+                       if (books){
+                         result.pop(doc);
+                       }
+                     })
+      }
+    return result;
+    }).then ( finalResult => {
       res.status(200).json({
         message: 'services recieved successfully!',
-        services: result
+        services: finalResult
       });
     })
-    .catch(err=>{
+    .catch( err =>{
+      console.log(err);
       res.status(500).json({
-        message: 'No matching services Found!'
+        message: 'Error occured while recieving services! Please Retry!'
       });
     });
 });
@@ -175,6 +188,31 @@ service.post('/search', (req, res, next) => {
 
 // modify !!!!!!!!!!!!!!!! check for a booking date-time before adding
 // !!!!!!!!!!!!!!!!!!!!! add aggrogation
+
+// check booking availability  !!!!! update with capacity
+service.post('/booking/check', (req, res, next) => {
+
+  Booking.find({service_id: req.serviceId,
+                from_date: { $gte :  req.body.fromDate},
+                to_date: { $lte : req.body.toDate }})
+  .then(result => {
+    let availability = false;
+    console.log(result);
+    if (!result.length){
+      availability = true;
+    }
+      res.status(200).json({
+        message: 'availability information recieved successfully!',
+        availability: availability
+      });
+    })
+    .catch(err=>{
+      console.log(err);
+      res.status(500).json({
+        message: 'Error occured while checking for bookiing information!'
+      });
+    });
+});
 
 //add new booking
 service.post('/booking/add',checkAuth, (req, res, next) => {
@@ -485,16 +523,21 @@ service.get('/booking/get',checkAuth, (req, res, next) => {
 
 //get business locations // !!!!!!!!!!! update if possible
 service.get('/location/get',checkAuth, (req, res, next) => {
-  Merchant.find({business:{$ne : null}},function (err, businesses) {
+
+  var query =  Merchant.find({business:{$ne : null}}).select(['business.location', 'business.title']);
+
+  query.exec(function (err, locations) {
+    console.log(locations);
     if (err) return handleError(err => {
+      console.llog(err);
       res.status(500).json(
-        { message: 'No Businesses Found!'}
+        { message: 'No locations Found!'}
         );
     });
     res.status(200).json(
       {
         message: 'locaion list recieved successfully!',
-        locations: businesses
+        locations: locations
       }
     );
   });

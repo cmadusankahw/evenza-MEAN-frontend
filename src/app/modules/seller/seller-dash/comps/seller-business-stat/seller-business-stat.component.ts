@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 
-import { BusinessStat } from '../../../seller.model';
 
 @Component({
   selector: 'app-seller-business-stat',
@@ -25,7 +24,7 @@ export class SellerBusinessStatComponent implements OnInit {
   }
 
 
-
+// calculate business performance value
   businessValue(val) {
     if (val > 85) {
       return '5.0 Superior';

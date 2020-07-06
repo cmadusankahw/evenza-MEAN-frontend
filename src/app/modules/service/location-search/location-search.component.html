@@ -26,14 +26,14 @@
  ></agm-marker>
 
   <agm-marker *ngFor="let loc of recievedLocations"
-  [latitude]="loc.location.lat"
-  [longitude]="loc.location.lang"
+  [latitude]="loc.business.location.lat"
+  [longitude]="loc.business.location.lang"
   [color] = "color"
   [label] = "{
     color: 'blue',
     fontSize: '14px',
     fontWeight: 'bold',
-    text: loc.business
+    text: loc.business.title
     }"  ></agm-marker>
 </agm-map>
 

@@ -145,7 +145,7 @@
             <mat-label >Select Service Category</mat-label>
             <select matNativeControl required
             [ngModel]="service.service_category" name="category">
-              <option  value="cat.id" *ngFor="let cat of categories">
+              <option  [value]="cat.val" *ngFor="let cat of categories">
                 {{cat ? cat.val: '...'}}</option>
             </select>
           </mat-form-field>
@@ -317,11 +317,9 @@
                 </div>
                   <hr>
                   <h5> Appointment Details : </h5>
-                  <div class="row container-fluid text-center">
-                    <p> Service may not available on the selected date. Please check Availability!</p>
-                  </div>
+
                   <div class="row container-fluid">
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                       <p> Appointment Date: </p>
                       <mat-form-field class="service-full-width">
                         <input matInput [matDatepicker]="pickera" required [min]="tday"
@@ -336,16 +334,9 @@
                     </div>
 
 
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                       <p style="margin:0px;"> Appointment Time: </p>
                       <ngb-timepicker [(ngModel)]="appointment.time"  name="appointed_time"></ngb-timepicker>
-                    </div>
-
-
-                    <div class="col-md-2 pd-top-min">
-                      <a class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary" (click) = "checkAppointAvailability(appointment.date.toISOString())">
-                        Check Availability
-                      </a>
                     </div>
                 </div>
 
@@ -439,13 +430,13 @@
                       <mat-form-field class="service-full-width">
                         <mat-label> From Date : </mat-label>
                         <input matInput [matDatepicker]="picker1" required [min]="tday"
-                        name="from_date" [(ngModel)]="dates.fromDate" #fDate="ngModel"
-                        (dateChange) = "dates.toDate = dates.fromDate"  (dateChange)="calcPayment(service.rate_type, service.rate)"/>
+                        name="from_date" [(ngModel)]="bookingTime.fromDate" #fDate="ngModel"
+                        (dateChange) = "dates.toDate = bookingTime.fromDate"  (dateChange)="calcPayment(service.rate_type, service.rate)"/>
                         <mat-datepicker-toggle
                           matSuffix
                           [for]="picker1"
                         ></mat-datepicker-toggle>
-                        <mat-datepicker #picker1 [startAt]="dates.fromDate"></mat-datepicker>
+                        <mat-datepicker #picker1 [startAt]="bookingTime.fromDate"></mat-datepicker>
                         <mat-error *ngIf="fDate.invalid">Please select a date</mat-error>
                       </mat-form-field>
                     </div>
@@ -454,12 +445,12 @@
                       <mat-form-field class="service-full-width">
                         <mat-label> To Date : </mat-label>
                         <input matInput [matDatepicker]="picker2" required [min]="tday"
-                        name="to_date" [(ngModel)]="dates.toDate" #tDate="ngModel" (dateChange)="calcPayment(service.rate_type, service.rate)"/>
+                        name="to_date" [(ngModel)]="bookingTime.toDate" #tDate="ngModel" (dateChange)="calcPayment(service.rate_type, service.rate)"/>
                         <mat-datepicker-toggle
                           matSuffix
                           [for]="picker2"
                         ></mat-datepicker-toggle>
-                        <mat-datepicker #picker2 [startAt]="dates.toDate"></mat-datepicker>
+                        <mat-datepicker #picker2 [startAt]="bookingTime.toDate"></mat-datepicker>
                         <mat-error *ngIf="tDate.invalid">Please selet a date</mat-error>
                       </mat-form-field>
                     </div>
@@ -476,18 +467,21 @@
 
                   <div class="col-md-4">
                     <p style="margin:0px;"> From Time: </p>
-                    <ngb-timepicker [(ngModel)]="fromTime"  name="from_time" (click)="calcPayment(service.rate_type, service.rate)"></ngb-timepicker>
+                    <ngb-timepicker [(ngModel)]="bookingTime.fromTime"
+                    name="from_time" (click)="calcPayment(service.rate_type, service.rate)"></ngb-timepicker>
                   </div>
 
                   <div class="col-md-4">
                     <p style="margin:0px;"> To Time: </p>
-                    <ngb-timepicker [(ngModel)]="toTime" name="to_time" (click)="calcPayment(service.rate_type, service.rate)"></ngb-timepicker>
+                    <ngb-timepicker [(ngModel)]="bookingTime.toTime"
+                    name="to_time" (click)="calcPayment(service.rate_type, service.rate)"></ngb-timepicker>
                   </div>
 
                   <div class="col-md-4">
                     <div class="pd-top-min" style="text-align:right;">
                       <p style="margin:0px;">Duration</p>
-                      <span class="duration-cls">{{toTime.hour >= fromTime.hour ? toTime.hour - fromTime.hour + ' Hours' : 'Invalid Time'}} </span>
+                      <span class="duration-cls">{{bookingTime.toTime.hour >= bookingTime.fromTime.hour ?
+                        bookingTime.toTime.hour - bookingTime.fromTime.hour + ' Hours' : 'Invalid Time'}} </span>
                     </div>
 
                     <div class="pd-top-min" style="text-align:right;">

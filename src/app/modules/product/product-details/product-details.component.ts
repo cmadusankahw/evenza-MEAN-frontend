@@ -87,6 +87,15 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
             this.removed = false;
             this.editmode = false;
 
+             // import delivery services
+            this.productService.getDeliveryServices();
+            this.deliveryServiceSub = this.productService.getdeliveryServicesUpdateListener()
+               .subscribe((recievedData: DeliveryService[]) => {
+               this.deliveryServices = recievedData;
+               console.log(this.deliveryServices);
+               this.delService = this.getDeliveryService(this.product.delivery_service);
+            });
+
             if (this.editable === true) {
               // import categories
                 this.productService.getCategories();
@@ -99,14 +108,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
               // import quantity types
                 this.quantities = this.productService.getQuantities();
 
-                // import delivery services
-                this.productService.getDeliveryServices();
-                this.deliveryServiceSub = this.productService.getdeliveryServicesUpdateListener()
-                  .subscribe((recievedData: DeliveryService[]) => {
-                  this.deliveryServices = recievedData;
-                  console.log(this.deliveryServices);
-                  this.delService = this.getDeliveryService(this.product.delivery_service);
-              });
               }
           }
     });

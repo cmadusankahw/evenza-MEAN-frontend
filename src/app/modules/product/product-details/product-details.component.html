@@ -71,7 +71,7 @@
           </div>
 
           <div class="category">
-            <mdb-icon far icon="calendar-alt"></mdb-icon> Delivery Service: {{getDeliveryService(product.delivery_service).title}}
+            <mdb-icon far icon="calendar-alt"></mdb-icon> Delivery Service: {{delService.title}}
           </div>
 
           <div class="notify" >
@@ -412,7 +412,7 @@
 
       <div class="pay-dispaly pd-top-min" style="text-align:right;" *ngIf="product.pay_on_delivery">
         <p style="margin:0px;"> To be Paid:</p>
-        <span class="payment-cls-min"> <b> Rs. {{totalAmount - payAmount > 0 ? totalAmount : 0}}</b></span>
+        <span class="payment-cls-min"> <b> Rs. {{totalAmount - payAmount > 0 ? totalAmount- payAmount : 0}}</b></span>
       </div>
 
   </div>

@@ -41,14 +41,6 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
   // filter-categories
   categories: ServiceCategories[] = [];
 
-
-  // temp value for user ratings
-  ratings = 0;
-
-  // temp slider options
-  priceStart = 0;
-  priceEnd = 49999;
-
   // filter-drawe-state
   opened = false;
 
@@ -61,20 +53,28 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
   // start date (today date)
   today = new Date();
 
-  // selected category
-  selectedCategory = 'Recently Booked';
-
-  // recieved locations
-  recievedLocations: {location: BusinessLocation, business: string}[]  = [];
-
-  // pass to service car and service details comps
-  dates = {fromDate: this.today.toISOString(), toDate: this.today.toISOString()};
   islogged = true; // must be updated with backend call
 
   // temp town suggessions for loction search FILTER-BUSINESS LOCATION
   towns = [
     'Matara', 'Colombo', 'Anuradhapura', 'Gampaha', 'Jaffana', 'Mannar', 'Mulativ',
   ];
+
+  // recieved locations !!!!!!!!!!! edit
+  recievedLocations: {location: BusinessLocation, business: string}[]  = [];
+
+  // search query
+  bookingTime = { fromDate: this.today,
+            toDate: this.today,
+            fromTime: {hour: 8, minute: 0, second: 0},
+            toTime: {hour: 18, minute: 0, second: 0}};
+
+  ratings = 0;
+  priceStart = 0;
+  priceEnd = 49999;
+  payOnMeetQuery = true;
+  selectedCategory = 'Recently Booked';
+
 
   model: any;
 
@@ -129,7 +129,7 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
     }
   }
 
-  // location search auto complete
+  // location search auto complete !!!!!!!!!! edit
   search = (text$: Observable<string>) => {
     const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
     const clicksWithClosedPopup$ = this.click$.pipe(filter(() => !this.instance.isPopupOpen()));
@@ -141,25 +141,23 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
     );
   }
 
-  hasData() {
-    if (this.services.length) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
   }
 
-  searchServices(filterForm: NgForm) {
+  // search services
+  searchServices() {
     const searchQuery: ServiceQuery = {
       category: this.selectedCategory,
       minPrice: this.priceStart,
       maxPrice: this.priceEnd,
-      payOnMeet: this.booleanValue(filterForm.value.pay_on_meet),
-      userRating: this.ratings
+      payOnMeet: this.payOnMeetQuery,
+      userRating: this.ratings,
+      fromDate: this.bookingTime.fromDate.toISOString(),
+      toDate: this.bookingTime.toDate.toISOString(),
+      fromTime: this.bookingTime.fromTime,
+      toTime: this.bookingTime.toTime
     };
     console.log(searchQuery);
     this.serviceService.searchServices(searchQuery);
@@ -167,20 +165,15 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
     .subscribe((recievedData: Service[]) => {
     this.services = recievedData;
     console.log(this.services);
-   // this.changeSettings(this.dates.fromDate, this.dates.toDate);
-    this.searching = !this.searching;
    });
   }
 
-  booleanValue(value: any) {
-    if (value ===  '' || value === null || value === undefined) {
-      return false;
-    } else {return value; }
-  }
 
+  // set service to view details
   sendService(service: Service) {
     this.success = this.serviceService.setService(service);
    }
+
 
    // get available list of services
   changeSettings(fromDate: string, toDate: string) {

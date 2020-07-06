@@ -19,7 +19,7 @@ export class ServiceService  {
   private servicesUpdated = new Subject<Service[]>();
   private categoriesUpdated = new Subject<ServiceCategories[]>();
   private bookingsUpdated = new Subject<Booking[]>();
-  private locationsUpdated = new Subject<{location: BusinessLocation, business: string}[]>();
+  private locationsUpdated = new Subject<any[]>();
 
   // to add services
   private services: Service[] = [];
@@ -38,7 +38,7 @@ export class ServiceService  {
   private bookings: Booking[] = [];
 
   // recieved locations
-  private locations: {location: BusinessLocation, business: string}[] = [];
+  private locations: any[] = [];
 
   // to render selected service
   private service: Service;
@@ -61,9 +61,9 @@ export class ServiceService  {
               private router: Router) { }
 
 
-  // get methods
+// get methods
 
-  // get current service
+// get selected service
  getService() {
     this.serviceUpdated.next(this.service);
  }
@@ -95,7 +95,7 @@ export class ServiceService  {
     });
   }
 
-   // get quantities list
+   // get service rates list
    getRates() {
     return this.rates;
   }
@@ -111,18 +111,13 @@ export class ServiceService  {
     }
 
 
-      // get list of locations
+    // get list of locations !!!!!!!! edit
    getLocations() {
-    this.http.get<{ message: string, locations: Merchant[] }>(this.url + 'service/location/get')
+    this.http.get<{ message: string, locations: any[] }>(this.url + 'service/location/get')
       .subscribe((res) => {
         console.log(res.locations);
-        for (const book of res.locations) {
-          this.locations.push({location: book.business.location, business: book.business.title});
-        }
-        setTimeout(() => {
-          this.locationsUpdated.next([...this.locations]);
-          console.log(this.locations);
-        }, 1000);
+        this.locations = res.locations;
+        this.locationsUpdated.next([...this.locations]);
       });
     }
 
@@ -162,7 +157,7 @@ export class ServiceService  {
 
 
 
-  // crud methods
+  // post methods
 
   // add new service
   addService(service: Service, images: File[]) {
@@ -278,12 +273,18 @@ export class ServiceService  {
 
   // create new booking
   createBooking(booking: Booking) {
-          this.http.post<{ message: string, bookingId: string }>(this.url + 'service/booking/add', booking)
-          .subscribe((recievedData) => {
-            console.log(recievedData.message);
-            this.router.navigate(['/print/booking/' + recievedData.bookingId]);
-            this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
-        });
+          this.http.post<{ message: string, availability: boolean }>(this.url + 'service/booking/check',
+          {fromDate : booking.from_date, toDate: booking.to_date, serviceId: booking.service_id})
+          .subscribe ( availabilityState => {
+            if (availabilityState.availability) {
+              this.http.post<{ message: string, bookingId: string }>(this.url + 'service/booking/add', booking)
+              .subscribe((recievedData) => {
+                console.log(recievedData.message);
+                this.router.navigate(['/print/booking/' + recievedData.bookingId]);
+                this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
+            });
+            }
+          } );
   }
 
    // create new calendar booking
@@ -306,21 +307,11 @@ export class ServiceService  {
   }
 
   // check booking availability
-  checkBookingAvailability(fromDate: string, toDate: string) {
-    this.http.post<{ message: string, availability: boolean }>(this.url + 'service/booking/check', {fromDate, toDate})
-    .subscribe((recievedData) => {
-      console.log(recievedData.message);
-    });
+  checkAvailability(fromDate: string, toDate: string, serviceId: string) {
+    console.log(fromDate, toDate);
+    return this.http.post<{ message: string, availability: boolean }>(this.url + 'service/booking/check', {fromDate, toDate, serviceId});
   }
 
-
-  // check appointment availability
-  checkAppointAvailability(appointedDate: string) {
-    this.http.post<{ message: string, availability: boolean }>(this.url + 'service/appoint/check', {appointedDate})
-    .subscribe((recievedData) => {
-      console.log(recievedData.message);
-    });
-  }
 
 
 }

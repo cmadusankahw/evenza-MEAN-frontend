@@ -37,6 +37,10 @@ export interface ServiceQuery {
   maxPrice: number;
   payOnMeet: boolean;
   userRating: number;
+  fromDate: string;
+  toDate: string;
+  fromTime: {hour: number, minute: number, second: number};
+  toTime: {hour: number, minute: number, second: number};
 }
 
 

@@ -37,7 +37,7 @@ export class LocationSearchComponent implements OnInit {
   address: string;
 
   // recieved locations
-  @Input() recievedLocations: {location: BusinessLocation, business: string}[] = [];
+  @Input() recievedLocations: any[] = [];
 
   // agm label color
   color = '#223456';

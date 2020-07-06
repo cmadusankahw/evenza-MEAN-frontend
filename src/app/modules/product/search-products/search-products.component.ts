@@ -39,16 +39,13 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
 
   // temp value for user ratings
   ratings = 0;
-
-  // temp slider options
   priceStart = 0;
   priceEnd = 49999;
+  productCategory = 'All Products';
+  payOnDelivery = true;
 
   // filter-draw-state
   opened = false;
-
-  // enable searching mode
-  searching = false;
 
   // show product details
   success = false;
@@ -94,12 +91,12 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
     const filterValue = (event.target as HTMLInputElement).value;
   }
 
-  searchProducts(filterForm: NgForm) {
+  searchProducts() {
     const searchQuery: ProductQuery = {
-      category: filterForm.value.category,
+      category: this.productCategory,
       minPrice: this.priceStart,
       maxPrice: this.priceEnd,
-      payOnDelivery: this.booleanValue(filterForm.value.pay_on_dlivery),
+      payOnDelivery: this.payOnDelivery,
       userRating: this.ratings
     };
     console.log(searchQuery);
@@ -108,16 +105,10 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
     .subscribe((recievedData: Product[]) => {
     this.products = recievedData;
     console.log(this.products);
-    this.searching = !this.searching;
    });
   }
 
 
-  booleanValue(value: any) {
-    if (value ===  '' || value === null || value === undefined) {
-      return false;
-    } else {return value; }
-  }
 
   sendProduct(product: Product) {
     this.success = this.productService.setProduct(product);

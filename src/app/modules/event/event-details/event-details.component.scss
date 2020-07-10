@@ -1,0 +1,213 @@
+
+
+// booking and appointment
+.pd-top-min{
+  padding-top:25px;
+}
+
+.appointment-top {
+  background-color: lightgray;
+  padding-top:15px;
+  padding-bottom:10px;
+}
+
+.duration-cls {
+  font-weight: bold;
+  font-size: 22px;
+  color:darkgreen;
+}
+
+.payment-cls {
+  font-weight: bold;
+  font-size: 28px;
+  color:darkmagenta;
+}
+
+.payment-cls-min {
+  font-weight: bold;
+  font-size: 25px;
+  color:darkorchid;
+}
+
+.comment-cls{
+  width:90%;
+  margin:0 auto;
+}
+
+
+.txt-title{
+  line-height:400%;
+  font-weight:bold;
+  font-size:200%;
+  color:white;
+}
+
+.page-content{
+  padding-top:20px;
+}
+
+.content-title{
+  font-weight:bold;
+  font-size: 28px;
+  text-align:left;
+  padding-top:15px;
+}
+
+.content-text{
+  text-align:justify;
+  padding:10px;
+}
+
+.state-text{
+  font-weight:bold;
+}
+
+.open-state{
+  color:darkred;
+  font-weight:bold;
+}
+
+
+.feature-img{
+  width: 100%;
+  height:300px;
+}
+
+.category{
+  padding-top:20px;
+  white-space:20px;
+  padding-bottom:10px;
+}
+
+.open-stat{
+  color:darkgreen;
+  white-space:20px;
+  font-weight:bold;
+}
+
+.hr-rate{
+  padding:18px;
+  text-align:center;
+  font-weight:bold;
+  white-space:20px;
+}
+
+.hr-price{
+  font-size:27px;
+  color:darkmagenta;
+}
+
+.hr-text{
+  font-size:18px;
+  color:darkslategray;
+}
+
+.notify{
+  font-weight:bold;
+  color:darkslategray;
+  font-size:16px;
+}
+
+.edit-cls{
+  text-align:center;
+}
+
+.edit-btn{
+  margin-top:20px;
+  width:80%;
+  margin-bottom:10px;
+}
+
+.book-btn{
+  margin:0 auto;
+  width:80%;
+  margin-top:20px;
+  margin-bottom:10px;
+}
+
+//star ratings
+.star {
+  font-size:33px;
+  color: #f9ffa7;
+}
+
+.filled {
+  color: #eeb90d;
+
+}
+.bad {
+  color: #deb0b0;
+}
+.filled.bad {
+  color: #ffa91e;
+}
+
+.rating{
+  text-align:center;
+}
+
+//edit comp css
+.btns{
+  text-align:center;
+}
+
+.edtbt{
+  margin:0 auto;
+  margin-left:10px;
+}
+
+.sevice-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.service-full-width {
+  width: 90%;
+}
+
+.service-full-width-sm {
+  width: 75%;
+}
+
+.center-txt{
+  text-align:center !important;
+}
+
+.check-margin {
+  margin: 0 20px;
+  font-weight:bold;
+}
+
+.check-lable{
+ font-size:14px;
+ font-weight:bold;
+ padding-left:20px;
+}
+
+.check-cls{
+  margin-top:20px;
+}
+
+.img-cls{
+  width:80%;
+  max-width:200px;
+  margin:0 auto;
+}
+
+.pay-on-meet{
+  padding-left:15%;
+  padding-right:15%;
+}
+
+// order view
+
+.amount-input{
+  font-size:24px;
+  font-weight:bold;
+  color:darkmagenta !important;
+}
+
+.date-stat{
+  color:darkolivegreen;
+}

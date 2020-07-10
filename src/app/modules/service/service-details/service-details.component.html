@@ -463,8 +463,7 @@
                 </div>
 
                 <hr>
-                <div class="row">
-
+                <div class="row" *ngIf="service.rate_type == '/Hr'">
                   <div class="col-md-4">
                     <p style="margin:0px;"> From Time: </p>
                     <ngb-timepicker [(ngModel)]="bookingTime.fromTime"
@@ -491,6 +490,13 @@
 
 
                     </div>
+              </div>
+
+              <div class="row container-fluid text-center" *ngIf="service.rate_type != '/Hr'">
+                <div class="pd-top-min" style="text-align:right;">
+                  <p style="margin:0px;">Service Rate</p>
+                  <span class="duration-cls">Rs. {{service.rate + service.rate_type}} </span>
+                </div>
               </div>
 
                 <hr>

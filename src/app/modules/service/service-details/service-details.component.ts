@@ -154,18 +154,17 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
         business_name:  this.service.business_name,
         description: updateServiceForm.value.description,
         service_category: updateServiceForm.value.category,
-        available_booking: this.booleanValue(updateServiceForm.value.available_booking),
-        available_appoints: this.booleanValue(updateServiceForm.value.available_appoints),
+        available_booking: this.service.available_booking,
+        available_appoints: this.service.available_appoints,
         rating: this.service.rating,
         no_of_ratings: this.service.no_of_ratings,
         no_of_bookings: this.service.no_of_bookings,
         no_of_appoints: this.service.no_of_appoints,
         created_date: this.service.created_date,
-        created_time: this.service.created_time,
         rate: updateServiceForm.value.rate,
         rate_type: updateServiceForm.value.rate_type,
         capacity: updateServiceForm.value.capacity,
-        pay_on_meet: this.booleanValue(updateServiceForm.value.pay_on_meet),
+        pay_on_meet: this.service.pay_on_meet,
         image_01:  this.service.image_01,
         image_02:  this.service.image_02,
         image_03:  this.service.image_03
@@ -178,7 +177,6 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
         this.clearImages();
       });
       console.log('Service updated successfully!');
-      updateServiceForm.resetForm();
       this.editmode = false;
     }
   }
@@ -205,7 +203,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
           event_name: 'Not Assigned',
           business_name: this.service.business_name,
           rate_type: this.service.rate_type,
-          created_date: this.today.toISOString(),
+          created_date: new Date().toISOString(),
           state: 'pending',
           review: 'not reviewed yet',
           from_date: this.bookingTime.fromDate.toISOString(),
@@ -219,7 +217,6 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
           amount_paid: bookingForm.value.amount_paid
           };
         this.serviceService.createBooking(booking);
-        // bookingForm.resetForm();
         this.bookUser = !this.bookUser;
         this.appoint = false;
       }
@@ -237,14 +234,13 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
           service_name: this.service.service_name,
           event_name: 'Not Assigned',
           business_name: this.service.business_name,
-          created_date: this.today.toISOString(),
+          created_date: new Date().toISOString(),
           state: 'pending',
           appointed_date: this.appointment.date.toISOString(),
           appointed_time: this.appointment.time,
           comment: appointForm.value.comment,
           };
         this.serviceService.createAppointment(appointment);
-        // appointForm.resetForm();
         this.appoint = false;
       }
     }
@@ -327,15 +323,6 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
       this.image03Url = reader.result;
     };
   }
-
-  // set boolean value for service update
-  booleanValue(value: any) {
-    if (value ===  '' || value === null || value === undefined) {
-      return false;
-    } else {return value; }
-  }
-
-
 
 
   // calculate payment for booking

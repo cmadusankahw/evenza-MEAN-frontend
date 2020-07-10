@@ -14,7 +14,6 @@ const serviceSchema = mongoose.Schema(
     no_of_bookings: {type: Number, required: true},
     no_of_appoints: {type: Number, required: true},
     created_date:{type: String, required: true},
-    created_time:{type: String, required: true},
     rate: {type: Number, required: true},
     rate_type: {type: String, required: true},
     capacity:{ type: Number, required: true},

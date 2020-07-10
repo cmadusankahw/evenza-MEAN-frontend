@@ -84,7 +84,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
       if (this.userType) {
         const merchantTemp: MerchantTemp = {
-          user_id: this.generateUserId(this.lastid),
+          user_id: this.lastid,
           first_name: signupform.value.firstName,
           last_name: signupform.value.lastName,
           email: signupform.value.email,
@@ -98,7 +98,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
       } else {
         const eventPlanner: EventPlanner = {
-          user_id: this.generateUserId(this.lastid),
+          user_id: this.lastid,
           first_name: signupform.value.firstName,
           last_name: signupform.value.lastName,
           profile_pic: './assets/images/merchant/nopic.png',
@@ -123,14 +123,5 @@ export class SignupComponent implements OnInit, OnDestroy {
     const date = new Date();
     return this.datepipe.transform( date, 'dd/MM/yyyy').toString();
   }
-
-
-  generateUserId(userId: string) {
-      let eId = +(userId.slice(1));
-      console.log(eId);
-      return ('U' + (++eId).toString());
-  }
-
-
 
 }

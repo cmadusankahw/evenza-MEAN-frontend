@@ -297,10 +297,11 @@ auth.get('/last', (req, res, next) => {
     var lastid;
     if(users.length){
       lastid = users[users.length-1].user_id;
+      var eId = +(lastid.slice(1));
+      lastid = ('U' + (++eId).toString());
     } else {
       lastid= 'U0';
     }
-    console.log(lastid);
     if (err) return handleError(err);
     res.status(200).json(
       {

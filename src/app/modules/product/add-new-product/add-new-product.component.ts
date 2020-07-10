@@ -40,6 +40,10 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
   // delivery services
   deliveryServices: DeliveryService[] = [];
 
+  // product availability
+  availability = true;
+  payOnDelivery = false;
+
   constructor(private router: Router,
               public productService: ProductService,
               public datepipe: DatePipe) { }
@@ -97,16 +101,15 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
           product_category: addProductForm.value.category,
           qty_type: addProductForm.value.quantity_type,
           description: addProductForm.value.description,
-          created_date: this.convertDate(),
-          created_time: this.convertTime(),
-          availability: this.booleanValue(addProductForm.value.availability),
+          created_date: new Date().toISOString(),
+          availability: this.booleanValue(this.availability),
           inventory:  addProductForm.value.inventory,
           rating: 0,
           no_of_ratings: 0,
           no_of_orders: 0,
           delivery_service: addProductForm.value.delivery_service,
           price:  addProductForm.value.price,
-          pay_on_delivery:  this.booleanValue(addProductForm.value.pay_on_delivery),
+          pay_on_delivery:  this.booleanValue(this.payOnDelivery),
           image_01: './assets/images/merchant/nopic.png',
           image_02: './assets/images/merchant/nopic.png',
           image_03: './assets/images/merchant/nopic.png',
@@ -127,17 +130,6 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
       this.image03 = null;
     }
 
-    // to get date for created date
-  convertDate() {
-    const date = new Date();
-    return this.datepipe.transform( date, 'dd/MM/yyyy').toString();
-  }
-
-  // to get time for the created time
-  convertTime() {
-    const date = new Date();
-    return this.datepipe.transform( date, 'shortTime').toString();
-  }
 
   // image 01 uploading
   onImage01Uploaded(event: Event) {

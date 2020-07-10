@@ -11,7 +11,6 @@ export interface Service {
   no_of_bookings: number;
   no_of_appoints: number;
   created_date: string;
-  created_time: string;
   rate: number;
   rate_type: string;
   capacity: number;

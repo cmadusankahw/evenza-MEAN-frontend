@@ -10,7 +10,6 @@ const productSchema = mongoose.Schema(
     product_category: { type: String, required: true},
     description: {type: String},
     created_date: {type: String, required: true},
-    created_time: {type: String, required: true},
     availability: {type: Boolean, required: true, default: false},
     inventory: {type: Number, required: true},
     rating: {type: Number, default: 0},

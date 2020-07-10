@@ -1,1 +1,231 @@
-<p>event-details works!</p>
+<div class="container-fluid" *ngIf="!editmode && event">
+
+  <div class="row f-image">
+    <img class="d-block w-100" [src]="event.feature_img ? event.feature_img : './assets/images/merchant/nopic.png'"
+    alt="Feature image" class="feature-img">
+  </div>
+    <div class="row top-stat">
+        <div class="content-title">
+          {{event.event_title}}
+        </div>
+        <div class="open-stat" >
+          <a mdbWavesEffect role="button" (click)= "locationModal.show()">
+          <span><mdb-icon far icon="map-marker"> </mdb-icon> At {{ event.location.homeTown}}</span>
+          </a>
+        </div>
+
+        <div class="open-stat pt-3" *ngIf="event.from_date.slice(0,10) != event.to_date.slice(0,10)" >
+          <span class="date-stat"><mdb-icon far icon="calendar-alt"> </mdb-icon> From
+            {{event.from_date.slice(0,10)}} To {{event.to_date.slice(0,10)}}</span>
+        </div>
+
+        <div class="open-stat pt-3" *ngIf="event.from_date.slice(0,10) == event.to_date.slice(0,10)" >
+          <span class="date-stat"><mdb-icon far icon="clock"> </mdb-icon> On
+            {{event.from_date.slice(0,10)}} </span>
+            <br>
+            <span class="date-stat"><mdb-icon far icon="clock"> </mdb-icon> From
+              {{ event.from_date.slice(11,16)}} To  {{ event.from_date.slice(11,16)}}</span>
+        </div>
+    </div>
+      <hr>
+
+      <div class="row">
+        <div class=" col-md-7 content-text pt-2">
+          {{event.description}}
+          <hr>
+          <div class="category">
+            <mdb-icon far icon="calendar-alt"></mdb-icon> Categry: {{ event.event_category}}
+          </div>
+          <br>
+          <div class="notify" *ngIf="isowner">
+            <mdb-icon fas icon="user-friends"> </mdb-icon> No of Participants (Expected): {{event.no_of_participants}}
+            <p> View all participants at <a routerLink="/planner/event/participants/{{event.event_id}}"> Event Participants</a></p>
+          </div>
+        </div>
+        <hr>
+
+
+        <!--price-->
+        <div class="col-md-5">
+          <div class="hr-rate">
+            <span class="hr-price"> Rs. {{event.price}}</span>
+          </div>
+          <hr>
+
+          <!--event ratings-->
+            <div class="rating">
+              <ngb-rating [(rate)]="event.rating" max="5">
+                <ng-template let-fill="fill" let-index="index">
+                  <span class="star" [class.filled]="fill === 100">&#9733;</span>
+                </ng-template>
+              </ngb-rating>
+              <br>
+              <span class="rating-txt">
+                {{event ? event.no_of_ratings : '...'}} Recommended
+              </span>
+            </div>
+          <hr>
+          <div class="owner text-center" >
+            <span>Owned by {{event ? event.business_name : '...'}}</span>
+            <br>
+            <a mdbBtn color="secondary" class="btn btn-md" outline="yes" mdbWavesEffect *ngIf="!isowner"
+              (click)="showBprofile()" >View Business</a>
+          </div>
+
+        </div>
+      </div>
+
+      <hr>
+
+</div>
+
+
+
+
+
+<!--edit event-->
+<div class="container-fluid text-center" *ngIf="editmode && !removed && !orderUser && event">
+  <div class="center-txt">
+    <div class="row">
+      <div class="col-md-8">
+        <p style="line-height:35px;"> You can change the details of <b>{{event.event}}</b> below.</p>
+      </div>
+      <div class="col-md-4">
+        <a role="button" mdbBtn class="btn btn-sm" color="red" text="white" (click)="removeevent(event.event_id)"> Remove event</a>
+      </div>
+    </div>
+   </div>
+  <br>
+    <form class="service-form" (submit)="updateevent(editeventForm)" #editeventForm ="ngForm">
+      <mat-form-field class="service-full-width">
+        <mat-label>event name</mat-label>
+        <input matInput placeholder="event name here"  required
+        [ngModel]="event.event" name="event" #eventName="ngModel">
+        <mat-error *ngIf="eventName.invalid">Please enter event name</mat-error>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field class="service-full-width">
+        <mat-label >Select event Category</mat-label>
+        <select matNativeControl required
+        [ngModel]="event.event_category" name="category" >
+          <option [value]="cat.val" *ngFor="let cat of categories" >
+            {{cat.val}}</option>
+        </select>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field class="service-full-width">
+        <mat-label class="check-label">event Description</mat-label>
+        <textarea matInput rows="5" placeholder="event Description"
+        [ngModel]="event.description" name="description" ></textarea>
+      </mat-form-field>
+      <br>
+
+      <div class="row">
+
+        <div class="col">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label >Quantity Type</mat-label>
+            <select matNativeControl required
+            [ngModel]="event.qty_type" name="quantity_type">
+             <option [value]="qty.val" *ngFor="let qty of quantities" >
+               {{qty.val}}
+             </option>
+            </select>
+          </mat-form-field>
+        </div>
+
+        <div class="col">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label>Price(Rs.)</mat-label>
+            <input matInput placeholder="Unit Price here" required
+            [ngModel]="event.price" name="price" #price="ngModel">
+            <mat-error *ngIf="price.invalid">Please enter price </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <br>
+      <div class="row">
+
+        <div class="col">
+            <mat-checkbox class="check-margin"
+            [(ngModel)]="event.availability" name="availability">Available for Sale</mat-checkbox>
+        </div>
+
+        <div class="col">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label>Quantity</mat-label>
+            <input matInput   required type="number"
+            [ngModel]="event.inventory" name="inventory" #eventInventory ="ngModel" value="0">
+            <mat-error *ngIf="eventInventory.invalid">Please enter quantity</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <hr>
+      <div class="text-center">
+        <div class="row container-fluid">
+          <div class="col-md-6">
+            <mat-checkbox class="check-margin"
+            [(ngModel)]="event.pay_on_delivery" name="pay_on_delivery">Pay on Delivery</mat-checkbox>
+              </div>
+          <div class="col-md-6">
+            <mat-form-field class="service-full-width-sm">
+              <mat-label >Delivery Service</mat-label>
+              <select matNativeControl required
+              [ngModel]="event.delivery_service" name="delivery_service">
+               <option [value]="del.delivery_service" *ngFor="let del of deliveryServices" >
+                 {{del.title}}
+               </option>
+              </select>
+            </mat-form-field>
+          </div>
+          <br>
+          <p class="pay-on-meet"> Note: If <b>Pay on Delivery</b> is selected, <b>no payment</b> will be charged on order. Payment need to be collected manullay. However, <b>system will charge the due commission form you.</b></p>
+        </div>
+         </div>
+
+      <hr>
+      <div class="enter-txt">
+        <p> Upload images of the event (up to 3 images *5MB Max)</p>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="img1.click()">
+            <img [src]="image01 ? image01Url : event.image_01" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="img1" #img1
+          ngModel name="image_01"  accept="image/*"  (change)="onImage01Uploaded($event)">
+          <p><b>Image 01</b></p>
+        </div>
+
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="img2.click()">
+            <img [src]="image02 ? image02Url : event.image_02" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="img2" #img2
+          ngMode name="image_02"  accept="image/*"  (change)="onImage02Uploaded($event)">
+          <p><b>Image 02</b></p>
+        </div>
+
+        <div class="col-md-4">
+          <a role="button" mdbWavesEffect (click)="img3.click()">
+            <img [src]="image03 ? image03Url : event.image_03" alt="front side" class="img-cls">
+          </a>
+          <input type="file" hidden="true" id="img3" #img3
+          name="image_03"  accept="image/*"  (change)="onImage03Uploaded($event)">
+          <p><b>Image 03</b></p>
+        </div>
+      </div>
+
+    <hr>
+  <!--back button only if !addnew-->
+  <div class="btns">
+    <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
+     type="submit">Save Changes</button>
+  <button mdbBtn color="secondary" class="btn btn-md edtbt" outline="yes" mdbWavesEffect
+  (click)="editmode = !editmode && editeventForm.resetForm()"  type="button">Discard</button>
+  </div>
+</form>
+</div>

@@ -38,8 +38,8 @@
       <br>
       <div class="check-cls">
         <mat-label class="check-label">Service Availability</mat-label>
-        <mat-checkbox class="check-margin" ngModel name="available_booking">Available for Booking</mat-checkbox>
-        <mat-checkbox class="check-margin" ngModel name="available_appoints">Available for Appointments</mat-checkbox>
+        <mat-checkbox class="check-margin" [(ngModel)]="availableBooking" name="available_booking">Available for Booking</mat-checkbox>
+        <mat-checkbox class="check-margin" [(ngModel)]="availableAppoint" name="available_appoints">Available for Appointments</mat-checkbox>
       </div>
       <br>
       <mat-form-field class="service-full-width">
@@ -76,7 +76,7 @@
       <hr>
         <div class="text-center">
           <mat-checkbox class="check-margin"
-          ngModel name="pay_on_meet">Pay on Meet</mat-checkbox>
+          [(ngModel)]="payOnMeet" name="pay_on_meet">Pay on Meet</mat-checkbox>
           <br>
           <p class="pay-on-meet"> Note: If <b>Pay on Meet</b> is enabled, <b>no payment</b> will be charged on booking. Payment need to be collected manullay. However, <b>system will charge the due commission form you.</b></p>
         </div>

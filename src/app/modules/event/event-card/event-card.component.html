@@ -32,7 +32,7 @@
                       </div>
                       <div class="left-btn">
                         <a mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect
-                        (click)= "sendEvent(event)" routerLink="/planner/events/{{event.event_id}}">
+                        (click)= "sendEvent(event)" routerLink="/planner/event/details/{{event.event_id}}">
                           View Details
                         </a>
                       </div>
@@ -52,7 +52,7 @@
 
   <div class="container-fluid text-center" *ngIf="!events">
     <p>You have not created an Event Yet</p>
-    <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" text="white" routerLink="planner/events/create">
+    <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" text="white" routerLink="/planner/events/create">
       Get Started
     </button>
   </div>

@@ -8,7 +8,6 @@ export interface Product {
   qty_type: string;
   description: string;
   created_date: string;
-  created_time: string;
   availability: boolean;
   inventory: number;
   rating: number;

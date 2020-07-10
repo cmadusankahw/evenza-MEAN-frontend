@@ -16,28 +16,7 @@ export class EventCardComponent implements OnInit {
    private eventSub: Subscription ;
 
    // recieved events
-   events: Event[] = [
-     {
-      event_id: 'E1',
-      event_title: 'Wedding',
-      description: 'sample wedding event',
-      event_type: 'open',
-      event_category: 'Wedding',
-      from_date: '17/05/2020',
-      from_time: '08:00 AM',
-      to_date: '17/05/2020',
-      to_time: '06:00 AM',
-      one_day_event: true,
-      created_date: '16/05/2020',
-      location: 'Soysa Hotel, Matara, Sri Lanka',
-      no_of_participants: 11,
-      total_budget: 450000,
-      host_name: 'Chiran Hw',
-      host_email: 'cmadusankahw@gmail.com',
-      feature_img: './assets/images/events/1.jpg',
-      state: 'planned'
-     }
-    ];
+   events: Event[];
 
    // event successfully sent
    success = false;

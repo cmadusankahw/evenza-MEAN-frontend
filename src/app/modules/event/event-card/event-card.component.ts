@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { EventService } from '../event.service';
-import { Event } from '../event.model';
+import { EventCard } from '../event.model';
 
 @Component({
   selector: 'app-event-card',
@@ -16,7 +16,7 @@ export class EventCardComponent implements OnInit {
    private eventSub: Subscription ;
 
    // recieved events
-   events: Event[];
+   events: EventCard[];
 
    // event successfully sent
    success = false;
@@ -28,7 +28,7 @@ export class EventCardComponent implements OnInit {
   ngOnInit() {
     this.eventService.getEvents();
     this.eventSub = this.eventService.getEventsUpdatedListener()
-      .subscribe((recievedEvents: Event[]) => {
+      .subscribe((recievedEvents: EventCard[]) => {
         if (recievedEvents) {
           this.events = recievedEvents;
           console.log(this.events);
@@ -36,8 +36,5 @@ export class EventCardComponent implements OnInit {
   });
  }
 
-  sendEvent(event: Event) {
-    // this.success = this.eventService.sendEvent(event);
-   }
 
 }

@@ -1,6 +1,6 @@
 import { BusinessLocation } from '../auth/auth.model';
 
-export interface Event {
+export interface TheEvent {
   event_id: string;
   event_title: string;
   description: string;
@@ -18,9 +18,23 @@ export interface Event {
   product_categories: Category[]; // selected product categories
   feature_img: string;
   qr_code: string;
-  state: string; // 'planned', 'ongoing', 'completed'
+  state: string; //  'pending', 'completed', 'missed/ cancelled'
   social_links: SocialLinks;
   host: Host;
+}
+
+
+export interface EventCard {
+  event_id: string;
+  event_title: string;
+  description: string;
+  event_category: string; // event planned category
+  from_date: string;
+  to_date: string;
+  location: string; // if 'online' --> online event
+  no_of_participants: number; // data taken at event creation
+  feature_img: string;
+  state: string; // 'planned', 'ongoing', 'completed'
 }
 
 export interface Participant {
@@ -67,6 +81,7 @@ export interface Service {
   service_name: string;
   service_category: string;
   booking_id: string;
+  state: string;
 }
 
 export interface Product {
@@ -74,6 +89,7 @@ export interface Product {
   product: string;
   product_category: string;
   order_id: string;
+  state: string;
 }
 
 export interface Task {
@@ -91,8 +107,9 @@ export interface SocialLinks {
 export interface Category {
   id: string;
   category: string;
-  net_amount: string; // INTIAL SUGGESTED AMOUNT OR PREcENTAGE (MAY NEED TO CHANGE)
+  precentage: number; // INTIAL SUGGESTED AMOUNT OR PRECENTAGE (MAY NEED TO CHANGE)
 }
+
 
 export interface Host {
   user_id: string;

@@ -39,6 +39,9 @@ import { EventPlanComponent } from './modules/event/event-plan/event-plan.compon
 import { EventScheduleComponent } from './modules/event/event-schedule/event-schedule.component';
 import { EventParticipantsComponent } from './modules/event/event-participants/event-participants.component';
 import { EventSelectComponent } from './modules/event/event-select/event-select.component';
+import { EventAgendaComponent } from './modules/event/docs/event-agenda/event-agenda.component';
+import { ParticipantListComponent } from './modules/event/docs/participant-list/participant-list.component';
+import { EventInvitationComponent } from './modules/event/docs/event-invitation/event-invitation.component';
 
 
 const routes: Routes = [
@@ -53,6 +56,9 @@ const routes: Routes = [
   { path: 'print/booking/:id', component: BookingNoteComponent },
   { path: 'print/appoint/:id', component: BookingNoteComponent },
   { path: 'print/order/:id', component: BookingNoteComponent },
+  { path: 'print/agenda/:id', component: EventAgendaComponent },
+  { path: 'print/plist/:id', component: ParticipantListComponent },
+  { path: 'print/invitation/:id', component: EventInvitationComponent },
   {
     path: 'sp/dash',
     component: DashboardComponent,
@@ -89,7 +95,8 @@ const routes: Routes = [
       { path: 'event/plan/:id', component: EventPlanComponent },
       { path: 'event/schedule/:id', component: EventScheduleComponent },
       { path: 'event/participants/:id', component: EventParticipantsComponent },
-      { path: 'event/create', component: EventSelectComponent },
+      { path: 'event/add', component: EventSelectComponent },
+      { path: 'event/edit', component: EventSelectComponent },
       { path: 'events', component: EventplannerDashEventsComponent },
       { path: 'bookings', component: EventplannerDashBookingsComponent },
       { path: 'appoints', component: EventplannerDashAppointmentsComponent },

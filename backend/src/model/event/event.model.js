@@ -39,12 +39,12 @@ const eventsSchema = mongoose.Schema(
     service_categories: { type: [{
                           id: {type: String, required: true},
                           category: {type: String, required: true},
-                          net_amount: {type: Number, required: true},
+                          precentage: {type: Number, required: true},
                         }]},
     product_categories: { type: [{
                           id: {type: String, required: true},
                           category: {type: String, required: true},
-                          net_amount: {type: Number, required: true},
+                          precentage: {type: Number, required: true},
                        }]},
     feature_img: {type: String, required: true},
     qr_code: {type: String, required: true},

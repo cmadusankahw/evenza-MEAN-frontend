@@ -1,53 +1,55 @@
-<div class="container-fluid" *ngIf="!editmode && event">
+<div class="container pt-5 shadow pb-5" *ngIf="!editmode && event">
 
-  <div class="row f-image">
+  <div class="row f-image ml-3 mr-3">
     <img class="d-block w-100" [src]="event.feature_img ? event.feature_img : './assets/images/merchant/nopic.png'"
     alt="Feature image" class="feature-img">
   </div>
-    <div class="row top-stat">
-        <div class="content-title">
-          {{event.event_title}}
-        </div>
-        <div class="open-stat" >
-          <a mdbWavesEffect role="button" (click)= "locationModal.show()">
-          <span><mdb-icon far icon="map-marker"> </mdb-icon> At {{ event.location.homeTown}}</span>
-          </a>
-        </div>
 
-        <div class="open-stat pt-3" *ngIf="event.from_date.slice(0,10) != event.to_date.slice(0,10)" >
-          <span class="date-stat"><mdb-icon far icon="calendar-alt"> </mdb-icon> From
-            {{event.from_date.slice(0,10)}} To {{event.to_date.slice(0,10)}}</span>
-        </div>
-
-        <div class="open-stat pt-3" *ngIf="event.from_date.slice(0,10) == event.to_date.slice(0,10)" >
-          <span class="date-stat"><mdb-icon far icon="clock"> </mdb-icon> On
-            {{event.from_date.slice(0,10)}} </span>
-            <br>
-            <span class="date-stat"><mdb-icon far icon="clock"> </mdb-icon> From
-              {{ event.from_date.slice(11,16)}} To  {{ event.from_date.slice(11,16)}}</span>
-        </div>
-    </div>
-      <hr>
-
-      <div class="row">
+      <div class="row ml-3 mr-3">
         <div class=" col-md-8 content-text pt-2">
-          {{event.description}}
+          <div class="top-stat">
+            <div class="content-title">
+              {{event.event_title}}
+            </div>
+            <div class="open-stat pt-3" >
+              <a mdbWavesEffect role="button" (click)= "locationModal.show()">
+              <span><mdb-icon fas icon="map-marker-alt"> </mdb-icon> At {{ event.location.homeTown}}</span>
+              </a>
+            </div>
+
+            <div class="open-stat pt-2" *ngIf="event.from_date.slice(0,10) != event.to_date.slice(0,10)" >
+              <span class="date-stat"><mdb-icon far icon="calendar-alt"> </mdb-icon> From
+                {{event.from_date.slice(0,10)}} to {{event.to_date.slice(0,10)}}</span>
+            </div>
+
+            <div class="open-stat pt-2" *ngIf="event.from_date.slice(0,10) == event.to_date.slice(0,10)" >
+              <span class="date-stat"><mdb-icon far icon="clock"> </mdb-icon> On
+                {{event.from_date.slice(0,10)}} </span>
+                <br>
+                <span class="date-stat"><mdb-icon far icon="clock"> </mdb-icon> From
+                  {{ event.from_date.slice(11,16)}} to  {{ event.from_date.slice(11,16)}}</span>
+            </div>
+        </div>
           <hr>
+
+          {{event.description}}
           <div class="category">
             <mdb-icon far icon="calendar-alt"></mdb-icon> Categry: {{ event.event_category}}
           </div>
-          <div class="category">
-            <mdb-icon far icon="money"></mdb-icon> <b> Budget: Rs. {{ event.total_budget}} </b>
+          <hr>
+           <div class="notify" style="color:darkblue;">
+            <mdb-icon far icon="money-bill-alt"></mdb-icon> <b> Budget: Rs. {{ event.total_budget}} </b>
           </div>
           <br>
           <div class="notify" *ngIf="isowner">
             <mdb-icon fas icon="user-friends"> </mdb-icon> No of Participants (Expected): {{event.no_of_participants}}
-            <p> View all participants: <a routerLink="/planner/event/participants/{{event.event_id}}"> Event Participants</a></p>
+            <br> <br> <span style="font-weight:300;"> <mdb-icon fas icon="users"> </mdb-icon> View all participants:
+               <a routerLink="/planner/event/participants/{{event.event_id}}"> Event Participants</a> </span>
           </div>
           <hr>
           <div classs="item-box" *ngIf="isowner">
-            <h4>
-              <mat-icon>block</mat-icon>
+            <h4 class="pt-5">
+              <mat-icon>check_circle</mat-icon>
              <b> Allocated Services</b>
             </h4>
               <!-- service table-->
@@ -91,9 +93,10 @@
                       </tr>
                     </table>
                 </div>
+                </div>
               <hr>
-              <h4>
-                <mat-icon>block</mat-icon>
+              <h4 class="pt-5">
+                <mat-icon>check_circle</mat-icon>
                <b> Orderd Products</b>
               </h4>
                 <!-- products table-->
@@ -104,27 +107,27 @@
                             <!-- ID Column -->
                             <ng-container matColumnDef="product">
                               <th mat-header-cell *matHeaderCellDef mat-sort-header > Product  </th>
-                              <td mat-cell *matCellDef="let row"> {{row.product}} </td>
+                              <td mat-cell *matCellDef="let row2"> {{row2.product}} </td>
                             </ng-container>
 
                             <!-- Progress Column -->
                             <ng-container matColumnDef="category">
                               <th mat-header-cell *matHeaderCellDef mat-sort-header > Category </th>
-                              <td mat-cell *matCellDef="let row"> {{row.product_category}} </td>
+                              <td mat-cell *matCellDef="let row2"> {{row2.product_category}} </td>
                             </ng-container>
 
                             <!-- Color Column -->
                             <ng-container matColumnDef="state">
                               <th mat-header-cell *matHeaderCellDef mat-sort-header > State </th>
-                              <td mat-cell *matCellDef="let row" >
-                                {{row.state}}
+                              <td mat-cell *matCellDef="let row2" >
+                                {{row2.state}}
                               </td>
                             </ng-container>
 
                              <!-- Action Column -->
                              <ng-container matColumnDef="action">
                               <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> Details </th>
-                              <td mat-cell *matCellDef="let row">
+                              <td mat-cell *matCellDef="let row2">
                                 <button mdbBtn color="primary" text="white" class="btn btn-sm text-center"
                                 routerLink= "/planner/event/plan/{{event.event_id}}">
                                   MORE DETAILS
@@ -132,63 +135,65 @@
                                </td>
                             </ng-container>
 
-                            <tr mat-header-row *matHeaderRowDef="serviceDisplayedColumns"></tr>
-                            <tr mat-row *matRowDef="let row; columns: serviceDisplayedColumns;">
+                            <tr mat-header-row *matHeaderRowDef="productDisplayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row2; columns: productDisplayedColumns;">
                             </tr>
                           </table>
                       </div>
 
           </div>
         </div>
+        </div>
         <hr>
 
 
         <!--action buttons-->
-        <div class="col-md-4">
+        <div class="col-md-4 text-center">
          <div class="button-box container-fluid">
            <h4 class="button-box-heading"><b>
-            <mat-icon>block</mat-icon> Action Pane
+            <mat-icon>assignment</mat-icon> Action Pane
            </b></h4>
-           <div class="pb-2" *ngIf="event.state != 'published'">
+           <hr>
+           <div class="pb-1" *ngIf="event.state != 'published'">
              <p><b> Event has not Published Yet!</b></p>
             <button mdbBtn color="primary" text="white" class="btn btn-md text-center"
             (click) = "updateEventState()">
-              PUBLISH EVENT
+              PUBLISH EVENT NOW!
             </button>
            </div>
 
-           <div class="pb-2" *ngIf="event.state == 'published'">
+           <div class="pb-1" *ngIf="event.state == 'published'">
             <h5 style="color:darkgreen;"><b> Event is Published!</b></h5>
           </div>
            <hr>
 
-           <div class="pb-2" >
-            <p class="button-box-sub"><mdb-icon far icon="list"> </mdb-icon> Edit Event Details: </p>
-           <button mdbBtn color="seconary" text="white" class="btn btn-md text-center"
+           <div class="pb-1" >
+            <p class="button-box-sub"><mdb-icon far icon="list-alt"> </mdb-icon> Edit Event Details: </p>
+           <button mdbBtn color="secondary" text="white" class="btn btn-md text-center"
            routerLink = "/planner/event/edit/{{event.event_id}}">
-             EDIT DETAILS
+             EDIT EVENT DETAILS
            </button>
           </div>
           <hr>
-          <div class="pb-2" >
-            <p class="button-box-sub"><mdb-icon far icon="check"> </mdb-icon> Event Plan: </p>
+          <div class="pb-1" >
+            <p class="button-box-sub"><mdb-icon fas icon="clipboard-list"> </mdb-icon> Event Plan: </p>
            <button mdbBtn color="secondary" text="white" class="btn btn-md text-center"
            routerLink = "/planner/event/plan/{{event.event_id}}">
-            EVENT PLAN
+            VIEW EVENT PLAN
            </button>
           </div>
-
-          <div class="pb-2" >
-            <p class="button-box-sub"><mdb-icon far icon="check"> </mdb-icon> Event Schedule: </p>
+          <hr>
+          <div class="pb-1" >
+            <p class="button-box-sub"><mdb-icon fas icon="tasks"> </mdb-icon> Event Schedule: </p>
            <button mdbBtn color="secondary" text="white" class="btn btn-md text-center"
            routerLink = "/planner/event/schedule/{{event.event_id}}">
-            EVENT SCHEDULE
+            VIEW EVENT SCHEDULE
            </button>
           </div>
           <hr>
           <div class="pb-2" >
-            <p class="button-box-sub"><mdb-icon far icon="user-friends"> </mdb-icon> Manage Participants:</p>
-           <button mdbBtn color="secondary" text="white" class="btn btn-sm text-center" [disabled] = "event.state != 'published'"
+            <p class="button-box-sub"><mdb-icon fas icon="users"> </mdb-icon> Manage Participants:</p>
+           <button mdbBtn color="secondary" text="white" class="btn btn-md text-center" [disabled] = "event.state != 'published'"
            routerLink = "/planner/event/participants/{{event.event_id}}">
              MANAGE PARTICIPANTS
            </button>
@@ -196,6 +201,8 @@
          </div>
 
       </div>
+    </div>
+
     </div>
 
     <!--View Location Modal-->
@@ -233,7 +240,7 @@
 
           <div class="modal-body " style="height: 400px; overflow-y: auto;">
 
-            <app-location-search [searchMode] = "false" [recievedLocation] = "event ? event.location : null"></app-location-search>
+            <app-location-search [searchMode] = "true"  [recievedLocation] = "event ? event.location : {lat:0, lang:0, homeTown: ''}"></app-location-search>
 
           </div>
 

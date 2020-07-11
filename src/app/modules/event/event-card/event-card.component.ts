@@ -16,7 +16,7 @@ export class EventCardComponent implements OnInit {
    private eventSub: Subscription ;
 
    // recieved events
-   events: EventCard[];
+   events: EventCard[] = [];
 
    // event successfully sent
    success = false;

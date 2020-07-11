@@ -38,7 +38,7 @@
       <!-- Name Column -->
       <ng-container matColumnDef="booked_date">
         <th mat-header-cell *matHeaderCellDef mat-sort-header > Booked Date </th>
-        <td mat-cell *matCellDef="let row"> {{row.from_date}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.from_date.slice(0,10)}} </td>
       </ng-container>
 
       <!-- Color Column -->

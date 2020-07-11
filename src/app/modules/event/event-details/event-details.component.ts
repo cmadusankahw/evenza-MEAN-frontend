@@ -18,7 +18,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy {
   productDataSource: MatTableDataSource<any[]>;
   serviceDataSource: MatTableDataSource<any[]>;
 
-  @Input() isowner = false;
+  @Input() isowner = true;
 
   // subscriptions
   private eventSub: Subscription;

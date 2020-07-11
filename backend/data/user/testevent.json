@@ -1,0 +1,65 @@
+
+  {
+    "event_id":"E01",
+    "event_title": "Evenza smart Hackathon",
+    "description": "test description",
+    "event_type": "closed",
+    "event_category": "Tech events",
+    "from_date": "2020-07-12T04:54:51.255Z",
+    "to_date": "2020-07-15T02:00:51.255Z",
+    "created_date": "2020-07-06T04:54:51.255Z",
+    "location": {
+              "lat": 12.113456,
+              "lang": 39.8765,
+              "homeTown": "Matara"
+              },
+    "no_of_participants": 200,
+    "participants": {},
+    "total_budget": 200000,
+    "event_segments": [{
+                    "segment_id": "SEG1",
+                    "segment_type":"product",
+                    "segment_title": "AUdio & Sound systems",
+                    "description":"samplle description",
+                    "allocated_budget": 37000,
+                    "spent_budget":32000,
+                    "state": "pending",
+                    "sceduled_date": "2020-07-10T04:54:51.255Z",
+                    "object": {}
+                   },
+                   {
+                    "segment_id": "SEG2",
+                    "segment_type":"service",
+                    "segment_title": "Reception Halls",
+                    "description":"samplle description",
+                    "allocated_budget": 89000,
+                    "spent_budget":91000,
+                    "state": "pending",
+                    "sceduled_date": "2020-07-11T04:54:51.255Z",
+                    "object": {}
+                   }],
+    "service_categories":[{
+                          "id": "1",
+                          "category": "Reception Halls",
+                          "precentage": 24
+                        }],
+    "product_categories":  [{
+                          "id": "1",
+                          "category": "Audio & Sound System",
+                         "precentage": 12
+                       }],
+    "feature_img": "./assets/images/events/2.jpg",
+    "qr_code": "",
+    "state": "planned",
+    "social_links":  {
+                    "fb": "",
+                    "instagram": "",
+                    "other":""
+                  },
+    "host": {
+            "user_id": "U01",
+            "email": "cmadusankahw@gmail.com",
+            "name": "Chiran"
+          }
+  }
+

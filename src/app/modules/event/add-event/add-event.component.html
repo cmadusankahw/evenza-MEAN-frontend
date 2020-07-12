@@ -1,0 +1,431 @@
+<div class="add-event container" *ngIf="createdEvent.event_category">
+  <div class="text-center md-4 service-select-heading" *ngIf="!editmode">
+    <h2 class="strong"><b>Create a new {{ createdEvent.event_category }} Event</b> </h2>
+    <p> Provide all the required details to proceeed...</p>
+  </div>
+  <div class="text-center md-4 service-select-heading" *ngIf="editmode">
+    <h2 class="strong"><b>Edit Details: {{ createdEvent.event_title}}... </b> </h2>
+    <p> Only applicable fileds are allowed to modify...</p>
+  </div>
+  <hr>
+
+  <div class="add-event-step">
+    <form class="service-form" (submit)="createEvent(addEventForm)" #addEventForm="ngForm">
+      <mat-horizontal-stepper  #stepper>
+        <mat-step >
+            <ng-template matStepLabel> Event Details.. </ng-template>
+            <div class="step-details">
+              <div class="row">
+                <div class="col-md-7 sm-12">
+
+                  <mat-form-field>
+                    <mat-label>Name your Event..</mat-label>
+                    <input matInput  name="event_title"
+                    #eventTitle="ngModel" [(ngModel)]="createdEvent.event_title" required>
+                  </mat-form-field>
+                  <mat-error *ngIf="eventTitle.invalid">Please enter Event Title</mat-error>
+
+                  <mat-form-field>
+                    <mat-label>Describe your Event..</mat-label>
+                    <textarea matInput  name="description"
+                    placeholder="A Good description increases event popularity among invities" rows="5"
+                    [(ngModel)]="createdEvent.description"> </textarea>
+                  </mat-form-field>
+                  <hr>
+                  <h5><b> <mdb-icon fas icon="calendar-alt"> </mdb-icon> Select Event Dates: </b></h5>
+
+                    <div class="row">
+                      <div class="col-md-6 sm-12">
+                        <mat-form-field>
+                          <mat-label > From Date : </mat-label>
+                          <input matInput [matDatepicker]="picker1" required [min]="tday"
+                          name="from_date" [(ngModel)]="dates.fromDate" #fDate="ngModel"
+                          (dateChange) = "dates.toDate = dates.fromDate"
+                          (dateChange) = "refactorDates()"/>
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker1"
+                          ></mat-datepicker-toggle>
+                          <mat-datepicker #picker1 [startAt]="createdEvent.from_date"></mat-datepicker>
+                          <mat-error *ngIf="fDate.invalid">Please select a date</mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-6 sm-12" >
+                        <mat-form-field>
+                          <mat-label> To Date : </mat-label>
+                          <input matInput [matDatepicker]="picker2" required [min]="tday"
+                          name="to_date" [(ngModel)]="dates.toDate" #tDate="ngModel"
+                          (dateChange) = "refactorDates()"/>
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker2"
+                          ></mat-datepicker-toggle>
+                          <mat-datepicker #picker2 [startAt]="createdEvent.to_date"></mat-datepicker>
+                          <mat-error *ngIf="tDate.invalid">Please select a date</mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                 </div>
+
+                <div class="col-md-5 sm-12">
+
+                  <mat-form-field>
+                    <mat-label>Define boundaries..</mat-label>
+                    <mat-select  required #eventType = "ngModel"
+                    [(ngModel)]="createdEvent.event_type" name="event_type">
+                      <mat-option value="open">
+                        Open: Anyone can Join
+                      </mat-option>
+                      <mat-option value="closed">
+                        Closed: Only for Invities
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-error *ngIf="eventType.invalid">Please select Event Type</mat-error>
+                  <br>
+                  <mat-form-field>
+                    <mat-label>Select a category...</mat-label>
+                    <mat-select  required #eventCat= "ngModel" disabled
+                    [(ngModel)]="createdEvent.event_category" name="event_category">
+                      <mat-option  selected [value]="createdEvent.event_category" >
+                        {{createdEvent.event_category}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-error *ngIf="eventCat.invalid">Please select Event Category</mat-error>
+                  <hr>
+                  <h5 ><b> <mdb-icon fas icon="clock"> </mdb-icon> Select Event Time (Each Day) </b></h5>
+                  <div class="row pt-2">
+                    <div class="col-md-6">
+                      <p style="margin:0px;"> From Time: </p>
+                      <ngb-timepicker [(ngModel)]="times.fromTime"
+                      name="from_time" ></ngb-timepicker>
+                    </div>
+
+                    <div class="col-md-6">
+                      <p style="margin:0px;"> To Time: </p>
+                      <ngb-timepicker [(ngModel)]="times.toTime"
+                      name="to_time" ></ngb-timepicker>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <hr>
+              <!-- navigation-->
+              <div class="text-center pt-4 pb-2">
+                <button mdbBtn mdbWavesEffect color="secondary" class="btn btn-md" matStepperNext>Go Next</button>
+              </div>
+
+            </div>
+
+        </mat-step>
+        <mat-step >
+          <div class="step-details">
+            <ng-template matStepLabel>Tell a little bit more..</ng-template>
+            <!--details-->
+            <div class="row">
+              <div class="col-md-7 sm-12">
+
+                <mat-form-field>
+                  <mat-label>Expected Total Budget (Rs.)..</mat-label>
+                   <input matInput  name="total_busget" type="number" style="font-weight:bold; color:darkmagenta; font-size:22px;"
+                  #totalBudget="ngModel" [(ngModel)]="createdEvent.total_budget" required min="1">
+                </mat-form-field>
+                <mat-error *ngIf="totalBudget.invalid">Please enter a valid amount</mat-error>
+
+              </div>
+              <div class="col-md-5 sm-12">
+                <mat-form-field>
+                  <mat-label>No of Expected Participants..</mat-label>
+                  <input matInput  name="no_of_participants" type="number"  style="font-weight:bold; color:darkslategray; font-size:22px;"
+                  #noOfParticipants="ngModel" [(ngModel)]="createdEvent.no_of_participants" required min="1">
+                </mat-form-field>
+                <mat-error *ngIf="noOfParticipants.invalid">Please enter a valid number</mat-error>
+              </div>
+            </div>
+            <hr>
+             <!-- upload feature image-->
+            <div class="row">
+              <div class="col-md-7 sm-12"  style="padding-top:40px;">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h5 ><b> <mdb-icon fas icon="map-marker-alt"> </mdb-icon> Upload a Cover Photo: </b></h5>
+                    <p style="color:lightgray;">1000px* 380px or Larger</p>
+                  </div>
+                  <div class="col-md-6 text-center">
+                    <a type="button" mdbBtn color="secondary"
+                    class=" btn btn-md " mdbWavesEffect
+                    outline="yes "
+                    (click) = "sidec.click()">Upload Photo</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-5 sm-12">
+                <a role="button" mdbWavesEffect (click)="sidec.click()">
+                  <img [src]="createdEvent.feature_img" alt="feature image" class="feature-img">
+                </a>
+                <input type="file" hidden="true" id="sidec" #sidec  (change)="onImageUploaded($event)"
+                ngModel name="feature_img"  accept="image/*">
+              </div>
+             </div>
+             <hr>
+             <!-- set location-->
+            <div class="row">
+                <div class="col-md-7 sm-12" style="padding-top:40px;">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h5 ><b> <mdb-icon fas icon="map-marker-alt"> </mdb-icon> Set event Location: </b></h5>
+                    </div>
+                    <div class="col-md-6 text-center">
+                      <a type="button" mdbBtn color="secondary"
+                      class=" btn btn-md " mdbWavesEffect
+                      outline="yes "
+                      (click) = "locationModal.show()">SET Location</a>
+                      </div>
+                  </div>
+                </div>
+                  <div class="col-md-5 sm-12">
+                     <!--map to modify-->
+                    <div id=" row map-container-google-1" class="map-container page-content">
+                      <agm-map
+                      [latitude]="  createdEvent.location ? createdEvent.location.lat : 0"
+                      [longitude]="createdEvent.location ? createdEvent.location.lang : 0"
+                      [zoom]=10 >
+                        <agm-marker
+                        [latitude]="createdEvent.location ? createdEvent.location.lat : 0"
+                      [longitude]="createdEvent.location ? createdEvent.location.lang : 0"  >
+                      </agm-marker>
+                      </agm-map>
+                    </div>
+                </div>
+              </div>
+              <hr>
+              <!-- social links-->
+              <h5 class="pt-2"><b> <mdb-icon fas icon="map-marker-alt"> </mdb-icon> Social Media Links: </b></h5>
+              <p style="color:lightgray;"> If you have already published the event thorugh Social Media, Provide Links here</p>
+
+              <div class="row">
+                <div class="col-md-7 sm-12">
+                  <mat-form-field>
+                    <mat-label> <mdb-icon fab icon="facebook"> </mdb-icon>  Facebook</mat-label>
+                     <input matInput  name="fb"
+                     [(ngModel)]="createdEvent.social_links.fb">
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-label> <mdb-icon fab icon="instagram"> </mdb-icon>  Instagram</mat-label>
+                     <input matInput  name="instagram"
+                     [(ngModel)]="createdEvent.social_links.instagram">
+                  </mat-form-field>
+                </div>
+                <div class="col-md-5 sm-12">
+                  <mat-form-field>
+                    <mat-label> <mdb-icon fas icon="globe"> </mdb-icon>  Other Plafroms</mat-label>
+                     <input matInput  name="other"
+                     [(ngModel)] = "createdEvent.social_links.other">
+                  </mat-form-field>
+                </div>
+              </div>
+              <hr>
+              <!-- navigation-->
+            <div class="text-center pt-2 pb-2">
+              <button mdbBtn mdbWavesEffect color="primary" class="btn btn-md" matStepperPrevious>Previous</button>
+              <button mdbBtn mdbWavesEffect color="secondary" class="btn btn-md" matStepperNext>Next</button>
+            </div>
+            </div>
+        </mat-step>
+        <mat-step >
+          <div class="step-details">
+          <ng-template matStepLabel>Select Service & Products..</ng-template>
+          <h5 class="pt-2"><b> <mdb-icon fas icon="people-carry"> </mdb-icon> Select Service Categories:</b></h5>
+          <p style="color:gray; padding-left:15px;"> You can find & book best service providers once the event is created...</p>
+          <!--select services-->
+          <div class="select-box">
+            <mat-checkbox class="check-cls" *ngFor="let service of eventCategory.services"
+            (checked) = "createdEvent.service_categories.includes(service)"
+            (click)= "addServiceCategoryItem(service)"> {{service.category}}</mat-checkbox>
+          </div>
+          <hr>
+          <h5 class="pt-2"><b> <mdb-icon fas icon="concierge-bell"> </mdb-icon> Select Product Categories: </b></h5>
+          <p style="color:gray;  padding-left:15px;"> You can find & order best products & eqipments once the event is created...</p>
+          <!--select services-->
+          <div class="select-box">
+              <mat-checkbox class="check-cls" *ngFor="let product of eventCategory.products"
+              (checked) = "createdEvent.product_categories.includes(product)"
+              (click)= "addProductCategoryItem(product)"> {{product.category}}</mat-checkbox>
+          </div>
+          <hr>
+            <!-- navigation-->
+          <div class="text-center pt-2 pb-2">
+            <button mdbBtn mdbWavesEffect color="primary" class="btn btn-md" matStepperPrevious>Previous</button>
+            <button mdbBtn mdbWavesEffect color="secondary" class="btn btn-md" matStepperNext>Next</button>
+          </div>
+          </div>
+      </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>You are Almost Done..</ng-template>
+          <div class="step-details">
+          <h5 class="pt-2"><b> <mdb-icon fas icon="list"> </mdb-icon> Event: {{ createdEvent.event_category }} Summary:</b></h5>
+          <p style="color:gray; padding-left:15px;"> Please check twice below details are correct before proceed...</p>
+            <hr>
+            <div class="row pt-1">
+              <div class="col-md-5 info-heading">
+                Event Title
+              </div>
+              <div class="col-md-7 info-txt">
+                : {{createdEvent.event_title}}
+              </div>
+            </div>
+
+            <div class="row pt-1">
+              <div class="col-md-5 info-heading">
+                Description
+              </div>
+              <div class="col-md-7 info-txt">
+                : {{createdEvent.description}}
+              </div>
+            </div>
+
+            <div class="row pt-1">
+              <div class="col-md-5 info-heading">
+                Event Type
+              </div>
+              <div class="col-md-7 info-txt">
+                : {{createdEvent.event_type}}
+              </div>
+            </div>
+
+            <div class="row pt-1">
+              <div class="col-md-5 info-heading">
+                Event Category
+              </div>
+              <div class="col-md-7 info-txt">
+                : {{createdEvent.event_category}}
+              </div>
+            </div>
+
+            <div class="row pt-1">
+              <div class="col-md-5 info-heading">
+                Date From
+              </div>
+              <div class="col-md-7 info-txt">
+                : {{createdEvent.from_date.slice(0,10)}}
+              </div>
+            </div>
+
+            <div class="row pt-1">
+              <div class="col-md-5 info-heading">
+                Date To
+              </div>
+              <div class="col-md-7 info-txt">
+                : {{createdEvent.to_date.slice(0,10)}}
+              </div>
+            </div>
+
+
+            <div class="row pt-1">
+              <div class="col-md-5 info-heading">
+                No of Expected Participants
+              </div>
+              <div class="col-md-7 info-txt">
+                : {{createdEvent.no_of_participants}}
+              </div>
+            </div>
+
+            <div class="row pt-1">
+              <div class="col-md-5 info-heading">
+                Allocated Budget (Rs.)
+              </div>
+              <div class="col-md-7 info-txt">
+                : {{createdEvent.total_budget}}
+              </div>
+            </div>
+
+
+            <div class="row pt-1">
+              <div class="col-md-5 info-heading">
+                Allocated Service Categories
+              </div>
+              <div class="col-md-7 info-txt">
+                : <span *ngFor="let sc of createdEvent.service_categories"> {{ sc.category }} ,</span>
+              </div>
+            </div>
+
+            <div class="row pt-1">
+              <div class="col-md-5 info-heading">
+                Allocated Product Categories
+              </div>
+              <div class="col-md-7 info-txt">
+                : <span *ngFor="let sc of createdEvent.product_categories"> {{ sc.category }} ,</span>
+              </div>
+            </div>
+
+            <hr>
+            <!-- navigation-->
+          <div class="text-center pt-2 pb-2">
+            <button mdbBtn mdbWavesEffect color="primary" class="btn btn-md" matStepperPrevious>Previous</button>
+            <a mdbBtn mdbWavesEffect color="primary" class="btn btn-md" (click)="stepper.reset()">Start Again</a>
+            <button mdbBtn  mdbWavesEffect color="secondary" class="btn btn-md" type="submit">Create Event</button>
+          </div>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </form>
+  </div>
+</div>
+
+
+    <!--View Location Modal-->
+    <div
+      mdbModal
+      #locationModal="mdbModal"
+      class="modal fade"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myBasicModalLabel"
+      [config]="{ backdrop: false, ignoreBackdropClick: true }"
+      aria-hidden="true"
+
+    >
+      <div
+        class="modal-dialog modal-dialog-centered modal-md"
+        role="document"
+        style="overflow-y: initial !important"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="close pull-right"
+              aria-label="Close"
+              (click)="success=false"
+              (click)="locationModal.hide()"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+            <h4 class="modal-title w-100" id="myModalLabel" >
+              <mat-icon>service</mat-icon>Set event Location
+            </h4>
+          </div>
+
+          <div class="modal-body " style="height: 400px; overflow-y: auto;">
+
+            <app-location-search  [recievedLocation] = "createdEvent.location"></app-location-search>
+
+          </div>
+
+          <div class="modal-footer">
+            <button
+              mdbBtn
+              color="link"
+              (click)="success=false"
+              (click)="locationModal.hide()"
+              mdbWavesEffect
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>

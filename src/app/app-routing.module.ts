@@ -42,6 +42,7 @@ import { EventSelectComponent } from './modules/event/event-select/event-select.
 import { EventAgendaComponent } from './modules/event/docs/event-agenda/event-agenda.component';
 import { ParticipantListComponent } from './modules/event/docs/participant-list/participant-list.component';
 import { EventInvitationComponent } from './modules/event/docs/event-invitation/event-invitation.component';
+import { AddEventComponent } from './modules/event/add-event/add-event.component';
 
 
 const routes: Routes = [
@@ -95,8 +96,9 @@ const routes: Routes = [
       { path: 'event/plan/:id', component: EventPlanComponent },
       { path: 'event/schedule/:id', component: EventScheduleComponent },
       { path: 'event/participants/:id', component: EventParticipantsComponent },
-      { path: 'event/add', component: EventSelectComponent },
-      { path: 'event/edit', component: EventSelectComponent },
+      { path: 'event/select', component: EventSelectComponent },
+      { path: 'event/add/:id', component: AddEventComponent },
+      { path: 'event/edit/:id', component: AddEventComponent },
       { path: 'events', component: EventplannerDashEventsComponent },
       { path: 'bookings', component: EventplannerDashBookingsComponent },
       { path: 'appoints', component: EventplannerDashAppointmentsComponent },

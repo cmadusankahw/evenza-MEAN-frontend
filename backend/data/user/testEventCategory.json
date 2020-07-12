@@ -1,0 +1,14 @@
+{
+  "id":"wedding",
+  "category":"Wedding",
+  "services":[
+    {"id":"1", "category":"Reception Halls","precentage":35},
+    {"id":"2", "category":"Photography","precentage":7},
+    {"id":"3", "category":"Catering","precentage":11}
+  ],
+  "products":[
+    {"id":"1", "category":"Decorations","precentage":35},
+    {"id":"2", "category":"Sweets & Cakes","precentage":7},
+    {"id":"3", "category":"Jewellary","precentage":11}
+  ]
+}

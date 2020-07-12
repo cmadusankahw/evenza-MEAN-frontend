@@ -57,6 +57,7 @@ export interface Alert { // custom notification / invitation
 export interface EventCategory {
   id: string;
   category: string;
+  img: string;
   services: Category[]; // service categories
   products: Category[]; // product categories
 }

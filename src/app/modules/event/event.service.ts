@@ -62,6 +62,15 @@ export class EventService {
      });
     }
 
+    getEventCategory(catId: string) {
+      this.http.get<{ message: string, category: EventCategory }>(this.url + 'event/cat/' + catId )
+      .subscribe((recievedData) => {
+        console.log(recievedData.category);
+        this.eventCategory = recievedData.category;
+        this.eventCategoryUpdated.next(this.eventCategory);
+     });
+    }
+
     // set methods
 
     createEvent() {
@@ -103,8 +112,12 @@ export class EventService {
     }
 
 
-    getEventCategoryUpdated() {
+    getEventCategoryUpdatedListener() {
       return this.eventCategoryUpdated.asObservable();
+    }
+
+    getEventCategoriesUpdatedListener() {
+      return this.eventCategoriesUpdated.asObservable();
     }
 
 }

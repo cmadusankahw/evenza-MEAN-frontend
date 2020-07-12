@@ -198,6 +198,16 @@
              MANAGE PARTICIPANTS
            </button>
           </div>
+          <hr>
+          <div class="danger-zone" >
+            <div class="pb-2" >
+              <p class="button-box-sub"><mdb-icon fas icon="users"> </mdb-icon> Cancel Event:</p>
+             <button mdbBtn color="danger" text="white" class="btn btn-md text-center"
+             (click) = "cancelDialog.show()">
+               CANCEL EVENT
+             </button>
+            </div>
+          </div>
          </div>
 
       </div>
@@ -240,7 +250,7 @@
 
           <div class="modal-body " style="height: 400px; overflow-y: auto;">
 
-            <app-location-search [searchMode] = "true"  [recievedLocation] = "event ? event.location : {lat:0, lang:0, homeTown: ''}"></app-location-search>
+            <app-location-search [showLoc] = "true"  [recievedLocation] = "event ? event.location : {lat:0, lang:0, homeTown: ''}"></app-location-search>
 
           </div>
 
@@ -258,6 +268,61 @@
         </div>
       </div>
     </div>
+
+    <!-- cancel event confirmation-->
+<div mdbModal #cancelDialog="mdbModal"
+class="modal fade top"
+id="frameModalTop" tabindex="-1" role="dialog"
+[config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-labelledby="myModalLabel" aria-hidden="true" >
+  <div class="modal-dialog modal-notify modal-danger  modal-dialog-centered" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <p class="heading">Cancel Event</p>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelDialog.hide()">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+
+        <div class="row">
+          <div class="col-3">
+            <p></p>
+            <p class="text-center">
+              <mdb-icon fas icon="ban" size="3x" class="mb-3 animated rotateIn"></mdb-icon>
+            </p>
+          </div>
+
+          <div class="col-9">
+            <h5>Are you sure want to cancel this Event?</h5>
+            <p><b> Please Note: Please perform this action If necessarily
+              required. You may have to send calncellation requests to all pending bookings, appointments and orders. Consumed or completed purchases will not be refunded.
+              All participants will be acknowledged through a cancellation notice!
+            </b></p>
+          </div>
+        </div>
+      </div>
+
+      <!--Footer-->
+      <div class="modal-footer justify-content-center">
+        <a type="button" mdbBtn color="danger" class="waves-effect"
+        (click)="cancelDialog.hide()" routerLink="/planner/event/cancel/{{event ? event.event_id: 'any'}}"
+        mdbWavesEffect>Cancel Event
+          <mdb-btn far icon="ban" class="ml-1"></mdb-btn>
+        </a>
+        <a type="button" mdbBtn color="danger" outline="true" class="waves-effect" mdbWavesEffect
+        (click)="cancelDialog.hide()"
+          data-dismiss="modal">No, thanks</a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
 
 
 

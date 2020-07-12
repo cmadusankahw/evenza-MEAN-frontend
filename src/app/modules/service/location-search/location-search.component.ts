@@ -27,6 +27,8 @@ export class LocationSearchComponent implements OnInit {
 
   @Input() searchMode = false;
 
+  @Input() showLoc = false;
+
   // exporting business location data
   @Output() buusinessLocationEmit = new EventEmitter<BusinessLocation>();
 

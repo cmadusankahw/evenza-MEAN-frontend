@@ -3,7 +3,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { TheEvent, Category, Product, Service } from '../event.model';
 import { EventService } from '../event.service';
 import { Subscription } from 'rxjs';
-import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

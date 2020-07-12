@@ -260,6 +260,22 @@ event.get('/cat', (req, res, next) => {
 });
 
 
+//get event category
+event.get('/cat/:id', (req, res, next) => {
+
+  EventCategories.findOne({id: req.params.id },function (err, category) {
+    console.log(category);
+    if (err) return handleError(err);
+    res.status(200).json(
+      {
+        message: 'event category recieved successfully!',
+        category: category
+      }
+    );
+  });
+});
+
+
 
 
 

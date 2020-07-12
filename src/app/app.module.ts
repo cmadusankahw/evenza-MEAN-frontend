@@ -9,6 +9,7 @@ import { InputsModule,
         TableModule,
         ChartsModule,
         CarouselModule } from 'angular-bootstrap-md';
+import {MatStepperModule} from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuModule } from '@angular/material/menu';
@@ -130,6 +131,7 @@ import { TeramsConditionsComponent } from './modules/home/terams-conditions/tera
 import { ParticipantListComponent } from './modules/event/docs/participant-list/participant-list.component';
 import { EventInvitationComponent } from './modules/event/docs/event-invitation/event-invitation.component';
 import { EventAgendaComponent } from './modules/event/docs/event-agenda/event-agenda.component';
+import { AddEventComponent } from './modules/event/add-event/add-event.component';
 
 
 
@@ -223,6 +225,7 @@ import { EventAgendaComponent } from './modules/event/docs/event-agenda/event-ag
     ParticipantListComponent,
     EventInvitationComponent,
     EventAgendaComponent,
+    AddEventComponent,
 
 
 
@@ -250,6 +253,7 @@ import { EventAgendaComponent } from './modules/event/docs/event-agenda/event-ag
     MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
+    MatStepperModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
     HttpClientModule,

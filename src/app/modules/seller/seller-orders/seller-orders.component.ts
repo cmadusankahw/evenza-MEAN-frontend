@@ -48,7 +48,13 @@ export class SellerOrdersComponent implements OnInit, OnDestroy {
   // cancel message
   cancelMsg: string;
 
-  orderCounts = { pendingOrders: 0, completedOrders: 0, cancelledOrders: 0 ,pendingOrderDate: '', completedOrderDate: '', cancelledOrderDate: ''};
+  orderCounts = {
+    pendingOrders: 0,
+    completedOrders: 0,
+    cancelledOrders: 0 ,
+    pendingOrderDate: '',
+    completedOrderDate: '',
+    cancelledOrderDate: ''};
 
 
   constructor(private sellerService: SellerService,

@@ -36,6 +36,11 @@ export class AddnewServiceComponent implements OnInit, OnDestroy {
    // recieved quantities
    rates: ServiceRates[] = [];
 
+   // availability
+   availableBooking = true;
+   availableAppoint = false;
+   payOnMeet = false;
+
 
   constructor(private router: Router,
               public serviceService: ServiceService,
@@ -82,18 +87,17 @@ createService(addServiceForm: NgForm) {
       business_name:  this.businessName,
       description: addServiceForm.value.description,
       service_category: addServiceForm.value.category,
-      available_booking: this.booleanValue(addServiceForm.value.available_booking),
-      available_appoints: this.booleanValue(addServiceForm.value.available_appoints),
+      available_booking: this.booleanValue(this.availableBooking),
+      available_appoints: this.booleanValue(this.availableAppoint),
       rating: 0,
       no_of_ratings: 0,
       no_of_bookings: 0,
       no_of_appoints: 0,
-      created_date: this.convertDate(),
-      created_time: this.convertTime(),
+      created_date: new Date().toISOString(),
       rate:  addServiceForm.value.rate,
       rate_type: addServiceForm.value.rate_type,
       capacity: addServiceForm.value.capacity,
-      pay_on_meet:  this.booleanValue(addServiceForm.value.pay_on_meet),
+      pay_on_meet:  this.booleanValue(this.payOnMeet),
       image_01: './assets/images/merchant/nopic.png',
       image_02: './assets/images/merchant/nopic.png',
       image_03: './assets/images/merchant/nopic.png'
@@ -112,18 +116,6 @@ clearImages() {
   this.image01 = null;
   this.image02 = null;
   this.image03 = null;
-}
-
-// to get date for created date
-convertDate() {
-const date = new Date();
-return this.datepipe.transform( date, 'dd/MM/yyyy').toString();
-}
-
-// to get time for the created time
-convertTime() {
-const date = new Date();
-return this.datepipe.transform( date, 'shortTime').toString();
 }
 
 // image 01 uploading
@@ -171,12 +163,11 @@ reader.onload = () => {
 };
 }
 
-
-
 booleanValue(value: any) {
   if (value ===  '' || value === null || value === undefined) {
     return false;
   } else {return value; }
 }
+
 
 }

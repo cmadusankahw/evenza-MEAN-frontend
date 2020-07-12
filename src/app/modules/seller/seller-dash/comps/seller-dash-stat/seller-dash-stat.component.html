@@ -88,7 +88,7 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 er-back stat-num">
           <span class="stat-no">
-            {{9}}
+            {{orderCounts ? orderCounts.totalInventory : 0}}
           </span>
         </div>
 
@@ -99,7 +99,7 @@
           <hr />
           Latest Modified:
           <br />
-          <span class="date-text">{{'2020-06-11'}}</span>
+          <span class="date-text">{{orderCounts ?  orderCounts.inventoryUpdatedDate : ''}}</span>
         </div>
       </div>
     </mdb-card>

@@ -1,1 +1,23 @@
-<p>event-select works!</p>
+<!-- Card -->
+<div class="container">
+    <div class="text-center md-4 service-select-heading">
+      <h2 class="strong"><b>Let's Get Started... </b> </h2>
+      <p> Select an Event Category to get started with planing...</p>
+    </div>
+    <hr />
+    
+    <div class="row container-fluid service-holder">
+
+        <a class="card-a" routerLink = "/planner/event/add/{{cat.id}}" *ngFor="let cat of eventCategories" >
+        <mat-card class="service-card shadow" mdbWavesEffect >
+            <img mat-card-image [src]="cat.img" [alt]="cat.category">
+            <mat-card-content class="text-center">
+                <span style="font-weight:400; color:darkmagenta"> Plan a...</span>
+                <mat-card-title class="service-text">{{cat.category}}</mat-card-title>
+            </mat-card-content>
+          </mat-card>
+        </a>
+    </div>
+    </div>
+    
+   

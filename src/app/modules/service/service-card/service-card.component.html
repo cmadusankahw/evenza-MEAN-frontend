@@ -3,7 +3,7 @@
     + Add New Service
   </button>
 </div>
-<div class="card-deck " *ngIf="hasData()">
+<div class="card-deck " *ngIf="services.length">
   <!-- Card -->
 
   <mdb-card *ngFor="let service of services">
@@ -55,7 +55,7 @@
   </mdb-card>
   </div>
 
-  <div class="container-fluid text-center" *ngIf="!hasData()">
+  <div class="container-fluid text-center" *ngIf="!services.length">
     <p>No Services Found</p>
   </div>
 
@@ -96,7 +96,7 @@
 
       <div class="modal-body " style="height: 500px; overflow-y: auto;">
 
-        <app-service-details  [isowner]="isowner" [dates] = "dates" [islogged] = "islogged" [removed] = "false"></app-service-details>
+        <app-service-details  [isowner]="isowner" [islogged] = "islogged" [removed] = "false"></app-service-details>
 
       </div>
 

@@ -7,7 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SellerDashHomeComponent implements OnInit {
 
-  orderCounts: any;
+  // dash stat
+  orderCounts = {
+    pendingOrders: 0,
+    completedOrders: 0,
+    cancelledOrders: 0 ,
+    totalInventory: 0,
+    pendingOrderDate: '',
+    completedOrderDate: '',
+    cancelledOrderDate: '',
+    inventoryUpdatedDate: ''
+  };
+
 
   constructor() { }
 

@@ -114,17 +114,12 @@ export class AuthService {
 
    // get last product id
   getLastUserId() {
-     if (this.users.length) {
-        this.lastId = this.users[this.users.length - 1].user_id;
-        this.lastIdUpdated.next(this.lastId);
-     } else {
         this.http.get<{ lastid: string }>(this.url + 'auth/last')
         .subscribe((recievedId) => {
           console.log(recievedId.lastid);
           this.lastId = recievedId.lastid;
           this.lastIdUpdated.next(this.lastId);
         });
-     }
   }
 
   // get token to be used by other services

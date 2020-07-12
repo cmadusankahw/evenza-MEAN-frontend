@@ -1,20 +1,38 @@
-export interface Event {
+import { BusinessLocation } from '../auth/auth.model';
+
+export interface TheEvent {
   event_id: string;
   event_title: string;
   description: string;
   event_type: string; // open or closed event
   event_category: string; // event planned category
   from_date: string;
-  from_time: string;
   to_date: string;
-  to_time: string;
-  one_day_event: boolean;
   created_date: string;
-  location: string; // if 'online' --> online event
-  no_of_participants: number;
+  location: BusinessLocation; // if 'online' --> online event
+  no_of_participants: number; // data taken at event creation
+  participants: Participant[]; // state - approved/ pending/ cancelled
   total_budget: number;
-  host_name: string; // if hosted by not creator
-  host_email: string;
+  event_segments: EventSegment[];
+  service_categories: Category[]; // selected service categories
+  product_categories: Category[]; // selected product categories
+  feature_img: string;
+  qr_code: string;
+  state: string; //  'pending', 'completed', 'missed/ cancelled'
+  social_links: SocialLinks;
+  host: Host;
+}
+
+
+export interface EventCard {
+  event_id: string;
+  event_title: string;
+  description: string;
+  event_category: string; // event planned category
+  from_date: string;
+  to_date: string;
+  location: string; // if 'online' --> online event
+  no_of_participants: number; // data taken at event creation
   feature_img: string;
   state: string; // 'planned', 'ongoing', 'completed'
 }
@@ -25,30 +43,78 @@ export interface Participant {
   last_name: string;
   email: string;
   state: boolean; // invitation approved or cancelled
-  review: string;
 }
 
-export interface Alert {
+export interface Alert { // custom notification / invitation
   id: string;
   heading: string;
   message: string;
   date: string;
   state: string;
+  attachments: any;
 }
 
+export interface EventCategory {
+  id: string;
+  category: string;
+  img: string;
+  services: Category[]; // service categories
+  products: Category[]; // product categories
+}
+
+// internal interfaces
 
 export interface EventSegment { // depend on event
   segment_id: string; // ref to event.event_id
-  segment_type: string; // scheduled, service, product, info
-  segment_category: string; // product/service category if product/service, null otherwise
+  segment_type: string; // service/ product/ task
   segment_title: string;
   description: string;
-  scheduled_date: string;
-  scheduled_time: string;
-  created_date: string;
-  allocated_budget: string;
-  state: string; // booked, ordered, completed, missed
-  mark_as_completed: boolean;
-  ref_link: string; // reference link to complete/ details of the segment
-  ref_id: string; // reference to order id / booking id if service/ product
+  allocated_budget: number;
+  spent_budget: number;
+  state: string; // completed, pending , cancelled
+  sceduled_date: string;
+  object: object; // service, product, task
 }
+
+// objects for event segments
+export interface Service {
+  service_id: string;
+  service_name: string;
+  service_category: string;
+  booking_id: string;
+  state: string;
+}
+
+export interface Product {
+  product_id: string;
+  product: string;
+  product_category: string;
+  order_id: string;
+  state: string;
+}
+
+export interface Task {
+  task_id: string;
+  title: string;
+  description: string;
+}
+
+export interface SocialLinks {
+  fb: string;
+  instagram: string;
+  other: string;
+}
+
+export interface Category {
+  id: string;
+  category: string;
+  precentage: number; // INTIAL SUGGESTED AMOUNT OR PRECENTAGE (MAY NEED TO CHANGE)
+}
+
+
+export interface Host {
+  user_id: string;
+  email: string;
+  name: string;
+}
+

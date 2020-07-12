@@ -149,10 +149,10 @@ export class ProductService  {
           product.image_01 = recievedImages.imagePaths[0];
         }
         if (recievedImages.imagePaths[1]) {
-          product.image_01 = recievedImages.imagePaths[1];
+          product.image_02 = recievedImages.imagePaths[1];
         }
         if (recievedImages.imagePaths[2]) {
-          product.image_01 = recievedImages.imagePaths[2];
+          product.image_03 = recievedImages.imagePaths[2];
         }
         this.http.post<{ message: string, result: Product }>(this.url + 'product/add', product)
         .subscribe((recievedData) => {

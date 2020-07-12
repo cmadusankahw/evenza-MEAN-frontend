@@ -46,12 +46,6 @@ serviceProvider.use(bodyParser.json());
 serviceProvider.use(bodyParser.urlencoded({ extended: false }));
 
 
- // change booking state
-
-
- // change appointment state
-
-
 // add serviceProvider photos
 serviceProvider.post('/add/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
     const url = req.protocol + '://' + req.get("host");

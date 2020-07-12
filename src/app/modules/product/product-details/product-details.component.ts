@@ -68,7 +68,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   // total amount
   totalAmount = 0.0;
   payAmount = 0.0;
-  qty=1;
+  qty = 1;
 
 
   constructor(private router: Router,
@@ -87,6 +87,15 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
             this.removed = false;
             this.editmode = false;
 
+             // import delivery services
+            this.productService.getDeliveryServices();
+            this.deliveryServiceSub = this.productService.getdeliveryServicesUpdateListener()
+               .subscribe((recievedData: DeliveryService[]) => {
+               this.deliveryServices = recievedData;
+               console.log(this.deliveryServices);
+               this.delService = this.getDeliveryService(this.product.delivery_service);
+            });
+
             if (this.editable === true) {
               // import categories
                 this.productService.getCategories();
@@ -99,14 +108,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
               // import quantity types
                 this.quantities = this.productService.getQuantities();
 
-                // import delivery services
-                this.productService.getDeliveryServices();
-                this.deliveryServiceSub = this.productService.getdeliveryServicesUpdateListener()
-                  .subscribe((recievedData: DeliveryService[]) => {
-                  this.deliveryServices = recievedData;
-                  console.log(this.deliveryServices);
-                  this.delService = this.getDeliveryService(this.product.delivery_service);
-              });
               }
           }
     });
@@ -143,7 +144,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         product_category: this.product.product_category,
         business_name: this.product.business_name,
         delivery_address: orderForm.value.delivery_address,
-        created_date: this.today.toISOString(),
+        created_date: new Date().toISOString(),
         state: 'pending',
         review: 'not reviewed yet',
         quantity: this.qty,
@@ -173,15 +174,14 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         qty_type: updateProductForm.value.quantity_type,
         description: updateProductForm.value.description,
         created_date: this.product.created_date,
-        created_time: this.product.created_time,
-        availability: this.booleanValue(updateProductForm.value.availability),
+        availability: this.product.availability,
         inventory:  updateProductForm.value.inventory,
         rating: this.product.rating,
         no_of_ratings: this.product.no_of_ratings,
         no_of_orders: this.product.no_of_orders,
         delivery_service: updateProductForm.value.delivery_service,
         price:  updateProductForm.value.price,
-        pay_on_delivery:  this.booleanValue(updateProductForm.value.pay_on_delivery),
+        pay_on_delivery:  this.product.pay_on_delivery,
         image_01:  this.product.image_01,
         image_02:  this.product.image_02,
         image_03:  this.product.image_03,
@@ -194,7 +194,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         this.clearImages();
       });
       console.log('Product updated successfully!');
-      updateProductForm.resetForm();
       this.editmode = false;
     }
   }
@@ -271,13 +270,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       this.image03 = file;
       this.image03Url = reader.result;
     };
-  }
-
-  // convert to boolean value
-  booleanValue(value: any) {
-    if (value ===  '' || value === null || value === undefined) {
-      return false;
-    } else {return value; }
   }
 
   // get delivery service name from it's id

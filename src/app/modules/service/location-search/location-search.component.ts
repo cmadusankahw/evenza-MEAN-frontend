@@ -27,6 +27,8 @@ export class LocationSearchComponent implements OnInit {
 
   @Input() searchMode = false;
 
+  @Input() showLoc = false;
+
   // exporting business location data
   @Output() buusinessLocationEmit = new EventEmitter<BusinessLocation>();
 
@@ -37,7 +39,7 @@ export class LocationSearchComponent implements OnInit {
   address: string;
 
   // recieved locations
-  @Input() recievedLocations: {location: BusinessLocation, business: string}[] = [];
+  @Input() recievedLocations: any[] = [];
 
   // agm label color
   color = '#223456';

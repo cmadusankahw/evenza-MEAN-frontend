@@ -11,7 +11,6 @@ export interface Service {
   no_of_bookings: number;
   no_of_appoints: number;
   created_date: string;
-  created_time: string;
   rate: number;
   rate_type: string;
   capacity: number;
@@ -37,6 +36,10 @@ export interface ServiceQuery {
   maxPrice: number;
   payOnMeet: boolean;
   userRating: number;
+  fromDate: string;
+  toDate: string;
+  fromTime: {hour: number, minute: number, second: number};
+  toTime: {hour: number, minute: number, second: number};
 }
 
 

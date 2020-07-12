@@ -27,7 +27,6 @@ export class ServiceCardComponent implements OnInit, OnDestroy {
 
   // to pass to the service details
   @Input() islogged: boolean;
-  @Input() dates: {fromDate: any, toDate: any};
 
   // services list
   services: Service[] = [];
@@ -65,16 +64,9 @@ export class ServiceCardComponent implements OnInit, OnDestroy {
     }
   }
 
+  // set selectedservice to view details
   sendService(service: Service) {
     this.success = this.serviceService.setService(service);
    }
-
-  hasData() {
-    if (this.services.length) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
 }

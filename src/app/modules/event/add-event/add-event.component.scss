@@ -1,0 +1,82 @@
+.service-card {
+  max-width: 230px;
+  min-width: 220px;
+}
+
+.card-a{
+margin: 10px auto;
+}
+
+.service-text {
+padding-bottom: 20px;
+font-weight: bold;
+font-size: 28px;
+color: darkmagenta;
+text-align:center;
+}
+
+.service-holder {
+padding: 20px;
+margin:12px;
+}
+
+.service-select-heading {
+padding-top: 30px;
+color: darkslategray;
+font-weight: bold;
+}
+
+.mat-stepper-vertical {
+  margin-top: 8px;
+}
+
+.mat-form-field {
+  margin-top: 16px;
+  width:90%;
+}
+
+.step-details{
+  padding:24px;
+  margin:16px;
+  border:2px solid;
+  border-radius:12px;
+  border-color:lightcoral;
+}
+
+.inst-text{
+  line-height:40px;
+  padding-left:20px;
+}
+
+agm-map {
+  height: 150px;
+}
+
+.feature-img{
+    height:150px;
+}
+
+
+.select-box{
+  padding:15px;
+  margin:15px;
+  border:2px solid;
+  border-radius:10px;
+  border-color:lightgrey;
+}
+
+.check-cls{
+  padding:25px;
+  font-weight:bold;
+  font-size:18px;
+  color:darkmagenta;
+  margin:12px;
+}
+
+.info-text{
+  font-weight:300;
+}
+
+.info-heading{
+  font-weight:bold;
+}

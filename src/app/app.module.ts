@@ -9,6 +9,7 @@ import { InputsModule,
         TableModule,
         ChartsModule,
         CarouselModule } from 'angular-bootstrap-md';
+import {MatStepperModule} from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuModule } from '@angular/material/menu';
@@ -30,7 +31,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule, NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import {MatSliderModule} from '@angular/material/slider';
@@ -126,6 +127,11 @@ import { RatingReviewComponent } from './modules/eventplanner/rating-review/rati
 import { BookingNoteComponent } from './modules/eventplanner/booking-note/booking-note.component';
 import { LocationSearchComponent } from './modules/service/location-search/location-search.component';
 import { EventSelectComponent } from './modules/event/event-select/event-select.component';
+import { TeramsConditionsComponent } from './modules/home/terams-conditions/terams-conditions.component';
+import { ParticipantListComponent } from './modules/event/docs/participant-list/participant-list.component';
+import { EventInvitationComponent } from './modules/event/docs/event-invitation/event-invitation.component';
+import { EventAgendaComponent } from './modules/event/docs/event-agenda/event-agenda.component';
+import { AddEventComponent } from './modules/event/add-event/add-event.component';
 
 
 
@@ -215,6 +221,11 @@ import { EventSelectComponent } from './modules/event/event-select/event-select.
     BookingNoteComponent,
     LocationSearchComponent,
     EventSelectComponent,
+    TeramsConditionsComponent,
+    ParticipantListComponent,
+    EventInvitationComponent,
+    EventAgendaComponent,
+    AddEventComponent,
 
 
 
@@ -242,6 +253,7 @@ import { EventSelectComponent } from './modules/event/event-select/event-select.
     MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
+    MatStepperModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
     HttpClientModule,
@@ -264,6 +276,7 @@ import { EventSelectComponent } from './modules/event/event-select/event-select.
     CarouselModule,
     MatSliderModule,
     MatDialogModule,
+    NgbDropdownModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyB4MIX31RUspo9HAkq90KM3W3Ltyw4UIx0',
       libraries: ['places']

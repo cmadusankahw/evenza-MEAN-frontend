@@ -1,1 +1,123 @@
-<p>event-schedule works!</p>
+
+
+
+<div class="container pd-top">
+  <h4>
+    <mat-icon>library_books</mat-icon>
+   <b> Event Schedule</b>
+  </h4>
+  <hr>
+
+  <!--calendar-->
+  <div class="row">
+    <div class="col-md-8">
+      <div class="pt-2 b-2">
+          <div class="row container-fluid">
+              <span style="background-color: blue; padding:8px; margin-right:8px;"> Bookings </span>
+              <span style="background-color: green; padding:8px; margin-right:8px;"> Appointments </span>
+              <span style="background-color: pink; padding:8px; margin-right:8px;"> Schduled Tasks </span>
+          </div>
+      </div>
+      <hr>
+      <full-calendar
+      #calendar
+      defaultView="dayGridMonth"
+      [header]="{
+        left: 'prev,next',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      }"
+      [plugins]="calendarPlugins"
+      [weekends]="calendarWeekends"
+      [events]="calendarEvents"
+      [selectable]="true"
+      (select)="handleSelect($event)"
+    ></full-calendar>
+    </div>
+    <div class="col-md-4">
+        <h4 class="button-box-heading"><b>
+          <mat-icon>assignment</mat-icon> Action Pane
+         </b></h4>
+         <hr>
+         <div class="action-pane">
+         <div class="pb-1">
+           <p><b> Schedule a new task...</b></p>
+           <p style="color:gray;">you can schdule tasks by selecting a date/ time on calendar as well.</p>
+          <button mdbBtn color="primary" text="white" class="btn btn-md text-center"
+          (click) = "calanderTask.show()">
+            schedlue new task
+          </button>
+          <hr>
+          <p><b> Refresh Calendar </b></p>
+          <button mdbBtn color="primary" outline="yes" class="btn btn-md text-center"
+          (click) = "refreshPage()">
+          <mdb-icon fas icon="redo-alt"></mdb-icon>  Refresh
+          </button>
+          <hr>
+         </div>
+        </div>
+        <hr>
+         <app-planner-notifications></app-planner-notifications>
+    </div>
+  </div>
+
+</div>
+
+
+<!--add  payment method Modal-->
+<div
+  mdbModal
+  #calanderTask="mdbModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-lg"
+    role="document"
+    style="overflow-y: initial !important"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          id="cardDetailsModalClose"
+          (click)="calanderTask.hide()"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel" >
+          Create New Task
+        </h4>
+      </div>
+      <div class="modal-body text-center" style="height: 400px; overflow-y: auto;" >
+        <div *ngIf="!calendarSelected">
+          <app-create-task  ></app-create-task>
+        </div>
+
+        <div *ngIf="!calendarSelected">
+          <app-create-task [start] = "newTask.start" [end] = "newTask.end" ></app-create-task>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button
+          mdbBtn
+          color="link"
+          (click)="calanderTask.hide()"
+          mdbWavesEffect
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

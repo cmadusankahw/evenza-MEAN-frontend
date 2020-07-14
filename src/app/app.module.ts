@@ -132,6 +132,7 @@ import { ParticipantListComponent } from './modules/event/docs/participant-list/
 import { EventInvitationComponent } from './modules/event/docs/event-invitation/event-invitation.component';
 import { EventAgendaComponent } from './modules/event/docs/event-agenda/event-agenda.component';
 import { AddEventComponent } from './modules/event/add-event/add-event.component';
+import { CreateTaskComponent } from './modules/event/create-task/create-task.component';
 
 
 
@@ -226,6 +227,7 @@ import { AddEventComponent } from './modules/event/add-event/add-event.component
     EventInvitationComponent,
     EventAgendaComponent,
     AddEventComponent,
+    CreateTaskComponent,
 
 
 

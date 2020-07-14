@@ -29,11 +29,11 @@ const eventsSchema = mongoose.Schema(
                     segment_id: {type: String, required: true},
                     segment_type: {type: String, required: true},
                     segment_title: {type: String, required: true},
-                    description:{type: String},
                     allocated_budget: {type: Number, required: true},
+                    scheduled_from_date: {type: String, required: true},
+                    scheduled_to_date: {type: String, required: true},
                     spent_budget: {type: Number, required: true},
                     state: {type: String, required: true},
-                    sceduled_date: {type: String, required: true},
                     object: {type: Object, required: true},
                    }], required: true},
     service_categories: { type: [{

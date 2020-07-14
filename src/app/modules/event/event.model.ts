@@ -66,14 +66,14 @@ export interface EventCategory {
 
 export interface EventSegment { // depend on event
   segment_id: string; // ref to event.event_id
-  segment_type: string; // service/ product/ task
+  segment_type: string; // service  task
   segment_title: string;
-  description: string;
   allocated_budget: number;
+  sceduled_from_date: string;
+  scheduled_to_date: string;
   spent_budget: number;
   state: string; // completed, pending , cancelled
-  sceduled_date: string;
-  object: object; // service, product, task
+  object: any; // service , task
 }
 
 // objects for event segments
@@ -82,6 +82,7 @@ export interface Service {
   service_name: string;
   service_category: string;
   booking_id: string;
+  appoint_id: string;
   state: string;
 }
 
@@ -118,3 +119,9 @@ export interface Host {
   name: string;
 }
 
+export interface CalendarTask {
+  title: string;
+  start: Date;
+  end: Date;
+  backgroundColor: string;
+}

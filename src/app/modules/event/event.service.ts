@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
 
 
-import { TheEvent, EventCategory, EventSegment, EventCard } from './event.model';
+import { TheEvent, EventCategory, EventSegment, EventCard, Task } from './event.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 
 
@@ -96,8 +96,14 @@ export class EventService {
 
     }
 
+    // send an invitarion to a participant
     sendInvitation() {
 
+    }
+
+    // add new ttask as an event segment
+    createTask(newTask: EventSegment, eventId: string) {
+      // add new task to selected event as a new segment segmnt
     }
 
 

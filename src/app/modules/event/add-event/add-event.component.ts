@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 import { NgForm } from '@angular/forms';
 
 import { EventCategory, TheEvent, Category } from '../event.model';
-import { isDateSelectionValid } from '@fullcalendar/core/validation';
 
 @Component({
   selector: 'app-add-event',
@@ -49,7 +48,13 @@ export class AddEventComponent implements OnInit, OnDestroy {
   };
 
   // recieved Event category
-  eventCategory: EventCategory;
+  eventCategory: EventCategory = {
+    id: null,
+    category: '',
+    img: '',
+    services: [],
+    products: []
+  };
 
   times = { fromTime: {hour: 8, minute: 0, second: 0}, toTime: {hour: 16, minute: 0, second: 0}};
 
@@ -81,7 +86,11 @@ export class AddEventComponent implements OnInit, OnDestroy {
       this.eventService.getEvent(this.Id);
       this.eventSub = this.eventService.getEventUpdatedListener()
       .subscribe((recievedData: TheEvent) => {
+        this.eventCategory.services = recievedData.service_categories;
+        this.eventCategory.products = recievedData.product_categories;
+        this.eventCategory.category = recievedData.event_category;
         this.createdEvent = recievedData;
+        this.editmode = true;
         console.log(this.createdEvent);
     });
     }
@@ -96,11 +105,11 @@ ngOnDestroy() {
     }
   }
 
-createEvent(eventForm: NgForm) {
+createEvent() {
     console.log('submitted');
   }
 
-updateEvent(eventForm: NgForm) {
+updateEvent() {
 
   }
 

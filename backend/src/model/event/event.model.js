@@ -35,8 +35,8 @@ const eventsSchema = mongoose.Schema(
         state: {type: String, required: true}
       }]},
       services:{type: [{
-        service_id: {type: String, required: true},
-        service_name: {type: String, required: true},
+        service_id: {type: String},
+        service_name: {type: String},
         service_category: {type: String, required: true},
         booking_id: {type: String},
         appoint_id: {type: String},
@@ -48,8 +48,8 @@ const eventsSchema = mongoose.Schema(
         state: {type: String, required: true}
       }]},
       products:{type: [{
-        product_id: {type: String, required: true},
-        product: {type: String, required: true},
+        product_id: {type: String},
+        product: {type: String},
         product_category: {type: String, required: true},
         order_id: {type: String },
         allocated_budget: {type: Number, required: true},

@@ -59,6 +59,8 @@
   margin-left: 8px;
 }
 
+
+
 .full-width-ex{
   width:100%;
   margin:0px !important;
@@ -80,7 +82,7 @@
 .item-des{
   color:darkred;
   font-weight:bold;
-
+  text-align:right;
 }
 
 .item-title{
@@ -172,3 +174,49 @@
   white-space:20px;
   font-weight:bold;
 }
+
+.info-dates{
+  text-align:right;
+}
+
+.info-dates-2{
+  text-align:right;
+
+}
+
+.create-task-btn{
+  padding-top:21px;
+  padding-bottom:21px;
+  font-weight:bold;
+  font-size:22px;
+  color: darkmagenta;
+  width:100%;
+}
+
+.create-service-btn{
+  padding-top:21px;
+  padding-bottom:21px;
+  font-weight:bold;
+  font-size:22px;
+  color: darkgreen;
+  width:100%;
+}
+
+
+
+.drag-create{
+  text-align:center !important;
+}
+
+.budget-total{
+  font-weight:bold;
+}
+
+mat-slider{
+  width:100%;
+}
+
+.service-full-width{
+  width:90%;
+}
+

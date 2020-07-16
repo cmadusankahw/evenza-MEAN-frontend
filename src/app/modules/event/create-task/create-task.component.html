@@ -41,7 +41,7 @@
       <mdb-icon fas icon="calendar-alt"></mdb-icon> <span> <b> From Date  </b></span> <br>
       <mat-form-field class="pt-1" >
         <mat-label > From Date : </mat-label>
-        <input matInput [matDatepicker]="picker1" required [min]="today"
+        <input matInput [matDatepicker]="picker1" required [min]="today" [disabled] = "updateMode"
         name="from_date" [(ngModel)]="start" #fDate="ngModel"
         (dateChange) = "start = end "/>
         <mat-datepicker-toggle
@@ -56,7 +56,7 @@
       <mdb-icon fas icon="calendar-alt"></mdb-icon> <span><b> To Date </b></span> <br>
       <mat-form-field class="pt-1" >
         <mat-label > To Date : </mat-label>
-        <input matInput [matDatepicker]="picker2" required [min]="today"
+        <input matInput [matDatepicker]="picker2" required [min]="today" [disabled] = "updateMode"
         name="to_date" [(ngModel)]="end" #tDate="ngModel"
         />
         <mat-datepicker-toggle
@@ -71,19 +71,25 @@
   <div class="row pt-1" >
     <div class="col-md-6">
       <p style="margin:0px;"> From Time: </p>
-      <ngb-timepicker [(ngModel)]="fromTime"
+      <ngb-timepicker [(ngModel)]="fromTime" [disabled] ="updateMode"
       name="from_time" ></ngb-timepicker>
     </div>
     <div class="col-md-6">
       <p style="margin:0px;"> To Time: </p>
-      <ngb-timepicker [(ngModel)]="toTime"
+      <ngb-timepicker [(ngModel)]="toTime" [disabled] = "updateMode"
       name="to_time" ></ngb-timepicker>
     </div>
   </div>
-  <div class="text-center">
-    <button type="submit" mdbBtn mdbWavesEffect color="secondary" text="white" class="btn btn-md"
+  <div class="text-center" *ngIf="!updateMode">
+    <button  mdbBtn mdbWavesEffect color="secondary" text="white" class="btn btn-md"
     (click)="createTask()" >
       Create Task
+    </button>
+  </div>
+  <div class="text-center" *ngIf="updateMode">
+    <button  mdbBtn mdbWavesEffect color="secondary" text="white" class="btn btn-md"
+    (click)="updateTask()" >
+      Update Task
     </button>
   </div>
 </form>

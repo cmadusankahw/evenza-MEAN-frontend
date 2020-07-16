@@ -25,17 +25,39 @@ const eventsSchema = mongoose.Schema(
                     state: {type: Boolean, required: true},
                    }], required: true},
     total_budget: {type: Number, required: true},
-    event_segments: {type: [{
-                    segment_id: {type: String, required: true},
-                    segment_type: {type: String, required: true},
-                    segment_title: {type: String, required: true},
-                    description:{type: String},
-                    allocated_budget: {type: Number, required: true},
-                    spent_budget: {type: Number, required: true},
-                    state: {type: String, required: true},
-                    sceduled_date: {type: String, required: true},
-                    object: {type: Object, required: true},
-                   }], required: true},
+    event_segments: {type: {
+      tasks:{type: [{
+        task_id: {type: String, required: true},
+        title: {type: String, required: true},
+        description: {type: String },
+        sceduled_from_date: {type: Date, required: true},
+        scheduled_to_date: {type: Date, required: true},
+        state: {type: String, required: true}
+      }]},
+      services:{type: [{
+        service_id: {type: String, required: true},
+        service_name: {type: String, required: true},
+        service_category: {type: String, required: true},
+        booking_id: {type: String},
+        appoint_id: {type: String},
+        allocated_budget:{type: Number, required: true},
+        spent_budget: {type: Number, required: true},
+        booking_from_date: {type: Date},
+        booking_to_date: {type: Date},
+        appointed_date: {type: Date},
+        state: {type: String, required: true}
+      }]},
+      products:{type: [{
+        product_id: {type: String, required: true},
+        product: {type: String, required: true},
+        product_category: {type: String, required: true},
+        order_id: {type: String },
+        allocated_budget: {type: Number, required: true},
+        spent_budget: {type: Number, required: true},
+        ordered_date: {type: Date },
+        state: {type: String, required: true}
+      }]}
+    }, required: true},
     service_categories: { type: [{
                           id: {type: String, required: true},
                           category: {type: String, required: true},

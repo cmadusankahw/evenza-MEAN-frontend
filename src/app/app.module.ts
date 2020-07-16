@@ -37,6 +37,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import {MatSliderModule} from '@angular/material/slider';
 import { DatePipe } from '@angular/common';
 import { AgmCoreModule } from '@agm/core';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -132,6 +133,7 @@ import { ParticipantListComponent } from './modules/event/docs/participant-list/
 import { EventInvitationComponent } from './modules/event/docs/event-invitation/event-invitation.component';
 import { EventAgendaComponent } from './modules/event/docs/event-agenda/event-agenda.component';
 import { AddEventComponent } from './modules/event/add-event/add-event.component';
+import { CreateTaskComponent } from './modules/event/create-task/create-task.component';
 
 
 
@@ -226,6 +228,7 @@ import { AddEventComponent } from './modules/event/add-event/add-event.component
     EventInvitationComponent,
     EventAgendaComponent,
     AddEventComponent,
+    CreateTaskComponent,
 
 
 
@@ -277,6 +280,7 @@ import { AddEventComponent } from './modules/event/add-event/add-event.component
     MatSliderModule,
     MatDialogModule,
     NgbDropdownModule,
+    DragDropModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyB4MIX31RUspo9HAkq90KM3W3Ltyw4UIx0',
       libraries: ['places']

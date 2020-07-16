@@ -47,13 +47,11 @@ export class EventDetailsComponent implements OnInit, OnDestroy {
     this.eventSub = this.eventService.getEventUpdatedListener()
       .subscribe((recievedData: TheEvent) => {
       this.event = recievedData;
-      for (const segment of this.event.event_segments) {
-        if (segment.segment_type === 'product') {
-          this.products.push(segment.object);
-        }
-        if (segment.segment_type === 'service') {
-          this.services.push(segment.object);
-        }
+      if (recievedData.event_segments.services) {
+        this.services = recievedData.event_segments.services;
+      }
+      if (recievedData.event_segments.products) {
+        this.products = recievedData.event_segments.products;
       }
       console.log(this.event);
       this.productDataSource = new MatTableDataSource(this.products);

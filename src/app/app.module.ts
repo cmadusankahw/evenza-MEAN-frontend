@@ -37,6 +37,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import {MatSliderModule} from '@angular/material/slider';
 import { DatePipe } from '@angular/common';
 import { AgmCoreModule } from '@agm/core';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -279,6 +280,7 @@ import { CreateTaskComponent } from './modules/event/create-task/create-task.com
     MatSliderModule,
     MatDialogModule,
     NgbDropdownModule,
+    DragDropModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyB4MIX31RUspo9HAkq90KM3W3Ltyw4UIx0',
       libraries: ['places']

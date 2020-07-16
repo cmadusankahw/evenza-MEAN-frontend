@@ -1,1 +1,90 @@
-<p>create-task works!</p>
+<div class="pt-2 container-fluid">
+<form #createCalendarForm="ngForm">
+  <div class="text-center">
+    <p><b> Provide required details to create a new task </b></p>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-3">
+      <mdb-icon fas icon="clock"></mdb-icon> <span> Task Title</span>
+    </div>
+    <div class="col-md-9">
+      <mat-form-field class="service-full-width">
+        <mat-label>  Enter Task title </mat-label>
+        <input matInput
+        required
+        [(ngModel)]="title"
+        name="business_contact"
+        #taskTitle="ngModel">
+        <mat-error *ngIf="taskTitle.invalid">A task should given a title </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-3">
+      <mdb-icon fas icon="list"></mdb-icon> <span> Task Description </span>
+    </div>
+    <div class="col-md-9">
+      <mat-form-field class="service-full-width">
+        <mat-label> Enter Task Description </mat-label>
+        <textarea matInput
+        [(ngModel)]="description"
+        name="business_contact"
+        > </textarea>
+      </mat-form-field>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-6">
+      <mdb-icon fas icon="calendar-alt"></mdb-icon> <span> <b> From Date  </b></span> <br>
+      <mat-form-field class="pt-1" >
+        <mat-label > From Date : </mat-label>
+        <input matInput [matDatepicker]="picker1" required [min]="today"
+        name="from_date" [(ngModel)]="start" #fDate="ngModel"
+        (dateChange) = "start = end "/>
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1 [startAt]="start"></mat-datepicker>
+        <mat-error *ngIf="fDate.invalid">Please select a date</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mdb-icon fas icon="calendar-alt"></mdb-icon> <span><b> To Date </b></span> <br>
+      <mat-form-field class="pt-1" >
+        <mat-label > To Date : </mat-label>
+        <input matInput [matDatepicker]="picker2" required [min]="today"
+        name="to_date" [(ngModel)]="end" #tDate="ngModel"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker2"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker2 [startAt]="end"></mat-datepicker>
+        <mat-error *ngIf="tDate.invalid">Please select a date</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row pt-1" >
+    <div class="col-md-6">
+      <p style="margin:0px;"> From Time: </p>
+      <ngb-timepicker [(ngModel)]="fromTime"
+      name="from_time" ></ngb-timepicker>
+    </div>
+    <div class="col-md-6">
+      <p style="margin:0px;"> To Time: </p>
+      <ngb-timepicker [(ngModel)]="toTime"
+      name="to_time" ></ngb-timepicker>
+    </div>
+  </div>
+  <div class="text-center">
+    <button type="submit" mdbBtn mdbWavesEffect color="secondary" text="white" class="btn btn-md"
+    (click)="createTask()" >
+      Create Task
+    </button>
+  </div>
+</form>
+</div>

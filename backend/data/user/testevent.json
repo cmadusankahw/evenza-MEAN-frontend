@@ -1,6 +1,6 @@
 
   {
-    "event_id":"E01",
+    "event_id":"E1",
     "event_title": "Evenza smart Hackathon",
     "description": "test description",
     "event_type": "closed",
@@ -16,28 +16,39 @@
     "no_of_participants": 200,
     "participants": {},
     "total_budget": 200000,
-    "event_segments": [{
-                    "segment_id": "SEG1",
-                    "segment_type":"product",
-                    "segment_title": "AUdio & Sound systems",
-                    "description":"samplle description",
-                    "allocated_budget": 37000,
-                    "spent_budget":32000,
-                    "state": "pending",
-                    "sceduled_date": "2020-07-10T04:54:51.255Z",
-                    "object": {}
-                   },
-                   {
-                    "segment_id": "SEG2",
-                    "segment_type":"service",
-                    "segment_title": "Reception Halls",
-                    "description":"samplle description",
-                    "allocated_budget": 89000,
-                    "spent_budget":91000,
-                    "state": "pending",
-                    "sceduled_date": "2020-07-11T04:54:51.255Z",
-                    "object": {}
-                   }],
+    "event_segments": {
+      "tasks":[{
+        "task_id": "task_visit_dressing_saloon_123",
+        "title": "Visit Dressing Saloon",
+        "description": "test",
+        "sceduled_from_date":  "2020-07-08T04:54:51.255Z",
+        "scheduled_to_date":  "2020-07-08T04:54:51.255Z",
+        "state": "pending"
+      }],
+      "services":[{
+        "service_id": "S1",
+        "service_name": "Sarasi Hotel",
+        "service_category": "Reception halls",
+        "booking_id": "B1",
+        "appoint_id": null,
+        "allocated_budget": 90000,
+        "spent_budget": 87000,
+        "booking_from_date": "2020-07-12T04:54:51.255Z",
+        "booking_to_date": "2020-07-12T04:54:51.255Z",
+        "appointed_date": null,
+        "state": "booked"
+      }],
+      "products":[{
+        "product_id": "P1",
+        "product": "Dinusha Catering",
+        "product_category": "Catering Services",
+        "order_id": "OR1",
+        "allocated_budget": 25000,
+        "spent_budget": 27000,
+        "ordered_date": "2020-07-09T04:54:51.255Z",
+        "state": "ordered"
+      }]
+    },
     "service_categories":[{
                           "id": "1",
                           "category": "Reception Halls",

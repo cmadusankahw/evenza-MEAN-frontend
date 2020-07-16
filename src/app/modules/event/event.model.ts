@@ -13,7 +13,11 @@ export interface TheEvent {
   no_of_participants: number; // data taken at event creation
   participants: Participant[]; // state - approved/ pending/ cancelled
   total_budget: number;
-  event_segments: EventSegment[];
+  event_segments: {
+    tasks: Task[],
+    services: Service[],
+    products: Product[]
+  };
   service_categories: Category[]; // selected service categories
   product_categories: Category[]; // selected product categories
   feature_img: string;
@@ -64,17 +68,7 @@ export interface EventCategory {
 
 // internal interfaces
 
-export interface EventSegment { // depend on event
-  segment_id: string; // ref to event.event_id
-  segment_type: string; // service  task
-  segment_title: string;
-  allocated_budget: number;
-  sceduled_from_date: string;
-  scheduled_to_date: string;
-  spent_budget: number;
-  state: string; // completed, pending , cancelled
-  object: any; // service , task
-}
+
 
 // objects for event segments
 export interface Service {
@@ -83,6 +77,11 @@ export interface Service {
   service_category: string;
   booking_id: string;
   appoint_id: string;
+  allocated_budget: number;
+  spent_budget: number;
+  booking_from_date: string;
+  booking_to_date: string;
+  appointed_date: string;
   state: string;
 }
 
@@ -91,6 +90,9 @@ export interface Product {
   product: string;
   product_category: string;
   order_id: string;
+  allocated_budget: number;
+  spent_budget: number;
+  ordered_date: string;
   state: string;
 }
 
@@ -98,6 +100,9 @@ export interface Task {
   task_id: string;
   title: string;
   description: string;
+  scheduled_from_date: string;
+  scheduled_to_date: string;
+  state: string;
 }
 
 export interface SocialLinks {
@@ -124,4 +129,24 @@ export interface CalendarTask {
   start: Date;
   end: Date;
   backgroundColor: string;
+}
+
+export function refactorDate(date: Date, time: {hour: number, minute: number}): string {
+  let ISODate = date.toISOString();
+  let timeString = '';
+  if (time.hour < 10) {
+    timeString += ('0' + time.hour.toString() + ':') ;
+  } else {
+    timeString += (time.hour.toString() + ':') ;
+  }
+  if (time.minute < 10) {
+    timeString += ('0' + time.minute.toString() + ':') ;
+  } else {
+    timeString += (time.minute.toString() + ':') ;
+  }
+  ISODate = ISODate.slice(0, 11) + timeString + '00.255Z';
+  console.log(ISODate);
+
+  return ISODate;
+
 }

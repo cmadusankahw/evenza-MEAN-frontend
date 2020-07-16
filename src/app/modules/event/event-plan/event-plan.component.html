@@ -1,1 +1,142 @@
-<p>event-plan works!</p>
+<div class="container pt-2 pb-3 shadow" *ngIf="event">
+  <hr>
+      <div class="row ml-3 mr-3">
+        <div class=" col-md-8 content-text pt-2">
+          <div class="top-stat">
+            <div class="content-title">
+              <span style="color:darkmagenta;"> Event Plan : </span> {{event.event_title}}
+            </div>
+            <div class="open-stat pt-3" >
+              <span><mdb-icon fas icon="map-marker-alt"> </mdb-icon> At {{ event.location.homeTown}}</span>
+            </div>
+
+            <div class="open-stat pt-2" *ngIf="event.from_date.slice(0,10) != event.to_date.slice(0,10)" >
+              <span class="date-stat"><mdb-icon far icon="calendar-alt"> </mdb-icon> From
+                {{event.from_date.slice(0,10)}} to {{event.to_date.slice(0,10)}}</span>
+            </div>
+
+            <div class="open-stat pt-2" *ngIf="event.from_date.slice(0,10) == event.to_date.slice(0,10)" >
+              <span class="date-stat"><mdb-icon far icon="clock"> </mdb-icon> On
+                {{event.from_date.slice(0,10)}} </span>
+                <br>
+                <span class="date-stat"><mdb-icon far icon="clock"> </mdb-icon> From
+                  {{ event.from_date.slice(11,16)}} to  {{ event.from_date.slice(11,16)}}</span>
+            </div>
+         </div>
+        </div>
+        <div class="col-md-4 text-center pt-4">
+          <div class="info-box">
+            <p><b> Schedule a new task...</b></p>
+            <button mdbBtn color="primary" text="white" class="btn btn-md text-center"
+            (click) = "calanderTask.show()">
+              schedlue new task
+            </button>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+<div class="row">
+  <div class="col-md-6 task-list ml-3 mr-3">
+    <div class="top-content">
+        <h5><b> <mdb-icon fas icon="list"> </mdb-icon> Plan event Tasks</b></h5>
+    </div>
+    <div cdkDropList class="drag-list ml-3 mr-3" (cdkDropListDropped)="drop($event)">
+      <div class="drag-box" *ngFor="let task of tasks" cdkDrag>
+        <mat-accordion class="example-headers-align full-width-ex">
+          <mat-expansion-panel [expanded]="false"  hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <span class="item-title">
+                  {{task.title}}
+                </span>
+              </mat-panel-title>
+              <mat-panel-description >
+                <span class="item-des">{{ task.scheduled_from_date.slice(0,10)}} </span>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <mat-action-row>
+
+            </mat-action-row>
+          </mat-expansion-panel>
+          </mat-accordion>
+      </div>
+    </div>
+</div>
+<div class="col-md-6">
+  <!-- service list-->
+  <div class="service-list">
+    <div class="top-content">
+
+
+    </div>
+  </div>
+
+  <!-- product list-->
+  <div class="product-list">
+    <div class="top-content">
+
+    </div>
+  </div>
+
+ </div>
+</div>
+
+</div>
+
+
+
+
+
+
+<!--create new taskModal-->
+<div
+mdbModal
+#calanderTask="mdbModal"
+class="modal fade"
+tabindex="-1"
+role="dialog"
+aria-labelledby="myBasicModalLabel"
+[config]="{ backdrop: false, ignoreBackdropClick: true }"
+aria-hidden="true"
+>
+<div
+  class="modal-dialog modal-dialog-centered modal-lg"
+  role="document"
+  style="overflow-y: initial !important"
+>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        id="cardDetailsModalClose"
+        (click)="calanderTask.hide()"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+      <h4 class="modal-title w-100" id="myModalLabel" >
+        Create New Task
+      </h4>
+    </div>
+    <div class="modal-body" style="height: 400px; overflow-y: auto;" >
+        <app-create-task  [eventId] = "eventId"></app-create-task>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        mdbBtn
+        color="link"
+        (click)="calanderTask.hide()"
+        mdbWavesEffect
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+

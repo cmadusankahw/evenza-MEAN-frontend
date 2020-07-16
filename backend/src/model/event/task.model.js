@@ -5,9 +5,10 @@ const taskSchema = mongoose.Schema(
   {
     task_id: {type: String, required: true},
     title: {type: String, required: true},
+    description: {type: String},
     sceduled_from_date: {type: String, required: true},
     sceduled_to_date: {type: String, required: true},
-    description: {type: String}
+    state: { type: String, required: true}
   },
   { collection : 'Task' }
 );

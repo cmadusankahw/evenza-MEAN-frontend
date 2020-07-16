@@ -5,10 +5,10 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGrigPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
-
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { EventService } from '../event.service';
+
 import { TheEvent, Task,  CalendarTask } from '../event.model';
 
 @Component({
@@ -38,49 +38,52 @@ export class EventScheduleComponent implements OnInit, OnDestroy {
   calendarSelected = false;
 
   newTask =  {
-    start: new Date().toISOString(),
-    end: new Date().toISOString(),
+    start: new Date(),
+    end: new Date(),
   };
 
 
   constructor(private eventService: EventService,
-              private router: Router) { }
+              private router: Router,
+              private route: ActivatedRoute) {
+                this.Id = route.snapshot.params.id;
+               }
 
   ngOnInit() {
     this.eventService.getEvent(this.Id);
     this.eventSub = this.eventService.getEventUpdatedListener()
           .subscribe((recievedData: TheEvent) => {
-              if (this.event) {
+              if (recievedData) {
                 this.event = recievedData;
                 console.log(this.event);
-                for (const segment of this.event.event_segments) {
-                  if (segment.segment_type === 'service') {
-                    if (segment.object.booking_id != null) {
+                for (const service of this.event.event_segments.services) {
+                    if (service.booking_id != null) {
                       this.calendarEvents.push({
-                        title: segment.segment_title,
-                        start: new Date(segment.sceduled_from_date),
-                        end: new Date(segment.scheduled_to_date),
+                        title: 'Booking on ' + service.service_name,
+                        start: new Date(service.booking_from_date),
+                        end: new Date(service.booking_to_date),
                         backgroundColor: 'blue'
                       });
                     }
-                    if (segment.object.appoint_id != null) {
+                    if (service.appoint_id != null) {
                     this.calendarEvents.push({
-                      title: segment.segment_title,
-                      start: new Date(segment.sceduled_from_date),
-                      end: new Date(segment.scheduled_to_date),
+                      title: 'Appointment on ' + service.service_name ,
+                      start: new Date(service.appointed_date),
+                      end: new Date(service.appointed_date),
                       backgroundColor: 'green'
                     });
                    }
-                  } else if  (segment.segment_type === 'task') {
+                }
+                for (const task of this.event.event_segments.tasks) {
                     this.calendarEvents.push({
-                      title: segment.segment_title,
-                      start: new Date(segment.sceduled_from_date),
-                      end: new Date(segment.scheduled_to_date),
+                      title: task.title,
+                      start: new Date(task.scheduled_from_date),
+                      end: new Date(task.scheduled_to_date),
                       backgroundColor: 'pink'
                     });
-                  }
                 }
-           }
+            }
+              console.log(this.calendarEvents);
       });
   }
 
@@ -102,8 +105,8 @@ export class EventScheduleComponent implements OnInit, OnDestroy {
   handleSelect(event) {
     console.log(event);
     this.newTask = {
-      start: event.start.toISOString(),
-      end: event.end.toISOString()
+      start: event.start,
+      end: event.end
       };
     setTimeout (() => {
       this.calendarSelected = true;

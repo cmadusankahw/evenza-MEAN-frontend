@@ -22,9 +22,9 @@ export class AddEventComponent implements OnInit, OnDestroy {
   // event dates
   tday = new Date();
 
-    // feature image upload
-    imageUrl: any = './assets/images/events/feature.jpg';
-    image: File;
+  // feature image upload
+  imageUrl: any = './assets/images/events/feature.jpg';
+  image: File;
 
   // created event
   createdEvent = {
@@ -86,8 +86,8 @@ export class AddEventComponent implements OnInit, OnDestroy {
       this.eventService.getEvent(this.Id);
       this.eventSub = this.eventService.getEventUpdatedListener()
       .subscribe((recievedData: TheEvent) => {
-        this.eventCategory.services = recievedData.service_categories;
-        this.eventCategory.products = recievedData.product_categories;
+        // this.eventCategory.services = recievedData.service_categories;
+        // this.eventCategory.products = recievedData.product_categories;
         this.eventCategory.category = recievedData.event_category;
         this.createdEvent = recievedData;
         this.editmode = true;

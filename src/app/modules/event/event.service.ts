@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
 
 
-import { TheEvent, EventCategory, EventSegment, EventCard, Task } from './event.model';
+import { TheEvent, EventCategory, EventCard, Task } from './event.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 
 
@@ -74,7 +74,7 @@ export class EventService {
     // set methods
 
     createEvent() {
-
+    // this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
     }
 
     updateEvent() {
@@ -93,17 +93,18 @@ export class EventService {
 
     // create new alert
     createAlert() {
-
+     // this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
     }
 
     // send an invitarion to a participant
     sendInvitation() {
-
+    // this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
     }
 
     // add new ttask as an event segment
-    createTask(newTask: EventSegment, eventId: string) {
+    createTask(newTask: Task, eventId: string) {
       // add new task to selected event as a new segment segmnt
+      // this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
     }
 
 

@@ -261,7 +261,7 @@
             </div>
             </div>
         </mat-step>
-        <mat-step >
+        <mat-step *ngIf="!editmode" >
           <div class="step-details">
           <ng-template matStepLabel>Select Service & Products..</ng-template>
           <h5 class="pt-2"><b> <mdb-icon fas icon="people-carry"> </mdb-icon> Select Service Categories:</b></h5>

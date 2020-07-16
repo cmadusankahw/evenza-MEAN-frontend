@@ -9,7 +9,7 @@ import { InputsModule,
         TableModule,
         ChartsModule,
         CarouselModule } from 'angular-bootstrap-md';
-import {MatStepperModule} from '@angular/material/stepper';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuModule } from '@angular/material/menu';
@@ -31,7 +31,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {NgbModule, NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbDropdownModule, NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import {MatSliderModule} from '@angular/material/slider';
@@ -281,6 +281,7 @@ import { CreateTaskComponent } from './modules/event/create-task/create-task.com
     MatDialogModule,
     NgbDropdownModule,
     DragDropModule,
+    NgbProgressbarModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyB4MIX31RUspo9HAkq90KM3W3Ltyw4UIx0',
       libraries: ['places']

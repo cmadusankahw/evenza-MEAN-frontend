@@ -43,6 +43,8 @@ import { EventAgendaComponent } from './modules/event/docs/event-agenda/event-ag
 import { ParticipantListComponent } from './modules/event/docs/participant-list/participant-list.component';
 import { EventInvitationComponent } from './modules/event/docs/event-invitation/event-invitation.component';
 import { AddEventComponent } from './modules/event/add-event/add-event.component';
+import { ServiceDetailsComponent } from './modules/service/service-details/service-details.component';
+import { ProductDetailsComponent } from './modules/product/product-details/product-details.component';
 
 
 const routes: Routes = [
@@ -99,6 +101,10 @@ const routes: Routes = [
       { path: 'event/select', component: EventSelectComponent },
       { path: 'event/add/:id', component: AddEventComponent },
       { path: 'event/edit/:id', component: AddEventComponent },
+      { path: 'event/services/:id', component: SearchServicesComponent }, // needd configuration
+      { path: 'event/products/:id', component: SearchProductsComponent }, // needd configuration
+      { path: 'event/service/:id', component: ServiceDetailsComponent }, // needd configuration
+      { path: 'event/product/:id', component: ProductDetailsComponent }, // needd configuration
       { path: 'events', component: EventplannerDashEventsComponent },
       { path: 'bookings', component: EventplannerDashBookingsComponent },
       { path: 'appoints', component: EventplannerDashAppointmentsComponent },

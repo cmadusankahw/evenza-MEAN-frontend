@@ -19,8 +19,12 @@ export class CreateTaskComponent implements OnInit {
   @Input() eventId: string;
   fromTime = {hour: this.today.getHours(), minute: this.today.getMinutes()};
   toTime = {hour: this.today.getHours(), minute: this.today.getMinutes()};
-  title = 'New Task';
-  description = '';
+  @Input() title = 'New Task';
+  @Input() description = '';
+  @Input() taskId = '';
+
+  // edit task mode
+  @Input() updateMode = false;
 
   constructor(private eventService: EventService, private router: Router) { }
 
@@ -42,6 +46,23 @@ export class CreateTaskComponent implements OnInit {
       this.router.onSameUrlNavigation = 'reload';
       this.router.navigate(['/planner/event/schedule/{{event.event_id}}']);
     }, 1000);
+    }
+
+    updateTask() {
+      const task: Task = {
+        task_id: this.taskId,
+        title: this.title,
+        description: this.description,
+        scheduled_from_date: this.start.toISOString(),
+        scheduled_to_date: this.end.toISOString(),
+        state: 'pending',
+     };
+      this.eventService.updateTask(task, this.eventId);
+      setTimeout (() => {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/planner/event/schedule/{{event.event_id}}']);
+      }, 1000);
     }
 
 }

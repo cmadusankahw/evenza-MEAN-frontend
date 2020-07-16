@@ -77,8 +77,9 @@ export class EventService {
     // this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
     }
 
-    updateEvent() {
-
+    updateEvent(event: TheEvent) {
+      // if budget changed in event plan event segments should be updated
+      // if a boking/order is cancelled by seller/sp, event segment need to be also updated
      // this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
     }
 
@@ -105,6 +106,10 @@ export class EventService {
     createTask(newTask: Task, eventId: string) {
       // add new task to selected event as a new segment segmnt
       // this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+    }
+
+    updateTask(newTask: Task, eventId: string) {
+
     }
 
 

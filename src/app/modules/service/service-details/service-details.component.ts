@@ -9,6 +9,7 @@ import { ServiceService } from '../service.service';
 import { MatDialog } from '@angular/material';
 import { SuccessComponent } from 'src/app/success/success.component';
 import { ErrorComponent } from 'src/app/error/error.component';
+import { refactorDate, calcDateDuration } from '../../event/event.model';
 
 
 @Component({
@@ -51,21 +52,20 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   totalAmount = 0.0;
   payAmount = 0.0;
 
-
   // booking default times time
   duration = 0;
 
   // appointment default date and time
-  appointment = {date: this.today, time: {hour: 8, minute: 0, second: 0} };
+  appointment = {date: this.today, time: {hour: 8, minute: 0} };
 
   // booking default date and time
   @Input() bookingTime = {fromDate: this.today,
     toDate: this.today,
-    fromTime: {hour: 8, minute: 0, second: 0},
-    toTime: {hour: 18, minute: 0, second: 0}
+    fromTime: {hour: 8, minute: 0},
+    toTime: {hour: 18, minute: 0}
   };
 
-  tday = new Date();
+ // tday = new Date();
 
   // images to upload
   image01: File;
@@ -187,6 +187,27 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   }
 
 
+  // calculate payment for booking
+  calcPayment(rateType: string, rate: number): number {
+    const date1 = refactorDate(this.bookingTime.fromDate, this.bookingTime.fromTime);
+    const date2 = refactorDate(this.bookingTime.toDate, this.bookingTime.toTime);
+    const diffDays = calcDateDuration(new Date(date1), new Date(date2));
+    console.log(this.duration);
+    console.log(diffDays);
+    let newRate = rate;
+    if (rateType === '/Hr') {
+      this.duration = Math.abs(this.bookingTime.fromTime.hour - this.bookingTime.toTime.hour) * diffDays;
+      newRate = rate * this.duration;
+    }  else if (rateType === '/Day') {
+      newRate = rate * diffDays;
+      this.duration = diffDays;
+    } else  {
+      this.duration = diffDays;
+    }
+    this.totalAmount = newRate;
+    this.payAmount = newRate / 10;
+    return newRate;
+  }
 
     // create a booking
     createBooking(bookingForm: NgForm ) {
@@ -206,11 +227,9 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
           created_date: new Date().toISOString(),
           state: 'pending',
           review: 'not reviewed yet',
-          from_date: this.bookingTime.fromDate.toISOString(),
-          to_date: this.bookingTime.toDate.toISOString(),
-          duration: this.duration,
-          from_time: this.bookingTime.fromTime,
-          to_time: this.bookingTime.toTime,
+          from_date: refactorDate(this.bookingTime.fromDate, this.bookingTime.fromTime),
+          to_date: refactorDate(this.bookingTime.toDate, this.bookingTime.toTime),
+          duration: this.duration, //
           comment: bookingForm.value.comment,
           amount: this.totalAmount,
           commission_due: this.totalAmount / 10,
@@ -236,8 +255,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
           business_name: this.service.business_name,
           created_date: new Date().toISOString(),
           state: 'pending',
-          appointed_date: this.appointment.date.toISOString(),
-          appointed_time: this.appointment.time,
+          appointed_date: refactorDate(this.appointment.date, this.appointment.time),
           comment: appointForm.value.comment,
           };
         this.serviceService.createAppointment(appointment);
@@ -248,9 +266,10 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
 
     // check booking availability
     checkAvailability() {
-      this.serviceService.checkAvailability(this.bookingTime.fromDate.toISOString(),
-                                            this.bookingTime.toDate.toISOString(),
-                                            this.service.service_id)
+      this.serviceService.checkAvailability(
+        refactorDate(this.bookingTime.fromDate, this.bookingTime.fromTime),
+        refactorDate(this.bookingTime.toDate, this.bookingTime.toTime),
+        this.service.service_id)
       .subscribe((recievedData) => {
         console.log(recievedData.message);
         if ( recievedData.availability) {
@@ -322,30 +341,6 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
       this.image03 = file;
       this.image03Url = reader.result;
     };
-  }
-
-
-  // calculate payment for booking
-  calcPayment(rateType: string, rate: number): number {
-    const date1 = this.bookingTime.fromDate;
-    const date2 = this.bookingTime.toDate;
-    const diffDays  = Math.floor((Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate()) -
-                      Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate()) ) / (1000 * 60 * 60 * 24)) + 1;
-    console.log(this.duration);
-    console.log(diffDays);
-    let newRate = rate;
-    if (rateType === '/Hr') {
-      this.duration = Math.abs(this.bookingTime.fromTime.hour - this.bookingTime.toTime.hour) * diffDays;
-      newRate = rate * this.duration;
-    }  else if (rateType === '/Day') {
-      newRate = rate * diffDays;
-      this.duration = diffDays;
-    } else  {
-      this.duration = diffDays;
-    }
-    this.totalAmount = newRate;
-    this.payAmount = newRate / 10;
-    return newRate;
   }
 
 }

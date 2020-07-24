@@ -11,6 +11,7 @@ import { ServiceService } from '../service.service';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 import { BusinessLocation } from '../../auth/auth.model';
+import { refactorDate } from '../../event/event.model';
 
 @Component({
   selector: 'app-search-services',
@@ -66,8 +67,8 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
   // search query
   bookingTime = { fromDate: this.today,
             toDate: this.today,
-            fromTime: {hour: 8, minute: 0, second: 0},
-            toTime: {hour: 18, minute: 0, second: 0}};
+            fromTime: {hour: 8, minute: 0},
+            toTime: {hour: 18, minute: 0}};
 
   ratings = 0;
   priceStart = 0;
@@ -154,10 +155,8 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
       maxPrice: this.priceEnd,
       payOnMeet: this.payOnMeetQuery,
       userRating: this.ratings,
-      fromDate: this.bookingTime.fromDate.toISOString(),
-      toDate: this.bookingTime.toDate.toISOString(),
-      fromTime: this.bookingTime.fromTime,
-      toTime: this.bookingTime.toTime
+      fromDate: refactorDate(this.bookingTime.fromDate, this.bookingTime.fromTime) ,
+      toDate: refactorDate(this.bookingTime.fromDate, this.bookingTime.fromTime) ,
     };
     console.log(searchQuery);
     this.serviceService.searchServices(searchQuery);

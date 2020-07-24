@@ -153,25 +153,28 @@ service.delete('/edit/:id',checkAuth, (req, res, next) => {
 
 //search services
 service.post('/search', (req, res, next) => {
-  Service.find({service_category: req.body.category,
-                rate: {$gte: req.body.minPrice},
-                pay_on_meet:req.body.payOnMeet,
-                rating: {$gte: req.body.userRating},
-                available_booking: true})
-  .then( result => {
-      for ( const doc of result) {
-         Booking.find({service_id: doc.service_id,
-                       from_date: { $gte : req.body.fromDate  },
-                       to_date: { $lte : req.body.toDate },
-                     }).then(books => {
-                       console.log('Bookings : ',books);
-                       if (books){
-                         result.pop(doc);
-                       }
-                     })
-      }
-    return result;
-    }).then ( finalResult => {
+  console.log(req.body);
+  Service.aggregate([
+                // step 1 : matching filters from service model
+                {$match: {"service_category": req.body.category,
+                "rate": {$gte: req.body.minPrice},
+                "pay_on_meet":req.body.payOnMeet,
+                "rating": {$gte: req.body.userRating},
+                "available_booking": true}},
+                // step 2 : joining possible bookings from Booking model
+                {$lookup: {
+                      from : "Booking",
+                      localField : "service_id",
+                      foreignField : "service_id",
+                      as : "bookings"
+                  }},
+                // step 3: check booking possibilities
+                {$match: {
+                  "bookings.from_date": [{$lte:{ $toDate: req.body.fromDate}}], // not working
+                  "bookings.to_date": [{$gte: { $toDate: req.body.toDate}}], // not working
+                }}
+              ])
+  .then (finalResult => {
       res.status(200).json({
         message: 'services recieved successfully!',
         services: finalResult
@@ -186,26 +189,29 @@ service.post('/search', (req, res, next) => {
 });
 
 
-// modify !!!!!!!!!!!!!!!! check for a booking date-time before adding
-// !!!!!!!!!!!!!!!!!!!!! add aggrogation
-
 // check booking availability  !!!!! update with capacity
 service.post('/booking/check', (req, res, next) => {
-
-  Booking.find({service_id: req.serviceId,
-                from_date: { $gte :  req.body.fromDate},
-                to_date: { $lte : req.body.toDate }})
+  req.body.fromDate = new Date(req.body.fromDate);
+  req.body.toDate = new Date(req.body.toDate);
+  console.log(req.body);
+  Booking.find({ service_id: req.serviceId,
+                    $or: [{from_date: { $gte :req.body.fromDate }}, // not working
+                     {to_date: { $lte :req.body.toDate}}] // not working
+                      })
+                      .then( res => {
+                        Service.findOne({service_id: req.body.serviceId, capacity: {$gte: res.length}})
   .then(result => {
     let availability = false;
     console.log(result);
-    if (!result.length){
+    if (result.length){
       availability = true;
     }
       res.status(200).json({
         message: 'availability information recieved successfully!',
         availability: availability
       });
-    })
+    });
+  })
     .catch(err=>{
       console.log(err);
       res.status(500).json({
@@ -219,6 +225,7 @@ service.post('/booking/add',checkAuth, (req, res, next) => {
   var lastid;
   let reqBooking = req.body;
   let serviceProviderId;
+
   // generate id
   Booking.find(function (err, bookings) {
     if(bookings.length){
@@ -521,7 +528,7 @@ service.get('/booking/get',checkAuth, (req, res, next) => {
 });
 
 
-//get business locations // !!!!!!!!!!! update if possible
+//get business locations
 service.get('/location/get',checkAuth, (req, res, next) => {
 
   var query =  Merchant.find({business:{$ne : null}}).select(['business.location', 'business.title']);

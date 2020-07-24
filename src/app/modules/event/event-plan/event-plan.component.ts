@@ -86,6 +86,8 @@ export class EventPlanComponent implements OnInit, OnDestroy {
     // this.eventService.updateEvent();
   }
 
+  // functions to select or add new service/ product to the list
+
   emitService(catgory: string, budget: number) {
     const location = this.event.location;
     // pass date to be used in service filter view

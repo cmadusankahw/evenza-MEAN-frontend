@@ -36,8 +36,16 @@
 
   <div class="task-list ml-5 mr-5">
     <div class="top-content">
-        <h5><b> <mdb-icon fas icon="list"> </mdb-icon> Plan event Tasks</b></h5>
-        <p style="color:gray;"> Drag tasks to rearrange order..</p>
+      <div class="row">
+        <div class="col-md-9">
+          <h5><b> <mdb-icon fas icon="list"> </mdb-icon> Plan event Tasks</b></h5>
+          <p style="color:gray;"> Drag tasks to rearrange order..</p>
+        </div>
+        <div class="col-md-3 text-center">
+          <button mdbBtn color="secondary"  class="btn btn-md" style="margin:0 auto;">
+            Print event Plan</button>
+        </div>
+      </div>
         <hr>
     </div>
     <div cdkDropList class="drag-list ml-3 mr-3" (cdkDropListDropped)="drop($event)">

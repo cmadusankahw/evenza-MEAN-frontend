@@ -157,7 +157,7 @@
            <div class="pb-1" *ngIf="event.state != 'published'">
              <p><b> Event has not Published Yet!</b></p>
             <button mdbBtn color="primary" text="white" class="btn btn-md text-center"
-            (click) = "updateEventState()">
+            (click) = "publishModal.show()">
               PUBLISH EVENT NOW!
             </button>
            </div>
@@ -193,7 +193,7 @@
           <hr>
           <div class="pb-2" >
             <p class="button-box-sub"><mdb-icon fas icon="users"> </mdb-icon> Manage Participants:</p>
-           <button mdbBtn color="secondary" text="white" class="btn btn-md text-center" [disabled] = "event.state != 'published'"
+           <button mdbBtn color="secondary" text="white" class="btn btn-md text-center"
            routerLink = "/planner/event/participants/{{event.event_id}}">
              MANAGE PARTICIPANTS
            </button>
@@ -323,6 +323,53 @@ id="frameModalTop" tabindex="-1" role="dialog"
     <!--/.Content-->
   </div>
 </div>
+
+
+
+    <!-- publish event confirmation-->
+    <div mdbModal #publishModal="mdbModal"
+    class="modal fade top"
+    id="frameModalTop" tabindex="-1" role="dialog"
+    [config]="{ backdrop: false, ignoreBackdropClick: true }"
+      aria-labelledby="myModalLabel" aria-hidden="true" >
+      <div class="modal-dialog modal-notify modal-info modal-dialog-centered" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <p class="heading">Publish Event</p>
+
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="publishModal.hide()">
+              <span aria-hidden="true" class="white-text">&times;</span>
+            </button>
+          </div>
+
+          <!--Body-->
+          <div class="modal-body">
+            <div class="row container-fluid">
+              <img src="./assets/images/info/publish.jpg" style="width:100%">
+            </div>
+          </div>
+
+          <!--Footer-->
+          <div class="modal-footer justify-content-center">
+            <a type="button" mdbBtn color="info" class="waves-effect"
+            (click)="publishModal.hide()"
+            mdbWavesEffect>Proceed Publish
+              <mdb-btn far icon="ban" class="ml-1"></mdb-btn>
+            </a>
+            <a type="button" mdbBtn color="info" outline="true" class="waves-effect" mdbWavesEffect
+            (click)="publishModal.hide()"
+              data-dismiss="modal">Not Now</a>
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
+
+
+
+
 
 
 

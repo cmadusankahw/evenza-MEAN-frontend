@@ -38,7 +38,8 @@ import {MatSliderModule} from '@angular/material/slider';
 import { DatePipe } from '@angular/common';
 import { AgmCoreModule } from '@agm/core';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-
+import { QuillModule } from 'ngx-quill';
+import { QRCodeModule } from 'angularx-qrcode';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -282,6 +283,8 @@ import { CreateTaskComponent } from './modules/event/create-task/create-task.com
     NgbDropdownModule,
     DragDropModule,
     NgbProgressbarModule,
+    QRCodeModule,
+    QuillModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyB4MIX31RUspo9HAkq90KM3W3Ltyw4UIx0',
       libraries: ['places']

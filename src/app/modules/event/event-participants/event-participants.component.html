@@ -1,1 +1,281 @@
-<p>event-participants works!</p>
+
+
+<div class="container pt-2 pb-2 shadow" *ngIf="event">
+  <div class="top-content">
+    <!--event header-->
+    <hr>
+    <div class="row ml-3 mr-3">
+      <div class=" col-md-8 content-text pt-2">
+        <div class="top-stat">
+          <div class="content-title">
+            <span style="color:darkmagenta;"> Participants : </span> {{event.event_title}}
+          </div>
+          <div class="open-stat pt-3" >
+            <span><mdb-icon fas icon="map-marker-alt"> </mdb-icon> At {{ event.location.homeTown}}</span>
+          </div>
+
+          <div class="open-stat pt-2" *ngIf="event.from_date.slice(0,10) != event.to_date.slice(0,10)" >
+            <span class="date-stat"><mdb-icon far icon="calendar-alt"> </mdb-icon> From
+              {{event.from_date.slice(0,10)}} to {{event.to_date.slice(0,10)}}</span>
+          </div>
+
+          <div class="open-stat pt-2" *ngIf="event.from_date.slice(0,10) == event.to_date.slice(0,10)" >
+            <span class="date-stat"><mdb-icon far icon="clock"> </mdb-icon> On
+              {{event.from_date.slice(0,10)}} </span>
+              <br>
+              <span class="date-stat"><mdb-icon far icon="clock"> </mdb-icon> From
+                {{ event.from_date.slice(11,16)}} to  {{ event.from_date.slice(11,16)}}</span>
+          </div>
+       </div>
+      </div>
+      <div class="col-md-4 text-center pt-4">
+        <div class="info-box">
+          <h5 class="budget-total"><b> No of Participants: {{ event.no_of_participants}}</b></h5>
+              <span style="color:darkgreen; padding-top:8px;"><b>Approved: {{ event.participants.approved_participants}}</b></span>
+              <hr>
+              <h5 class="budget-total" style="color:darkmagenta;"><b>Event State: {{ event.state }}</b></h5>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <!-- invitation details-->
+    <div class="invitation mr-3 ml-3 pt-1 pb-1">
+      <h4 class="strong"><b>  <mdb-icon fas icon="list"> </mdb-icon> Event Invitation: </b></h4>
+      <hr>
+      <div class="invitation-preview"  *ngIf="!invitationEditMode">
+        <div class="row">
+          <div class="col-md-9 invite-wrap">
+            <h5 style="color:darkorchid;"><b> {{ invitation.heading}}</b></h5>
+            <br>
+            <div [innerHTML] = "invitation.message"></div>
+          </div>
+          <div class="col text-center">
+            <qrcode [qrdata]="event.qr_code" [width]="100" [errorCorrectionLevel]="'M'"></qrcode>
+            <button mdbBtn color="primary"  class="btn btn-md mt-1" (click)="invitationEditMode = true" style="margin:0 auto;">
+              <mdb-icon fas icon="pen"> </mdb-icon> Edit Invitation</button>
+              <br>
+              <br>
+              <button mdbBtn color="secondary"  class="btn btn-md" style="margin:0 auto;">
+               Print Invitation</button>
+          </div>
+        </div>
+      </div>
+        <div class="invitation-edit" *ngIf="invitationEditMode">
+          <p><b> Edit your Event Invitation: </b></p>
+          <quill-editor [(content)]="invitation.message" [styles]="{height: '300px'}" ></quill-editor>
+          <div class="btns pt-1 pb-1 text-center">
+            <button mdbBtn color="secondary"  class="btn btn-md" (click)="saveChangesModal.show()" >
+               Save Changes </button>
+              <button mdbBtn color="red"  class="btn btn-md" (click)="invitationEditMode = false" >
+               Discard</button>
+          </div>
+        </div>
+
+    </div>
+  </div>
+  <hr>
+  <div class="participants-list mr-3 ml-3">
+    <h4 class="strong"><b>  <mdb-icon fas icon="user-friends"> </mdb-icon> Add Guests:</b></h4>
+    <hr>
+    <div class="row paticipant-add">
+      <form class="service-full-width" (submit)="addParticipant(addParticipantForm)" #addParticipantForm="ngForm">
+      <div class="row invite-wrap mt-2">
+        <div class="col-md-3">
+              <mat-form-field class="service-full-width">
+                <mat-label>First Name</mat-label>
+                 <input matInput  name="first_name" #firstName="ngModel" required
+                 ngModel>
+              </mat-form-field>
+              <mat-error *ngIf="firstName.invalid">Please enter guest name</mat-error>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="service-full-width">
+            <mat-label> Last Name </mat-label>
+             <input matInput  name="last_name"
+             ngModel>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field class="service-full-width">
+            <mat-label> Email Address</mat-label>
+             <input matInput  name="email" #guestEmail="ngModel" required placeholder="abc@example.com" type="email"
+             ngModel>
+          </mat-form-field>
+          <mat-error *ngIf="guestEmail.invalid">Please enter a valid email address</mat-error>
+        </div>
+        <div class="col-md-2 text-center">
+          <button mdbBtn color="primary" class="mt-2" style="margin:0 auto;" type="submit" (click) ="addParticipantModal.show()">
+            Add GUEST </button>
+        </div>
+      </div>
+    </form>
+    </div>
+    <hr>
+    <div class="row  pt-3 pb-3">
+      <div class="col-md-9">
+        <h4 class="strong"><b>  <mdb-icon fas icon="list"> </mdb-icon> Guest List: </b></h4>
+      </div>
+      <div class="col text-center">
+        <button mdbBtn color="secondary"  class="btn btn-md" style="margin:0 auto;">
+          Print Guest List</button>
+      </div>
+    </div>
+      <div class="row">
+        <!--accepted participants list-->
+        <div class="col" style="margin-left:20px;">
+          <h5><b><mdb-icon fas icon="user-friends"> </mdb-icon> Pending Participants </b></h5>
+          <div class="participant" *ngFor="let par of event.participants.participants">
+              <div class="row" *ngIf="par.state != 'accepted'">
+                <div class="col-md-8">
+                  Name: {{ par.first_name }}  {{ par.last_name }} <br>
+                  Email:  {{ par.email}}
+                </div>
+                <div class="col-md-4 text-center">
+                  <span *ngIf="par.state == 'invited'" style="color:darkmagenta;">Invited</span>
+                  <div class="removalble text-center">
+                    <span style="color:darkslategrey;">Pending</span>
+                  <br>
+                  <button mdbBtn color="red"  class="btn btn-sm pt-1" style="margin:0 auto;" (click)="removeParticipant(par.participant_id)">
+                    Remove</button>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+
+        <!-- denied participant list-->
+        <div class="col">
+          <h5><b>  <mdb-icon fas icon="user-friends"> </mdb-icon> Responded Participants </b></h5>
+          <hr>
+          <p><b> No of Approved Participants: {{ event.participants.approved_participants}}</b></p>
+          <div class="participant pt-2" *ngFor="let par2 of event.participants.participants">
+              <div class="row" *ngIf="par.state != 'accepted'">
+                <div class="col-md-8">
+                  Name: {{ par2.first_name }}  {{ par2.last_name }} <br>
+                  Email:  {{ par2.email}}
+                </div>
+                <div class="col-md-4 text-center">
+                  <span *ngIf="par.state == 'accepted'" style="color:darkgreen;">Accepted</span>
+              </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+    <!-- save changes confirmation-->
+    <div mdbModal #saveChangesModal="mdbModal"
+    class="modal fade top"
+    id="frameModalTop" tabindex="-1" role="dialog"
+    [config]="{ backdrop: false, ignoreBackdropClick: true }"
+      aria-labelledby="myModalLabel" aria-hidden="true" >
+      <div class="modal-dialog modal-notify modal-info modal-dialog-centered" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <p class="heading">Update Invitation</p>
+
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="saveChangesModal.hide()">
+              <span aria-hidden="true" class="white-text">&times;</span>
+            </button>
+          </div>
+
+          <!--Body-->
+          <div class="modal-body">
+
+        <div class="row">
+          <div class="col-3">
+            <p></p>
+            <p class="text-center">
+              <mdb-icon fas icon="info-circle" size="3x" class="mb-3 animated rotateIn"></mdb-icon>
+            </p>
+          </div>
+
+          <div class="col-9">
+            <h5>Are you sure want to save changes to the Invitation?</h5>
+            <p><b> Please Note: once Invitation is updated, Event Status will be set to unpublished. You need to
+              <span style="color:darkmagenta;"> Publish Event</span> after all changes in order to send the updated invitation to participants.
+            </b></p>
+          </div>
+        </div>
+
+          </div>
+
+          <!--Footer-->
+          <div class="modal-footer justify-content-center">
+            <a type="button" mdbBtn color="info" class="waves-effect" (click)="updateInvitation()"
+            (click)="saveChangesModal.hide()"  (click)="invitationEditMode = false"
+            mdbWavesEffect>Update Invitation
+              <mdb-btn far icon="ban" class="ml-1"></mdb-btn>
+            </a>
+            <a type="button" mdbBtn color="info" outline="true" class="waves-effect" mdbWavesEffect
+            (click)="saveChangesModal.hide()"
+              data-dismiss="modal">Not Now</a>
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
+
+
+
+    <!--add guest confirmation-->
+    <div mdbModal #addParticipantModal="mdbModal"
+    class="modal fade top"
+    id="frameModalTop" tabindex="-1" role="dialog"
+    [config]="{ backdrop: false, ignoreBackdropClick: true }"
+      aria-labelledby="myModalLabel" aria-hidden="true" >
+      <div class="modal-dialog modal-notify modal-info modal-dialog-centered" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <p class="heading">Add a Guest</p>
+
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="addParticipantModal.hide()">
+              <span aria-hidden="true" class="white-text">&times;</span>
+            </button>
+          </div>
+
+          <!--Body-->
+          <div class="modal-body">
+
+        <div class="row">
+          <div class="col-3">
+            <p></p>
+            <p class="text-center">
+              <mdb-icon fas icon="info-circle" size="3x" class="mb-3 animated rotateIn"></mdb-icon>
+            </p>
+          </div>
+
+          <div class="col-9">
+            <h5 class="pt-3">Are you sure want to add this guest?</h5>
+          </div>
+        </div>
+
+          </div>
+
+          <!--Footer-->
+          <div class="modal-footer justify-content-center">
+            <a type="button" mdbBtn color="info" class="waves-effect" (click)="addParticipant()"
+            (click)="addParticipantModal.hide()"
+            mdbWavesEffect>Add Guest
+              <mdb-btn far icon="ban" class="ml-1"></mdb-btn>
+            </a>
+            <a type="button" mdbBtn color="info" outline="true" class="waves-effect" mdbWavesEffect
+            (click)="addParticipantModal.hide()"
+              data-dismiss="modal">Not Now</a>
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
+
+
+
+
+
+

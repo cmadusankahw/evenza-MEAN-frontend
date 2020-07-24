@@ -11,7 +11,10 @@ export interface TheEvent {
   created_date: string;
   location: BusinessLocation; // if 'online' --> online event
   no_of_participants: number; // data taken at event creation
-  participants: Participant[]; // state - approved/ pending/ cancelled
+  participants: {
+      participants: Participant[];
+      approved_participants: number};
+  alerts: Alert[]; // invitation and other alert messages // first alet should be the invitation
   total_budget: number;
   event_segments: {
     tasks: Task[],
@@ -22,7 +25,7 @@ export interface TheEvent {
   product_categories: Category[]; // selected product categories
   feature_img: string;
   qr_code: string;
-  state: string; //  'pending', 'completed', 'missed/ cancelled'
+  state: string; //  unpublished / published/ cancelled
   social_links: SocialLinks;
   host: Host;
 }
@@ -46,16 +49,17 @@ export interface Participant {
   first_name: string;
   last_name: string;
   email: string;
-  state: boolean; // invitation approved or cancelled
+  state: boolean; // invitated/ pending/ accepted
 }
 
 export interface Alert { // custom notification / invitation
   id: string;
+  type: string; // notification/ invitation
   heading: string;
   message: string;
-  date: string;
-  state: string;
-  attachments: any;
+  created_date: string;
+  state: string; // sent or draft
+  attachments: string[]; // attached images (qr code etc..)
 }
 
 export interface EventCategory {

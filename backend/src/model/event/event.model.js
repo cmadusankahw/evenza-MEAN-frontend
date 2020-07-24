@@ -17,13 +17,23 @@ const eventsSchema = mongoose.Schema(
               homeTown: {type: String, required: true},
               }, required: true},
     no_of_participants: {type: Number, required: true},
-    participants: {type:[{
+    participants: {type:{participants: [{
                     participant_id: {type: String, required: true},
                     first_name: {type: String, required: true},
                     last_name: {type: String, required: true},
                     email: {type: String, required: true},
                     state: {type: Boolean, required: true},
-                   }], required: true},
+                   }],
+                   approved_participants: {type: Number, required: true}}},
+    alerts: {type: [{
+                  id:{type: String, required: true},
+                  type: {type: String, required: true},
+                  heading: {type: String, required: true},
+                  message: {type: String},
+                  created_date: {type: String, required: true},
+                  state: {type: String, required: true},
+                  attachments: {type: [String]},
+             }]},
     total_budget: {type: Number, required: true},
     event_segments: {type: {
       tasks:{type: [{

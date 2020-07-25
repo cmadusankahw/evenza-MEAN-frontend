@@ -154,3 +154,22 @@ export function refactorDate(date: Date, time: {hour: number, minute: number}): 
   return ISODate;
 
 }
+
+// return and differ object
+export function calcISODuration(date1: string, date2: string){
+  const dif = {
+    year: Number(date1.slice(0,4)) - Number(date2.slice(0,4)),
+    month: Number(date1.slice(5,7)) -  Number(date2.slice(5,7)),
+    day: Number(date1.slice(8,10)) - Number(date2.slice(8,10)),
+    hour: Number(date1.slice(12,14)) - Number(date2.slice(12,14)),
+    min: Number(date1.slice(15,17)) - Number(date2.slice(15,17)),
+  };
+
+  return dif;
+}
+
+// return difference in no_of_days
+export function calcDateDuration(date1: Date, date2: Date){
+  return Math.floor((Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate()) -
+  Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate()) ) / (1000 * 60 * 60 * 24)) + 1;
+}

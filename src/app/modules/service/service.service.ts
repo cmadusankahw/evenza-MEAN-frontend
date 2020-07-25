@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { Service, ServiceCategories, ServiceRates, ServiceQuery, Booking, Appointment } from './service.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 import { Merchant, BusinessLocation } from '../auth/auth.model';
+import { ErrorComponent } from 'src/app/error/error.component';
 
 
 
@@ -289,11 +290,22 @@ export class ServiceService  {
 
    // create new calendar booking
    createCalendarBooking(booking: Booking) {
-    this.http.post<{ message: string, bookingId: string }>(this.url + 'service/calbooking/add', booking)
-    .subscribe((recievedData) => {
-      console.log(recievedData.message);
-      this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
-  });
+    this.checkAvailability(booking.from_date,
+                                          booking.to_date,
+                                          booking.service_id)
+      .subscribe ((recievedAvailability) => {
+        if (recievedAvailability.availability) {
+          this.http.post<{ message: string, bookingId: string }>(this.url + 'service/calbooking/add', booking)
+          .subscribe((recievedData) => {
+            console.log(recievedData.message);
+            this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
+          });
+        }
+        else {
+          this.dialog.open(ErrorComponent,
+            {data: {message: 'Sorry! The Service not available on selected Dates'}});
+        }
+    });
 }
 
   // create new appointment

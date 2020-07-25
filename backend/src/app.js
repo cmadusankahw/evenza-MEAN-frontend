@@ -13,6 +13,7 @@ const eventPlanner = require ('./controller/eventplanner/eventPlanner');
 const serviceProvider = require ('./controller/serviceprovider/serviceProvider');
 const seller = require ('./controller/seller/seller');
 const event = require ('./controller/event/event');
+const admin = require ('./controller/admin/admin');
 
 mongoose.connect('mongodb://localhost:27017/evenza',
   { useNewUrlParser: true, useUnifiedTopology: true })
@@ -48,5 +49,6 @@ app.use('/api/planner', eventPlanner);
 app.use('/api/sp', serviceProvider);
 app.use('/api/seller', seller);
 app.use('/api/event', event);
+app.use('/api/admin', admin);
 
 module.exports = app;

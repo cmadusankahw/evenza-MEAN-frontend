@@ -62,13 +62,6 @@ export class CalendarComponent implements OnInit {
     this.calendarWeekends = !this.calendarWeekends;
   }
 
-  // handleDateClick(arg: EventInput) {
-   // document.getElementById('eventCreate').click();
-    // const foo = prompt('Enter Booking Title');
-    // if (confirm('Would you like to add booking "' + foo + '" to ' + arg.dateStr + ' ?' )) {
-   // }
-   // (dateClick)="handleDateClick($event)"
- // }
 
   handleSelect(event) {
       const foo = prompt('Enter Booking Title');
@@ -110,8 +103,6 @@ export class CalendarComponent implements OnInit {
       from_date: newEvent.start,
       to_date: newEvent.end,
       duration: 0,
-      from_time: {hour: Number(newEvent.start.slice(11, 13)), minute: Number(newEvent.start.slice(14, 16)), second: 0 },
-      to_time: {hour: Number(newEvent.end.slice(11, 13)), minute: Number(newEvent.end.slice(14, 16)), second: 0 },
       comment: 'SPBook',
       amount: 0,
       commission_due: 0,

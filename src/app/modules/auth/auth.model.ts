@@ -19,6 +19,31 @@ export interface Merchant {
   business: Business;
 }
 
+export interface Admin {
+  user_id: string;
+  first_name: string;
+  last_name: string;
+  profile_pic: string;
+  email: string;
+  contact_no: string;
+  address_line1: string;
+  address_line2: string;
+  postal_code: string;
+  gender: string;
+  card_details: CardDetails;
+  payment_details: {
+      user_id: string;
+      user_type: string;
+      pays: {
+        timestamp: {year: string, month: string };
+        paid_date: string;
+        paid_amount: number;
+        due_amount: number;
+      }[];
+  }[];
+}
+
+
 
 export interface MerchantTemp {
   user_id: string;

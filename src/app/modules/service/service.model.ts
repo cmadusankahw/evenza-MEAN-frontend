@@ -38,8 +38,6 @@ export interface ServiceQuery {
   userRating: number;
   fromDate: string;
   toDate: string;
-  fromTime: {hour: number, minute: number, second: number};
-  toTime: {hour: number, minute: number, second: number};
 }
 
 
@@ -57,9 +55,7 @@ export interface Booking {
   review: string;
   from_date: string;
   to_date: string;
-  duration: number;
-  from_time: {hour: number, minute: number, second: number};
-  to_time: {hour: number, minute: number, second: number};
+  duration: number; // no of hours or no of days
   comment: string;
   amount: number;
   commission_due: number;
@@ -78,7 +74,6 @@ export interface Appointment {
   created_date: string;
   state: string;
   appointed_date: string;
-  appointed_time: {hour: number, minute: number, second: number};
   comment: string;
   // serviceProvider
   // user

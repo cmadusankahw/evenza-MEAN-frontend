@@ -17,8 +17,6 @@ const bookingSchema = mongoose.Schema(
     from_date: {type: Date, required: true},
     to_date: {type: Date, required: true},
     duration: {type: Number, required: true},
-    from_time: {type: {hour: Number, minute: Number, second: Number}, required: true},
-    to_time: {type: {hour: Number, minute: Number, second: Number}, required: true},
     comment: {type: String},
     amount: {type: Number, required: true},
     commission_due: {type: Number, required: true},

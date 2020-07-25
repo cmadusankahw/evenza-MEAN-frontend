@@ -41,8 +41,8 @@
               Booking for {{ booking.service_name }} - {{ booking.business_name}}
                 <br> From {{ booking.from_date.slice(0,10) }} To {{ booking.to_date.slice(0,10) }} -
                 <span *ngIf="booking.rate_type != '(Fixed)'"> {{ booking.duration }} {{booking.rate_type.slice(1)}}(s) </span>
-                <br> Everyday {{ booking.from_time.hour + '.' + booking.from_time.minute }} Hrs -
-                               {{ booking.to_time.hour + '.' + booking.to_time.minute }} Hrs
+                <br> Everyday {{ booking.from_date.slice(11,13) + '.' +  booking.from_date.slice(14,16) }} Hrs -
+                               {{ booking.to_date.slice(11,13) + '.' +  booking.to_date.slice(14,16)  }} Hrs
             </td>
             <td style="text-align:right;">
               Rs. {{booking.amount}}
@@ -126,7 +126,7 @@
               </td>
               <td>
                      Date: {{ appointment.appointed_date.slice(0,10) }}
-                <br> Time: {{ appointment.appointed_time.hour + '.' + appointment.appointed_time.minute }} Hrs
+                <br> Time: {{ appointment.appointed_date.slice(11,13) + '.' + appointment.appointed_date.slice(14,16) }} Hrs
               </td>
             </tr>
 

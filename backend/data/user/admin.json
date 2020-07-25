@@ -1,0 +1,41 @@
+{
+  "user_id": "U1",
+  "first_name": "chiran",
+  "last_name": "hewawitharana",
+  "profile_pic": "./assets/images/merchant/nopic.png",
+  "email": "cmadusankahw@gmail.com",
+  "contact_no": "719725562",
+  "address_line1": "sripali, Aththudawa",
+  "address_line2": "Palatuwa",
+  "postal_code": "81000",
+  "gender": "male",
+  "card_details": { "name_on_card": "Chiran Heawitharana",
+    "card_no": "2244-5678-8890-5675",
+    "cvc_no": "313",
+    "bank":"sampath bank ",
+    "branch": "Sampath Super - Matara",
+    "exp_month": "03",
+    "exp_year": "2022"},
+  "payment_details": [{
+      "user_id": "U30",
+      "user_type": "serviceProvider",
+      "pays": [
+        {
+          "timestamp": { "year":2020,
+                         "month": 5
+                    },
+          "paid_date": 2020-06-02T12:55:44.255Z,
+          "paid_amount": 1300,
+          "due_amount": 480
+          },
+        {
+        "timestamp": { "year":2020,
+                       "month": 6
+                  },
+        "paid_date": 2020-07-03T12:55:44.255Z,
+        "paid_amount": 1200,
+        "due_amount": 870
+        }
+    ]
+  }]
+}

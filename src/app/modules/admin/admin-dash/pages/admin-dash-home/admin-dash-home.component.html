@@ -1,0 +1,29 @@
+
+
+<div class="row container-fluid ml-3 mr-3 mt-3 pb-2" *ngIf="dashboardData">
+  <div class="col-md-4">
+    <!-- -bookings -->
+    <app-admin-pie-chart [bookingData] = "dashboardData.bookings"></app-admin-pie-chart>
+  </div>
+  <div class="col-md-4">
+    <!-- orders-->
+    <app-admin-orders-pie-chart [orderData] = "dashboardData.orders"></app-admin-orders-pie-chart>
+  </div>
+  <div class="col-md-4">
+    <!-- users -->
+    <app-admin-users-pie-chart [usersData] = "dashboardData.users"></app-admin-users-pie-chart>
+  </div>
+</div>
+
+<hr>
+<div class="row container-fluid ml-3 mr-3 mt-3 pb-2">
+  <div class="col-md-7">
+   <!-- recent revenue table-->
+  </div>
+  <div class="col">
+     <!-- toal revenue by month - backend call inside comp-->
+     <app-admin-payments-chart></app-admin-payments-chart>
+  </div>
+
+</div>
+

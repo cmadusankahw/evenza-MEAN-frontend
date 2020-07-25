@@ -1,0 +1,13 @@
+<div class="text-center pt-4 pb-2 ">
+<h5 class="strong"><b> <mdb-icon fas icon="box-open"> </mdb-icon> Sales Orders: </b></h5>
+</div>
+<div style="display: block" *ngIf="orderData">
+  <canvas mdbChart
+      [chartType]="chartType"
+      [datasets]="chartDatasets"
+      [labels]="chartLabels"
+      [colors]="chartColors"
+      [options]="chartOptions"
+      [legend]="true">
+  </canvas>
+</div>

@@ -2,6 +2,7 @@
 const User = require("../../model/auth/user.model");
 const EventPlanner = require("../../model/auth/eventPlanner.model");
 const Merchant = require("../../model/auth/merchant.model");
+const Admin = require("../../model/admin/admin.model");
 const checkAuth = require("../../middleware/auth-check");
 
 //dependency imports
@@ -106,24 +107,6 @@ auth.post('/signup/planner', (req, res, next) => {
     });
 });
 
-// signup admin
-auth.post('/signup/admin', (req, res, next) => {
-  const user = new User (req.body);
-  console.log(user);
-  user.save()
-    .then ( result => {
-      res.status(200).json({
-        message: 'Admin added successfully!'
-      });
-    })
-    .catch( err => {
-      res.status(500).json({
-        message: 'Admin signup was not successful! Please try again!'
-      });
-    });
-});
-
-
 // add profile pic merchant
 auth.post('/merchant/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
   const url = req.protocol + '://' + req.get("host");
@@ -191,6 +174,24 @@ auth.post('/planner',checkAuth, (req, res, next) => {
   .then((result) => {
     res.status(200).json({
       message: 'event planner updated successfully!',
+    });
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).json({
+      message: 'Profile Details update unsuccessfull! Please Try Again!'
+    });
+  });
+});
+
+// update admin details
+auth.post('/admin',checkAuth, (req, res, next) => {
+  const user = new User (req.body);
+  Admin.updateOne({ user_id: req.userData.user_id},user)
+  .then((result) => {
+    console.log(result);
+    res.status(200).json({
+      message: 'admin profile updated successfully!',
     });
   })
   .catch(err=>{
@@ -349,6 +350,25 @@ auth.get('/get/planner',checkAuth, (req, res, next) => {
   });
 });
 
+// get event planner logged in
+auth.get('/get/admin',checkAuth, (req, res, next) => {
+
+  Admin.findOne({ user_id: req.userData.user_id }, function (err,admin) {
+    if (err) return handleError(err => {
+      res.status(500).json(
+        {
+          message: 'Couldn\'t recieve Admin Details! Please check your connetion'
+        });
+    });
+    res.status(200).json(
+      {
+        message: 'Admin details recieved successfully!',
+        eventPlanner: admin
+      }
+    );
+  });
+});
+
 // get header details
 auth.get('/get/header',checkAuth, (req, res, next) => {
     if (req.userData.user_type == 'eventPlanner'){
@@ -362,7 +382,17 @@ auth.get('/get/header',checkAuth, (req, res, next) => {
         );
       });
     }
-    else {
+    else if  (req.userData.user_type == 'admin') {
+    Admin.findOne({ user_id: req.userData.user_id }, function (err,admin) {
+      res.status(200).json(
+        {
+          user_type: req.userData.user_type,
+          user_name: admin.first_name,
+          profile_pic: admin.profile_pic
+        }
+      );
+    });
+  } else {
     Merchant.findOne({ user_id: req.userData.user_id }, function (err,merchant) {
       res.status(200).json(
         {

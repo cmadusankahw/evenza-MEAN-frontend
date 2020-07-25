@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SalesGraphComponent implements OnInit {
 
-  public chartType = 'line';
+  public pieChart = 'line';
 
   salesData = {
     data: [],

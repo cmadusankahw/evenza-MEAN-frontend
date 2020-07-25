@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import { Merchant, EventPlanner, User, MerchantTemp, LogIn, Business } from './auth.model';
+import { Merchant, EventPlanner, User, MerchantTemp, LogIn, Business, Admin } from './auth.model';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { SuccessComponent } from 'src/app/success/success.component';
@@ -13,6 +13,7 @@ export class AuthService {
   private eventPlannerUpdated = new Subject<EventPlanner>();
   private userUpdated = new Subject<User[]>();
   private lastIdUpdated = new Subject<string>();
+  private adminUpdated = new Subject<Admin>();
 
   // to get merchant/event planner once logged in
   private merchant: Merchant;
@@ -47,6 +48,9 @@ export class AuthService {
 
   // user login status
   private isAuthenticated = false;
+
+  // recieved admin
+  admin: Admin;
 
 
 
@@ -91,6 +95,15 @@ export class AuthService {
         this.eventPlannerUpdated.next(this.eventPlanner);
     });
   }
+
+    // get event planner after login
+    getAdmin() {
+      this.http.get<{message: string, admin: Admin}>(this.url + 'auth/get/admin')
+        .subscribe((recievedMerchant) => {
+          this.admin = recievedMerchant.admin;
+          this.adminUpdated.next(this.admin);
+      });
+    }
 
 
   // get details for header
@@ -379,6 +392,9 @@ export class AuthService {
         }
         if (recievedData.user_type === 'eventPlanner') {
           this.router.navigate(['/planner']);
+        }
+        if (recievedData.user_type === 'admin') {
+          this.router.navigate(['/admin']);
         }
       }
    }, (error) => {

@@ -45,6 +45,14 @@ import { EventInvitationComponent } from './modules/event/docs/event-invitation/
 import { AddEventComponent } from './modules/event/add-event/add-event.component';
 import { ServiceDetailsComponent } from './modules/service/service-details/service-details.component';
 import { ProductDetailsComponent } from './modules/product/product-details/product-details.component';
+import { AdminDashHomeComponent } from './modules/admin/admin-dash/pages/admin-dash-home/admin-dash-home.component';
+import { AdminDashboardComponent } from './modules/admin/admin-dash/admin-dashboard/admin-dashboard.component';
+import { AdminDashVerificationsComponent } from './modules/admin/admin-dash/pages/admin-dash-verifications/admin-dash-verifications.component';
+import { AdminDashPaymentsComponent } from './modules/admin/admin-dash/pages/admin-dash-payments/admin-dash-payments.component';
+import { AdminDashUsersComponent } from './modules/admin/admin-dash/pages/admin-dash-users/admin-dash-users.component';
+import { AdminDashProfileComponent } from './modules/admin/admin-dash/pages/admin-dash-profile/admin-dash-profile.component';
+import { AdminDashCategoriesComponent } from './modules/admin/admin-dash/pages/admin-dash-categories/admin-dash-categories.component';
+import { AdminDashReportsComponent } from './modules/admin/admin-dash/pages/admin-dash-reports/admin-dash-reports.component';
 
 
 const routes: Routes = [
@@ -112,6 +120,20 @@ const routes: Routes = [
       { path: 'profile', component: EventplannerDashProfileComponent },
       { path: '**', component: NotFoundPageComponent },
     ] , canActivate: [AuthGuard]
+  },
+  {
+    path: 'admin',
+    component: AdminDashboardComponent,
+    children: [
+      { path: '', component: AdminDashHomeComponent },
+      { path: 'verify', component: AdminDashVerificationsComponent },
+      { path: 'payments', component: AdminDashPaymentsComponent },
+      { path: 'users', component: AdminDashUsersComponent },
+      { path: 'categories', component: AdminDashCategoriesComponent },
+      { path: 'reports', component: AdminDashReportsComponent },
+      { path: 'profile', component: AdminDashProfileComponent },
+      { path: '**', component: NotFoundPageComponent },
+    ], canActivate: [AuthGuard]
   },
   { path: '', component: HomeComponent },
   { path: '**', component: NotFoundPageComponent }

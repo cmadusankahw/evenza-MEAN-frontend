@@ -135,6 +135,22 @@ import { EventInvitationComponent } from './modules/event/docs/event-invitation/
 import { EventAgendaComponent } from './modules/event/docs/event-agenda/event-agenda.component';
 import { AddEventComponent } from './modules/event/add-event/add-event.component';
 import { CreateTaskComponent } from './modules/event/create-task/create-task.component';
+import { AdminDashboardComponent } from './modules/admin/admin-dash/admin-dashboard/admin-dashboard.component';
+import { AdminDashHomeComponent } from './modules/admin/admin-dash/pages/admin-dash-home/admin-dash-home.component';
+import { AdminDashVerificationsComponent } from './modules/admin/admin-dash/pages/admin-dash-verifications/admin-dash-verifications.component';
+import { AdminDashPaymentsComponent } from './modules/admin/admin-dash/pages/admin-dash-payments/admin-dash-payments.component';
+import { AdminDashProfileComponent } from './modules/admin/admin-dash/pages/admin-dash-profile/admin-dash-profile.component';
+import { AdminDashUsersComponent } from './modules/admin/admin-dash/pages/admin-dash-users/admin-dash-users.component';
+import { AdminUsersComponent } from './modules/admin/admin-users/admin-users.component';
+import { AdminPaymentsComponent } from './modules/admin/admin-payments/admin-payments.component';
+import { AdminDashCategoriesComponent } from './modules/admin/admin-dash/pages/admin-dash-categories/admin-dash-categories.component';
+import { AdminDashReportsComponent } from './modules/admin/admin-dash/pages/admin-dash-reports/admin-dash-reports.component';
+import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
+import { AdminBackupComponent } from './modules/admin/admin-backup/admin-backup.component';
+import { AdminPieChartComponent } from './modules/admin/admin-dash/charts/admin-pie-chart/admin-pie-chart.component';
+import { AdminPaymentsChartComponent } from './modules/admin/admin-dash/charts/admin-payments-chart/admin-payments-chart.component';
+import { AdminOrdersPieChartComponent } from './modules/admin/admin-dash/charts/admin-orders-pie-chart/admin-orders-pie-chart.component';
+import { AdminUsersPieChartComponent } from './modules/admin/admin-dash/charts/admin-users-pie-chart/admin-users-pie-chart.component';
 
 
 
@@ -230,6 +246,22 @@ import { CreateTaskComponent } from './modules/event/create-task/create-task.com
     EventAgendaComponent,
     AddEventComponent,
     CreateTaskComponent,
+    AdminDashboardComponent,
+    AdminDashHomeComponent,
+    AdminDashVerificationsComponent,
+    AdminDashPaymentsComponent,
+    AdminDashProfileComponent,
+    AdminDashUsersComponent,
+    AdminUsersComponent,
+    AdminPaymentsComponent,
+    AdminDashCategoriesComponent,
+    AdminDashReportsComponent,
+    TermsConditionsComponent,
+    AdminBackupComponent,
+    AdminPieChartComponent,
+    AdminPaymentsChartComponent,
+    AdminOrdersPieChartComponent,
+    AdminUsersPieChartComponent,
 
 
 

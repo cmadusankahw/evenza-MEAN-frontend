@@ -235,6 +235,31 @@ export class ProductService  {
       });
   }
 
+
+    // add new category by admin
+    addCategory(category: string) {
+      this.http.post<{ message: string }>(this.url + 'product/cat/add',  { val: category})
+      .subscribe((res) => {
+          this.dialog.open(SuccessComponent,
+          {data: {message: 'New Product Category has Created!'}});
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate(['/admin/categories']);
+      });
+    }
+
+    // remove a category by admin
+    removeCategory(cat: string) {
+      this.http.post<{ message: string }>(this.url + 'product/cat/remove',  cat)
+      .subscribe((res) => {
+          this.dialog.open(SuccessComponent,
+          {data: {message: 'Product Category deleted!'}});
+          const updatedCategories = this.categories.filter(catr => catr.val !== cat);
+          this.categories = updatedCategories;
+          this.categoriesUpdated.next([...this.categories]);
+      });
+    }
+
   // set current product
   setProduct(product: Product) {
     this.product = product;

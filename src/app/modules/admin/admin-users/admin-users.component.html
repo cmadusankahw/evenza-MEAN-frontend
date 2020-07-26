@@ -17,8 +17,8 @@
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Saman">
   </mat-form-field>
 
-  <div class="mat-elevation-z8" *ngIf="merchants.length">
-    <table class="table-responsive" mat-table [dataSource]="dataSource" matSort>
+  <div class="mat-elevation-z8">
+    <table class="table-responsive" mat-table [dataSource]="dataSource"  *ngIf="merchants.length">
 
       <!-- ID Column -->
       <ng-container matColumnDef="user_id">
@@ -67,12 +67,14 @@
       </tr>
     </table>
 
+    <div class="text-center pd-top-min"  *ngIf="!merchants.length">
+      No Registered Users
+    </div>
+
     <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
   </div>
 
-  <div class="text-center pd-top-min"  *ngIf="!merchants.length">
-    No Registered Users
-  </div>
+
 
   </div>
 

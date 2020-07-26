@@ -16,6 +16,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require ("multer");
 const nodemailer = require("nodemailer");
+var backup = require('mongodb-backup');
+var restore = require('mongodb-restore');
 
 //express app declaration
 const admin = express();
@@ -79,6 +81,49 @@ admin.post('/update/payments', (req, res, next) => {
     console.log(err);
     res.status(500).json({
       message: 'Profile Details update unsuccessfull! Please Try Again!'
+    });
+  });
+});
+
+
+// create a backup
+admin.post('/backup/create', (req, res, next) => {
+  // const url = req.protocol + '://' + req.get("host");
+  backup({
+    uri: 'mongodb://localhost:27017/evenza', // mongodb://<dbuser>:<dbpassword>@<dbdomain>.mongolab.com:<dbport>/<dbdatabase>
+    root: req.body.path + '/' + new Date().toString().trim(' ')+ '/'
+  })
+  .then((result) => {
+    console.log(result);
+    res.status(200).json({
+      message: 'backup created successfully!',
+    });
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).json({
+      message: 'Backup failed! Please Try Again!'
+    });
+  });
+});
+
+// restore from  a backup
+admin.post('/backup/restore', (req, res, next) => {
+  // const url = req.protocol + '://' + req.get("host");
+  restore({
+    uri: 'mongodb://localhost:27017/evenza', // mongodb://<dbuser>:<dbpassword>@<dbdomain>.mongolab.com:<dbport>/<dbdatabase>
+    root: req.body.path +'/evenza'
+  })
+  .then((result) => {
+    console.log(result);
+    res.status(200).json({
+      message: 'backup restored successfully!',
+    });
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).json({
+      message: 'Restore failed! Please Try Again!'
     });
   });
 });

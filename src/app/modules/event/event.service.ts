@@ -71,6 +71,38 @@ export class EventService {
      });
     }
 
+    // event category operations
+
+    createCategory(eventCategory: EventCategory, categoryImage: File) {
+      if (categoryImage){
+        const catImage = new FormData();
+        catImage.append('images[]', categoryImage, categoryImage.name);
+        console.log(catImage);
+        this.http.post<{imagePath: string}>(this.url + 'event/cat/img', catImage )
+          .subscribe ((recievedImage) => {
+            if (recievedImage){
+              eventCategory.img = recievedImage.imagePath;
+            }
+            this.http.post<{ message: string}>(this.url + 'event/cat/create',  eventCategory )
+            .subscribe((recievedData) => {
+              this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+           });
+          });
+      } else {
+        this.http.post<{ message: string}>(this.url + 'event/cat/create',  eventCategory )
+        .subscribe((recievedData) => {
+          this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+       });
+      }
+    }
+
+    removeCategory(id: string) {
+      this.http.post<{ message: string }>(this.url + 'event/cat/remove',  id )
+      .subscribe((recievedData) => {
+        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+     });
+    }
+
     // set methods
 
     createEvent() {

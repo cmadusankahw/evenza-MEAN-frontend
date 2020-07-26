@@ -151,6 +151,45 @@ service.delete('/edit/:id',checkAuth, (req, res, next) => {
 });
 
 
+
+// manage categories by admin
+
+//add service category
+service.post('/cat/add',checkAuth, (req, res, next) => {
+  console.log(req.body);
+  var cat = req.body;
+  var newCategory = new ServiceCategories(cat);
+  newCategory.save()
+  .then(result => {
+      res.status(200).json({
+        message: 'service category added!',
+      });
+    })
+    .catch(err=>{
+      console.log(err);
+      res.status(500).json({
+        message: 'Error while adding service category!'
+      });
+    });
+});
+
+
+//remove a service category
+service.post('/cat/remove',checkAuth, (req, res, next) => {
+  ServiceCategories.deleteOne({'val': req.body.cat}).then(
+    result => {
+      console.log(result);
+      res.status(200).json({ message: "Service Category deleted!" });
+    }
+  ).catch((err) => {
+    console.log(err);
+    res.status(500).json({ message: "Error while removing Service Category!" });
+  })
+});
+
+
+
+
 //search services
 service.post('/search', (req, res, next) => {
   console.log(req.body);

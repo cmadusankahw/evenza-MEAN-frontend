@@ -248,6 +248,31 @@ export class ServiceService  {
       });
   }
 
+
+  // add new category by admin
+  addCategory(category: string) {
+    this.http.post<{ message: string }>(this.url + 'service/cat/add', { val: category})
+    .subscribe((res) => {
+        this.dialog.open(SuccessComponent,
+        {data: {message: 'New Service Category has Created!'}});
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/admin/categories']);
+    });
+  }
+
+  // remove a category by admin
+  removeCategory(cat: string) {
+    this.http.post<{ message: string }>(this.url + 'service/cat/remove', cat)
+    .subscribe((res) => {
+        this.dialog.open(SuccessComponent,
+        {data: {message: 'Service Category deleted!'}});
+        const updatedCategories = this.categories.filter(catr => catr.val !== cat);
+        this.categories = updatedCategories;
+        this.categoriesUpdated.next([...this.categories]);
+    });
+  }
+
   // set current service
   setService(service: Service) {
     this.service = service;

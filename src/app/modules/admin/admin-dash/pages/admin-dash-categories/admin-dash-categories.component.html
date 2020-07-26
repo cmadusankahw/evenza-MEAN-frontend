@@ -1,1 +1,17 @@
-<p>admin-dash-categories works!</p>
+<div class="pt-4 pb-2">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="pt-2 pb-2">
+        <app-service-product-categories [categoryType]="'service'"></app-service-product-categories>
+      </div>
+      <div class="pt-2 pb-2">
+        <app-service-product-categories [categoryType]="'product'"></app-service-product-categories>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <app-admin-backup></app-admin-backup>
+      <app-event-catgories></app-event-catgories>
+    </div>
+  </div>
+</div>
+

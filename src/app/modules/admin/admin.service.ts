@@ -100,5 +100,21 @@ export class AdminService {
   }
 
 
+  // backups
+  createBackup(path: string) {
+    this.http.post<{ message: string }>(this.url + 'admin/backup/create', path)
+    .subscribe((recievedData) => {
+      console.log(recievedData.message);
+      this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+  });
+  }
+
+  restoreBackup(path: string) {
+    this.http.post<{ message: string }>(this.url + 'admin/backup/restore', path)
+    .subscribe((recievedData) => {
+      console.log(recievedData.message);
+      this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+  });
+  }
 
 }

@@ -7,7 +7,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AdminService } from '../admin.service';
 import { Subscription } from 'rxjs';
 import { PaymentData, MerchantPayments } from '../admin.model';
-import { AuthService } from '../../auth/auth.service';
 
 
 @Component({

@@ -14,10 +14,13 @@ export class AuthService {
   private userUpdated = new Subject<User[]>();
   private lastIdUpdated = new Subject<string>();
   private adminUpdated = new Subject<Admin>();
+  private merchantsUpdated = new Subject<any[]>();
 
   // to get merchant/event planner once logged in
   private merchant: Merchant;
   private eventPlanner: EventPlanner;
+
+  private merchants: any[] = [];
 
   private users: User [] = [];
 
@@ -106,6 +109,16 @@ export class AuthService {
     }
 
 
+  // get merchant list
+  getMerchants() {
+    this.http.get<{message: string, merchants: any[]}>(this.url + 'auth/get/merchants')
+    .subscribe((recievedMerchant) => {
+      this.merchants = recievedMerchant.merchants;
+      this.merchantsUpdated.next(this.merchants);
+    });
+  }
+
+
   // get details for header
   getHeaderDetails() {
     if (this.token) {
@@ -177,6 +190,27 @@ export class AuthService {
 
   getAdminUpdatteListener() {
     return this.adminUpdated.asObservable();
+  }
+
+  getMerchansUpdateListener() {
+    return this.merchantsUpdated.asObservable();
+  }
+
+
+  // remove merchants by admin only
+
+  removeMerchant(userId: string) {
+    this.http.delete<{ message: string }>(this.url + 'auth/edit/merchant' + userId)
+      .subscribe((recievedData) => {
+        const updatedMerchants = this.merchants.filter(merchant => merchant.user_id !== userId);
+        this.merchants = updatedMerchants;
+        this.merchantsUpdated.next([...this.merchants]);
+        this.dialog.open(SuccessComponent,
+          {data: {message: 'Merchant has Removed!'}});
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/admin/users']);
+      });
   }
 
 

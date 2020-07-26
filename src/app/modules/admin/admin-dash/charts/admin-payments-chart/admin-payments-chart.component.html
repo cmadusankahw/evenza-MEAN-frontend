@@ -1,1 +1,15 @@
-<p>admin-payments-chart works!</p>
+<div class="text-center pt-4 pb-2 ">
+  <h5 class="strong"><b> <mdb-icon fas icon="list"> </mdb-icon> Sales & Bookings: </b></h5>
+</div>
+<div style="display: block" *ngIf = "paymentData">
+  <canvas mdbChart
+          [chartType]="chartType"
+          [datasets]="chartDatasets"
+          [labels]="chartLabels"
+          [colors]="chartColors"
+          [options]="chartOptions"
+          [legend]="true"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)">
+  </canvas>
+</div>

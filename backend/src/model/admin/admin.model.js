@@ -23,6 +23,9 @@ const adminSchema = mongoose.Schema(
     payment_details: [{
         user_id: {type: String, required: true},
         user_type: {type: String, required: true},
+        first_name: {type: String, required: true},
+        last_name: {type: String, required: true},
+        email: {type: String, required: true},
         pays: [{
           timestamp: {type: { year:{type: Number, required: true},
                               month: {type: Number, required: true},

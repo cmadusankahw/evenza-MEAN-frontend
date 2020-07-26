@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Router, NavigationStart } from '@angular/router';
 import { AuthService } from 'src/app/modules/auth/auth.service';
+import { Admin } from 'src/app/modules/auth/auth.model';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -11,6 +12,9 @@ import { AuthService } from 'src/app/modules/auth/auth.service';
   styleUrls: ['./admin-dashboard.component.scss']
 })
 export class AdminDashboardComponent implements OnInit, OnDestroy {
+
+  // subscription
+  private adminSub: Subscription;
 
   // navigation
   home = 'txt-white row';
@@ -30,6 +34,8 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
    // create new product
    editmode = true;
 
+   // recieved admin
+    admin: Admin;
 
    isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
    .pipe(
@@ -41,6 +47,8 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
              private router: Router, private authService: AuthService) { }
 
  ngOnInit() {
+
+
    this.routerEvents();
    this.authService.getHeaderDetails();
    this.headerSubs = this.authService.getHeaderDetailsListener().subscribe (

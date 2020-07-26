@@ -6,7 +6,7 @@ import { Admin } from '../auth/auth.model';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { SuccessComponent } from 'src/app/success/success.component';
-import { BookingData, OrderData, PaymentData, DashboardData } from './admin.model';
+import { BookingData, OrderData, PaymentData, DashboardData, MerchantPayments } from './admin.model';
 
 @Injectable({providedIn: 'root'})
 export class AdminService {
@@ -15,6 +15,7 @@ export class AdminService {
   private paymentsUpdated = new Subject<PaymentData[]>();
   private adminUpdated = new Subject<Admin>();
   private dashboardDataUpdated = new Subject<DashboardData>();
+  private adminPaymentsUpdated = new Subject<MerchantPayments[]>();
 
   // to get merchant/event planner once logged in
   private admin: Admin;
@@ -24,6 +25,9 @@ export class AdminService {
   private paymentData: PaymentData[];
 
   url = 'http://localhost:3000/api/';
+
+
+  adminPayments: MerchantPayments[];
 
 
 
@@ -63,6 +67,15 @@ export class AdminService {
         });
   }
 
+  getAdminPayments() {
+    this.http.get<{message: string, paymentDetails: MerchantPayments[]}>(this.url + 'admin/get/payments')
+    .subscribe((res) => {
+      console.log(res);
+      this.adminPayments = res.paymentDetails;
+      this.adminPaymentsUpdated.next([...this.adminPayments]);
+    });
+  }
+
 
 
   // listners for subjects
@@ -80,6 +93,12 @@ export class AdminService {
   getPaymentDataUpdateListener() {
     return this.paymentsUpdated.asObservable();
   }
+
+
+  getMerchantPaymentsUpdateListener() {
+    return this.adminPaymentsUpdated.asObservable();
+  }
+
 
 
 }

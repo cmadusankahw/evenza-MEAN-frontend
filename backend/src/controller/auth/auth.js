@@ -331,6 +331,58 @@ auth.get('/get/merchant',checkAuth, (req, res, next) => {
   });
 });
 
+
+// get all moerchants for admin
+auth.get('/get/merchants',checkAuth, (req, res, next) => {
+  var Query =  Merchant.find();
+
+  Query.exec( function (err,merchant) {
+    console.log(merchant);
+    if (err) return handleError(err => {
+      console.log(err);
+      res.status(500).json(
+        {
+          message: 'Couldn\'t recieve Merchant Details! Please check your connetion'
+        });
+    });
+    res.status(200).json(
+      {
+        message: 'Merchants recieved successfully!',
+        merchants: merchant
+      }
+    );
+  });
+});
+
+
+
+// get all moerchants for admin
+auth.delete('/edit/merchants',checkAuth, (req, res, next) => {
+
+  var removeMerchantQuery =  Merchant.deleteOne({user_id: req.body.userId});
+  var removeServiceQuery = Service.delete({user_id: req.body.userId});
+  var removeProductQuery = Service.delete({user_id: req.body.userId});
+
+  removeMerchantQuery.exec().then( () => {
+    removeServiceQuery.exec().then( () => {
+      removeProductQuery.exec().then ( ()=> {
+        res.status(200).json(
+          {
+            message: 'Merchants removed successfully!',
+          }
+        );
+      })
+    })
+  }).catch( (err) => {
+    console.log(err);
+    res.status(500).json(
+      {
+        message: 'Couldn\'t remove Merchant! Please retry!'
+      });
+  });
+});
+
+
 // get event planner logged in
 auth.get('/get/planner',checkAuth, (req, res, next) => {
 

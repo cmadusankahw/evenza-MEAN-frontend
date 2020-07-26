@@ -1,1 +1,240 @@
-<p>admin-payments works!</p>
+<div class="pd-top-min">
+
+  <h4 *ngIf="userType == 'serviceProvider'">
+    <mat-icon>library_books</mat-icon>
+   <b> Payment History: Service Providers</b>
+  </h4>
+  <h4 *ngIf="userType == 'seller'">
+    <mat-icon>library_books</mat-icon>
+   <b> Payment History: Sellers</b>
+  </h4>
+
+  <mat-form-field>
+
+    <mat-label>
+      <mat-icon>search</mat-icon>
+      Search Payments</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Saman february">
+  </mat-form-field>
+
+  <div class="mat-elevation-z8" *ngIf="payments.length">
+    <table class="table-responsive" mat-table [dataSource]="dataSource" matSort>
+
+      <!-- ID Column -->
+      <ng-container matColumnDef="user_type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > User Type</th>
+        <td mat-cell *matCellDef="let row"> {{row.user_type}} </td>
+      </ng-container>
+
+      <!-- Progress Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Name </th>
+        <td mat-cell *matCellDef="let row"> {{row.first_name + ' ' + row.last_name}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Email </th>
+        <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+      </ng-container>
+
+      <!-- Color Column -->
+      <ng-container matColumnDef="amount_due">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Amount Due </th>
+        <td mat-cell *matCellDef="let row" style="color:red;" > {{getLastPayData(row).due_amount}}  </td>
+      </ng-container>
+
+       <!-- Color Column -->
+       <ng-container matColumnDef="amount_paid">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Amount Paid </th>
+        <td mat-cell *matCellDef="let row" > {{getLastPayData(row).paid_amount}}  </td>
+      </ng-container>
+
+
+       <!-- Action Column -->
+       <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> ACTION </th>
+        <td mat-cell *matCellDef="let row">
+          <button mdbBtn color="purple" text="white" class="btn btn-sm text-center"
+          (click)= "showPaymentDetails(row.user_id)" (click)="paymentOptions.show()">
+            ACTION
+          </button>
+         </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
+  </div>
+
+  <div class="text-center pd-top-min"  *ngIf="!payments.length">
+    No Users Registered for Payments
+  </div>
+
+  </div>
+
+
+
+  <!--View Details Modal-->
+  <div
+    mdbModal
+    #paymentOptions="mdbModal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myBasicModalLabel"
+    [config]="{ backdrop: false, ignoreBackdropClick: true }"
+    aria-hidden="true"
+
+
+  >
+    <div
+      class="modal-dialog modal-dialog-centered modal-lg"
+      role="document"
+      style="overflow-y: initial !important"
+    >
+      <div class="modal-content"   *ngIf = "selectedPayment">
+        <div class="modal-header">
+          <button
+            type="button"
+            class="close pull-right"
+            aria-label="Close"
+            (click)="paymentOptions.hide()"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel" >
+            <mat-icon>service</mat-icon> {{userType }} : {{ selectedPayment.first_name + ' '  + selectedPayment.last_name}}
+          </h4>
+        </div>
+
+        <div class="modal-body " style="height: 450px; overflow-y: auto;">
+
+              <!--more info-->
+              <div class="text-center">
+
+                <section class="text-center dark-grey-text">
+                  <!--booking info-->
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      User ID
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{selectedPayment.user_id}}">
+                    </div>
+                  </div>
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Name
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{selectedPayment.first_name + ' ' + selectedPayment.last_name}}">
+                    </div>
+                  </div>
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                      Email
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{selectedPayment.email}}">
+                    </div>
+                  </div>
+
+                    <div class="row ">
+                      <div class="col-md-4 info-text">
+                        User type
+                      </div>
+                      <div class="col info-input">
+                        <input type="text" matInput disabled value=" {{selectedPayment.user_type}}">
+                      </div>
+                    </div>
+
+                  <div class="row ">
+                    <div class="col-md-4 info-text">
+                     Date of Last Payment
+                    </div>
+                    <div class="col info-input">
+                      <input type="text" matInput disabled value=" {{getLastPayData(selectedPayment).paid_date.slice(0,10)}}">
+                    </div>
+                  </div>
+                  <hr>
+
+                  <!--payment History table-->
+                  <div class="mat-elevation-z8" *ngIf="selectedPayment.pays && selectedPayment.pays.length">
+                    <table class="table-responsive" mat-table [dataSource]="payDataSource" >
+
+                      <!-- ID Column -->
+                      <ng-container matColumnDef="year">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header > Year </th>
+                        <td mat-cell *matCellDef="let row"> {{row.timestamp.year}} </td>
+                      </ng-container>
+
+                      <!-- Progress Column -->
+                      <ng-container matColumnDef="month">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header > Month </th>
+                        <td mat-cell *matCellDef="let row"> {{row.timestamp.month}} </td>
+                      </ng-container>
+
+                      <!-- Name Column -->
+                      <ng-container matColumnDef="paid_date">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header > Date Paid </th>
+                        <td mat-cell *matCellDef="let row"> {{row.paid_date}} </td>
+                      </ng-container>
+
+                      <!-- Color Column -->
+                      <ng-container matColumnDef="amount_due">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header > Amount Due </th>
+                        <td mat-cell *matCellDef="let row" style="color:red;" > {{row.due_amount}}  </td>
+                      </ng-container>
+
+                       <!-- Color Column -->
+                       <ng-container matColumnDef="amount_paid">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header > Amount Paid </th>
+                        <td mat-cell *matCellDef="let row" > {{row.paid_amount}}  </td>
+                      </ng-container>
+
+
+                      <tr mat-header-row *matHeaderRowDef="payDisplayedColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: payDisplayedColumns;">
+                      </tr>
+                    </table>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
+                  </div>
+
+                  <div class="text-center pt-2 pb-2" *ngIf="!selectedPayment.pays.length || !selectedPayment.pays">
+                    <p>No Payments made yet</p>
+                  </div>
+                </section>
+
+
+
+              </div>
+
+
+        </div>
+
+
+        <div class="modal-footer">
+          <button
+            mdbBtn
+            color="link"
+            (click)="paymentOptions.hide()"
+            mdbWavesEffect
+          >
+            Close
+          </button>
+        </div>
+      </div>
+      <div class="modal-content" *ngIf = "!selectedPayment">
+        <app-not-found-page></app-not-found-page>
+       </div>
+    </div>
+  </div>
+
+

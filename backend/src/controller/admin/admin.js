@@ -185,6 +185,27 @@ admin.get('/get/dbdata',checkAuth, (req, res, next) => {
 });
 
 
+// get admin payments
+admin.get('/get/payments',checkAuth, (req, res, next) => {
+
+  var Query = Admin.find({ user_id: req.userData.user_id}).select('payment_details');
+
+  Query.exec().then((result) => {
+    console.log(result);
+    res.status(200).json({
+      message: 'payment details successfully!',
+      paymentDetails: result[0].payment_details
+    });
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).json({
+      message: 'Payment Details Retrival unsuccessfull! Please Try Again!'
+    });
+  });
+});
+
+
 
 
 // nodemailer send email function

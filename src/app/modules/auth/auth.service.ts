@@ -175,6 +175,12 @@ export class AuthService {
   }
 
 
+  getAdminUpdatteListener() {
+    return this.adminUpdated.asObservable();
+  }
+
+
+
 
 
   // set methods

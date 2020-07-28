@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-import { Merchant, EventPlanner, User, MerchantTemp, LogIn, Business, Admin } from './auth.model';
+import { Merchant, EventPlanner, User, MerchantTemp, LogIn, Business, Admin, IdVerification, BusinessVerification, IdVerifications, BusinessVerifications } from './auth.model';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { SuccessComponent } from 'src/app/success/success.component';
@@ -15,6 +15,8 @@ export class AuthService {
   private lastIdUpdated = new Subject<string>();
   private adminUpdated = new Subject<Admin>();
   private merchantsUpdated = new Subject<any[]>();
+  private idverifyUpdated = new Subject<IdVerifications[]>();
+  private businessverifyUpdated = new Subject<BusinessVerifications[]>();
 
   // to get merchant/event planner once logged in
   private merchant: Merchant;
@@ -53,7 +55,11 @@ export class AuthService {
   private isAuthenticated = false;
 
   // recieved admin
-  admin: Admin;
+  private admin: Admin;
+
+  // verifications
+  idVerifications: IdVerifications[] = [];
+  businessVerifications: BusinessVerifications[] = [];
 
 
 
@@ -133,6 +139,49 @@ export class AuthService {
     }
   }
 
+  // get verification
+
+  getIDVerifications() {
+      this.http.get<{message: string, verifications: IdVerifications[]}>(this.url + 'auth/verify/get/id')
+      .subscribe((res) => {
+        this.idVerifications = res.verifications;
+        this.idverifyUpdated.next([...this.idVerifications]);
+      });
+    }
+
+  getBusinessVerifications() {
+      this.http.get<{message: string, verifications: BusinessVerifications[]}>(this.url + 'auth/verify/get/br')
+      .subscribe((res) => {
+        this.businessVerifications = res.verifications;
+        this.businessverifyUpdated.next([...this.businessVerifications]);
+      });
+  }
+
+
+  // approve id verifications
+  approveIDVerification(id: IdVerifications) {
+    this.http.post<{ message: string }>(this.url + 'auth/verify/post/id', id)
+        .subscribe((recievedData) => {
+          console.log(recievedData.message);
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate(['/admin/verify']);
+          this.dialog.open(SuccessComponent, {data: {message: 'ID Verification added Successfully!'}});
+      });
+  }
+
+   // approve  business verifications
+   approveBusinessVerification(id: BusinessVerifications) {
+    this.http.post<{ message: string }>(this.url + 'auth/verify/post/br', id)
+        .subscribe((recievedData) => {
+          console.log(recievedData.message);
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate(['/admin/verify']);
+          this.dialog.open(SuccessComponent, {data: {message: 'Business Verification added Successfully!'}});
+      });
+  }
+
   // get user type in signup-select
   getUserType() {
         return this.userType;
@@ -194,6 +243,14 @@ export class AuthService {
 
   getMerchansUpdateListener() {
     return this.merchantsUpdated.asObservable();
+  }
+
+  getIDVerificationsUpdateListener() {
+    return this.idverifyUpdated.asObservable();
+  }
+
+  getBusinessVerificationsUpdateListener() {
+    return this.businessverifyUpdated.asObservable();
   }
 
 
@@ -327,13 +384,7 @@ export class AuthService {
       .subscribe ((recievedImages) => {
         console.log(recievedImages);
         recievedImages.imagePaths.find((img) => {
-          if ( currentImg.includes(3) ) {
-            business.business_verification.br_side_b = img;
-            currentImg.pop();
-          } else if ( currentImg.includes(2)) {
-            business.business_verification.br_side_a = img;
-            currentImg.pop();
-          } else if ( currentImg.includes(1)) {
+         if ( currentImg.includes(1)) {
             business.logo = img;
             currentImg.pop();
           } else if ( currentImg.includes(0)) {
@@ -400,6 +451,64 @@ export class AuthService {
     this.userType = userType;
     console.log(this.userType);
   }
+
+  // verifications
+  IDVerify(id: IdVerification, images: File[]) {
+      const newImages = new FormData();
+      for (const image of images) {
+      if (image) {
+          newImages.append('images[]', image, image.name);
+      }
+
+      this.http.post<{imageUrls : string[]}>(this.url + 'auth/verify/idImg', newImages )
+      .subscribe ((recievedImages) => {
+      if (recievedImages.imageUrls[0]) {
+        id.id_sideA = recievedImages.imageUrls[0];
+      }
+      if (recievedImages.imageUrls[1]) {
+        id.id_sideB = recievedImages.imageUrls[1];
+      }
+      this.http.post<{message: string}>(this.url + 'auth/verify/id', id)
+      .subscribe((recievedData) => {
+      console.log(recievedData.message);
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate(['/sp/dash/bprofile']);
+      this.dialog.open(SuccessComponent, {data: {message: 'ID Verification Details submitted for Review!'}});
+      }, (error) => {
+      console.log(error);
+     });
+    });
+   }
+  }
+
+    // verifications
+    BusinessVerify(id: BusinessVerification, images: File[]) {
+      const newImages = new FormData();
+      for (const image of images) {
+      if (image) {
+          newImages.append('images[]', image, image.name);
+      }
+
+      this.http.post<{imageUrls : string[]}>(this.url + 'auth/verify/brImg', newImages )
+      .subscribe ((recievedImages) => {
+      if (recievedImages.imageUrls[0]){
+        id.br_side_a = recievedImages.imageUrls[0];
+      }
+      if (recievedImages.imageUrls[1]) {
+        id.br_side_b = recievedImages.imageUrls[1];
+      }
+      this.http.post<{message: string}>(this.url + 'auth/verify/br', id)
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.dialog.open(SuccessComponent, {data: {message: 'Business Verification Details submitted for Review!'}});
+      }, (error) => {
+        console.log(error);
+    });
+  });
+  }
+}
+
 
 
   // log in user

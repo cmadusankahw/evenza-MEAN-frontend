@@ -4,6 +4,8 @@ const EventPlanner = require("../../model/auth/eventPlanner.model");
 const Merchant = require("../../model/auth/merchant.model");
 const Admin = require("../../model/admin/admin.model");
 const checkAuth = require("../../middleware/auth-check");
+const IDVerification = require("../../model/auth/idVerification.model");
+const BusinessVerification = require("../../model/auth/businessVerification.model");
 
 //dependency imports
 const express = require("express");
@@ -220,6 +222,81 @@ auth.post('/business/single/img',checkAuth, multer({storage:storage}).single("im
     imagePath = url+ "/images/merchant/"  + f.filename;
   res.status(200).json({imagePath: imagePath});
 });
+
+// verificatos
+// id verification
+auth.post('/verify/idImg',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
+  const url = req.protocol + '://' + req.get("host");
+  let imagePaths = [];
+  for (let f of req.files){
+    imagePaths.push(url+ "/images/merchant/" + f.filename);
+  }
+  res.status(200).json({
+    imageUrls: imagePaths
+  });
+});
+
+// br verification
+auth.post('/verify/brImg',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
+  const url = req.protocol + '://' + req.get("host");
+  let imagePaths = [];
+  for (let f of req.files){
+    imagePaths.push(url+ "/images/merchant/" + f.filename);
+  }
+  res.status(200).json({
+    imageUrls: imagePaths
+  });
+});
+
+// id verify details
+auth.post('/verify/id',checkAuth, (req, res, next) => {
+  const v = {
+    user_id: req.userData.user_id,
+    isverified: req.body.isverified,
+    id_sideA: req.body.id_sideA,
+    id_sideB: req.body.id_sideB,
+    issuer: req.body.issuer
+  };
+  var verify = new IDVerification (v);
+  verify.save()
+  .then(result => {
+    res.status(200).json({
+      message: 'ID verification details submitted for review!',
+    });
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).json({
+      message: 'You have already Verified! Please wait for the review!!'
+    });
+  });
+});
+
+
+// business verify details
+auth.post('/verify/br',checkAuth, (req, res, next) => {
+  const b = {
+    user_id: req.userData.user_id,
+    business_isverified: req.body.business_isverified,
+    br_side_a: req.body.br_side_a,
+    br_side_b:  req.body.br_side_b
+  };
+  var verify2 = new BusinessVerification (b);
+  verify2.save()
+  .then(result => {
+    res.status(200).json({
+      message: 'Business verification details submitted for review!',
+    });
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).json({
+      message: 'You have already Verified! Please wait for the review!!'
+    });
+  });
+});
+
+
 
 
 // update mrchant business profile
@@ -457,6 +534,106 @@ auth.get('/get/header',checkAuth, (req, res, next) => {
   }
 
 });
+
+// get verifications
+
+auth.get('/verify/get/id',checkAuth, (req, res, next) => {
+  IDVerification.find()
+  .then((result) => {
+    res.status(200).json(
+      {
+        message: "ID verifications recieved successfully!",
+        verifications: result
+      });
+  }).catch(err => {
+    console.log(err);
+    res.status(500).json(
+      {
+        message: 'Couldn\'t recieve ID Verification detils'
+      });
+  });
+});
+
+auth.get('/verify/get/br',checkAuth, (req, res, next) => {
+  IDVerification.find()
+  .then((result) => {
+    res.status(200).json(
+      {
+        message: "Business verifications recieved successfully!",
+        verifications: result
+      });
+  }).catch(err => {
+    console.log(err);
+    res.status(500).json(
+      {
+        message: 'Couldn\'t recieve Business Verification detils'
+      });
+  });
+});
+
+// updating verifications
+
+auth.post('/verify/post/id',checkAuth, (req, res, next) => {
+  const newId = {
+    isverified: req.body.isverified,
+    id_sideA: req.body.id_sideA,
+    id_sideB: req.body.id_sideB,
+    isuuer: req.body.issuer
+  };
+  Merchant.updateOne({ user_id: req.body.user_id}, {
+    id_verification: newId
+  })
+  .then(result=>{
+    IDVerification.deleteOne({user_id: req.body.user_id})
+    .then( () => {
+      res.status(200).json({
+        message: 'ID verification updated successfully!',
+      });
+    }) .catch(err=>{
+      console.log(err);
+      res.status(500).json({
+        message: 'ID verification update was unsuccessful! Please try Again!'
+      });
+    });
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).json({
+      message: 'ID verification update was unsuccessful! Please try Again!'
+    });
+  });
+  });
+
+
+auth.post('/verify/post/br',checkAuth, (req, res, next) => {
+  const newB = {
+    business_isverified: req.body.business_isverified,
+    br_side_a: req.body.br_side_a,
+    br_side_b: req.body.br_side_b
+  };
+  Merchant.updateOne({ user_id: req.body.user_id}, {
+    "business.business_verification": newB
+  })
+  .then(() => {
+    BusinessVerification.deleteOne({user_id: req.body.user_id}).
+    then( () => {
+      res.status(200).json({
+        message: 'Business  verification updated successfully!',
+      });
+    }).catch( err => {
+      console.log(err);
+      res.status(500).json({
+        message: 'Business verification update was unsuccessful! Please try Again!'
+      });
+    })
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).json({
+      message: 'Business verification update was unsuccessful! Please try Again!'
+    });
+  });
+  });
 
 
 module.exports = auth;

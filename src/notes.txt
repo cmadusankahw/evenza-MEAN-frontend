@@ -174,3 +174,11 @@ Booking is placed when booking, service provider can only complete them
 Appointment will not be hecked with bookings (even while having a booking an appointment can be made)
 
 Appointments need to be approved by the service provider
+
+
+General Routers
+---------------
+
+/users/:user_id (Any)
+
+/bprofile/:user_id (Merchant)

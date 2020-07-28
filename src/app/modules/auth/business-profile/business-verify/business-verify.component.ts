@@ -1,6 +1,9 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { MatDialog } from '@angular/material';
 
 import { BusinessVerification } from 'src/app/modules/auth/auth.model';
+import { AuthService } from '../../auth.service';
+import { ErrorComponent } from 'src/app/error/error.component';
 
 @Component({
   selector: 'app-business-verify',
@@ -9,65 +12,63 @@ import { BusinessVerification } from 'src/app/modules/auth/auth.model';
 })
 export class BusinessVerifyComponent implements OnInit {
 
-  @Output() businessVerifyEmit = new EventEmitter<BusinessVerification>();
-
-  @Output() imagefile1Emit = new EventEmitter<File>();
-
-  @Output() imagefile2Emit = new EventEmitter<File>();
-
-  @Input() businessVerify: BusinessVerification;
-
   // to be modified later
-  certifyUrl: any = './assets/images/merchant/nopic.png';
+  braAUrl: any = './assets/images/merchant/nopic.png';
+  braBUrl: any = './assets/images/merchant/nopic.png';
 
   // uploaded BR
-  brsA: any;
-  brsB: any;
+  brsA: File;
+  brsB: File;
 
-  constructor() { }
+  constructor(private authService: AuthService, public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.brsA = this.businessVerify.br_side_a;
-    this.brsB = this.businessVerify.br_side_b;
   }
 
 
-  onSideAUploaded(event) {
-    const file = event.target.files[0];
-    const mimeType = file.type;
-    if (mimeType.match(/image\/*/) == null) {
-      return;
+  verifyBusiness() {
+      if (this.brsA || this.brsB ) {
+
+        const businessVerify: BusinessVerification = {
+          business_isverified: true,
+          br_side_a: './assets/images/merchant/nopic.png',
+          br_side_b : './assets/images/merchant/bopic.png',
+        };
+        this.authService.BusinessVerify(businessVerify, [this.brsA, this.brsB]);
+      } else {
+        this.dialog.open(ErrorComponent, {data: {message: 'Please upload both sides of the BR!'}});
+      }
+  }
+
+
+    // sideA pic uploading
+    onSideAUploaded(event: Event) {
+      const file = (event.target as HTMLInputElement).files[0];
+      const mimeType = file.type;
+      if (mimeType.match(/image\/*/) == null) {
+        return;
+      }
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.brsA = file;
+        this.braAUrl = reader.result;
+      };
     }
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      this.brsA = reader.result;
-      this.imagefile1Emit.emit(file);
-    };
 
-  }
-
-  onSideBUploaded(event) {
-    const file = event.target.files[0];
-    const mimeType = file.type;
-    if (mimeType.match(/image\/*/) == null) {
-      return;
-    }
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      this.brsB = reader.result;
-      this.imagefile2Emit.emit(file);
-    };
-
-  }
-
-
-  // send business verify details
-  updateBusinessVerify() {
-    this.businessVerify.business_isverified = true; // to be modified
-    this.businessVerifyEmit.emit(this.businessVerify);
-    console.log(this.businessVerify);
-  }
+      // sideB pic uploading
+      onSideBUploaded(event: Event) {
+        const file = (event.target as HTMLInputElement).files[0];
+        const mimeType = file.type;
+        if (mimeType.match(/image\/*/) == null) {
+          return;
+        }
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          this.brsB = file;
+          this.braBUrl = reader.result;
+        };
+      }
 
 }

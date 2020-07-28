@@ -153,6 +153,8 @@ import { AdminOrdersPieChartComponent } from './modules/admin/admin-dash/charts/
 import { AdminUsersPieChartComponent } from './modules/admin/admin-dash/charts/admin-users-pie-chart/admin-users-pie-chart.component';
 import { ServiceProductCategoriesComponent } from './modules/admin/service-product-categories/service-product-categories.component';
 import { EventCatgoriesComponent } from './modules/admin/event-catgories/event-catgories.component';
+import { AdminIdverifyComponent } from './modules/admin/admin-idverify/admin-idverify.component';
+import { AdminBusinessverifyComponent } from './modules/admin/admin-businessverify/admin-businessverify.component';
 
 
 
@@ -266,6 +268,8 @@ import { EventCatgoriesComponent } from './modules/admin/event-catgories/event-c
     AdminUsersPieChartComponent,
     ServiceProductCategoriesComponent,
     EventCatgoriesComponent,
+    AdminIdverifyComponent,
+    AdminBusinessverifyComponent,
 
 
 

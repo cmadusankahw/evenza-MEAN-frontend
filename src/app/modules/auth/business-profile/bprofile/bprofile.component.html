@@ -930,8 +930,7 @@
         </h4>
       </div>
       <div class="modal-body " style="height: 500px; overflow-y: auto;" >
-         <app-business-verify *ngIf="addnew && !editmode" (imagefile1Emit)="setBrSideA($event)" (imagefile2Emit)="brSideB" (businessVerifyEmit)="setBusinessVerify($event)" [businessVerify] = "businessVerification"></app-business-verify>
-         <app-business-verify *ngIf="!addnew && editmode" (imagefile1Emit)="setBrSideB($event)" (imagefile2Emit)="brSideB" (businessVerifyEmit)="setBusinessVerify($event)" [businessVerify] = "recievedMerchant.business.business_verification"></app-business-verify>
+         <app-business-verify *ngIf="addnew || editmode"></app-business-verify>
         </div>
 
       <div class="modal-footer">

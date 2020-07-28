@@ -531,7 +531,7 @@ export class AuthService {
           newImages.append('images[]', image, image.name);
       }
 
-      this.http.post<{imageUrls : string[]}>(this.url + 'auth/verify/brImg', newImages )
+      this.http.post<{imageUrls: string[]}>(this.url + 'auth/verify/brImg', newImages )
       .subscribe ((recievedImages) => {
       if (recievedImages.imageUrls[0]){
         id.br_side_a = recievedImages.imageUrls[0];

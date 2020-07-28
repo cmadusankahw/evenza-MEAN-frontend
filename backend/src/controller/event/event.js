@@ -46,18 +46,6 @@ event.use(bodyParser.json());
 event.use(bodyParser.urlencoded({ extended: false }));
 
 
-// add event photos
-event.post('/add/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
-  const url = req.protocol + '://' + req.get("host");
-  let imagePaths = [];
-  for (let f of req.files){
-    imagePaths.push(url+ "/images/events/" + f.filename);
-  }
-  res.status(200).json({
-    imagePaths: imagePaths
-  });
-});
-
 // add category photos
 event.post('/cat/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
   const url = req.protocol + '://' + req.get("host");
@@ -98,11 +86,23 @@ event.post('/cat/remove',checkAuth, (req, res, next) => {
   })
 });
 
+// add category photos
+event.post('/add/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
+  const url = req.protocol + '://' + req.get("host");
+  const imagePath = (url+ "/images/events/" + req.files[0].filename);
+  console.log(imagePath);
+  res.status(200).json({
+    imageUrl: imagePath
+  });
+});
+
 
 //add new event
 event.post('/add',checkAuth, (req, res, next) => {
   var lastid;
-  Event.find(function (err, events) {
+  var IdQuery = Event.find().select('event_id');
+
+  IdQuery.exec().then((events)=> {
     if(events.length){
       lastid = events[events.length-1].event_id;
     } else {
@@ -112,15 +112,14 @@ event.post('/add',checkAuth, (req, res, next) => {
     ++mId;
     lastid = 'E' + mId.toString();
     console.log(lastid);
-    if (err) return handleError(err => {
-      res.status(500).json({
-        message: 'Error occured while getting event ID details!'
-      });
-    });
   }).then( () => {
     const reqevent = req.body;
     reqevent['event_id']= lastid;
-    reqevent['user_id']= req.userData.user_id;
+    reqevent['host']= {
+      user_id: req.userData.user_id,
+      email: req.userData.email,
+      name: ''
+    }
     const newevent = new Event(reqevent);
     console.log(newevent);
     newevent.save()
@@ -131,24 +130,74 @@ event.post('/add',checkAuth, (req, res, next) => {
         });
       })
       .catch(err=>{
+        console.log(err);
         res.status(500).json({
           message: 'event creation was unsuccessful! Please try again!'
         });
       });
+  }).catch(err=>{
+    console.log(err);
+    res.status(500).json({
+      message: 'event creation was unsuccessful! Please try again!'
+    });
   });
  });
 
 
+// edit event photos
+event.post('/edit/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
+  const url = req.protocol + '://' + req.get("host");
+  let imagePath;
+  if (req.files[0]){
+    imagePath = (url+ "/images/events/" + req.files[0].filename);
+  }
+  res.status(200).json({
+    message: "image upload successfull",
+    imageUrl: imagePath
+  });
+});
 
-//remove a event
-event.delete('/edit/:id',checkAuth, (req, res, next) => {
-  event.deleteOne({'event_id': req.params.id}).then(
+//cancel an event
+event.post('/edit',checkAuth, (req, res, next) => {
+  Event.updateOne({'event_id': req.body.event_id}, {
+    event_title: req.body.event_title,
+    description: req.body.description,
+    event_type:  req.body.event_type,
+    event_category:  req.body.event_category,
+    from_date:  req.body.from_date,
+    to_date:  req.body.to_date,
+    location: req.body.location,
+    no_of_participants:  req.body.no_of_participants,
+    total_budget:  req.body.total_budget,
+    service_categories: req.body.service_categories,
+    product_categories: req.body.product_categories,
+    feature_img:  req.body.feature_img,
+    state:  'unpublished',
+    social_links:  req.body.social_links,
+  }).then(
+    // should include sending cancellation notices for pending services, orders and all participnts
     result => {
       console.log(result);
-      res.status(200).json({ message: "event deleted!" });
+      res.status(200).json({ message: "event details updated successfully! Please Publish event!" });
     }
   ).catch((err) => {
-    res.status(500).json({ message: "event was not deleted! Please try again!" });
+    res.status(500).json({ message: "event details update failed Please try again!" });
+  })
+});
+
+
+//cancel an event
+event.post('/remove',checkAuth, (req, res, next) => {
+  Event.updateOne({'event_id': req.body.event_id}, {
+    state: 'cancelled'
+  }).then(
+    // should include sending cancellation notices for pending services, orders and all participnts
+    result => {
+      console.log(result);
+      res.status(200).json({ message: "event was cancelled!" });
+    }
+  ).catch((err) => {
+    res.status(500).json({ message: "cancel request failed Please try again!" });
   })
 });
 

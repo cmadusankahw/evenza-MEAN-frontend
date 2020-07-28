@@ -105,18 +105,69 @@ export class EventService {
 
     // set methods
 
-    createEvent() {
-    // this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+    createEvent(event: TheEvent, image: File) {
+      if (image) {
+        console.log('image uploading');
+        const newImages = new FormData();
+        newImages.append('images[]', image, image.name);
+
+        this.http.post<{imageUrl: string}>(this.url + 'event/add/img', newImages )
+        .subscribe ((recievedImages) => {
+          event.feature_img = recievedImages.imageUrl;
+          this.http.post<{ message: string }>(this.url + 'event/add',  event )
+           .subscribe((recievedData) => {
+          this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate(['/planner']);
+       });
+    });
+      } else {
+        this.http.post<{ message: string }>(this.url + 'event/add',  event )
+        .subscribe((recievedData) => {
+          this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate(['/planner']);
+       });
+      }
     }
 
-    updateEvent(event: TheEvent) {
+    updateEvent(event: TheEvent, image: File) {
       // if budget changed in event plan event segments should be updated
-      // if a boking/order is cancelled by seller/sp, event segment need to be also updated
-     // this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+      if (image) {
+        const newImages = new FormData();
+        newImages.append('images[]', image, image.name);
+
+        this.http.post<{imageUrl: string}>(this.url + 'event/edit/img', newImages )
+        .subscribe ((recievedImages) => {
+        if (recievedImages.imageUrl) {
+          event.feature_img = recievedImages.imageUrl;
+        }
+        this.http.post<{ message: string }>(this.url + 'event/edit',  event )
+        .subscribe((recievedData) => {
+          this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate(['/planner/events']);
+       });
+    });
+      }  else {
+        this.http.post<{ message: string }>(this.url + 'event/edit',  event )
+        .subscribe((recievedData) => {
+          this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate(['/planner/events']);
+       });
+      }
     }
 
+    // cancel an event
     removeEvent() {
-
+      // event state will be changed to cancelled
+      // all pending servies and prodcuts will be sent with cancell requests
+      // all participants will be sent a cancellation notice
     }
 
     // change state planned/ completed/ published

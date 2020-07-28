@@ -60,6 +60,7 @@ export class EventParticipantsComponent implements OnInit, OnDestroy {
     }
   }
 
+  // add a participant only to local memory
   addParticipant(pForm: NgForm) {
     if (pForm.invalid){
       console.log(' Invalid Participant details');
@@ -69,12 +70,12 @@ export class EventParticipantsComponent implements OnInit, OnDestroy {
       first_name: pForm.value.first_name,
       last_name: pForm.value.last_name,
       email: pForm.value.email,
-      state: false
+      state: 'pending'
     };
     this.event.participants.participants.push(participant);
-    // update backend event document code
   }
 
+  // remove participant from the local menory
   removeParticipant(pId: string) {
     // only if state is not-invited
   }

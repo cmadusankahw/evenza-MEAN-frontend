@@ -22,7 +22,7 @@ const eventsSchema = mongoose.Schema(
                     first_name: {type: String, required: true},
                     last_name: {type: String, required: true},
                     email: {type: String, required: true},
-                    state: {type: Boolean, required: true},
+                    state: {type: String, required: true},
                    }],
                    approved_participants: {type: Number, required: true}}},
     alerts: {type: [{

@@ -149,13 +149,13 @@
           <hr>
           <p><b> No of Approved Participants: {{ event.participants.approved_participants}}</b></p>
           <div class="participant pt-2" *ngFor="let par2 of event.participants.participants">
-              <div class="row" *ngIf="par.state != 'accepted'">
+              <div class="row" *ngIf="par2.state != 'accepted'">
                 <div class="col-md-8">
                   Name: {{ par2.first_name }}  {{ par2.last_name }} <br>
                   Email:  {{ par2.email}}
                 </div>
                 <div class="col-md-4 text-center">
-                  <span *ngIf="par.state == 'accepted'" style="color:darkgreen;">Accepted</span>
+                  <span *ngIf="par2.state == 'accepted'" style="color:darkgreen;">Accepted</span>
               </div>
         </div>
       </div>

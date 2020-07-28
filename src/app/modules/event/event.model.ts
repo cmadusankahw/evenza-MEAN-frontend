@@ -49,7 +49,7 @@ export interface Participant {
   first_name: string;
   last_name: string;
   email: string;
-  state: boolean; // invitated/ pending/ accepted
+  state: string; // invitated/ pending/ accepted
 }
 
 export interface Alert { // custom notification / invitation

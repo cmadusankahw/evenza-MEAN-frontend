@@ -53,6 +53,7 @@ import { AdminDashUsersComponent } from './modules/admin/admin-dash/pages/admin-
 import { AdminDashProfileComponent } from './modules/admin/admin-dash/pages/admin-dash-profile/admin-dash-profile.component';
 import { AdminDashCategoriesComponent } from './modules/admin/admin-dash/pages/admin-dash-categories/admin-dash-categories.component';
 import { AdminDashReportsComponent } from './modules/admin/admin-dash/pages/admin-dash-reports/admin-dash-reports.component';
+import { TeramsConditionsComponent } from './modules/home/terams-conditions/terams-conditions.component';
 
 
 const routes: Routes = [
@@ -64,6 +65,7 @@ const routes: Routes = [
   { path: 'contactus', component: ContactUsComponent },
   { path: 'services', component: SearchServicesComponent },
   { path: 'products', component: SearchProductsComponent },
+  { path: 'terms', component: TeramsConditionsComponent},
   { path: 'print/booking/:id', component: BookingNoteComponent },
   { path: 'print/appoint/:id', component: BookingNoteComponent },
   { path: 'print/order/:id', component: BookingNoteComponent },

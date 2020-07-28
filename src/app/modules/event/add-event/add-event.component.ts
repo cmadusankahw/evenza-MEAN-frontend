@@ -4,7 +4,7 @@ import { EventService } from '../event.service';
 import { Subscription } from 'rxjs';
 import { NgForm } from '@angular/forms';
 
-import { EventCategory, TheEvent, Category } from '../event.model';
+import { EventCategory, TheEvent, Category, refactorDate } from '../event.model';
 
 @Component({
   selector: 'app-add-event',
@@ -27,7 +27,15 @@ export class AddEventComponent implements OnInit, OnDestroy {
   image: File;
 
   // created event
-  createdEvent = {
+  sampleEvent: TheEvent = {
+    event_id: null,
+    created_date: null,
+    participants: null,
+    alerts: null,
+    event_segments: null,
+    qr_code: '',
+    state: 'unpublished',
+    host: null,
     event_title: 'My first Event',
     description: null,
     event_type: 'open',
@@ -47,6 +55,8 @@ export class AddEventComponent implements OnInit, OnDestroy {
     }
   };
 
+  createdEvent: TheEvent;
+
   // recieved Event category
   eventCategory: EventCategory = {
     id: null,
@@ -56,7 +66,7 @@ export class AddEventComponent implements OnInit, OnDestroy {
     products: []
   };
 
-  times = { fromTime: {hour: 8, minute: 0, second: 0}, toTime: {hour: 16, minute: 0, second: 0}};
+  times = { fromTime: {hour: 8, minute: 0}, toTime: {hour: 16, minute: 0}};
 
   dates = { fromDate: this.tday, toDate: this.tday};
 
@@ -72,6 +82,7 @@ export class AddEventComponent implements OnInit, OnDestroy {
   ngOnInit() {
      if (this.route.snapshot.url[1].path === 'add') {
      // get the categories
+     this.createdEvent = this.sampleEvent;
      this.eventService.getEventCategory(this.Id);
      this.catSub = this.eventService.getEventCategoryUpdatedListener()
        .subscribe((recievedCategory: EventCategory) => {
@@ -86,10 +97,19 @@ export class AddEventComponent implements OnInit, OnDestroy {
       this.eventService.getEvent(this.Id);
       this.eventSub = this.eventService.getEventUpdatedListener()
       .subscribe((recievedData: TheEvent) => {
-        // this.eventCategory.services = recievedData.service_categories;
-        // this.eventCategory.products = recievedData.product_categories;
         this.eventCategory.category = recievedData.event_category;
         this.createdEvent = recievedData;
+        this.imageUrl = this.createdEvent.feature_img;
+        this.dates.fromDate = new Date(this.createdEvent.from_date);
+        this.dates.toDate = new Date(this.createdEvent.to_date);
+        this.times.fromTime = {
+          hour: Number(this.createdEvent.from_date.slice(11, 13)),
+          minute: Number(this.createdEvent.from_date.slice(14, 16))
+        };
+        this.times.toTime = {
+          hour: Number(this.createdEvent.to_date.slice(11, 13)),
+          minute: Number(this.createdEvent.to_date.slice(14, 16))
+        };
         this.editmode = true;
         console.log(this.createdEvent);
     });
@@ -105,11 +125,65 @@ ngOnDestroy() {
     }
   }
 
-createEvent() {
-    console.log('submitted');
+createEvent(eventForm : NgForm) {
+  if ( eventForm.valid) {
+    const event: TheEvent = {
+      event_id: 'E0',
+      event_title: this.createdEvent.event_title,
+      description: this.createdEvent.description,
+      event_type: this.createdEvent.event_type, // open or closed/ online event
+      event_category: this.createdEvent.event_category,
+      from_date: refactorDate(this.dates.fromDate, this.times.fromTime ),
+      to_date: refactorDate(this.dates.toDate, this.times.toTime ),
+      created_date: new Date().toISOString(),
+      location: this.createdEvent.location,
+      no_of_participants: this.createdEvent.no_of_participants,
+      participants: {
+          participants: [],
+          approved_participants: 0},
+      alerts: [{
+        id: 'A1',
+        type: 'invitation', // notification/ invitation
+        heading: 'Invitation to Event: ' + this.createdEvent.event_title,
+        message: 'We are inviting you to the ' +
+        this.createdEvent.event_category + ' : ' + this.createdEvent.event_title + '<br> <br> Edit your Invitation Here',
+        created_date: new Date().toISOString(),
+        state: 'draft', // sent or draft
+        attachments: []
+      }],
+      total_budget: this.createdEvent.total_budget,
+      event_segments: {
+        tasks: [],
+        services: [],
+        products: []
+      },
+      service_categories: this.createdEvent.service_categories, // selected service categories
+      product_categories: this.createdEvent.product_categories, // selected product categories
+      feature_img: './assets/images/events/feature.jpg',
+      qr_code: 'http://evenza.biz/events/' + this.createdEvent.event_title.trim(),
+      state: 'unpublished', //  unpublished / published/ cancelled
+      social_links: this.createdEvent.social_links,
+      host: {
+        user_id: '',
+        email: '',
+        name: ''
+      }
+    };
+    this.eventService.createEvent(event, this.image);
+  } else {
+    console.log('form invalid');
   }
+}
 
-updateEvent() {
+updateEvent(eventForm: NgForm) {
+  if ( eventForm.valid) {
+    const newevent = this.createdEvent;
+    newevent.from_date =  refactorDate(this.dates.fromDate, this.times.fromTime );
+    newevent.to_date = refactorDate(this.dates.toDate, this.times.toTime ),
+    this.eventService.updateEvent(newevent, this.image);
+  } else {
+    console.log('form invalid');
+  }
 
   }
 
@@ -124,7 +198,7 @@ updateEvent() {
     reader.readAsDataURL(file);
     reader.onload = () => {
       this.image = file;
-      this.createdEvent.feature_img = reader.result;
+      this.imageUrl = reader.result;
     };
   }
 

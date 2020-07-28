@@ -4,7 +4,7 @@ export interface TheEvent {
   event_id: string;
   event_title: string;
   description: string;
-  event_type: string; // open or closed event
+  event_type: string; // open or closed event (or online)
   event_category: string; // event planned category
   from_date: string;
   to_date: string;
@@ -135,6 +135,14 @@ export interface CalendarTask {
   backgroundColor: string;
 }
 
+export interface ScheduleAlert {
+  type: string; // critical , modarate, neutral (red/ orange/ green)
+  title: string;
+  description: string;
+  date: string; // ISO date and time string
+  time_remaining: string; // critical - less than 3 hrs, modarate - today, neutral -within 3 days
+}
+
 export function refactorDate(date: Date, time: {hour: number, minute: number}): string {
   let ISODate = date.toISOString();
   let timeString = '';
@@ -161,8 +169,8 @@ export function calcISODuration(date1: string, date2: string){
     year: Number(date1.slice(0,4)) - Number(date2.slice(0,4)),
     month: Number(date1.slice(5,7)) -  Number(date2.slice(5,7)),
     day: Number(date1.slice(8,10)) - Number(date2.slice(8,10)),
-    hour: Number(date1.slice(12,14)) - Number(date2.slice(12,14)),
-    min: Number(date1.slice(15,17)) - Number(date2.slice(15,17)),
+    hour: Number(date1.slice(12,14)) - Number(date2.slice(11,13)),
+    min: Number(date1.slice(15,17)) - Number(date2.slice(14,16)),
   };
 
   return dif;

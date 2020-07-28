@@ -1,1 +1,96 @@
-<p>admin-backup works!</p>
+<div class="pt-4 pb-3 wrap-box" >
+
+  <h4>
+    <mat-icon>library_books</mat-icon>
+   <b> Backup Database:</b>
+  </h4>
+
+  <div class="text-center">
+    <div class="row">
+      <div class="col-md-7 pt-2">
+        Create a Backup:
+      </div>
+      <div class="col-md-5">
+        <input type="file" hidden="true" id="backup" #backup  (change)="createBackup($event)"
+        ngModel name="backup"   directory>
+        <button mdbBtn color="purple" text="white" class="btn  btn-md text-center"
+        (click)="backup.click()">
+          <span> Create Backup </span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="text-center">
+    <div class="row">
+      <div class="col-md-7 pt-2">
+        Restore Latest Backup:
+      </div>
+      <div class="col-md-5">
+        <input type="file" hidden="true" id="res" #res  (change)="restoreBackup($event)"
+                        ngModel name="res"   directory>
+        <button mdbBtn color="purple" text="white" class="btn  btn-md text-center"
+        (click)="cancelDialog.show()">
+          <span> Restore Backup </span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <hr>
+</div>
+
+
+    <!--  remove user confirmation-->
+    <div mdbModal #cancelDialog="mdbModal"
+    class="modal fade top"
+    id="frameModalTop" tabindex="-1" role="dialog"
+    [config]="{ backdrop: false, ignoreBackdropClick: true }"
+      aria-labelledby="myModalLabel" aria-hidden="true" >
+      <div class="modal-dialog modal-notify modal-danger  modal-dialog-centered" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <p class="heading">Restoring Last Backup</p>
+
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelDialog.hide()">
+              <span aria-hidden="true" class="white-text">&times;</span>
+            </button>
+          </div>
+
+          <!--Body-->
+          <div class="modal-body">
+
+            <div class="row">
+              <div class="col-3">
+                <p></p>
+                <p class="text-center">
+                  <mdb-icon fas icon="ban" size="3x" class="mb-3 animated rotateIn"></mdb-icon>
+                </p>
+              </div>
+
+              <div class="col-9">
+                <h5>Are you sure want restore the last Backup?</h5>
+                <p><b> Once restored all modified data will be lost!
+                </b></p>
+
+              </div>
+            </div>
+          </div>
+
+          <!--Footer-->
+
+          <!-- note: include password confirmation before removal-->
+          <div class="modal-footer justify-content-center">
+            <a type="button" mdbBtn color="danger" class="waves-effect"
+            (click)="cancelDialog.hide()"  (click)= "res.click()"
+            mdbWavesEffect>Restore Backup
+            </a>
+            <a type="button" mdbBtn color="danger" outline="true" class="waves-effect" mdbWavesEffect
+            (click)="cancelDialog.hide()"
+              data-dismiss="modal">Not Now</a>
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>

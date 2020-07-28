@@ -1,6 +1,4 @@
 //model imports
-const ProductCategories = require("../../model/product/categories.model");
-const ServiceCategories = require("../../model/service/categories.model");
 const EventCategories = require("../../model/event/categories.model");
 const Event = require("../../model/event/event.model");
 const EventPlanner = require("../../model/auth/eventPlanner.model");
@@ -58,22 +56,61 @@ event.post('/add/img',checkAuth, multer({storage:storage}).array("images[]"), (r
   res.status(200).json({
     imagePaths: imagePaths
   });
+});
 
+// add category photos
+event.post('/cat/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
+  const url = req.protocol + '://' + req.get("host");
+  let imagePaths = [];
+  for (let f of req.files){
+    imagePaths.push(url+ "/images/events/" + f.filename);
+  }
+  res.status(200).json({
+    imagePath: imagePaths[0]
+  });
+});
+
+// create event category
+event.post('/cat/create', (req, res, next) => {
+
+  var category = new EventCategories(req.body);
+  category.save().then( function (err, category) {
+    console.log(category);
+    if (err) return handleError(err);
+    res.status(200).json(
+      {
+        message: 'event category added successfully!',
+      }
+    );
+  });
+});
+
+// remove event category
+event.post('/cat/remove',checkAuth, (req, res, next) => {
+  EventCategories.deleteOne({'event_id': req.body.id}).then(
+    result => {
+      console.log(result);
+      res.status(200).json({ message: "event category removed!" });
+    }
+  ).catch((err) => {
+    console.log(err);
+    res.status(500).json({ message: "event category was not removed! Please try again!" });
+  })
 });
 
 
 //add new event
 event.post('/add',checkAuth, (req, res, next) => {
   var lastid;
-  event.find(function (err, events) {
+  Event.find(function (err, events) {
     if(events.length){
       lastid = events[events.length-1].event_id;
     } else {
-      lastid= 'P0';
+      lastid= 'E0';
     }
     let mId = +(lastid.slice(1));
     ++mId;
-    lastid = 'P' + mId.toString();
+    lastid = 'E' + mId.toString();
     console.log(lastid);
     if (err) return handleError(err => {
       res.status(500).json({
@@ -84,7 +121,7 @@ event.post('/add',checkAuth, (req, res, next) => {
     const reqevent = req.body;
     reqevent['event_id']= lastid;
     reqevent['user_id']= req.userData.user_id;
-    const newevent = new event(reqevent);
+    const newevent = new Event(reqevent);
     console.log(newevent);
     newevent.save()
     .then(result => {
@@ -102,44 +139,6 @@ event.post('/add',checkAuth, (req, res, next) => {
  });
 
 
-//edit event
-event.post('/edit',checkAuth, (req, res, next) => {
-  const newevent = new event(req.body);
-  console.log(newevent);
-  event.updateOne({ event_id: req.body.event_id}, {
-    business_name:  req.body.business_name,
-    event: req.body.event,
-    event_category: req.body.event_category,
-    qty_type: req.body.qty_type,
-    description: req.body.description,
-    created_date: req.body.created_date,
-    created_time: req.body.created_time,
-    availability: req.body.availability,
-    inventory: req.body.inventory,
-    rating: req.body.rating,
-    no_of_ratings: req.body.no_of_ratings,
-    no_of_orders: req.body.no_of_orders,
-    delivery_service: req.body.delivery_service,
-    price: req.body.price,
-    pay_on_delivery: req.body.pay_on_delivery,
-    image_01: req.body.image_01,
-    image_02: req.body.image_02,
-    image_03: req.body.image_03,
-    user_id: req.userData.user_id
-  })
-  .then(result => {
-    res.status(200).json({
-      message: 'event updated successfully!',
-      result: result
-    });
-  })
-  .catch(err=>{
-    res.status(500).json({
-      message: 'event update was unsuccessful! Please Try again!'
-    });
-  });
-});
-
 
 //remove a event
 event.delete('/edit/:id',checkAuth, (req, res, next) => {
@@ -152,31 +151,6 @@ event.delete('/edit/:id',checkAuth, (req, res, next) => {
     res.status(500).json({ message: "event was not deleted! Please try again!" });
   })
 });
-
-
-//search events
-event.post('/search', (req, res, next) => {
-
-  event.find({event_category: req.body.category,
-                price: {$gte: req.body.minPrice},
-                pay_on_delivery:req.body.payOnDelivery,
-                rating: {$gte: req.body.userRating},
-                'availability': true,
-                'inventory': {$gte: 1}})
-  .then(result => {
-      res.status(200).json({
-        message: 'events recieved successfully!',
-        events: result
-      });
-    })
-    .catch(err=>{
-      res.status(500).json({
-        message: 'No matching events Found!'
-      });
-    });
-});
-
-
 
 
 
@@ -204,26 +178,6 @@ event.get('/get',checkAuth, (req, res, next) => {
     );
   });
 });
-
-//get event schdule bookings & appointments
-event.get('/get/seller',checkAuth, (req, res, next) => {
-  event.find({ user_id: req.userData.user_id },function (err, events) {
-    delete events['user_id'];
-    console.log(events);
-    if (err) return handleError(err => {
-      res.status(500).json(
-        { message: 'No matching events Found! Please try again'}
-        );
-    });
-    res.status(200).json(
-      {
-        message: 'Seller event list recieved successfully!',
-        events: events
-      }
-    );
-  });
-});
-
 
 
 //get selected event
@@ -274,10 +228,6 @@ event.get('/cat/:id', (req, res, next) => {
     );
   });
 });
-
-
-
-
 
 
 // nodemailer send email function

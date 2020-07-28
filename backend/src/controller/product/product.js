@@ -174,6 +174,41 @@ product.post('/search', (req, res, next) => {
 });
 
 
+// manage categories by admin
+
+//add product category
+product.post('/cat/add',checkAuth, (req, res, next) => {
+  var cat = req.body;
+  var newCategory = new ProductCategories(cat);
+  newCategory.save()
+  .then(result => {
+      res.status(200).json({
+        message: 'products category added!',
+      });
+    })
+    .catch(err=>{
+      console.log(err);
+      res.status(500).json({
+        message: 'Error while adding product category!'
+      });
+    });
+});
+
+
+//remove a product category
+product.post('/cat/remove',checkAuth, (req, res, next) => {
+  ProductCategories.deleteOne({'val': req.body.cat}).then(
+    result => {
+      console.log(result);
+      res.status(200).json({ message: "Product Category deleted!" });
+    }
+  ).catch((err) => {
+    console.log(err);
+    res.status(500).json({ message: "Error while removing Product Category!" });
+  })
+});
+
+
 
 //add new order
 product.post('/order/add',checkAuth, (req, res, next) => {

@@ -127,6 +127,21 @@ export interface IdVerification {
   issuer: string;
 }
 
+export interface BusinessVerifications {
+  user_id: string;
+  business_isverified: boolean;
+  br_side_a: string;
+  br_side_b: string;
+}
+
+export interface IdVerifications {
+  user_id: string;
+  isverified: boolean;
+  id_sideA: string;
+  id_sideB: string;
+  issuer: string;
+}
+
 export interface CardDetails {
   name_on_card: string;
   card_no: string;

@@ -1,0 +1,62 @@
+
+table {
+  width: 100%;
+}
+
+th, td{
+  min-width:100px;
+  width: 25%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.pd-top-min{
+  margin-top:5%;
+  padding:20px;
+  margin:auto;
+}
+
+
+.info-text{
+  padding-left:5%;
+  text-align:left;
+  font-weight:bold;
+  color:darkslategray;
+  line-height:30px;
+}
+
+.info-input{
+  text-align:left;
+  font-weight:400;
+  line-height:30px;
+}
+
+.info-top{
+  padding-top:5%;
+}
+
+.info-text-net{
+  padding-left:5%;
+  text-align:left;
+  font-weight:bold;
+  color:darkslategray;
+  line-height:33px;
+}
+
+.info-input-net{
+  text-align:left;
+  font-weight:bold;
+  line-height:33px;
+  color:darkmagenta;
+}
+
+.cat-item{
+  border: 2px solid;
+  border-radius:7px;
+  border-color: lightgray;
+  margin:8px;
+  padding:9px;
+}

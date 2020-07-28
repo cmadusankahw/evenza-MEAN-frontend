@@ -70,8 +70,6 @@ export class BprofileComponent implements OnInit, OnDestroy {
   // image uploads
   featureImage: any = './assets/images/back/bprofile.jpg';
   logoImage: any = './assets/images/merchant/nopic.png';
-  brSideA: File;
-  brSideB: File;
   featureImageFile: File;
   logoImageFile: File;
 
@@ -155,16 +153,6 @@ export class BprofileComponent implements OnInit, OnDestroy {
     document.getElementById('cardDetailsModalClose').click();
   }
 
-  // set business verification details
-  setBrSideA(event) {
-      this.brSideA = event;
-  }
-
-  // set business verification details
-  setBrSideB(event) {
-    this.brSideB = event;
-  }
-
 
 // update business profile
 updateBusinessProfile(updateeBprofileForm: NgForm) {
@@ -190,7 +178,7 @@ updateBusinessProfile(updateeBprofileForm: NgForm) {
       logo: this.logoImage
       };
     console.log(business);
-    this.authService.updateBusinessProfile(business, [ this.featureImageFile, this.logoImageFile, this.brSideA, this.brSideB]);
+    this.authService.updateBusinessProfile(business, [ this.featureImageFile, this.logoImageFile]);
     updateeBprofileForm.resetForm();
     this.clearImages();
     this.addnew = false;

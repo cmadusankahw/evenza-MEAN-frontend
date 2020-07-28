@@ -1,0 +1,122 @@
+<div class="pd-top-min">
+
+  <h4 *ngIf="categoryType == 'service'">
+    <mat-icon>library_books</mat-icon>
+   <b> Service Categories</b>
+  </h4>
+  <h4 *ngIf="categoryType == 'product'">
+    <mat-icon>library_books</mat-icon>
+   <b> Product Categories</b>
+  </h4>
+
+  <div class="add-cat pt-3 pb-2">
+    <div class="row">
+      <div class="col-md-9">
+        <mat-form-field>
+          <mat-label>Add new Category..</mat-label>
+          <input matInput  name="category"
+          #catInput="ngModel" [(ngModel)]="newCategory" required>
+        </mat-form-field>
+        <mat-error *ngIf="catInput.invalid">Please enter category</mat-error>
+      </div>
+      <div class="col-md-3">
+        <button mdbBtn color="purple" mdbWavesEffect
+        (click)="addCategory(newCategory)"
+        mdbWavesEffect>Add
+      </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mat-elevation-z8">
+    <table class="table-responsive" mat-table [dataSource]="dataSource"  *ngIf="categories.length" >
+
+
+      <!-- Progress Column -->
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header > Category </th>
+        <td mat-cell *matCellDef="let row"> {{row.val}} </td>
+      </ng-container>
+
+       <!-- Action Column -->
+       <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:right;"> Remove Category </th>
+        <td mat-cell *matCellDef="let row" style="text-align:right;">
+          <button mdbBtn color="red" text="white" class="btn btn-sm " (click)="selectedCat = row.val"
+          (click)= "cancelDialog.show()" >
+            remove
+          </button>
+         </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+    </table>
+    <div class="text-center pd-top-min"  *ngIf="!categories.length">
+      No Categories
+    </div>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
+  </div>
+
+
+
+  </div>
+
+
+
+    <!--  remove user confirmation-->
+    <div mdbModal #cancelDialog="mdbModal"
+    class="modal fade top"
+    id="frameModalTop" tabindex="-1" role="dialog"
+    [config]="{ backdrop: false, ignoreBackdropClick: true }"
+      aria-labelledby="myModalLabel" aria-hidden="true" >
+      <div class="modal-dialog modal-notify modal-danger  modal-dialog-centered" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <p class="heading">Remove Category</p>
+
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelDialog.hide()">
+              <span aria-hidden="true" class="white-text">&times;</span>
+            </button>
+          </div>
+
+          <!--Body-->
+          <div class="modal-body">
+
+            <div class="row">
+              <div class="col-3">
+                <p></p>
+                <p class="text-center">
+                  <mdb-icon fas icon="ban" size="3x" class="mb-3 animated rotateIn"></mdb-icon>
+                </p>
+              </div>
+
+              <div class="col-9">
+                <h5>Are you sure want to remove this Category?</h5>
+                <p><b> Once removed, No more items cannot be added under this category
+                </b></p>
+
+              </div>
+            </div>
+          </div>
+
+          <!--Footer-->
+
+          <!-- note: include password confirmation before removal-->
+          <div class="modal-footer justify-content-center">
+            <a type="button" mdbBtn color="danger" class="waves-effect"
+            (click)="cancelDialog.hide()"  (click)= "removeCategory(selectedCat)"
+            mdbWavesEffect>Remove Category
+            </a>
+            <a type="button" mdbBtn color="danger" outline="true" class="waves-effect" mdbWavesEffect
+            (click)="cancelDialog.hide()"
+              data-dismiss="modal">Not Now</a>
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>

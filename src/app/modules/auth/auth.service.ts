@@ -366,6 +366,47 @@ export class AuthService {
    }
   }
 
+
+
+  // update admin
+  updateAdmin(admin: Admin, image: File) {
+    if (image) {
+    const newImage = new FormData();
+    newImage.append('images[]', image, image.name);
+
+    this.http.post<{profile_pic: string}>(this.url + 'auth/admin/img', newImage )
+    .subscribe ((recievedImage) => {
+    console.log(recievedImage);
+    admin.profile_pic = recievedImage.profile_pic;
+    this.http.post<{message: string}>(this.url + 'auth/admin' , admin)
+    .subscribe((recievedData) => {
+      console.log(recievedData.message);
+      this.admin = admin;
+      this.adminUpdated.next(this.admin);
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate(['/admin/profile']);
+      this.dialog.open(SuccessComponent, {data: {message: 'Your Profile Details Updated Successfully!'}});
+    }, (error) => {
+      console.log(error);
+      });
+    });
+  } else {
+    this.http.post<{message: string}>(this.url + 'auth/admin' , admin)
+    .subscribe((recievedData) => {
+      console.log(recievedData.message);
+      this.admin = admin;
+      this.adminUpdated.next(this.admin);
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate(['/admin/profile']);
+      this.dialog.open(SuccessComponent, {data: {message: 'Your Profile Details Updated Successfully!'}});
+    }, (error) => {
+      console.log(error);
+      });
+   }
+  }
+
   // update merchant buiness profile
   updateBusinessProfile(business: Business, imgArray: File[]) {
     const imageData = new FormData();

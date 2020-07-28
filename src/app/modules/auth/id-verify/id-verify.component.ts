@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { NgForm } from '@angular/forms';
 import { IdVerification } from '../auth.model';
@@ -10,7 +10,7 @@ import { ErrorComponent } from 'src/app/error/error.component';
   templateUrl: './id-verify.component.html',
   styleUrls: ['./id-verify.component.scss']
 })
-export class IdVerifyComponent implements OnInit {
+export class IdVerifyComponent implements OnInit, OnDestroy {
 
   sideAUrl: any = './assets/images/merchant/nopic.png';
   sideBUrl: any = './assets/images/merchant/nopic.png';
@@ -24,6 +24,14 @@ export class IdVerifyComponent implements OnInit {
   constructor(private authService: AuthService, public dialog: MatDialog) { }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy(){
+    this.sideAUrl = './assets/images/merchant/nopic.png';
+    this.sideBUrl = './assets/images/merchant/nopic.png';
+
+    this.sideA = null;
+    this.sideB = null;
   }
 
   verifyID() {

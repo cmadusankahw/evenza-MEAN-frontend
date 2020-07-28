@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
 import { BusinessVerification } from 'src/app/modules/auth/auth.model';
@@ -10,7 +10,7 @@ import { ErrorComponent } from 'src/app/error/error.component';
   templateUrl: './business-verify.component.html',
   styleUrls: ['./business-verify.component.scss']
 })
-export class BusinessVerifyComponent implements OnInit {
+export class BusinessVerifyComponent implements OnInit, OnDestroy {
 
   // to be modified later
   braAUrl: any = './assets/images/merchant/nopic.png';
@@ -25,6 +25,14 @@ export class BusinessVerifyComponent implements OnInit {
   ngOnInit() {
   }
 
+
+  ngOnDestroy(){
+    this.braAUrl = './assets/images/merchant/nopic.png';
+    this.braBUrl = './assets/images/merchant/nopic.png';
+
+    this.brsB = null;
+    this.brsA = null;
+  }
 
   verifyBusiness() {
       if (this.brsA || this.brsB ) {

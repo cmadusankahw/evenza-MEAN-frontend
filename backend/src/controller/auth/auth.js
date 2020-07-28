@@ -127,6 +127,15 @@ auth.post('/planner/img',checkAuth, multer({storage:storage}).array("images[]"),
   });
 });
 
+// add profile pic event planner
+auth.post('/admin/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
+  const url = req.protocol + '://' + req.get("host");
+  imagePath = url+ "/images/merchant/"+  req.files[0].filename;
+  res.status(200).json({
+    profile_pic: imagePath
+  });
+});
+
 //edit merchant
 auth.post('/merchant',checkAuth, (req, res, next) => {
   Merchant.updateOne({ user_id: req.userData.user_id}, {
@@ -189,7 +198,18 @@ auth.post('/planner',checkAuth, (req, res, next) => {
 // update admin details
 auth.post('/admin',checkAuth, (req, res, next) => {
   const user = new User (req.body);
-  Admin.updateOne({ user_id: req.userData.user_id},user)
+  Admin.updateOne({ user_id: req.userData.user_id},{
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    profile_pic: req.body.profile_pic,
+    email: req.body.email,
+    contact_no: req.body.contact_no,
+    address_line1: req.body.address_line1,
+    address_line2: req.body.address_line2,
+    postal_code: req.body.postal_code,
+    gender: req.body.gender,
+    card_details: req.body.card_details
+  })
   .then((result) => {
     console.log(result);
     res.status(200).json({
@@ -214,6 +234,7 @@ auth.post('/business/img',checkAuth, multer({storage:storage}).array("images[]")
   }
   res.status(200).json({imagePaths: imagePaths});
 });
+
 
 
 // add merchant photos a single image only
@@ -492,7 +513,7 @@ auth.get('/get/admin',checkAuth, (req, res, next) => {
     res.status(200).json(
       {
         message: 'Admin details recieved successfully!',
-        eventPlanner: admin
+        admin: admin
       }
     );
   });

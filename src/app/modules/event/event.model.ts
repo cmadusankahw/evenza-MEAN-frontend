@@ -49,7 +49,7 @@ export interface Participant {
   first_name: string;
   last_name: string;
   email: string;
-  state: boolean; // invitated/ pending/ accepted
+  state: string; // invitated/ pending/ accepted
 }
 
 export interface Alert { // custom notification / invitation
@@ -180,4 +180,9 @@ export function calcISODuration(date1: string, date2: string){
 export function calcDateDuration(date1: Date, date2: Date){
   return Math.floor((Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate()) -
   Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate()) ) / (1000 * 60 * 60 * 24)) + 1;
+}
+
+export function defactorDates(date: string){
+  const newDate = new Date(date);
+
 }

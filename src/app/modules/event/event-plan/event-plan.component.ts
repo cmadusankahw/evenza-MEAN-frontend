@@ -4,8 +4,8 @@ import { Subscription } from 'rxjs';
 import { EventService } from '../event.service';
 import { ActivatedRoute } from '@angular/router';
 
-import { TheEvent, Service, Task, Product } from '../event.model';
-import { ThemePalette } from '@angular/material';
+import { TheEvent, Service, Task, Product, Category } from '../event.model';
+import { promise } from 'protractor';
 
 @Component({
   selector: 'app-event-plan',
@@ -25,6 +25,10 @@ export class EventPlanComponent implements OnInit, OnDestroy {
   tasks: Task[] = [];
 
   products: Product[] = [];
+
+  // product, service categories before order/book
+  productCategories: Category[] = [];
+  serviceCategories: Category[] = [];
 
   // task is editable
   editTask = false;
@@ -50,9 +54,9 @@ export class EventPlanComponent implements OnInit, OnDestroy {
       this.tasks = recievedData.event_segments.tasks;
       this.services = recievedData.event_segments.services;
       this.products = recievedData.event_segments.products;
+      this.productCategories = recievedData.product_categories;
+      this.serviceCategories = recievedData.service_categories;
       console.log(this.tasks);
-      console.log(this.services);
-      console.log(this.products);
       this.calcSpentBudget();
     });
   }
@@ -61,6 +65,7 @@ export class EventPlanComponent implements OnInit, OnDestroy {
     if (this.eventSub) {
       this.eventSub.unsubscribe();
     }
+    this.updateEventChanges();
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -72,38 +77,59 @@ export class EventPlanComponent implements OnInit, OnDestroy {
     this.spentBudget += this.services.map(o => o.spent_budget).reduce((a, c) => a + c);
   }
 
+  // make task able to update
   updateTask(task: Task) {
     this.selectedTask = task;
     this.editTask = true;
   }
 
-  removeTask() {
-
+  //  mark a task removed on runtime
+  removeTask(task: Task) {
+    const updatedTasks = this.tasks.filter(t => t.task_id !== task.task_id);
+    this.tasks = updatedTasks;
   }
 
-  updateEventSegments(event: TheEvent) {
-    // when th budgets are changed, service or product category is added
-    // this.eventService.updateEvent();
+  // update event  changes at the end - onDestroy
+  updateEventChanges() {
+   this.eventService.updateTasks(this.tasks, this.eventId);
   }
 
   // functions to select or add new service/ product to the list
 
-  emitService(catgory: string, budget: number) {
+  emitService(eventId: string) {
     const location = this.event.location;
     // pass date to be used in service filter view
   }
 
-  emitProduct(catgory: string, budget: number) {
+  emitProduct(eventId: string) {
     // pass date to be used in products filter view
   }
 
-  emitServices(budget: number) {
+  emitServices(budget: number, category: string) {
     const location = this.event.location;
     // pass date to be used in services filter view
   }
 
-  emitProducts(budget: number) {
+  emitProducts(budget: number, category: string) {
     // pass date to be used in products filter view
+  }
+
+  // get budget allocation
+  getAllocation(precentage: number) : number {
+   return Math.round((this.event.total_budget * precentage)/ 100);
+  }
+
+  // set emitted task into tasks list
+  setTask(event: any) {
+    let index: number;
+    for (const t of this.tasks){
+      if ( t.task_id === event.task_id){
+        index = this.tasks.indexOf(t);
+        console.log(index);
+      }
+    }
+    this.tasks[index] = event;
+    console.log(this.tasks);
   }
 
 }

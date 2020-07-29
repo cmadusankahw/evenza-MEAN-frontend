@@ -145,7 +145,6 @@ import { AdminUsersComponent } from './modules/admin/admin-users/admin-users.com
 import { AdminPaymentsComponent } from './modules/admin/admin-payments/admin-payments.component';
 import { AdminDashCategoriesComponent } from './modules/admin/admin-dash/pages/admin-dash-categories/admin-dash-categories.component';
 import { AdminDashReportsComponent } from './modules/admin/admin-dash/pages/admin-dash-reports/admin-dash-reports.component';
-import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
 import { AdminBackupComponent } from './modules/admin/admin-backup/admin-backup.component';
 import { AdminPieChartComponent } from './modules/admin/admin-dash/charts/admin-pie-chart/admin-pie-chart.component';
 import { AdminPaymentsChartComponent } from './modules/admin/admin-dash/charts/admin-payments-chart/admin-payments-chart.component';
@@ -260,7 +259,6 @@ import { AdminBusinessverifyComponent } from './modules/admin/admin-businessveri
     AdminPaymentsComponent,
     AdminDashCategoriesComponent,
     AdminDashReportsComponent,
-    TermsConditionsComponent,
     AdminBackupComponent,
     AdminPieChartComponent,
     AdminPaymentsChartComponent,

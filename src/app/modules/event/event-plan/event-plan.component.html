@@ -37,12 +37,14 @@
   <div class="task-list ml-5 mr-5">
     <div class="top-content">
       <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-8">
           <h5><b> <mdb-icon fas icon="list"> </mdb-icon> Plan event Tasks</b></h5>
           <p style="color:gray;"> Drag tasks to rearrange order..</p>
         </div>
-        <div class="col-md-3 text-center">
-          <button mdbBtn color="secondary"  class="btn btn-md" style="margin:0 auto;">
+        <div class="col-md-4" style="text-align:right;">
+          <button mdbBtn color="primary"  class="btn btn-md"  routerLink="/planner">
+            Update Changes</button>
+          <button mdbBtn color="secondary"  class="btn btn-md" >
             Print event Plan</button>
         </div>
       </div>
@@ -80,7 +82,7 @@
               <mat-action-row class="mr-3 ml-3">
                 <button mat-button color="primary" (click)="updateTask(task)" (click)="calanderTask.show()" >
                   <mdb-icon fas icon="pen"> </mdb-icon> Edit task</button>
-                <button mat-button color="warn" (click)="removeTask()">
+                <button mat-button color="warn" (click)="removeTask(task)">
                   <mdb-icon fas icon="ban"> </mdb-icon> Remove task</button>
               </mat-action-row>
           </mat-expansion-panel>
@@ -114,24 +116,27 @@
                 <span class="item-title">
                   <mdb-icon fas icon="calendar-check"> </mdb-icon> {{ service.service_category}}:
                   <span *ngIf="service.service_id" style="color:darkmagenta">{{ service.service_name}} </span>
-                  <span *ngIf="!service.service_id" style="color:darkslategray"> Not Selected </span>
                 </span>
               </mat-panel-title>
               <mat-panel-description class="item-des">
                   <mat-icon>  </mat-icon>
                   <div class="btns" *ngIf="service.service_id">
-                    <button class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary"
-                    routerLink="/planner/service/{{service.service_id}}">
+                    <button class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary" *ngIf="service.booking_id || service.appoint_id"
+                    routerLink="/planner/services/{{service.service_id}}">
                       VIew Service
                     </button>
-                    <button class="btn btn-sm" mdbBtn mdbWavesEffect color="primary" *ngIf="service.booking_id"
+                    <button class="btn btn-sm" mdbBtn mdbWavesEffect color="primary" *ngIf="service.booking_id && !service.appoint_id"
                     routerLink="/planner/bookings">
                       Manage Booking
                     </button>
+                    <button class="btn btn-sm" mdbBtn mdbWavesEffect color="primary" *ngIf="service.appoint_id && service.booking_id"
+                    routerLink="/planner/appoints">
+                      Manage Appointment
+                    </button>
                   </div>
-                  <div class="btns" *ngIf="!service.service_id">
+                  <div class="btns" *ngIf="!service.booking_id && !service.appoint_id">
                     <button class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary"
-                    routerLink="/planner/event/services/{{eventId}}" (click)="emitService(service.service_category, service.allocated_budget)">
+                    routerLink="/planner/services/{{service.service_id}}" (click)="emitService(event.event_id)">
                       Book Now
                     </button>
                   </div>
@@ -163,11 +168,11 @@
                 </div>
                 <div class="col-md-5">
                   <div class="info-dates-2">
-                    <div *ngIf="service.booking_id != null">
+                    <div *ngIf="service.booking_id">
                       <p> <b> From : {{service.booking_from_date.slice(0,10) }} {{service.booking_from_date.slice(11,16)}} <mdb-icon fas icon="calendar-alt"> </mdb-icon></b> </p>
                       <p> <b> To : {{service.booking_to_date.slice(0,10) }} {{service.booking_to_date.slice(11,16)}} <mdb-icon fas icon="calendar-alt"> </mdb-icon></b> </p>
                     </div>
-                    <div *ngIf="service.appoint_id != null">
+                    <div *ngIf="service.appoint_id">
                       <hr>
                       <p> <b> Appointment On : {{service.appointed_date.slice(0,10) }} {{service.appointed_date.slice(11,16)}} <mdb-icon fas icon="calendar-alt"> </mdb-icon></b> </p>
                     </div>
@@ -195,17 +200,18 @@
                 [color] = "sliderColor"
                 [(value)]="service.allocated_budget"
                 tickInterval="100"
+                disabled
                 min="100"
                 max="{{event.total_budget - spentBudget + service.allocated_budget}}"></mat-slider>
               </div>
               <div class="col-md-2">
-                <mat-form-field class="service-full-width" *ngIf="service.booking_id == null">
+                <mat-form-field class="service-full-width" *ngIf="!service.booking_id">
                   <mat-label>  Allocated Budget</mat-label>
                 <input matInput
-                [(ngModel)]="service.allocated_budget"
+                [(ngModel)]="service.allocated_budget" disabled
                 name="{{service.service_id + '_val'}}">
                 </mat-form-field>
-                <mat-form-field class="service-full-width" *ngIf="service.booking_id != null">
+                <mat-form-field class="service-full-width" *ngIf="service.booking_id">
                   <mat-label>  Spent Budget </mat-label>
                 <input matInput
                 [(ngModel)]="service.spent_budget" disabled
@@ -218,6 +224,74 @@
           </mat-expansion-panel>
           </mat-accordion>
       </div>
+
+      <!-- unallocated services-->
+      <div class="drag-box" *ngFor="let service of serviceCategories" cdkDrag>
+        <mat-accordion class="example-headers-align full-width-ex">
+          <mat-expansion-panel [expanded]="true"  hideToggle>
+
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <span class="item-title">
+                  <mdb-icon fas icon="calendar-check"> </mdb-icon> {{ service.category}}:
+                  <span  style="color:darkslategray"> Not Selected </span>
+                </span>
+              </mat-panel-title>
+              <mat-panel-description class="item-des">
+                  <mat-icon>  </mat-icon>
+                  <div class="btns">
+                    <button class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary"
+                    routerLink="/planner/services" (click)="emitServices(service.category, getAllocation(service.precentage))">
+                      Select Service
+                    </button>
+                  </div>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="service-details">
+              <div class="row mr-3 ml-3 pb-2">
+                <div class="col-md-7">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <p><b> <mdb-icon fas icon="money-bill-wave"> </mdb-icon> Allocated budget </b></p>
+                    </div>
+                    <div class="col-md-8">
+                      : Rs.{{getAllocation(service.precentage)}}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5">
+              </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2 pt-2">
+                <p style="line-height:26px;"><b> Budget Allocation: </b></p>
+              </div>
+              <div class="col-md-8">
+                <mat-slider
+                thumbLabel
+                [color] = "sliderColor"
+                [(value)]="service.precentage"
+                tickInterval="100"
+                min="0"
+                max="100"
+                ></mat-slider>
+
+              </div>
+              <div class="col-md-2">
+                <mat-form-field class="service-full-width" >
+                  <mat-label>  Allocated Budget(%)</mat-label>
+                <input matInput disabled
+                [(ngModel)]="service.precentage">
+                </mat-form-field>
+              </div>
+            </div>
+
+
+          </mat-expansion-panel>
+          </mat-accordion>
+      </div>
+
       <div class="drag-box drag-create">
         <div class="create-service-btn">
           <a routerLink="/planner/event/services/{{eventId}}"
@@ -242,29 +316,25 @@
 
             <mat-expansion-panel-header>
               <mat-panel-title>
-                <span class="item-title" style="color:darkmagenta" *ngIf="p.product_id">
+                <span class="item-title" style="color:darkmagenta" >
                   <mdb-icon fas icon="calendar-check"> </mdb-icon> {{ p.product}}
-                </span>
-                <span class="item-title"  *ngIf="!p.product_id">
-                  <mdb-icon fas icon="calendar-check"> </mdb-icon> {{ p.product_category }} : <span style="color:darkmagenta">  Not selected</span>
                 </span>
               </mat-panel-title>
               <mat-panel-description class="item-des">
                   <mat-icon>  </mat-icon>
-                  <div class="btns" *ngIf="p.product_id">
+                  <div class="btns" *ngIf="p.order_id">
                     <button class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary"
-                    routerLink="/planner/product/{{p.product_id}}"
-                     >
+                    routerLink="/planner/products/{{p.product_id}}">
                       VIew Product
                     </button>
-                    <button class="btn btn-sm" mdbBtn mdbWavesEffect color="primary" *ngIf="p.order_id != null"
+                    <button class="btn btn-sm" mdbBtn mdbWavesEffect color="primary" *ngIf="p.order_id"
                     routerLink="/planner/orders">
                       Manage Order
                     </button>
                   </div>
-                  <div class="btns" *ngIf="!p.product_id">
+                  <div class="btns" *ngIf="!p.order_id">
                     <button class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary"
-                    routerLink="/planner/event/products/{{eventId}}" (click)="emitProduct(p.product_category, p.allocated_budget)">
+                    routerLink="/planner/event/products/{{eventId}}" (click)="emitProduct(event.event_id)">
                       Order Now
                     </button>
                   </div>
@@ -311,7 +381,7 @@
                 <p style="line-height:26px;"><b> Budget Allocation: </b></p>
               </div>
               <div class="col-md-8">
-                <mat-slider *ngIf="p.order_id != null"
+                <mat-slider *ngIf="p.order_id"
                 thumbLabel
                 [color] = "sliderColor"
                 [(value)]="p.spent_budget"
@@ -321,22 +391,23 @@
                 max="{{event.total_budget - spentBudget + p.allocated_budget}}"
                 ></mat-slider>
 
-            <mat-slider *ngIf="p.order_id == null"
+            <mat-slider *ngIf="!p.order_id"
                 thumbLabel
                 [color] = "sliderColor"
                 [(value)]="p.allocated_budget"
                 tickInterval="100"
+                disabled
                 min="100"
                 max="{{event.total_budget - spentBudget + p.allocated_budget}}"></mat-slider>
               </div>
               <div class="col-md-2">
-                <mat-form-field class="service-full-width" *ngIf="p.order_id == null">
+                <mat-form-field class="service-full-width" *ngIf="!p.order_id">
                   <mat-label>  Allocated Budget</mat-label>
-                <input matInput
+                <input matInput disabled
                 [(ngModel)]="p.allocated_budget"
                 name="{{p.product_id + '_val'}}">
                 </mat-form-field>
-                <mat-form-field class="service-full-width" *ngIf="p.order_id != null">
+                <mat-form-field class="service-full-width" *ngIf="p.order_id ">
                   <mat-label>  Spent Budget </mat-label>
                 <input matInput
                 [(ngModel)]="p.spent_budget" disabled
@@ -347,6 +418,74 @@
           </mat-expansion-panel>
           </mat-accordion>
       </div>
+
+        <!-- unallocated services-->
+        <div class="drag-box" *ngFor="let product of productCategories" cdkDrag>
+          <mat-accordion class="example-headers-align full-width-ex">
+            <mat-expansion-panel [expanded]="true"  hideToggle>
+
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <span class="item-title">
+                    <mdb-icon fas icon="calendar-check"> </mdb-icon> {{ product.category}}:
+                    <span  style="color:darkslategray"> Not Selected </span>
+                  </span>
+                </mat-panel-title>
+                <mat-panel-description class="item-des">
+                    <mat-icon>  </mat-icon>
+                    <div class="btns">
+                      <button class="btn btn-sm" mdbBtn mdbWavesEffect color="primary"
+                      routerLink="/planner/services" (click)="emitServices(product.category, getAllocation(product.precentage))">
+                        Select Product
+                      </button>
+                    </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="service-details">
+                <div class="row mr-3 ml-3 pb-2">
+                  <div class="col-md-7">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <p><b> <mdb-icon fas icon="money-bill-wave"> </mdb-icon> Allocated budget </b></p>
+                      </div>
+                      <div class="col-md-8">
+                        : Rs.{{getAllocation(product.precentage)}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-5">
+                </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-2 pt-2">
+                  <p style="line-height:26px;"><b> Budget Allocation: </b></p>
+                </div>
+                <div class="col-md-8">
+                  <mat-slider
+                  thumbLabel
+                  [color] = "sliderColor"
+                  [(value)]="product.precentage"
+                  tickInterval="100"
+                  min="0"
+                  max="100"
+                  ></mat-slider>
+
+                </div>
+                <div class="col-md-2">
+                  <mat-form-field class="service-full-width" >
+                    <mat-label>  Allocated Budget(%)</mat-label>
+                  <input matInput disabled
+                  [(ngModel)]="product.precentage">
+                  </mat-form-field>
+                </div>
+              </div>
+
+
+            </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+
       <div class="drag-box drag-create">
         <div class="create-service-btn">
           <a routerLink="/planner/event/products/{{eventId}}"
@@ -399,16 +538,11 @@ aria-hidden="true"
     </div>
     <div class="modal-body" style="height: 400px; overflow-y: auto;" >
       <div *ngIf="!editTask">
-        <app-create-task  [eventId] = "eventId"></app-create-task>
+        <app-create-task  [eventId] = "eventId" [updateMode]= "false"></app-create-task>
       </div>
       <div *ngIf="editTask">
-        <app-create-task  [eventId] = "eventId"
-                          [start] = "selectedTask.scheduled_from_date"
-                          [end] = "selectedTask.scheduled_to_date"
-                          [title] = "selectedTask.title"
-                          [description] = "selectedTask.description"
-                          [taskId] = "selectedTask.task_id"
-                          [updateMode] = "true"></app-create-task>
+        <app-create-task  [recievedTask] = "selectedTask"
+                          [updateMode] = "true" (taskEmmit) = "setTask($event)"></app-create-task>
       </div>
     </div>
 

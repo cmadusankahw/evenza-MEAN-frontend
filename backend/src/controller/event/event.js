@@ -278,6 +278,37 @@ event.get('/cat/:id', (req, res, next) => {
   });
 });
 
+// task management
+event.post('/tasks/add',checkAuth, (req, res, next) => {
+  Event.updateOne({'event_id': req.body.eventId}, {
+  $push : {'event_segments.tasks' : req.body.task}
+  }).then(
+    result => {
+      console.log(result);
+      res.status(200).json({ message: "task created!" });
+    }
+  ).catch((err) => {
+    res.status(500).json({ message: "task creation failed Please try again!" });
+  })
+});
+
+
+// tupdate tasks list when closing the component ( need to add service mgmt also)
+event.post('/tasks/update',checkAuth, (req, res, next) => {
+  console.log(req.body);
+  // add updating services, products lists as well
+  Event.updateOne({event_id: req.body.eventId}, {
+     'event_segments.tasks' : req.body.tasks
+   }).then( result => {
+    console.log(result);
+    res.status(200).json({ message: "Changes were successfully Updated!" });
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json({ message: "Update were unsuccessfull! Please try again!" });
+   });
+});
+
+
 
 // nodemailer send email function
 async function sendMail(mail, callback) {

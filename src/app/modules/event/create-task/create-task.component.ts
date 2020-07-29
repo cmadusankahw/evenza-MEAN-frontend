@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { EventService } from '../event.service';
 import { refactorDate, Task } from '../event.model';
 import { Router } from '@angular/router';
@@ -13,15 +13,20 @@ export class CreateTaskComponent implements OnInit {
   // current date and time
   today = new Date();
 
+  @Input() recievedTask: Task;
+
+   // exporting business location data
+   @Output() taskEmmit = new EventEmitter<Task>();
+
   // created task
-  @Input() start = this.today;
-  @Input() end = this.today;
+  start = this.today;
+  end = this.today;
   @Input() eventId: string;
   fromTime = {hour: this.today.getHours(), minute: this.today.getMinutes()};
   toTime = {hour: this.today.getHours(), minute: this.today.getMinutes()};
-  @Input() title = 'New Task';
-  @Input() description = '';
-  @Input() taskId = '';
+  title = 'New Task';
+  description = '';
+  taskId = '';
 
   // edit task mode
   @Input() updateMode = false;
@@ -29,6 +34,11 @@ export class CreateTaskComponent implements OnInit {
   constructor(private eventService: EventService, private router: Router) { }
 
   ngOnInit() {
+    if (this.recievedTask) {
+      this.title = this.recievedTask.title;
+      this.description = this.recievedTask.description;
+      this.taskId = this.recievedTask.task_id;
+    }
   }
   // create a new task
   createTask() {
@@ -41,28 +51,22 @@ export class CreateTaskComponent implements OnInit {
         state: 'pending',
     };
     this.eventService.createTask(task, this.eventId); // generate task id and segment id from backend
-    setTimeout (() => {
-      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-      this.router.onSameUrlNavigation = 'reload';
-      this.router.navigate(['/planner/event/schedule/{{event.event_id}}']);
-    }, 1000);
     }
 
+    // send update task details to the parent for updating
     updateTask() {
       const task: Task = {
-        task_id: this.taskId,
+        task_id: this.recievedTask.task_id,
         title: this.title,
         description: this.description,
-        scheduled_from_date: this.start.toISOString(),
-        scheduled_to_date: this.end.toISOString(),
+        scheduled_from_date: this.recievedTask.scheduled_from_date,
+        scheduled_to_date: this.recievedTask.scheduled_to_date,
         state: 'pending',
      };
-      this.eventService.updateTask(task, this.eventId);
-      setTimeout (() => {
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['/planner/event/schedule/{{event.event_id}}']);
-      }, 1000);
-    }
+      this.taskEmmit.emit(task);
+      console.log(task);
+   }
+
+
 
 }

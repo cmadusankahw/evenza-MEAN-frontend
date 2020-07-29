@@ -36,12 +36,12 @@
     </div>
   </div>
   <hr>
-  <div class="row">
+  <div class="row" *ngIf="!updateMode" >
     <div class="col-md-6">
       <mdb-icon fas icon="calendar-alt"></mdb-icon> <span> <b> From Date  </b></span> <br>
       <mat-form-field class="pt-1" >
         <mat-label > From Date : </mat-label>
-        <input matInput [matDatepicker]="picker1" required [min]="today" [disabled] = "updateMode"
+        <input matInput [matDatepicker]="picker1" required [min]="today"
         name="from_date" [(ngModel)]="start" #fDate="ngModel"
         (dateChange) = "start = end "/>
         <mat-datepicker-toggle
@@ -56,7 +56,7 @@
       <mdb-icon fas icon="calendar-alt"></mdb-icon> <span><b> To Date </b></span> <br>
       <mat-form-field class="pt-1" >
         <mat-label > To Date : </mat-label>
-        <input matInput [matDatepicker]="picker2" required [min]="today" [disabled] = "updateMode"
+        <input matInput [matDatepicker]="picker2" required [min]="today"
         name="to_date" [(ngModel)]="end" #tDate="ngModel"
         />
         <mat-datepicker-toggle
@@ -68,7 +68,7 @@
       </mat-form-field>
     </div>
   </div>
-  <div class="row pt-1" >
+  <div class="row pt-1" *ngIf="!updateMode" >
     <div class="col-md-6">
       <p style="margin:0px;"> From Time: </p>
       <ngb-timepicker [(ngModel)]="fromTime" [disabled] ="updateMode"

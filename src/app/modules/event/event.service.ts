@@ -185,15 +185,48 @@ export class EventService {
     // this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
     }
 
-    // add new ttask as an event segment
+    // add new task as an event segment
     createTask(newTask: Task, eventId: string) {
-      // add new task to selected event as a new segment segmnt
-      // this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+      this.http.post<{ message: string }>(this.url + 'event/tasks/add',  {task: newTask, eventId} )
+      .subscribe((recievedData) => {
+        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/planner/event/plan/'+ eventId]);
+     });
     }
 
+    // update selected task
     updateTask(newTask: Task, eventId: string) {
-
+      this.http.post<{ message: string }>(this.url + 'event/tasks/edit', {task: newTask, eventId}  )
+      .subscribe((recievedData) => {
+        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/planner/event/plan/' + eventId]);
+     });
     }
+
+    removeTask(taskId: string, eventId: string){
+      this.http.post<{ message: string }>(this.url + 'event/tasks/remove',  taskId )
+      .subscribe((recievedData) => {
+        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+     });
+    }
+
+    // updating all tasks on ngOnDestroy
+       // update selected task
+    updateTasks(tasks: Task[], eventId: string) {
+        this.http.post<{ message: string }>(this.url + 'event/tasks/update', {tasks, eventId}  )
+        .subscribe((recievedData) => {
+          console.log(recievedData.message);
+          this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+         // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+         // this.router.onSameUrlNavigation = 'reload';
+         // this.router.navigate(['/planner/event/plan/' + eventId]);
+       });
+      }
+
 
 
     // listeners

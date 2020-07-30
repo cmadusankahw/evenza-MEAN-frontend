@@ -326,6 +326,77 @@ event.post('/participants/update',checkAuth, (req, res, next) => {
 });
 
 
+// update tasks list when closing the component ( need to add service, product mgmt also)
+event.post('/publish',checkAuth, (req, res, next) => {
+  console.log(req.body);
+  var event;
+  // add updating services, products lists as well
+  Event.findOne({event_id: req.body.eventId}).then( result => {
+
+      pars = result.participants.participants;
+      console.log('recieved participants: ',pars);
+      // sending mails to participants
+      for (const  doc of pars) {
+        const mail= {
+          email:doc.email,
+          subject: result.alerts[0].heading,
+          html: createHTML(result.alerts[0].message,doc.participant_id,req.body.eventId)
+        };
+        console.log( 'new Mail:' , mail);
+        sendMail(mail, () => {});
+        const index = pars.indexOf(doc);
+        pars[index].state = "invited";
+      }
+      // finally update the modified event
+      Event.updateOne({event_id: req.body.eventId},{
+        'state': "published",
+        'participants.participants': pars
+      }).then( (updatedResult) => {
+        console.log(updatedResult);
+        res.status(200).json({ message: "Event Publish was Successfull!" });
+      }).catch( err => {
+        console.log(err);
+        res.status(500).json({ message: "Event Not Publiished! Please try again!" });
+       });
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json({ message: "Event Not Publiished! Please try again!" });
+   });
+});
+
+// confirm participation
+event.get('/confirm/:id', (req, res, next) => {
+  var idS = req.params.id.split('_');
+  console.log(idS);
+  var pars;
+
+  Event.findOne({event_id: idS[1]}).then( result => {
+    pars = result.participants.participants;
+    console.log('recieved participants: ',pars);
+    // find and update confirmed participant state
+    for (const  doc of pars) {
+     if( doc.participant_id == idS[0]){
+      const index = pars.indexOf(doc);
+      pars[index].state = "accepted";
+     }
+    };
+    Event.updateOne({event_id: idS[1]},{
+      'participants.participants': pars
+    }).then( (updatedResult) => {
+      console.log(updatedResult);
+      res.status(200).json({ message: "Your participation successfully confirmed!" });
+    }).catch( err => {
+      console.log(err);
+      res.status(500).json({ message: "Confirmation Unsuccessful! Please try again!"});
+     });
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json({ message: "Confirmation Unsuccessful! Please try again!" });
+   });
+  });
+
+
+
 // nodemailer send email function
 async function sendMail(mail, callback) {
 
@@ -354,8 +425,10 @@ async function sendMail(mail, callback) {
 }
 
 // create custom HTML
-function createHTML(content) {
-   const message = "<h3> You have new Order on " + content.event + "</h3><hr><h4>Order ID : <b> " + content.order_id + "</b></h4><h4>Date : <b> " +content.created_date.slice(0,10) + ' ' + content.created_date.slice(11,19) + " </b></h4><h4>Quantity : <b> " + content.quantity + " </b></h4><hr><div class='text-center'><p><b> Please log in to view more details.<br><br><a class='btn btn-lg' href='evenza.biz//login'>Log In</a></b></p></div>"
+function createHTML(content, pid, eventId) {
+   const message = "<h3> Invitation </h3><br> Dear Sir/Madam, <br><br>" + content
+   +"<br><br> Click below link to confirm your participation:<hr> <b> <a href='http://localhost:3000/api/event/confirm/"+ pid + '_' + eventId + "' target='_blank'> Conirm My Participation</a></br>"
+   + "<div> <hr> Thank You, <br> Your Sincere, <br><br> Event Organizer at Evenza</div>"
    return message;
   }
 

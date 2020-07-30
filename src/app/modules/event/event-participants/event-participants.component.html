@@ -127,7 +127,8 @@
         <!--accepted participants list-->
         <div class="col" style="margin-left:20px;">
           <h5><b><mdb-icon fas icon="user-friends"> </mdb-icon> Pending Participants </b></h5>
-          <div class="participant" *ngFor="let par of participants">
+          <div *ngFor="let par of participants">
+          <div class="participant" >
               <div class="row" *ngIf="par.state != 'accepted'">
                 <div class="col-md-8">
                   Name: {{ par.first_name }}  {{ par.last_name }} <br>
@@ -144,6 +145,7 @@
                 </div>
               </div>
           </div>
+        </div>
         </div>
 
         <!-- denied participant list-->

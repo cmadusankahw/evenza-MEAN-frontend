@@ -65,7 +65,7 @@ export class EventParticipantsComponent implements OnInit, OnDestroy {
       console.log(' Invalid Participant details');
     }
     const participant: Participant = {
-      participant_id: pForm.value.first_name + '_' + pForm.value.email + '_' + Math.random().toString(),
+      participant_id: pForm.value.first_name.trim().replace('_','') + (Math.floor(Math.random() * 100) + 1).toString(),
       first_name: pForm.value.first_name,
       last_name: pForm.value.last_name,
       email: pForm.value.email,

@@ -351,7 +351,7 @@ id="frameModalTop" tabindex="-1" role="dialog"
 
           <!--Footer-->
           <div class="modal-footer justify-content-center">
-            <a type="button" mdbBtn color="info" class="waves-effect"
+            <a type="button" mdbBtn color="info" class="waves-effect" (click)="publishEvent(eventId)"
             (click)="publishModal.hide()"
             mdbWavesEffect>Proceed Publish
               <mdb-btn far icon="ban" class="ml-1"></mdb-btn>

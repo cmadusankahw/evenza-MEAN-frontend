@@ -233,7 +233,7 @@ export class EventService {
 
     // publish event
     publishEvent(eventId: string) {
-      this.http.post<{ message: string }>(this.url + 'event/publish', eventId )
+      this.http.post<{ message: string }>(this.url + 'event/publish', {eventId} )
       .subscribe((recievedData) => {
         console.log(recievedData.message);
         this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});

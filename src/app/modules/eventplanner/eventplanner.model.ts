@@ -1,4 +1,6 @@
 import { DeliveryService } from '../product/product.model';
+import html2canvas from 'html2canvas';
+import * as jspdf from 'jspdf';
 
 export interface EventPlanner {
   user_id: string;
@@ -98,4 +100,24 @@ export interface Email {
   email: string;
   subject: string;
   html: string;
+}
+
+
+ // print the document
+export function printData(htmlContent: string, type: string) {
+  const data = document.getElementById(htmlContent);
+  html2canvas(data).then(canvas => {
+    // Few necessary setting options
+    const imgWidth = 208;
+    const pageHeight = 295;
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+    const heightLeft = imgHeight;
+
+    const contentDataURL = canvas.toDataURL('images/print/');
+    const pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
+    const position = 0;
+    pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+    const today = new Date().toISOString();
+    pdf.save(type + '_' + today + '.pdf'); // Generated PDF
+  });
 }

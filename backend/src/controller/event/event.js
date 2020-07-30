@@ -293,8 +293,8 @@ event.post('/tasks/add',checkAuth, (req, res, next) => {
 });
 
 
-// tupdate tasks list when closing the component ( need to add service mgmt also)
-event.post('/tasks/update',checkAuth, (req, res, next) => {
+// update tasks list when closing the component ( need to add service, product mgmt also)
+event.post('/plan/update',checkAuth, (req, res, next) => {
   console.log(req.body);
   // add updating services, products lists as well
   Event.updateOne({event_id: req.body.eventId}, {
@@ -308,6 +308,22 @@ event.post('/tasks/update',checkAuth, (req, res, next) => {
    });
 });
 
+// update tasks list when closing the component ( need to add service, product mgmt also)
+event.post('/participants/update',checkAuth, (req, res, next) => {
+  console.log(req.body);
+  // add updating services, products lists as well
+  Event.updateOne({event_id: req.body.eventId}, {
+     'participants.participants' : req.body.participants,
+     'state':'unpublished',
+     $set: { 'alerts.0': req.body.invitation}
+   }).then( result => {
+    console.log(result);
+    res.status(200).json({ message: "Changes were successfully Updated!" });
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json({ message: "Update were unsuccessfull! Please try again!" });
+   });
+});
 
 
 // nodemailer send email function

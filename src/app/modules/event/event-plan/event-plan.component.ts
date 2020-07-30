@@ -5,7 +5,7 @@ import { EventService } from '../event.service';
 import { ActivatedRoute } from '@angular/router';
 
 import { TheEvent, Service, Task, Product, Category } from '../event.model';
-import { promise } from 'protractor';
+import { printData } from '../../eventplanner/eventplanner.model';
 
 @Component({
   selector: 'app-event-plan',
@@ -65,7 +65,6 @@ export class EventPlanComponent implements OnInit, OnDestroy {
     if (this.eventSub) {
       this.eventSub.unsubscribe();
     }
-    this.updateEventChanges();
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -90,8 +89,8 @@ export class EventPlanComponent implements OnInit, OnDestroy {
   }
 
   // update event  changes at the end - onDestroy
-  updateEventChanges() {
-   this.eventService.updateTasks(this.tasks, this.eventId);
+  updateEventChanges(tasks: Task[], eventId: string) {
+   this.eventService.updateTasks(tasks, eventId);
   }
 
   // functions to select or add new service/ product to the list
@@ -130,6 +129,10 @@ export class EventPlanComponent implements OnInit, OnDestroy {
     }
     this.tasks[index] = event;
     console.log(this.tasks);
+  }
+
+  printEventPlan(content: string, type: string) {
+    printData(content,type);
   }
 
 }

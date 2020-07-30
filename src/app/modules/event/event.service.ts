@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
 
 
-import { TheEvent, EventCategory, EventCard, Task } from './event.model';
+import { TheEvent, EventCategory, EventCard, Task, Participant, Alert } from './event.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 
 
@@ -192,7 +192,7 @@ export class EventService {
         this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['/planner/event/plan/'+ eventId]);
+        this.router.navigate(['/planner/event/plan/' + eventId]);
      });
     }
 
@@ -207,26 +207,41 @@ export class EventService {
      });
     }
 
-    removeTask(taskId: string, eventId: string){
-      this.http.post<{ message: string }>(this.url + 'event/tasks/remove',  taskId )
-      .subscribe((recievedData) => {
-        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
-     });
-    }
-
-    // updating all tasks on ngOnDestroy
-       // update selected task
+    // updating all tasks, service, product changes on ngOnDestroy of event_plan
     updateTasks(tasks: Task[], eventId: string) {
-        this.http.post<{ message: string }>(this.url + 'event/tasks/update', {tasks, eventId}  )
+        this.http.post<{ message: string }>(this.url + 'event/plan/update', {tasks, eventId}  )
         .subscribe((recievedData) => {
           console.log(recievedData.message);
           this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
-         // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-         // this.router.onSameUrlNavigation = 'reload';
-         // this.router.navigate(['/planner/event/plan/' + eventId]);
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate(['/planner/event/plan/' + eventId]);
        });
       }
 
+      // update all invitation, participant changess on OnDestroy of event_participants
+    updateParticipantChanges(participants: Participant[], invitation: Alert, eventId: string) {
+      this.http.post<{ message: string }>(this.url + 'event/participants/update', {participants, invitation, eventId} )
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+       // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+       // this.router.onSameUrlNavigation = 'reload';
+       // this.router.navigate(['/planner/event/plan/' + eventId]);
+     });
+    }
+
+    // publish event
+    publishEvent(eventId: string) {
+      this.http.post<{ message: string }>(this.url + 'event/publish', eventId )
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/planner/event/details/' + eventId]);
+     });
+    }
 
 
     // listeners

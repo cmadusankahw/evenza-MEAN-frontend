@@ -216,7 +216,7 @@ product.post('/order/add',checkAuth, (req, res, next) => {
   let reqOrder = req.body;
   let sellerId;
   // generate id
-  Order.find(function (err, recievedOrders) {
+  Order.find().select('order_id').then( (recievedOrders) => {
     if(recievedOrders.length){
       lastid = recievedOrders[recievedOrders.length-1].order_id;
     } else {
@@ -227,56 +227,35 @@ product.post('/order/add',checkAuth, (req, res, next) => {
     lastid = 'OR' + mId.toString();
     console.log(lastid);
     reqOrder['order_id']= lastid; // last id
-    if (err) return handleError(err => {
-      console.log(err);
-      res.status(500).json({
-        message: 'Error occured while generating Order Id! Please Retry!'
-      });
-    });
-  }).then( () => {
+
     // get service provider id and incrementing no_of_appoints
-    Product.findOneAndUpdate({'product_id': req.body.product_id},{$inc : {no_of_orders: 1} , $inc: {inventory: -(reqOrder.quantity/2)}},function (err, recievedProduct) {
+    Product.findOneAndUpdate({'product_id': req.body.product_id},{$inc : {no_of_orders: 1} , $inc: {inventory: -(reqOrder.quantity/2)}})
+    .then(recievedProduct => {
       console.log(recievedProduct);
       sellerId = recievedProduct.user_id; // serviceProvider id
-      if (err) return handleError(err => {
-        console.log(err);
-        res.status(500).json({
-          message: 'Error occured while placing Order! Please Retry!'
-        });
-      });
-  }).then( () => {
+
     // get customer name
-    EventPlanner.findOne({'user_id': req.userData.user_id}, function (err, recievedPlanner) {
+    EventPlanner.findOne({'user_id': req.userData.user_id}).then( (recievedPlanner) =>  {
       console.log(recievedPlanner);
+      // set customer data
       reqOrder.user = {
         'user_id':req.userData.user_id,
         'email': recievedPlanner.email,
         'name': recievedPlanner.first_name + ' ' + recievedPlanner.last_name
-      }
-      if (err) return handleError(err => {
-        console.log(err);
-        res.status(500).json({
-          message: 'Error occured while placing Order! Please Retry!'
-        });
-      });
-      }).then(() => {
-        Merchant.findOne({'user_id': sellerId}, function (err, recievedMerchant){
+      };
+        // find seller data
+        Merchant.findOne({'user_id': sellerId}).then( (recievedMerchant) => {
           reqOrder.seller = {
             'seller_id':sellerId,
             'email': recievedMerchant.email,
             'name': recievedMerchant.first_name + ' ' + recievedMerchant.last_name
-          }
-          if (err) return handleError(err => {
-            console.log(err);
-            res.status(500).json({
-              message: 'Error occured while placing Order! Please Retry!'
-            });
-          });
+          };
+          // create mail
           const mail= {
             email:recievedMerchant.email,
             subject: "New Order on " + req.body.product,
             html: createHTML(req.body)
-          }
+          };
           console.log(mail);
           const newOrder = new Order(reqOrder);
           console.log(' final order ', newOrder);
@@ -286,26 +265,36 @@ product.post('/order/add',checkAuth, (req, res, next) => {
                 message: 'Order created successfully!',
                 orderId: result.order_id // booking id as result
               });
-            });
-      });
+            }).catch (err => {
+              console.log('then 5 ', err);
+              res.status(500).json({
+                message: 'Error occured while placing Order! Please Retry!'
+              });
+          });
       }).catch (err => {
-        console.log('then 2 ', err);
+        console.log('then 4 ', err);
         res.status(500).json({
           message: 'Error occured while placing Order! Please Retry!'
         });
       }); // then 3
-    }).catch (err => {
-      console.log('then 2 ', err);
-      res.status(500).json({
-        message: 'Error occured while placing Order! Please Retry!'
-      });
-    }); // then 3
  }).catch (err => {
-   console.log('then 1 ', err);
+   console.log('then 3 ', err);
    res.status(500).json({
     message: 'Error occured while placing Order! Please Retry!'
   });
  });
+}).catch (err => {
+  console.log('then 2 ', err);
+  res.status(500).json({
+   message: 'Error occured while placing Order! Please Retry!'
+ });
+});
+}).catch (err => {
+  console.log('then 1 ', err);
+  res.status(500).json({
+   message: 'Error occured while placing Order! Please Retry!'
+ });
+});
 });
 
 

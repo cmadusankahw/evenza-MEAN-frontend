@@ -316,7 +316,7 @@
     Go Back
   </button>
   <button class="btn btn-md" mdbBtn mdbWavesEffect color="primary"
-  (click) = "sendEmail('Your Appointment on ' + appointment.service_name)" (click)="printData()">
+  (click) = "sendEmail('Your Appointment on ' + appointment.service_name)" (click)="printIt('content', 'Appointment')">
     Print Note
   </button>
   </div>
@@ -326,7 +326,7 @@
       Go Back
     </button>
     <button class="btn btn-md" mdbBtn mdbWavesEffect color="primary"
-     (click) = "sendEmail('Your Booking on ' + booking.service_name)" (click)="printData()">
+     (click) = "sendEmail('Your Booking on ' + booking.service_name)" (click)="printIt('content','Booking')">
       Print Note
     </button>
     </div>
@@ -337,7 +337,7 @@
       Go Back
     </button>
     <button class="btn btn-md" mdbBtn mdbWavesEffect color="primary"
-     (click) = "sendEmail('Your Order on ' + order.product)" (click)="printData()">
+     (click) = "sendEmail('Your Order on ' + order.product)" (click)="printIt('content', 'Order')">
       Print Reciept
     </button>
     </div>

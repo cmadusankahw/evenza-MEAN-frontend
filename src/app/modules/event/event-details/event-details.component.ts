@@ -69,6 +69,10 @@ export class EventDetailsComponent implements OnInit, OnDestroy {
 
   }
 
+  // publish the event
+  publishEvent(eventId: string){
+    this.eventService.publishEvent(eventId);
+  }
 
 
 }

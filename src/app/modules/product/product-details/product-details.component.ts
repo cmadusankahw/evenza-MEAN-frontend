@@ -177,6 +177,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         availability: this.product.availability,
         inventory:  updateProductForm.value.inventory,
         rating: this.product.rating,
+        reviews: this.product.reviews,
         no_of_ratings: this.product.no_of_ratings,
         no_of_orders: this.product.no_of_orders,
         delivery_service: updateProductForm.value.delivery_service,

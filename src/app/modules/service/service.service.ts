@@ -296,6 +296,14 @@ export class ServiceService  {
     });
   }
 
+    // rating a product
+    rateService(id: string, rate: number, review: string) {
+      this.http.post<{ message: string }>(this.url + 'service/rating/add', {id,  rate, review})
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+    });
+    }
 
   // create new booking
   createBooking(booking: Booking) {

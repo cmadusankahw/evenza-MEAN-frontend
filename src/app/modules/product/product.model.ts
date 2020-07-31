@@ -11,6 +11,7 @@ export interface Product {
   availability: boolean;
   inventory: number;
   rating: number;
+  reviews: Review[];
   no_of_ratings: number;
   no_of_orders: number;
   delivery_service: string; // fk
@@ -76,4 +77,10 @@ export interface Order {
   delivery_service: DeliveryService; // retrived from product.delivery_service
   // seller
   // user
+}
+
+export interface Review{
+  user: string;
+  rating: number;
+  review: string;
 }

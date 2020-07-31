@@ -85,6 +85,8 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   // recieved service (initial declaration)
   service: Service ;
 
+  tday = new Date();
+
 
   constructor(private router: Router,
               public serviceService: ServiceService,
@@ -157,6 +159,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
         available_booking: this.service.available_booking,
         available_appoints: this.service.available_appoints,
         rating: this.service.rating,
+        reviews: this.service.reviews,
         no_of_ratings: this.service.no_of_ratings,
         no_of_bookings: this.service.no_of_bookings,
         no_of_appoints: this.service.no_of_appoints,

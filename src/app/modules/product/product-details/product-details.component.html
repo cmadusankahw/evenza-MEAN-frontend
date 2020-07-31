@@ -114,6 +114,25 @@
       </div>
 
       <hr>
+      <div class="rating-reviews container-fluid" *ngIf="product.reviews.length">
+        <hspan class="notify"><b>  <mdb-icon fas icon="bookmark"> </mdb-icon>  What others tell about {{ product.product}}...</b></hspan>
+        <br>
+        <div class="review" *ngFor ="let s of product.reviews">
+          <div class="row">
+            <div class="col-md-9">
+              <p style="font-weight:bold;"> <span style="color:darkmagenta;"><mdb-icon fas icon="grin-alt"> </mdb-icon></span> <b> {{ s.user}}</b></p>
+            </div>
+            <div class="col-md-3" style="text-align:right;">
+              <ngb-rating [rate]="s.rating" max="5" >
+                <ng-template let-fill="fill" let-index="index">
+                  <span class="star2" [class.filled]="fill === 100">&#9733;</span>
+                </ng-template>
+              </ngb-rating>
+            </div>
+          </div>
+          <p style="padding-left:15px;">{{s.review}}</p>
+        </div>
+      </div>
 
 </div>
 

@@ -142,7 +142,7 @@
                   </div>
                   <div class="btns" *ngIf="!service.booking_id && !service.appoint_id">
                     <button class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary"
-                    routerLink="/planner/services/{{service.service_id}}" (click)="emitService(event.event_id)">
+                    routerLink="/planner/services/{{service.service_id}}" (click)="emitEvent(event.event_id)">
                       Book Now
                     </button>
                   </div>
@@ -247,7 +247,7 @@
                   <mat-icon>  </mat-icon>
                   <div class="btns">
                     <button class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary"
-                    routerLink="/planner/services" (click)="emitServices(service.category, getAllocation(service.precentage))">
+                    routerLink="/planner/services" (click)="emitItems(service.category, getAllocation(service.precentage),event.event_id)">
                       Select Service
                     </button>
                   </div>
@@ -301,7 +301,7 @@
       <div class="drag-box drag-create">
         <div class="create-service-btn">
           <a routerLink="/planner/event/services/{{eventId}}"
-          (click)="emitServices(event.total_budget-spentBudget)">
+          (click)="emitItems(event.total_budget-spentBudget)">
           <mdb-icon fas icon="plus-circle"> </mdb-icon> Assign New Service
           </a>
         </div>
@@ -340,7 +340,7 @@
                   </div>
                   <div class="btns" *ngIf="!p.order_id">
                     <button class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary"
-                    routerLink="/planner/event/products/{{eventId}}" (click)="emitProduct(event.event_id)">
+                    routerLink="/planner/event/products/{{eventId}}" (click)="emitEvent(event.event_id)">
                       Order Now
                     </button>
                   </div>
@@ -441,7 +441,7 @@
                     <mat-icon>  </mat-icon>
                     <div class="btns">
                       <button class="btn btn-sm" mdbBtn mdbWavesEffect color="primary"
-                      routerLink="/planner/services" (click)="emitServices(product.category, getAllocation(product.precentage))">
+                      routerLink="/planner/services" (click)="emitItems(product.category, getAllocation(product.precentage), event.event_id)">
                         Select Product
                       </button>
                     </div>
@@ -495,7 +495,7 @@
       <div class="drag-box drag-create">
         <div class="create-service-btn">
           <a routerLink="/planner/event/products/{{eventId}}"
-          (click)="emitProducts(event.total_budget-spentBudget)">
+          (click)="emitItems(event.total_budget-spentBudget)">
           <mdb-icon fas icon="plus-circle"> </mdb-icon> Add New Product
           </a>
         </div>

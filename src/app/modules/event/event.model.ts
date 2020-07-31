@@ -143,6 +143,13 @@ export interface ScheduleAlert {
   state: string; // critical - less than 3 hrs, modarate - today, neutral -within 3 days
 }
 
+export interface Filteration {
+ // location: BusinessLocation;
+  eventId: string;
+  allocated_budget: number;
+  category: string;
+}
+
 export function refactorDate(date: Date, time: {hour: number, minute: number}): string {
   let ISODate = date.toISOString();
   let timeString = '';

@@ -13,8 +13,8 @@
     </button>
     <h5><b> {{al.heading}} </b></h5>
     {{al.message.slice(0,25) + '..'}}<br>
-    <span *ngIf="al.state == 'info'"> <b>Within 3 Days..</b></span>
-    <span style="color:darkred;" *ngIf="al.state == 'warning'"> <b>Less than a Day!</b></span>
+    <span *ngIf="al.state == 'secondary'"> <b>Within 3 Days..</b></span>
+    <span style="color:darkred;" *ngIf="al.state == 'info'"> <b>Less than a Day!</b></span>
     <span style="color:red;" *ngIf="al.state == 'danger'"> <b>Within 3 hours!</b></span>
     <div class="text-right">
         <mdb-icon fas icon="bell"></mdb-icon> {{al.date.slice(0,10) + ' ' + al.date.slice(11,16)}}

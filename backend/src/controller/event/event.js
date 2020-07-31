@@ -381,7 +381,8 @@ event.get('/confirm/:id', (req, res, next) => {
      }
     };
     Event.updateOne({event_id: idS[1]},{
-      'participants.participants': pars
+      'participants.participants': pars,
+      $inc : { 'participants.approved_participants' : 1}
     }).then( (updatedResult) => {
       console.log(updatedResult);
       res.status(200).json({ message: "Your participation successfully confirmed!" });
@@ -417,7 +418,7 @@ event.get('/get/alerts/:id', (req, res, next) => {
 
       // date comparisons by hours
       if( hours> 0){
-        if  (hours < 6) {
+        if  (hours < 3) {
           sendAlerts.push({
             id: doc.task_id,
             heading: doc.title,
@@ -431,7 +432,7 @@ event.get('/get/alerts/:id', (req, res, next) => {
             heading: doc.title,
             message: doc.description,
             date: doc.scheduled_from_date,
-            state: "warning"
+            state: "info"
           });
         } else if (hours < 72) {
           sendAlerts.push({
@@ -439,7 +440,7 @@ event.get('/get/alerts/:id', (req, res, next) => {
             heading: doc.title,
             message: doc.description,
             date: doc.scheduled_from_date,
-            state: "info"
+            state: "secondary"
           });
         }
       // creating alert

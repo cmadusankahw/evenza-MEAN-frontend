@@ -346,14 +346,12 @@ id="frameModalTop" tabindex="-1" role="dialog"
 
           <!--Body-->
           <div class="modal-body">
-            <div class="row container-fluid">
               <img src="./assets/images/info/publish.jpg" style="width:100%">
-            </div>
           </div>
 
           <!--Footer-->
           <div class="modal-footer justify-content-center">
-            <a type="button" mdbBtn color="info" class="waves-effect"
+            <a type="button" mdbBtn color="info" class="waves-effect" (click)="publishEvent(eventId)"
             (click)="publishModal.hide()"
             mdbWavesEffect>Proceed Publish
               <mdb-btn far icon="ban" class="ml-1"></mdb-btn>

@@ -65,40 +65,38 @@ eventPlanner.post('/add/img',checkAuth, multer({storage:storage}).array("images[
 
 // submit a review for booking
 eventPlanner.post('/booking/review/:id',checkAuth, (req, res, next) => {
-  Booking.findOneAndUpdate({'booking_id': req.params.id},{'review':req.body.msg},function (err, booking) {
+  Booking.findOneAndUpdate({'booking_id': req.params.id},{'review':req.body.msg}).then( (booking) => {
     console.log(booking);
-    if (err) return handleError(err => {
-      console.log(err);
-      res.status(500).json(
-        { message: 'Booking not Found! Review was not added!'}
-        );
-    });
     res.status(200).json(
       {
         message: 'Your booking reviewed Successfully!',
         review: booking.review
       }
     );
-  });
+  }).catch( (err) => {
+    console.log(err);
+    res.status(500).json(
+      { message: 'Booking not Found! Review was not added!'}
+      );
+  })
 });
 
 // submit a review for booking
 eventPlanner.post('/order/review/:id',checkAuth, (req, res, next) => {
-  Order.findOneAndUpdate({'order_id': req.params.id},{'review':req.body.msg},function (err, order) {
+  Order.findOneAndUpdate({'order_id': req.params.id},{'review':req.body.msg}).then( (order) => {
     console.log(order);
-    if (err) return handleError(err => {
-      console.log(err);
-      res.status(500).json(
-        { message: 'Order not Found! Review was not added!'}
-        );
-    });
     res.status(200).json(
       {
         message: 'Your Order reviewed Successfully!',
         review: order.review
       }
     );
-  });
+  }).catch((err) => {
+    console.log(err);
+    res.status(500).json(
+      { message: 'Order not Found! Review was not added!'}
+      );
+  })
 });
 
 

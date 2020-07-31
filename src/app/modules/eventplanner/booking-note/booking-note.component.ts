@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import {Location} from '@angular/common';
 
 import { EventPlannerService } from '../eventplanner.service';
-import { Booking, Appointment, Email, Order } from '../eventplanner.model';
+import { Booking, Appointment, Email, Order, printData } from '../eventplanner.model';
 
 
 @Component({
@@ -31,6 +31,7 @@ export class BookingNoteComponent implements OnInit, OnDestroy {
 
   // recieved order
   order: Order;
+
 
   constructor(private eventPlannerService: EventPlannerService,
               private route: ActivatedRoute,
@@ -80,24 +81,10 @@ export class BookingNoteComponent implements OnInit, OnDestroy {
     this.appointment = undefined;
   }
 
-  // print the document
-  public printData() {
-    const data = document.getElementById('content');
-    html2canvas(data).then(canvas => {
-      // Few necessary setting options
-      const imgWidth = 208;
-      const pageHeight = 295;
-      const imgHeight = canvas.height * imgWidth / canvas.width;
-      const heightLeft = imgHeight;
-
-      const contentDataURL = canvas.toDataURL('images/print/');
-      const pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
-      const position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-      const today = new Date().toISOString();
-      pdf.save('Note_' + today + '.pdf'); // Generated PDF
-    });
+  printIt(content: string, type: string){
+    printData(content, type);
   }
+
 
   // sending relavant emails
   sendEmail(subjectString: string) {

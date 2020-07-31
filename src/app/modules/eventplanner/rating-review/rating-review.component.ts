@@ -3,6 +3,8 @@ import { Router, NavigationEnd } from '@angular/router';
 
 import { Product } from '../../product/product.model';
 import { Service } from '../../service/service.model';
+import { ProductService } from '../../product/product.service';
+import { ServiceService } from '../../service/service.service';
 
 
 @Component({
@@ -19,23 +21,21 @@ export class RatingReviewComponent implements OnInit, OnDestroy {
   @Input() id: string;
 
   // recieve product or service
-  recievedProduct: Product;
+  @Input() recievedProduct: string;
 
-  recievedService: Service;
+  @Input() recievedService: string;
 
   // initial rating
   rating = 0;
 
+  // review message
+  reviewMsg = '';
+
   additionalRatingVal = 0;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private productServie: ProductService, private serviceService: ServiceService) { }
 
   ngOnInit() {
-    if (this.type === 'product') {
-      this.getProduct(this.id);
-    } else if (this.type === 'service') {
-      this.getService(this.id);
-    }
     // router scroll
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
@@ -46,25 +46,21 @@ export class RatingReviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.submitRating(this.id, this.type, this.reviewMsg);
   }
 
-  getProduct(productId: string) {
-  }
-
-  getService(serviceId: string) {
-  }
-
-  additionalRating(rateNum: number) {
-    this.additionalRatingVal = rateNum;
-    this.submitRating();
-  }
-
-  submitRating() {
+  submitRating(id: string, type: string, review: string) {
     console.log(this.rating);
     console.log(this.additionalRatingVal);
-    console.log('changes submitted');
-
-    // update product or service rating code here
+    const rate = Math.floor(( this.rating + this.additionalRatingVal) / 2 );
+    console.log('rating: ', rate);
+    if (type === 'product') {
+      this.productServie.rateProduct(id, rate, review);
+    } else if ( type === 'service') {
+      this.serviceService.rateService(id, rate, review);
+    }
   }
+
+
 
 }

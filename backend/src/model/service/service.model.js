@@ -10,6 +10,11 @@ const serviceSchema = mongoose.Schema(
     available_booking: {type: Boolean, required: true, default: false},
     available_appoints: {type: Boolean, required: true, default: false},
     rating: {type: Number, required: true},
+    reviews: { type: [{
+      user: String,
+      rating: Number,
+      review: String
+    }]},
     no_of_ratings: {type: Number, required: true},
     no_of_bookings: {type: Number, required: true},
     no_of_appoints: {type: Number, required: true},

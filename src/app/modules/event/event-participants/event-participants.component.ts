@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TheEvent, Participant } from '../event.model';
 import { Alert } from '../event.model';
 import { NgForm } from '@angular/forms';
+import { pid } from 'process';
+import { printData } from '../../eventplanner/eventplanner.model';
 
 @Component({
   selector: 'app-event-participants',
@@ -16,26 +18,21 @@ export class EventParticipantsComponent implements OnInit, OnDestroy {
   // subscriptions
   private eventSub: Subscription;
 
-  eventId: string;
-
   event: TheEvent;
 
-  invitation: Alert = {
-    id: 'temp',
-    heading: 'Create an Event Now!',
-    message:'<h5><b>Add your event details here</b></h5>',
-    created_date:'',
-    attachments:[],
-    state:'pending',
-    type:'invitation'
-  }; // dummy content for data binding
+  eventId: string;
+
+  // invitation message temp
+  message: string = 'Start editing your invitation';
+
+  // modified invitation
+  invitation: Alert;
 
   // edit invitation
   invitationEditMode = false;
 
   // event participants
-  approvedParticipants: Participant[] = [];
-  invitedParticipants: Participant[] = [];
+  participants: Participant[] = [];
 
   constructor(private eventService: EventService, private route: ActivatedRoute, private router: Router) {
     this.eventId =  route.snapshot.params.id;
@@ -47,9 +44,10 @@ export class EventParticipantsComponent implements OnInit, OnDestroy {
     this.eventSub = this.eventService.getEventUpdatedListener()
       .subscribe((recievedData: TheEvent) => {
       this.event = recievedData;
-      if (recievedData.alerts.length){
+      this.participants = recievedData.participants.participants;
+      if (recievedData.alerts[0]) {
         this.invitation = recievedData.alerts[0];
-        this.event.qr_code = 'chiran qr';
+        this.message = recievedData.alerts[0].message;
       }
     });
   }
@@ -58,6 +56,7 @@ export class EventParticipantsComponent implements OnInit, OnDestroy {
     if (this.eventSub){
       this.eventSub.unsubscribe();
     }
+    // this.updateAll(this.participants, this.invitation, this.eventId);
   }
 
   // add a participant only to local memory
@@ -66,36 +65,35 @@ export class EventParticipantsComponent implements OnInit, OnDestroy {
       console.log(' Invalid Participant details');
     }
     const participant: Participant = {
-      participant_id: pForm.value.first_name + '_' + pForm.value.email + '_' + Math.random().toString(),
+      participant_id: pForm.value.first_name.trim().replace('_','') + (Math.floor(Math.random() * 100) + 1).toString(),
       first_name: pForm.value.first_name,
       last_name: pForm.value.last_name,
       email: pForm.value.email,
       state: 'pending'
     };
-    this.event.participants.participants.push(participant);
+    this.participants.push(participant);
+    pForm.resetForm();
   }
 
   // remove participant from the local menory
   removeParticipant(pId: string) {
-    // only if state is not-invited
+    const updatedParticipants = this.participants.filter(t => t.participant_id !== pId);
+    this.participants = updatedParticipants;
   }
 
-  sendInvitation(eventId: string, participantId: string) {
-    // this.invitation
-    // send an invitation to selected participant
+  updateInvitation(){
+    this.invitation.message = this.message;
+    this.invitationEditMode = false;
   }
 
-  updateInvitation() {
-
-    // event: this.event
-    // update or create invitation
-    // get content -> invitation String of the event
-    // event.state should be changed to 'unpublished'
+  // update all chanes at event destroy
+  updateAll(participants: Participant[], invitation: Alert, eventId: string) {
+    this.eventService.updateParticipantChanges(participants, invitation, eventId);
   }
 
-  sendUpdate(eventId: string) {
-    // this.invitation
-    // send update to all the participants
+  // print guest list
+  printGuestList(content: string, type: string){
+    printData(content, type);
   }
 
 }

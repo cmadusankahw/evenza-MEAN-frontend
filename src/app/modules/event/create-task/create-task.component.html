@@ -14,7 +14,7 @@
         <input matInput
         required
         [(ngModel)]="title"
-        name="business_contact"
+        name="task_title"
         #taskTitle="ngModel">
         <mat-error *ngIf="taskTitle.invalid">A task should given a title </mat-error>
       </mat-form-field>
@@ -30,7 +30,7 @@
         <mat-label> Enter Task Description </mat-label>
         <textarea matInput
         [(ngModel)]="description"
-        name="business_contact"
+        name="task_description"
         > </textarea>
       </mat-form-field>
     </div>
@@ -43,7 +43,7 @@
         <mat-label > From Date : </mat-label>
         <input matInput [matDatepicker]="picker1" required [min]="today"
         name="from_date" [(ngModel)]="start" #fDate="ngModel"
-        (dateChange) = "start = end "/>
+        (dateChange) = "end = start "/>
         <mat-datepicker-toggle
           matSuffix
           [for]="picker1"

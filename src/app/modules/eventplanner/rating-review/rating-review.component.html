@@ -7,10 +7,10 @@
   </div>
   <hr>
   <div class="rating-body" *ngIf="type == 'product'">
-     <h5> <b> Rate {{recievedProduct ? recievedProduct.product : 'Product'}} </b></h5>
+     <h5> <b> Rate {{recievedProduct ? recievedProduct : 'Product'}} </b></h5>
     <!--product ratings-->
     <div class="rating">
-      <ngb-rating [(rate)]="rating" max="5" (click) = "submitRating()">
+      <ngb-rating [(rate)]="rating" max="5" >
         <ng-template let-fill="fill" let-index="index">
           <span class="star" [class.filled]="fill === 100">&#9733;</span>
         </ng-template>
@@ -19,21 +19,21 @@
     <div class="row additional-ratings container-fluid">
       <div class="col">
         <button #rate1 mdbBtn mdbWavesEffect color="secondary" outline="yes" class="btn btn-md rt-btn"
-         (click) = "additionalRating(4)" [disabled] = "additionalRatingVal == 4">
+         (click) = "additionalRatingVal = 4" [disabled] = "additionalRatingVal == 4">
           Extremely Satisfied! Best experience!
         </button>
         <button #rate2 mdbBtn mdbWavesEffect color="secondary" outline="yes" class="btn btn-md rt-btn"
-        (click) = "additionalRating(2)" [disabled] = "additionalRatingVal == 2">
+        (click) = "additionalRatingVal = 2" [disabled] = "additionalRatingVal == 2">
          It's Okay. Will give another Try!
        </button>
       </div>
       <div class="col">
         <button #rate1 mdbBtn mdbWavesEffect color="secondary" outline="yes" class="btn btn-md rt-btn"
-         (click) = "additionalRating(3)" [disabled] = "additionalRatingVal == 3">
+         (click) = "additionalRatingVal = 3" [disabled] = "additionalRatingVal == 3">
           Really Good Product. Recommended!
         </button>
         <button #rate2 mdbBtn mdbWavesEffect color="secondary" outline="yes" class="btn btn-md rt-btn"
-        (click) = "additionalRating(1)" [disabled] = "additionalRatingVal == 1">
+        (click) = "additionalRatingVal = 1" [disabled] = "additionalRatingVal == 1">
          Worst! Never Recommend it to someone!
        </button>
       </div>
@@ -41,10 +41,10 @@
   </div>
 
     <div class="rating-body" *ngIf="type == 'service'">
-      <h5> <b> Rate {{recievedService ? recievedService.service_name : 'Service'}} </b></h5>
+      <h5> <b> Rate {{recievedService ? recievedService : 'Service'}} </b></h5>
      <!--product ratings-->
      <div class="rating">
-       <ngb-rating [(rate)]="rating" max="5" (click) = "submitRating()">
+       <ngb-rating [(rate)]="rating" max="5">
          <ng-template let-fill="fill" let-index="index">
            <span class="star" [class.filled]="fill === 100">&#9733;</span>
          </ng-template>
@@ -53,25 +53,34 @@
      <div class="row additional-ratings container-fluid">
        <div class="col">
          <button #rate1 mdbBtn mdbWavesEffect color="secondary" outline="yes" class="btn btn-md rt-btn"
-          (click) = "additionalRating(4)" [disabled] = "additionalRatingVal == 4">
+          (click) = "additionalRatingVal = 4" [disabled] = "additionalRatingVal == 4">
            Extremely Satisfied! Best experience!
          </button>
          <button #rate2 mdbBtn mdbWavesEffect color="secondary" outline="yes" class="btn btn-md rt-btn"
-         (click) = "additionalRating(2)" [disabled] = "additionalRatingVal == 2">
+         (click) = "additionalRatingVal = 2" [disabled] = "additionalRatingVal == 2">
           It's Okay. Will give another Try!
         </button>
        </div>
        <div class="col">
          <button #rate1 mdbBtn mdbWavesEffect color="secondary" outline="yes" class="btn btn-md rt-btn"
-          (click) = "additionalRating(3)" [disabled] = "additionalRatingVal == 3">
+          (click) = "additionalRatingVal = 3" [disabled] = "additionalRatingVal == 3">
            Served Really Well! Recommend It!
          </button>
          <button #rate2 mdbBtn mdbWavesEffect color="secondary" outline="yes" class="btn btn-md rt-btn"
-         (click) = "additionalRating(1)" [disabled] = "additionalRatingVal == 1">
+         (click) = "additionalRatingVal = 1" [disabled] = "additionalRatingVal == 1">
           Worst! Never Recommend it to someone!
         </button>
        </div>
      </div>
 </div>
-
+</div>
+<hr>
+<div class="rs">
+    <div style="text-align:left;" class="container-fluid">
+     <h5> <b> Add a Review...</b></h5>
+    <mat-form-field style="width:100%;">
+     <textarea type="text" matInput  [(ngModel)]="reviewMsg" rows="3"
+     name="reviewMsg" placeholder="Your review here..."></textarea>
+    </mat-form-field>
+    </div>
 </div>

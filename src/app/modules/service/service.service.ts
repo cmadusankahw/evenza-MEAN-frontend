@@ -296,21 +296,30 @@ export class ServiceService  {
     });
   }
 
+    // rating a product
+    rateService(id: string, rate: number, review: string) {
+      this.http.post<{ message: string }>(this.url + 'service/rating/add', {id,  rate, review})
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+    });
+    }
 
   // create new booking
   createBooking(booking: Booking) {
-          this.http.post<{ message: string, availability: boolean }>(this.url + 'service/booking/check',
-          {fromDate : booking.from_date, toDate: booking.to_date, serviceId: booking.service_id})
-          .subscribe ( availabilityState => {
-            if (availabilityState.availability) {
+   //       this.checkAvailability(booking.from_date,
+  //        booking.to_date,
+  //        booking.service_id)
+      //    .subscribe ( availabilityState => {
+      //      if (availabilityState.availability) {
               this.http.post<{ message: string, bookingId: string }>(this.url + 'service/booking/add', booking)
               .subscribe((recievedData) => {
                 console.log(recievedData.message);
                 this.router.navigate(['/print/booking/' + recievedData.bookingId]);
                 this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
             });
-            }
-          } );
+        //    }
+       //   } );
   }
 
    // create new calendar booking

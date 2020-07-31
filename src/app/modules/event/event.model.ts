@@ -136,11 +136,11 @@ export interface CalendarTask {
 }
 
 export interface ScheduleAlert {
-  type: string; // critical , modarate, neutral (red/ orange/ green)
-  title: string;
-  description: string;
+  id: string; // critical , modarate, neutral (red/ orange/ green)
+  heading: string;
+  message: string;
   date: string; // ISO date and time string
-  time_remaining: string; // critical - less than 3 hrs, modarate - today, neutral -within 3 days
+  state: string; // critical - less than 3 hrs, modarate - today, neutral -within 3 days
 }
 
 export function refactorDate(date: Date, time: {hour: number, minute: number}): string {

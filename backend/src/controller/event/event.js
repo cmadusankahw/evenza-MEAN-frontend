@@ -293,8 +293,8 @@ event.post('/tasks/add',checkAuth, (req, res, next) => {
 });
 
 
-// tupdate tasks list when closing the component ( need to add service mgmt also)
-event.post('/tasks/update',checkAuth, (req, res, next) => {
+// update tasks list when closing the component ( need to add service, product mgmt also)
+event.post('/plan/update',checkAuth, (req, res, next) => {
   console.log(req.body);
   // add updating services, products lists as well
   Event.updateOne({event_id: req.body.eventId}, {
@@ -308,6 +308,159 @@ event.post('/tasks/update',checkAuth, (req, res, next) => {
    });
 });
 
+// update tasks list when closing the component ( need to add service, product mgmt also)
+event.post('/participants/update',checkAuth, (req, res, next) => {
+  console.log(req.body);
+  // add updating services, products lists as well
+  Event.updateOne({event_id: req.body.eventId}, {
+     'participants.participants' : req.body.participants,
+     'state':'unpublished',
+     $set: { 'alerts.0': req.body.invitation}
+   }).then( result => {
+    console.log(result);
+    res.status(200).json({ message: "Changes were successfully Updated!" });
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json({ message: "Update were unsuccessfull! Please try again!" });
+   });
+});
+
+
+// update tasks list when closing the component ( need to add service, product mgmt also)
+event.post('/publish',checkAuth, (req, res, next) => {
+  console.log(req.body);
+  var event;
+  // add updating services, products lists as well
+  Event.findOne({event_id: req.body.eventId}).then( result => {
+
+      pars = result.participants.participants;
+      console.log('recieved participants: ',pars);
+      // sending mails to participants
+      for (const  doc of pars) {
+        const mail= {
+          email:doc.email,
+          subject: result.alerts[0].heading,
+          html: createHTML(result.alerts[0].message,doc.participant_id,req.body.eventId)
+        };
+        console.log( 'new Mail:' , mail);
+        sendMail(mail, () => {});
+        const index = pars.indexOf(doc);
+        pars[index].state = "invited";
+      }
+      // finally update the modified event
+      Event.updateOne({event_id: req.body.eventId},{
+        'state': "published",
+        'participants.participants': pars
+      }).then( (updatedResult) => {
+        console.log(updatedResult);
+        res.status(200).json({ message: "Event Publish was Successfull!" });
+      }).catch( err => {
+        console.log(err);
+        res.status(500).json({ message: "Event Not Publiished! Please try again!" });
+       });
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json({ message: "Event Not Publiished! Please try again!" });
+   });
+});
+
+// confirm participation
+event.get('/confirm/:id', (req, res, next) => {
+  var idS = req.params.id.split('_');
+  console.log(idS);
+  var pars;
+
+  Event.findOne({event_id: idS[1]}).then( result => {
+    pars = result.participants.participants;
+    console.log('recieved participants: ',pars);
+    // find and update confirmed participant state
+    for (const  doc of pars) {
+     if( doc.participant_id == idS[0]){
+      const index = pars.indexOf(doc);
+      pars[index].state = "accepted";
+     }
+    };
+    Event.updateOne({event_id: idS[1]},{
+      'participants.participants': pars
+    }).then( (updatedResult) => {
+      console.log(updatedResult);
+      res.status(200).json({ message: "Your participation successfully confirmed!" });
+    }).catch( err => {
+      console.log(err);
+      res.status(500).json({ message: "Confirmation Unsuccessful! Please try again!"});
+     });
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json({ message: "Confirmation Unsuccessful! Please try again!" });
+   });
+  });
+
+
+ // get task alerts
+event.get('/get/alerts/:id', (req, res, next) => {
+
+  var today = new Date();
+
+  var alerts;
+  var sendAlerts = [];
+
+  Event.findOne({event_id: req.params.id}).then( result => {
+    alerts = result.event_segments.tasks;
+    console.log('recieved tasks: ',alerts);
+    // find and update confirmed participant state
+    for (const  doc of alerts) {
+
+      // necessary date operations
+      scheduledDate = new Date(doc.scheduled_from_date);
+      var hours = Math.floor(Math.abs(today - scheduledDate) / 36e5);
+      console.log ('Difference in hours :' ,hours);
+
+      // date comparisons by hours
+      if( hours> 0){
+        if  (hours < 6) {
+          sendAlerts.push({
+            id: doc.task_id,
+            heading: doc.title,
+            message: doc.description,
+            date: doc.scheduled_from_date,
+            state: "danger"
+          });
+        } else if (hours < 24) {
+          sendAlerts.push({
+            id: doc.task_id,
+            heading: doc.title,
+            message: doc.description,
+            date: doc.scheduled_from_date,
+            state: "warning"
+          });
+        } else if (hours < 72) {
+          sendAlerts.push({
+            id: doc.task_id,
+            heading: doc.title,
+            message: doc.description,
+            date: doc.scheduled_from_date,
+            state: "info"
+          });
+        }
+      // creating alert
+
+      };
+    };
+
+    // sorting according to the date
+    sendAlerts.sort(function(a,b) {return (a.state > b.state) ? 1 : ((b.state > a.state) ? -1 : 0);} );
+
+    // send finalized alerts array to the client
+    console.log('final alerts : ',sendAlerts);
+    res.status(200).json({
+      alerts: sendAlerts,
+      message: "Alerts retrived successfully!"
+    });
+    }).catch( err => {
+      console.log(err);
+      res.status(500).json({ message: "Alerts retrival Unsuccessful! Please try again!"});
+     });
+  });
 
 
 // nodemailer send email function
@@ -338,8 +491,10 @@ async function sendMail(mail, callback) {
 }
 
 // create custom HTML
-function createHTML(content) {
-   const message = "<h3> You have new Order on " + content.event + "</h3><hr><h4>Order ID : <b> " + content.order_id + "</b></h4><h4>Date : <b> " +content.created_date.slice(0,10) + ' ' + content.created_date.slice(11,19) + " </b></h4><h4>Quantity : <b> " + content.quantity + " </b></h4><hr><div class='text-center'><p><b> Please log in to view more details.<br><br><a class='btn btn-lg' href='evenza.biz//login'>Log In</a></b></p></div>"
+function createHTML(content, pid, eventId) {
+   const message = "<h3> Invitation </h3><br> Dear Sir/Madam, <br><br>" + content
+   +"<br><br> Click below link to confirm your participation:<hr> <b> <a href='http://localhost:3000/api/event/confirm/"+ pid + '_' + eventId + "' target='_blank'> Conirm My Participation</a></br>"
+   + "<div> <hr> Thank You, <br> Your Sincere, <br><br> Event Organizer at Evenza</div>"
    return message;
   }
 

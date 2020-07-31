@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -12,6 +12,9 @@ import { EventCard } from '../event.model';
 })
 export class EventCardComponent implements OnInit {
 
+
+  @Output() eventEmiit = new EventEmitter<{eventId: string, eventName: string}>();
+
    // subscription
    private eventSub: Subscription ;
 
@@ -20,6 +23,9 @@ export class EventCardComponent implements OnInit {
 
    // event successfully sent
    success = false;
+
+   // emitting event details
+   eventDetails: {eventId: string, eventName: string};
 
 
   constructor(private router: Router,
@@ -31,9 +37,15 @@ export class EventCardComponent implements OnInit {
       .subscribe((recievedEvents: EventCard[]) => {
         if (recievedEvents) {
           this.events = recievedEvents;
+          this.eventDetails = { eventId: recievedEvents[0].event_id, eventName: recievedEvents[0].event_title};
           console.log(this.events);
         }
   });
+ }
+
+ emittEvents(){
+  this.eventEmiit.emit(this.eventDetails);
+  console.log(this.eventDetails);
  }
 
 

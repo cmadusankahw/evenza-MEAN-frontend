@@ -30,26 +30,32 @@
                 <span style="color:darkred; padding-top:20px;"><b>Spent: Rs. {{spentBudget}}</b></span><br>
                 <span style="color:darkgreen; padding-top:8px;"><b>Left: Rs. {{event.total_budget - spentBudget}}</b></span>
           </div>
+          <div class="text-center pt-1">
+            <button mdbBtn color="primary"  class="btn btn-md" (click)="updateEventChanges(tasks,eventId)">
+              Update Changes</button>
+          </div>
         </div>
       </div>
       <hr>
 
-  <div class="task-list ml-5 mr-5">
-    <div class="top-content">
-      <div class="row">
-        <div class="col-md-8">
-          <h5><b> <mdb-icon fas icon="list"> </mdb-icon> Plan event Tasks</b></h5>
-          <p style="color:gray;"> Drag tasks to rearrange order..</p>
+      <div class="task-list ml-5 mr-5">
+      <div class="top-content">
+        <div class="row">
+          <div class="col-md-9">
+            <h5><b> <mdb-icon fas icon="list"> </mdb-icon> Plan event Tasks</b></h5>
+            <p style="color:gray;"> Drag tasks to rearrange order..</p>
+          </div>
+          <div class="col-md-3" >
+            <button mdbBtn color="secondary"  class="btn btn-md" (click)="printEventPlan('content','Event_Plan')" >
+              Print event Plan</button>
+          </div>
         </div>
-        <div class="col-md-4" style="text-align:right;">
-          <button mdbBtn color="primary"  class="btn btn-md"  routerLink="/planner">
-            Update Changes</button>
-          <button mdbBtn color="secondary"  class="btn btn-md" >
-            Print event Plan</button>
-        </div>
+          <hr>
       </div>
-        <hr>
-    </div>
+      </div>
+
+<div id="content">
+  <div class="task-list ml-5 mr-5">
     <div cdkDropList class="drag-list ml-3 mr-3" (cdkDropListDropped)="drop($event)">
       <div class="drag-box" *ngFor="let task of tasks" cdkDrag>
         <mat-accordion class="example-headers-align full-width-ex">
@@ -75,7 +81,7 @@
                 </div>
                 <div class="col-md-5 info-dates">
                  <p> <b> From : {{task.scheduled_from_date.slice(0,10) }} {{task.scheduled_from_date.slice(11,16)}} <mdb-icon fas icon="calendar-alt"> </mdb-icon></b> </p>
-                 <p> <b> To : {{task.scheduled_from_date.slice(0,10) }} {{task.scheduled_from_date.slice(11,16)}} <mdb-icon fas icon="calendar-alt"> </mdb-icon></b> </p>
+                 <p> <b> To : {{task.scheduled_from_date.slice(0,10) }} {{task.scheduled_to_date.slice(11,16)}} <mdb-icon fas icon="calendar-alt"> </mdb-icon></b> </p>
                 </div>
               </div>
 
@@ -496,6 +502,7 @@
       </div>
     </div>
   </div>
+</div>
 
  </div>
 

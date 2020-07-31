@@ -95,7 +95,7 @@ export class PlannerOrdersComponent implements OnInit, OnDestroy {
 
   // submit a review for an order
   submitReview(bookingId: string, review: string) {
-    this.eventPlannerService.submitReview(bookingId, review, 'booking');
+    this.eventPlannerService.submitReview(bookingId, review, 'order');
   }
 
 }

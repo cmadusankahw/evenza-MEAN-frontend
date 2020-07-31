@@ -115,7 +115,6 @@ import { EventplannerDashAppointmentsComponent } from './modules/eventplanner/ev
 import { EventplannerDashOrdersComponent } from './modules/eventplanner/eventplannerdash/pages/eventplanner-dash-orders/eventplanner-dash-orders.component';
 import { EventplannerDashParticipantsComponent } from './modules/eventplanner/eventplannerdash/pages/eventplanner-dash-participants/eventplanner-dash-participants.component';
 import { EventplannerDashProfileComponent } from './modules/eventplanner/eventplannerdash/pages/eventplanner-dash-profile/eventplanner-dash-profile.component';
-import { PlannerNotificationsComponent } from './modules/eventplanner/planner-notifications/planner-notifications.component';
 import { EventDetailsComponent } from './modules/event/event-details/event-details.component';
 import { PlannerBookingsComponent } from './modules/eventplanner/planner-bookings/planner-bookings.component';
 import { PlannerAppointsComponent } from './modules/eventplanner/planner-appoints/planner-appoints.component';
@@ -154,6 +153,7 @@ import { ServiceProductCategoriesComponent } from './modules/admin/service-produ
 import { EventCatgoriesComponent } from './modules/admin/event-catgories/event-catgories.component';
 import { AdminIdverifyComponent } from './modules/admin/admin-idverify/admin-idverify.component';
 import { AdminBusinessverifyComponent } from './modules/admin/admin-businessverify/admin-businessverify.component';
+import { EventNotificationComponent } from './modules/event/event-notification/event-notification.component';
 
 
 
@@ -229,7 +229,6 @@ import { AdminBusinessverifyComponent } from './modules/admin/admin-businessveri
     EventplannerDashOrdersComponent,
     EventplannerDashParticipantsComponent,
     EventplannerDashProfileComponent,
-    PlannerNotificationsComponent,
     EventDetailsComponent,
     PlannerBookingsComponent,
     PlannerAppointsComponent,
@@ -268,6 +267,7 @@ import { AdminBusinessverifyComponent } from './modules/admin/admin-businessveri
     EventCatgoriesComponent,
     AdminIdverifyComponent,
     AdminBusinessverifyComponent,
+    EventNotificationComponent,
 
 
 

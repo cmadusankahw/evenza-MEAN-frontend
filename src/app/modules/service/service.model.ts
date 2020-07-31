@@ -7,6 +7,7 @@ export interface Service {
   available_booking: boolean;
   available_appoints: boolean;
   rating: number;
+  reviews: Review[];
   no_of_ratings: number;
   no_of_bookings: number;
   no_of_appoints: number;
@@ -77,4 +78,10 @@ export interface Appointment {
   comment: string;
   // serviceProvider
   // user
+}
+
+export interface Review{
+  user: string;
+  rating: number;
+  review: string;
 }

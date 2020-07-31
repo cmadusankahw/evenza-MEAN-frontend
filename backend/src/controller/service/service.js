@@ -266,7 +266,7 @@ service.post('/booking/add',checkAuth, (req, res, next) => {
   let serviceProviderId;
 
   // generate id
-  Booking.find(function (err, bookings) {
+  Booking.find().select('booking_id').then( (bookings) => {
     if(bookings.length){
       lastid = bookings[bookings.length-1].booking_id;
     } else {
@@ -277,85 +277,71 @@ service.post('/booking/add',checkAuth, (req, res, next) => {
     lastid = 'B' + mId.toString();
     console.log(lastid);
     reqBooking['booking_id']= lastid; // last id
-    if (err) return handleError(err => {
-      console.log(err);
-      res.status(500).json({
-        message: 'Error occured while generating booking Id! Please Retry!'
-      });
-    });
-  }).then( () => {
+
     // get service provider id and incrementing no_of_bookings
-    Service.findOneAndUpdate({'service_id': req.body.service_id},{$inc : {'no_of_bookings':1} },function (err, recievedService) {
-      console.log(recievedService);
-      serviceProviderId = recievedService.user_id; // serviceProvider id
-      if (err) return handleError(err => {
-        console.log(err);
-        res.status(500).json({
-          message: 'Error occured while creating Booking! Please Retry!'
-        });
-      });
-  }).then( () => {
+    Service.findOneAndUpdate({'service_id': req.body.service_id},{$inc : {'no_of_bookings':1} }).then( (recievedService) => {
+    console.log(recievedService);
+    serviceProviderId = recievedService.user_id
     // get customer name
-    EventPlanner.findOne({'user_id': req.userData.user_id}, function (err, recievedPlanner) {
-      console.log(recievedPlanner);
-      reqBooking.user = {
-        'user_id':req.userData.user_id,
-        'email': recievedPlanner.email,
-        'name': recievedPlanner.first_name + ' ' + recievedPlanner.last_name
-      }
-      if (err) return handleError(err => {
-        console.log(err);
-        res.status(500).json({
-          message: 'Error occured while creating Booking! Please Retry!'
-        });
-      });
-      }).then(()=>{
-        Merchant.findOne({'user_id': serviceProviderId}, function (err, recievedMerchant){
-             reqBooking.serviceProvider = {
+    EventPlanner.findOne({'user_id': req.userData.user_id} ).then((recievedPlanner)=>{
+        console.log(recievedPlanner);
+        reqBooking.user = {
+          'user_id':req.userData.user_id,
+          'email': recievedPlanner.email,
+          'name': recievedPlanner.first_name + ' ' + recievedPlanner.last_name
+        }
+        // get service Provider details
+        Merchant.findOne({'user_id': serviceProviderId}).then( (recievedMerchant) => {
+          reqBooking.serviceProvider = {
             'serviceProvider_id':serviceProviderId,
             'email': recievedMerchant.email,
             'name': recievedMerchant.first_name + ' ' + recievedMerchant.last_name
-          }
-          if (err) return handleError(err => {
-            console.log(err);
-            res.status(500).json({
-              message: 'Error occured while creating Booking! Please Retry!'
-            });
-          });
+          };
           const mail= {
             email:recievedMerchant.email,
             subject: "New Booking on " + req.body.service_name,
             html: createHTML('Booking',req.body)
-          }
+          };
           console.log(mail);
           const newBooking = new Booking(reqBooking);
           console.log(' final booking ', newBooking);
+          // save booking
           newBooking.save().then(result => {
             sendMail(mail, () => {});
             res.status(200).json({
                 message: 'Booking created successfully!',
                 bookingId: result.booking_id // booking id as result
             });
+          }).catch (err => {
+            console.log('then 5', err);
+            res.status(500).json({
+              message: 'Error occured while creating Booking! Please Retry!'
+            });
           });
-         });
       }).catch (err => {
-      console.log('then 2 ', err);
+      console.log('then 4 ', err);
       res.status(500).json({
         message: 'Error occured while creating Booking! Please Retry!'
       });
     });
     }).catch (err => {
-      console.log('then 2 ', err);
+      console.log('then 3 ', err);
       res.status(500).json({
         message: 'Error occured while creating Booking! Please Retry!'
       });
     }); // then 3
  }).catch (err => {
-   console.log('then 1 ', err);
+   console.log('then 2 ', err);
    res.status(500).json({
     message: 'Error occured while creating Booking! Please Retry!'
   });
  });
+}).catch (err => {
+  console.log('then 1 ', err);
+  res.status(500).json({
+   message: 'Error occured while creating Booking! Please Retry!'
+ });
+});
 });
 
 
@@ -364,7 +350,7 @@ service.post('/calbooking/add',checkAuth, (req, res, next) => {
   var lastid;
   let reqBooking = req.body;
   // generate id
-  Booking.find(function (err, bookings) {
+  Booking.find().select('booking_id').then( (bookings) => {
     if(bookings.length){
       lastid = bookings[bookings.length-1].booking_id;
     } else {
@@ -375,25 +361,28 @@ service.post('/calbooking/add',checkAuth, (req, res, next) => {
     lastid = 'B' + mId.toString();
     console.log(lastid);
     reqBooking['booking_id']= lastid; // last id
-    if (err) return handleError(err => {
-      console.log(err);
-      res.status(500).json({
-        message: 'Error occured while generating booking Id! Please Retry!'
-      });
-    });
-  }).then( () => {
+    // creating the user and service provider
     reqBooking['user'] = {user_id:'', email:'' ,name: ''};
     reqBooking['serviceProvider'] = {
       serviceProvider_id : req.userData.user_id,
       email: req.userData.email,
       name: null
     };
+
+    // finalized booking
     const newBooking = new Booking(reqBooking);
     console.log(' final booking ', newBooking);
+
+    // save booking
     newBooking.save().then(result => {
       res.status(200).json({
           message: 'Booking created successfully!',
           bookingId: result.booking_id // booking id as result
+      });
+    }).catch (err => {
+      console.log('then 2 ', err);
+      res.status(500).json({
+        message: 'Error occured while creating Booking! Please Retry!'
       });
     });
   }).catch (err => {
@@ -412,8 +401,9 @@ service.post('/appoint/add',checkAuth, (req, res, next) => {
   var lastid;
   let reqAppoint = req.body;
   let serviceProviderId;
+
   // generate id
-  Appointment.find(function (err, appoints) {
+  Appointment.find().select('appoint_id').then( (appoints) => {
     if(appoints.length){
       lastid = appoints[appoints.length-1].appoint_id;
     } else {
@@ -424,52 +414,29 @@ service.post('/appoint/add',checkAuth, (req, res, next) => {
     lastid = 'A' + mId.toString();
     console.log(lastid);
     reqAppoint['appoint_id']= lastid; // last id
-    if (err) return handleError(err => {
-      console.log(err);
-      res.status(500).json({
-        message: 'Error occured while generating Appointment Id! Please Retry!'
-      });
-    });
-  }).then( () => {
+
     // get service provider id and incrementing no_of_appoints
-    Service.findOneAndUpdate({'service_id': req.body.service_id},{$inc : {'no_of_appoints':1} },function (err, recievedService) {
+    Service.findOneAndUpdate({'service_id': req.body.service_id},{$inc : {'no_of_appoints':1} }).then ((recievedService) => {
       console.log(recievedService);
       serviceProviderId = recievedService.user_id; // serviceProvider id
-      if (err) return handleError(err => {
-        console.log(err);
-        res.status(500).json({
-          message: 'Error occured while creating Appointment! Please Retry!'
-        });
-      });
-  }).then( () => {
-    // get customer name
-    EventPlanner.findOne({'user_id': req.userData.user_id}, function (err, recievedPlanner) {
+
+    // get customer data
+    EventPlanner.findOne({'user_id': req.userData.user_id}).then( (recievedPlanner) => {
       console.log(recievedPlanner);
       reqAppoint.user = {
         'user_id':req.userData.user_id,
         'email': recievedPlanner.email,
         'name': recievedPlanner.first_name + ' ' + recievedPlanner.last_name
-      }
-      if (err) return handleError(err => {
-        console.log(err);
-        res.status(500).json({
-          message: 'Error occured while creating Appointment! Please Retry!'
-        });
-      });
+      };
 
-      }).then(() => {
-        Merchant.findOne({'user_id': serviceProviderId}, function (err, recievedMerchant){
+      // get serviceProvider data
+      Merchant.findOne({'user_id': serviceProviderId}).then( (recievedMerchant) => {
           reqAppoint.serviceProvider = {
             'serviceProvider_id':serviceProviderId,
             'email': recievedMerchant.email,
             'name': recievedMerchant.first_name + ' ' + recievedMerchant.last_name
           }
-          if (err) return handleError(err => {
-            console.log(err);
-            res.status(500).json({
-              message: 'Error occured while creating Appointment! Please Retry!'
-            });
-          });
+         // creating mail
           const mail= {
             email:recievedMerchant.email,
             subject: "New Appointment on " + req.body.service_name,
@@ -478,16 +445,28 @@ service.post('/appoint/add',checkAuth, (req, res, next) => {
           console.log(mail);
           const newAppoint = new Appointment(reqAppoint);
           console.log(' final appointment ', newAppoint);
+
+          // saving final appointment
           newAppoint.save().then(result => {
             sendMail(mail, () => {});
             res.status(200).json({
                 message: 'Appointment created successfully!',
                 appointId: result.appoint_id // booking id as result
             });
+          }).catch (err => {
+            console.log('then 5 ', err);
+            res.status(500).json({
+              message: 'Error occured while creating Appointment! Please Retry!'
+            });
           });
-         });
+         }).catch (err => {
+          console.log('then 4 ', err);
+          res.status(500).json({
+            message: 'Error occured while creating Appointment! Please Retry!'
+          });
+        });
       }).catch (err => {
-        console.log('then 2 ', err);
+        console.log('then 3 ', err);
         res.status(500).json({
           message: 'Error occured while creating Appointment! Please Retry!'
         });
@@ -497,13 +476,45 @@ service.post('/appoint/add',checkAuth, (req, res, next) => {
       res.status(500).json({
         message: 'Error occured while creating Appointment! Please Retry!'
       });
-    }); // then 3
+    });
  }).catch (err => {
    console.log('then 1 ', err);
    res.status(500).json({
     message: 'Error occured while creating Appointment! Please Retry!'
   });
  });
+});
+
+// add a rating to a service
+service.post('/rating/add',checkAuth, (req, res, next) => {
+  var finalRate = 1/ req.body.rate;
+  var nameQuery = EventPlanner.findOne({user_id: req.userData.user_id}).select('first_name last_name');
+
+  nameQuery.exec().then( (result) => {
+    Service.findOneAndUpdate({ service_id: req.body.id },{
+      $push: {reviews: {
+        user: result.first_name + ' ' + result.last_name,
+        rating: req.body.rate,
+        review: req.body.review,
+      }},
+      $inc: {rating: finalRate }
+    }).then( (result) => {
+      console.log(result);
+      res.status(200).json(
+        {
+          message: 'Rating was Successfull! thanks for contributing!',
+        }
+      );
+  }).catch( (err) => {
+    res.status(500).json(
+      { message: 'Rating unsuccessfull! Please try again'}
+      );
+  });
+  }).catch( (err) => {
+    res.status(500).json(
+      { message: 'Rating unsuccessfull! Please try again'}
+      );
+  })
 });
 
 
@@ -664,7 +675,7 @@ function createHTML(mailType,content) {
     content.appoint_id
     + "</b></h4><h4>Appointed Date : <b> " +
    content.appointed_date.slice(0,10)
-    + " </b></h4><h4>Appointed Time : <b> " + content.appointed_time.hour + ':' + content.appointed_time.minute + " Hrs </b></h4><hr><div class='text-center'><p><b> Please log in to view more details.<br><br><a class='btn btn-lg' href='evenza.biz//login'>Log In</a></b></p></div>"
+    + " </b></h4><h4>Appointed Time : <b> " + content.appointed_date.slice(11,16) + " Hrs </b></h4><hr><div class='text-center'><p><b> Please log in to view more details.<br><br><a class='btn btn-lg' href='evenza.biz//login'>Log In</a></b></p></div>"
    return message;
   }
 

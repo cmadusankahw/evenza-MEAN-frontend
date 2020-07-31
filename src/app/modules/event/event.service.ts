@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
 
 
-import { TheEvent, EventCategory, EventCard, Task } from './event.model';
+import { TheEvent, EventCategory, EventCard, Task, Participant, Alert, ScheduleAlert } from './event.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 
 
@@ -16,6 +16,7 @@ export class EventService {
   private eventUpdated = new Subject<TheEvent>();
   private eventCategoryUpdated = new Subject<EventCategory>();
   private eventCategoriesUpdated = new Subject<EventCategory[]>();
+  private alertsUpdated = new Subject<ScheduleAlert[]>();
 
   // api url (to be centralized)
   url = 'http://localhost:3000/api/';
@@ -27,6 +28,8 @@ export class EventService {
   private eventCategories: EventCategory[];
 
   private eventCategory: EventCategory;
+
+  private recievedAlerts: ScheduleAlert[];
 
 
     constructor(private router: Router,
@@ -71,8 +74,16 @@ export class EventService {
      });
     }
 
-    // event category operations
+    getAlerts(id: string) {
+      this.http.get<{ message: string, alerts: ScheduleAlert[] }>(this.url + 'event/get/alerts/' + id )
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.recievedAlerts = recievedData.alerts;
+        this.alertsUpdated.next([...this.recievedAlerts]);
+     });
+    }
 
+    // creating an evnt category
     createCategory(eventCategory: EventCategory, categoryImage: File) {
       if (categoryImage){
         const catImage = new FormData();
@@ -96,6 +107,7 @@ export class EventService {
       }
     }
 
+    // removing an event category
     removeCategory(id: string) {
       this.http.post<{ message: string }>(this.url + 'event/cat/remove',  id )
       .subscribe((recievedData) => {
@@ -103,8 +115,9 @@ export class EventService {
      });
     }
 
-    // set methods
 
+
+    // creating a new event
     createEvent(event: TheEvent, image: File) {
       if (image) {
         console.log('image uploading');
@@ -133,6 +146,7 @@ export class EventService {
       }
     }
 
+    // updating the event basic settings
     updateEvent(event: TheEvent, image: File) {
       // if budget changed in event plan event segments should be updated
       if (image) {
@@ -180,10 +194,6 @@ export class EventService {
      // this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
     }
 
-    // send an invitarion to a participant
-    sendInvitation() {
-    // this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
-    }
 
     // add new task as an event segment
     createTask(newTask: Task, eventId: string) {
@@ -192,7 +202,7 @@ export class EventService {
         this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['/planner/event/plan/'+ eventId]);
+        this.router.navigate(['/planner/event/plan/' + eventId]);
      });
     }
 
@@ -207,30 +217,44 @@ export class EventService {
      });
     }
 
-    removeTask(taskId: string, eventId: string){
-      this.http.post<{ message: string }>(this.url + 'event/tasks/remove',  taskId )
-      .subscribe((recievedData) => {
-        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
-     });
-    }
-
-    // updating all tasks on ngOnDestroy
-       // update selected task
+    // updating all tasks, service, product changes on ngOnDestroy of event_plan
     updateTasks(tasks: Task[], eventId: string) {
-        this.http.post<{ message: string }>(this.url + 'event/tasks/update', {tasks, eventId}  )
+        this.http.post<{ message: string }>(this.url + 'event/plan/update', {tasks, eventId}  )
         .subscribe((recievedData) => {
           console.log(recievedData.message);
           this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
-         // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-         // this.router.onSameUrlNavigation = 'reload';
-         // this.router.navigate(['/planner/event/plan/' + eventId]);
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate(['/planner/event/plan/' + eventId]);
        });
       }
 
+      // update all invitation, participant changess on OnDestroy of event_participants
+    updateParticipantChanges(participants: Participant[], invitation: Alert, eventId: string) {
+      this.http.post<{ message: string }>(this.url + 'event/participants/update', {participants, invitation, eventId} )
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+       // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+       // this.router.onSameUrlNavigation = 'reload';
+       // this.router.navigate(['/planner/event/plan/' + eventId]);
+     });
+    }
+
+    // publish event
+    publishEvent(eventId: string) {
+      this.http.post<{ message: string }>(this.url + 'event/publish', {eventId} )
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/planner/event/details/' + eventId]);
+     });
+    }
 
 
     // listeners
-
     getEventsUpdatedListener() {
       return this.eventsUpdated.asObservable();
     }
@@ -246,6 +270,10 @@ export class EventService {
 
     getEventCategoriesUpdatedListener() {
       return this.eventCategoriesUpdated.asObservable();
+    }
+
+    getalertsUpdatedListener() {
+      return this.alertsUpdated.asObservable();
     }
 
 }

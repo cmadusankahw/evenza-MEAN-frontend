@@ -13,6 +13,11 @@ const productSchema = mongoose.Schema(
     availability: {type: Boolean, required: true, default: false},
     inventory: {type: Number, required: true},
     rating: {type: Number, default: 0},
+    reviews: { type: [{
+      user: String,
+      rating: Number,
+      review: String
+    }]},
     no_of_ratings: {type: Number, default: 0},
     no_of_orders: {type: Number, default: 0},
     delivery_service: {type: String, required: true},

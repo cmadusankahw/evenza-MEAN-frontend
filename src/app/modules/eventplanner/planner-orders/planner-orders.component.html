@@ -239,9 +239,12 @@
                     <div class="col-md-4 info-text">
                       My Reviews
                     </div>
-                    <div class="col info-input">
-                      <textarea type="text" matInput [disabled]= "!addReview" [(ngModel)]="selectedOrder.review"
-                      name="reviewMsg" placeholder="Your review here..."></textarea>  <br>
+                    <div class="col-md-5 info-input-2">
+                      <mat-from-filed style="width:100%">
+                        <textarea type="text" matInput [disabled]= "!addReview" [(ngModel)]="selectedOrder.review"
+                        name="reviewMsg" placeholder="Your review here..."></textarea>
+                      </mat-from-filed>
+                          <br>
                       <button mdbBtn color="secondary"  class="btn  btn-sm" outline="yes" *ngIf="!addReview"
                        (click)= "addReview = !addReview">
                        <span > Add/ Edit Review </span>
@@ -254,6 +257,12 @@
                     (click)= "addReview = !addReview">
                     <span > Discard </span>
                     </button>
+                    </div>
+                    <div class="col-md-3 pt-4 text-center">
+                      <button mdbBtn color="purple" text="white" class="btn  btn-md text-center"
+                      (click)= "rateReview = !rateReview">
+                       <span > <mdb-icon fas icon="star"></mdb-icon> Rate Product </span>
+                      </button>
                     </div>
                   </div>
                 </from>
@@ -297,24 +306,17 @@
                     </div>
                   </div>
 
-                  <!--pending bookings -->
-                  <div class="info-top" >
-                  <button mdbBtn color="purple" text="white" class="btn  btn-md text-center"
-                  (click)= "rateReview = !rateReview">
-                   <span > <mdb-icon fas icon="star"></mdb-icon> Rate Product </span>
-                  </button>
 
-                </div>
 
                 </section>
 
                 <div *ngIf="rateReview">
-                  <app-rating-review [type] = "'product'" [id]= "selectedOrder.product_id"></app-rating-review>
+                  <app-rating-review [type] = "'product'" [id]= "selectedOrder.product_id" [recievedProduct] = "selectedOrder.product"></app-rating-review>
                   <hr>
                   <div class="info-top"  >
                     <button mdbBtn color="purple" text="white" class="btn  btn-md text-center"
                     (click)= "rateReview = !rateReview">
-                     <span >  Go Back </span>
+                     <span >  Rate & Go Back </span>
                     </button>
                     </div>
                 </div>

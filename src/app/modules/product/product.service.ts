@@ -277,6 +277,15 @@ export class ProductService  {
     });
   }
 
+  // rating a product
+  rateProduct(id: string, rate: number, review: string) {
+    this.http.post<{ message: string }>(this.url + 'product/rating/add', {id,  rate, review})
+    .subscribe((recievedData) => {
+      console.log(recievedData.message);
+      this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+  });
+  }
+
   // create an order
   createOrder(order: Order) {
     this.http.post<{ message: string, orderId: string }>(this.url + 'product/order/add', order)

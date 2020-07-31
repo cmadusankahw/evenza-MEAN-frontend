@@ -396,6 +396,72 @@ event.get('/confirm/:id', (req, res, next) => {
   });
 
 
+ // get task alerts
+event.get('/get/alerts/:id', (req, res, next) => {
+
+  var today = new Date();
+
+  var alerts;
+  var sendAlerts = [];
+
+  Event.findOne({event_id: req.params.id}).then( result => {
+    alerts = result.event_segments.tasks;
+    console.log('recieved tasks: ',alerts);
+    // find and update confirmed participant state
+    for (const  doc of alerts) {
+
+      // necessary date operations
+      scheduledDate = new Date(doc.scheduled_from_date);
+      var hours = Math.floor(Math.abs(today - scheduledDate) / 36e5);
+      console.log ('Difference in hours :' ,hours);
+
+      // date comparisons by hours
+      if( hours> 0){
+        if  (hours < 6) {
+          sendAlerts.push({
+            id: doc.task_id,
+            heading: doc.title,
+            message: doc.description,
+            date: doc.scheduled_from_date,
+            state: "danger"
+          });
+        } else if (hours < 24) {
+          sendAlerts.push({
+            id: doc.task_id,
+            heading: doc.title,
+            message: doc.description,
+            date: doc.scheduled_from_date,
+            state: "warning"
+          });
+        } else if (hours < 72) {
+          sendAlerts.push({
+            id: doc.task_id,
+            heading: doc.title,
+            message: doc.description,
+            date: doc.scheduled_from_date,
+            state: "info"
+          });
+        }
+      // creating alert
+
+      };
+    };
+
+    // sorting according to the date
+    sendAlerts.sort(function(a,b) {return (a.state > b.state) ? 1 : ((b.state > a.state) ? -1 : 0);} );
+
+    // send finalized alerts array to the client
+    console.log('final alerts : ',sendAlerts);
+    res.status(200).json({
+      alerts: sendAlerts,
+      message: "Alerts retrived successfully!"
+    });
+    }).catch( err => {
+      console.log(err);
+      res.status(500).json({ message: "Alerts retrival Unsuccessful! Please try again!"});
+     });
+  });
+
 
 // nodemailer send email function
 async function sendMail(mail, callback) {

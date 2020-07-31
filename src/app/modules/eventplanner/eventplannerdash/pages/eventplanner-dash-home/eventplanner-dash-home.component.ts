@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EventplannerDashHomeComponent implements OnInit {
 
+  // recieved event details
+  resEvents: {eventId: string, eventName: string};
+
   // quick Links list
   quickLinks = [
     {icon: 'calendar', caption: 'View My Events', routerLink: '/planner/events'},
@@ -20,6 +23,10 @@ export class EventplannerDashHomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  getEvents(event: any){
+    this.resEvents = event;
   }
 
 }

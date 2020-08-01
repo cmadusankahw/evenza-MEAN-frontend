@@ -62,15 +62,17 @@ event.post('/cat/img',checkAuth, multer({storage:storage}).array("images[]"), (r
 event.post('/cat/create', (req, res, next) => {
 
   var category = new EventCategories(req.body);
-  category.save().then( function (err, category) {
+  category.save().then(  (category)=> {
     console.log(category);
-    if (err) return handleError(err);
     res.status(200).json(
       {
         message: 'event category added successfully!',
       }
     );
-  });
+  }).catch((err) => {
+    console.log(err);
+    res.status(500).json({ message: "event category was not added! Please try again!" });
+  })
 });
 
 // remove event category
@@ -401,7 +403,7 @@ event.get('/confirm/:id', (req, res, next) => {
 event.get('/get/alerts/:id', (req, res, next) => {
 
   var today = new Date();
-
+  console.log('today date: ', today);
   var alerts;
   var sendAlerts = [];
 
@@ -413,7 +415,7 @@ event.get('/get/alerts/:id', (req, res, next) => {
 
       // necessary date operations
       scheduledDate = new Date(doc.scheduled_from_date);
-      var hours = Math.floor(Math.abs(today - scheduledDate) / 36e5);
+      var hours = Math.floor(-(today - scheduledDate) / 36e5);
       console.log ('Difference in hours :' ,hours);
 
       // date comparisons by hours

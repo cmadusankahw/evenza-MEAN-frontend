@@ -1,6 +1,7 @@
 const app = require("./backend/src/app");
 const debug = require("debug")("node-angular");
 const http = require("http");
+const socketIO = require('socket.io');
 
 const normalizePort = val => {
   var port = parseInt(val, 10);
@@ -49,6 +50,18 @@ app.set("port", port);
 const server = http.createServer(app);
 server.on("error", onError);
 server.on("listening", onListening);
+
+const io = socketIO(server);
+
+// use socket-io to recieve messages
+io.on('connection', (socket) => {
+  console.log('user connected');
+});
+
+io.on('new-message', (message) => {
+  console.log(message);
+  io.emit(message);
+});
 
 server.listen(port, () =>{
   console.log("Node JS Server is running on port "+ port.toString())

@@ -120,12 +120,18 @@ export class EventService {
             }
             this.http.post<{ message: string}>(this.url + 'event/cat/create',  eventCategory )
             .subscribe((recievedData) => {
+              this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+              this.router.onSameUrlNavigation = 'reload';
+              this.router.navigate(['/admin/categories']);
               this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
            });
           });
       } else {
         this.http.post<{ message: string}>(this.url + 'event/cat/create',  eventCategory )
         .subscribe((recievedData) => {
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate(['/admin/categories']);
           this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
        });
       }
@@ -135,6 +141,9 @@ export class EventService {
     removeCategory(id: string) {
       this.http.post<{ message: string }>(this.url + 'event/cat/remove',  id )
       .subscribe((recievedData) => {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/admin/categories']);
         this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
      });
     }

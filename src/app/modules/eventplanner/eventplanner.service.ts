@@ -1,12 +1,13 @@
 import { OnDestroy, Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
+import { Socket } from 'ngx-socket-io';
 
 import { Booking, Appointment, Email, Order } from '../eventplanner/eventplanner.model';
 import { SuccessComponent } from 'src/app/success/success.component';
-
+import { Message } from './message';
 
 
 
@@ -42,7 +43,8 @@ export class EventPlannerService {
 
     constructor(private router: Router,
                 public dialog: MatDialog,
-                private http: HttpClient) {}
+                private http: HttpClient,
+                private socket: Socket) {}
 
 
     // send emails
@@ -157,5 +159,19 @@ export class EventPlannerService {
     getAppointmentUpdatedListener() {
       return this.appointmentUpdated.asObservable();
     }
+
+    // socket based chat message handeling
+    public sendMessage(message) {
+      this.socket.emit('new-message', message);
+    }
+
+    // socket based chat message recoeving
+    public getMessages = () => {
+      return Observable.create((observer) => {
+              this.socket.on('new-message', (message) => {
+                  observer.next(message.message);
+              });
+      });
+  }
 
 }

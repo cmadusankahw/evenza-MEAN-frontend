@@ -40,6 +40,7 @@ import { AgmCoreModule } from '@agm/core';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { QuillModule } from 'ngx-quill';
 import { QRCodeModule } from 'angularx-qrcode';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -156,9 +157,10 @@ import { EventNotificationComponent } from './modules/event/event-notification/e
 import { EventServiceSearchComponent } from './modules/event/event-service-search/event-service-search.component';
 import { EventProductSearchComponent } from './modules/event/event-product-search/event-product-search.component';
 import { EventBudgetReportComponent } from './modules/event/event-budget-report/event-budget-report.component';
+import { PlannerChatComponent } from './modules/eventplanner/planner-chat/planner-chat.component';
 
-
-
+// socket io ocnfiguration
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 
 @NgModule({
@@ -272,6 +274,7 @@ import { EventBudgetReportComponent } from './modules/event/event-budget-report/
     EventServiceSearchComponent,
     EventProductSearchComponent,
     EventBudgetReportComponent,
+    PlannerChatComponent,
 
 
 
@@ -326,6 +329,7 @@ import { EventBudgetReportComponent } from './modules/event/event-budget-report/
     DragDropModule,
     NgbProgressbarModule,
     QRCodeModule,
+    SocketIoModule.forRoot(config),
     QuillModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyB4MIX31RUspo9HAkq90KM3W3Ltyw4UIx0',

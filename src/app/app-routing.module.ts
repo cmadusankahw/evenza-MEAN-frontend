@@ -57,6 +57,7 @@ import { TeramsConditionsComponent } from './modules/home/terams-conditions/tera
 import { EventServiceSearchComponent } from './modules/event/event-service-search/event-service-search.component';
 import { EventProductSearchComponent } from './modules/event/event-product-search/event-product-search.component';
 import { EventBudgetReportComponent } from './modules/event/event-budget-report/event-budget-report.component';
+import { PlannerChatComponent } from './modules/eventplanner/planner-chat/planner-chat.component';
 
 
 const routes: Routes = [
@@ -116,6 +117,7 @@ const routes: Routes = [
       { path: 'event/add/:id', component: AddEventComponent },
       { path: 'event/edit/:id', component: AddEventComponent },
       { path: 'services', component: EventServiceSearchComponent },
+      { path: 'chat', component: PlannerChatComponent },
       { path: 'products', component: EventProductSearchComponent },
       { path: 'service/:id', component: ServiceDetailsComponent }, // needd configuration
       { path: 'product/:id', component: ProductDetailsComponent }, // needd configuration

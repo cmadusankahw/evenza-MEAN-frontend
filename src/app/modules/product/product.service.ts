@@ -24,7 +24,6 @@ export class ProductService  {
    // to add searched products
    private seachedProducts: Product[] = [];
 
-
   // list of seller products
   private sellerProducts: Product[] = [];
 
@@ -102,9 +101,6 @@ export class ProductService  {
     });
   }
 
-
-
-
   // listners for subjects
   getProductUpdateListener() {
     return this.productUpdated.asObservable();
@@ -130,6 +126,7 @@ export class ProductService  {
   getCategoriesUpdateListener() {
     return this.categoriesUpdated.asObservable();
   }
+
 
   // crud methods
 
@@ -277,6 +274,7 @@ export class ProductService  {
     });
   }
 
+
   // rating a product
   rateProduct(id: string, rate: number, review: string) {
     this.http.post<{ message: string }>(this.url + 'product/rating/add', {id,  rate, review})
@@ -295,6 +293,31 @@ export class ProductService  {
       this.dialog.open(SuccessComponent, {data: {message: 'Order Successfull! Your Order Id: ' + recievedData.orderId}});
   });
   }
+
+
+  // create new event related booking
+  createEventOrder(order: Order) {
+
+    this.http.post<{ message: string, orderId: string }>(this.url + 'product/order/add', order)
+    .subscribe((recievedData) => {
+               console.log(recievedData.message);
+               this.http.post<{ message: string }>(this.url + 'product/order/event', {
+                event_id: order.event_id,
+                product_id: order.product_id,
+                product: order.product,
+                product_category: order.product_category,
+                order_id: recievedData.orderId,
+                allocated_budget: order.amount,
+                spent_budget: order.amount,
+                ordered_date: order.created_date,
+               })
+               .subscribe((recievedMsg) => {
+                 console.log(recievedMsg.message);
+                 this.router.navigate(['/print/order/' + recievedData.orderId]);
+                 this.dialog.open(SuccessComponent, {data: {message: 'Order Successfull! Your Order Id: ' + recievedData.orderId}});
+                });
+            });
+   }
 
 
 }

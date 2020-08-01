@@ -112,13 +112,13 @@
       </div>
 
       <hr>
+      <span class="notify"><b>  <mdb-icon fas icon="bookmark"> </mdb-icon>  What others tell about {{ service.service_name}}...</b></span>
+      <br>
       <div class="rating-reviews container-fluid" *ngIf="service.reviews.length">
-        <hspan class="notify"><b>  <mdb-icon fas icon="bookmark"> </mdb-icon>  What others tell about {{ service.service_name}}...</b></hspan>
-        <br>
-        <div class="review" *ngFor ="let s of service.reviews">
+        <div class="review shadow" *ngFor ="let s of service.reviews">
           <div class="row">
             <div class="col-md-9">
-              <p style="font-weight:bold;"> <span style="color:darkmagenta;"><mdb-icon fas icon="grin-alt"> </mdb-icon></span> <b> {{ s.user}}</b></p>
+              <p style="font-weight:bold; font-size:22px;"> <span style="color:darkmagenta;"><mdb-icon fas icon="grin-alt"> </mdb-icon></span> <b> {{ s.user}}</b></p>
             </div>
             <div class="col-md-3" style="text-align:right;">
               <ngb-rating [rate]="s.rating" max="5" >
@@ -450,7 +450,7 @@
                         <mat-label> From Date : </mat-label>
                         <input matInput [matDatepicker]="picker1" required [min]="tday"
                         name="from_date" [(ngModel)]="bookingTime.fromDate" #fDate="ngModel"
-                        (dateChange) = "dates.toDate = bookingTime.fromDate"  (dateChange)="calcPayment(service.rate_type, service.rate)"/>
+                        (dateChange) = "bookingTime.toDate = bookingTime.fromDate"  (dateChange)="calcPayment(service.rate_type, service.rate)"/>
                         <mat-datepicker-toggle
                           matSuffix
                           [for]="picker1"

@@ -5,6 +5,7 @@ const EventPlanner = require("../../model/auth/eventPlanner.model");
 const Merchant = require("../../model/auth/merchant.model");
 const Order = require ("../../model/product/order.model");
 const DeliveryService = require("../../model/product/deliveryService.model");
+const Event = require("../../model/event/event.model");
 const checkAuth = require("../../middleware/auth-check");
 const Login = require("../../../data/user/emailAuthentication.json");
 
@@ -155,7 +156,7 @@ product.delete('/edit/:id',checkAuth, (req, res, next) => {
 product.post('/search', (req, res, next) => {
 
   Product.find({product_category: req.body.category,
-                price: {$gte: req.body.minPrice},
+                price: {$lte: req.body.maxPrice},
                 pay_on_delivery:req.body.payOnDelivery,
                 rating: {$gte: req.body.userRating},
                 'availability': true,
@@ -296,6 +297,54 @@ product.post('/order/add',checkAuth, (req, res, next) => {
  });
 });
 });
+
+
+// manipulat event when creating a booking
+product.post('/order/event', (req, res, next) => {
+
+  var pCategories;
+
+  Event.findOne({ event_id : req.body.event_id})
+  .then( result => {
+    console.log(result);
+      // filter booked products from service categories
+      pCategories = result.product_categories;
+      pCategories = pCategories.filter(obj => obj.category !== req.body.product_category);
+
+      // updating the event
+       Event.updateOne({event_id: req.body.event_id},{
+          $push : {'event_segments.products' : {
+            product_id: req.body.product_id,
+            product:  req.body.product,
+            product_category:  req.body.product_category,
+            order_id:  req.body.order_id,
+            allocated_budget:  req.body.allocated_budget,
+            spent_budget:  req.body.spent_budget,
+            ordered_date:  req.body.ordered_date,
+            state: 'ordered'
+          }},
+         'product_categories': pCategories,
+          $inc: { 'total_spent_budget': req.body.spent_budget }
+       }).then( (updatedResult) => {
+         console.log(updatedResult);
+      res.status(200).json({
+        message: 'order deatils updated to the event successfully!!',
+      });
+    })
+    .catch(err=>{
+      console.log(err);
+      res.status(500).json({
+        message: 'Error occured while placing your order! Please try again!'
+      });
+    });
+}).catch(err=>{
+  console.log(err);
+  res.status(500).json({
+    message: 'Error occured while placing your order! Please try again!'
+  });
+});
+});
+
 
 // add a rating to a product
 product.post('/rating/add',checkAuth, (req, res, next) => {

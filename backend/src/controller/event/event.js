@@ -350,7 +350,7 @@ event.post('/publish',checkAuth, (req, res, next) => {
       // finally update the modified event
       Event.updateOne({event_id: req.body.eventId},{
         'state': "published",
-        'participants.participants': pars
+        'participants.participants': pars,
       }).then( (updatedResult) => {
         console.log(updatedResult);
         res.status(200).json({ message: "Event Publish was Successfull!" });

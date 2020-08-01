@@ -42,6 +42,9 @@ export class EventPlanComponent implements OnInit, OnDestroy {
   // slider configuration
   sliderColor: 'blue';
 
+  // generating today date
+  today = new Date().toISOString();
+
   constructor(private eventService: EventService, private route: ActivatedRoute) {
     this.eventId = route.snapshot.params.id;
   }
@@ -57,7 +60,6 @@ export class EventPlanComponent implements OnInit, OnDestroy {
       this.productCategories = recievedData.product_categories;
       this.serviceCategories = recievedData.service_categories;
       console.log(this.tasks);
-      this.calcSpentBudget();
     });
   }
 
@@ -71,10 +73,6 @@ export class EventPlanComponent implements OnInit, OnDestroy {
     moveItemInArray(this.tasks, event.previousIndex, event.currentIndex);
   }
 
-  calcSpentBudget(){
-    this.spentBudget += this.products.map(o => o.spent_budget).reduce((a, c) => a + c);
-    this.spentBudget += this.services.map(o => o.spent_budget).reduce((a, c) => a + c);
-  }
 
   // make task able to update
   updateTask(task: Task) {
@@ -102,14 +100,14 @@ export class EventPlanComponent implements OnInit, OnDestroy {
 
 
 
-  emitItems(budget: number, category: string, eventId: string) {
+  emitItems(category: string, budget: number, eventId: string) {
     // pass date to be used in services filter view
-    this.eventService.setSelectedFilteration({allocated_budget: budget, category, eventId});
+    this.eventService.setSelectedFilteration({category, allocated_budget: budget, eventId});
   }
 
 
   // get budget allocation
-  getAllocation(precentage: number) : number {
+  getAllocation(precentage: number): number {
    return Math.round((this.event.total_budget * precentage)/ 100);
   }
 
@@ -126,8 +124,14 @@ export class EventPlanComponent implements OnInit, OnDestroy {
     console.log(this.tasks);
   }
 
-  printEventPlan(content: string, type: string) {
-    printData(content,type);
+
+  // get the remining budget
+  showRemainingBudget(total: number, spent: number): number {
+    let output = 0;
+    if (total - spent >= 0) {
+      output = (total - spent);
+    };
+    return output;
   }
 
 }

@@ -27,45 +27,41 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   private today = new Date();
 
   // service is editable by parent comp
-  @Input() isowner = false;
-
+  @Input() public isowner = false;
   // editablity
-  @Input() editable = true;
-
+  @Input() public editable = true;
   // is logged as event planner and booking dates recieved
-  @Input() islogged = true;
-
-
-  // book now mode
-  bookUser = false;
-
-  // make appointment
-  appoint = false;
-
-  // edit mode by parent comp
-  editmode = false;
-
+  @Input() public islogged = true;
   // service removed
-  @Input() removed = false;
-
-  // total amount
-  totalAmount = 0.0;
-  payAmount = 0.0;
-
-  // booking default times time
-  duration = 0;
-
-  // appointment default date and time
-  appointment = {date: this.today, time: {hour: 8, minute: 0} };
-
+  @Input() public removed = false;
+  // recieved event ID for event related booking
+  @Input() public eventId: string;
   // booking default date and time
-  @Input() bookingTime = {fromDate: this.today,
+  @Input() public bookingTime = {fromDate: this.today,
     toDate: this.today,
     fromTime: {hour: 8, minute: 0},
     toTime: {hour: 18, minute: 0}
   };
 
- // tday = new Date();
+  // book now mode
+  public bookUser = false;
+  // make appointment
+  public appoint = false;
+  // edit mode by parent comp
+  public editmode = false;
+  // appointment default date and time
+  public appointment = {date: this.today, time: {hour: 8, minute: 0} };
+  // recieved categories
+  public categories: ServiceCategories[] = [];
+  // recieved quantities
+  public rates: ServiceRates[] = [];
+  // recieved service (initial declaration)
+  public service: Service ;
+
+  public tday = new Date();
+  public totalAmount = 0.0;
+  public payAmount = 0.0;
+  public duration = 0;
 
   // images to upload
   image01: File;
@@ -74,19 +70,6 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   image02Url: any = './assets/images/merchant/nopic.png';
   image03: File;
   image03Url: any = './assets/images/merchant/nopic.png';
-
-
-  // recieved categories
-  categories: ServiceCategories[] = [];
-
-  // recieved quantities
-  rates: ServiceRates[] = [];
-
-  // recieved service (initial declaration)
-  service: Service ;
-
-  tday = new Date();
-
 
   constructor(private router: Router,
               public serviceService: ServiceService,
@@ -115,6 +98,11 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
       }
       window.scrollTo(0, 0);
      });
+
+     // check for recieved eventId
+      if (this.eventId) {
+       console.log(this.eventId);
+      }
 
       if (this.editable === true) {
     // import categories
@@ -212,16 +200,19 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
     return newRate;
   }
 
-    // create a booking
+  // create a booking
     createBooking(bookingForm: NgForm ) {
       if (bookingForm.invalid) {
         console.log('Form Invalid');
       } else {
+        // calculating the payments
         this.calcPayment(this.service.rate_type, this.service.rate);
+
+          // create the booking object
         const booking: Booking = {
           booking_id: 'B0',
           service_id: this.service.service_id,
-          event_id: 'Not Assigned',
+          event_id: 'none',
           service_name: this.service.service_name,
           service_category: this.service.service_category,
           event_name: 'Not Assigned',
@@ -238,7 +229,14 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
           commission_due: this.totalAmount / 10,
           amount_paid: bookingForm.value.amount_paid
           };
-        this.serviceService.createBooking(booking);
+
+        // creating the booking
+        if (this.eventId) {
+          booking.event_id = this.eventId;
+          this.serviceService.createEventBooking(booking);
+        } else {
+          this.serviceService.createBooking(booking);
+        }
         this.bookUser = !this.bookUser;
         this.appoint = false;
       }
@@ -249,11 +247,14 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
       if (appointForm.invalid) {
         console.log('Form Invalid');
       } else {
+
+        // creating appointment object
         const appointment: Appointment = {
           appoint_id: 'A0',
           service_id: this.service.service_id,
           event_id: 'Not Assigned',
           service_name: this.service.service_name,
+          service_category: this.service.service_category,
           event_name: 'Not Assigned',
           business_name: this.service.business_name,
           created_date: new Date().toISOString(),
@@ -261,7 +262,14 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
           appointed_date: refactorDate(this.appointment.date, this.appointment.time),
           comment: appointForm.value.comment,
           };
-        this.serviceService.createAppointment(appointment);
+
+        // creating the appointment
+        if (this.eventId) {
+          appointment.event_id = this.eventId;
+          this.serviceService.createEventAppointment(appointment);
+        } else {
+          this.serviceService.createAppointment(appointment);
+        }
         this.appoint = false;
       }
     }

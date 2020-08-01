@@ -120,7 +120,6 @@ import { PlannerBookingsComponent } from './modules/eventplanner/planner-booking
 import { PlannerAppointsComponent } from './modules/eventplanner/planner-appoints/planner-appoints.component';
 import { PlannerOrdersComponent } from './modules/eventplanner/planner-orders/planner-orders.component';
 import { EventPlanComponent } from './modules/event/event-plan/event-plan.component';
-import { EventPlanSegmentComponent } from './modules/event/event-plan-segment/event-plan-segment.component';
 import { EventScheduleComponent } from './modules/event/event-schedule/event-schedule.component';
 import { EventParticipantsComponent } from './modules/event/event-participants/event-participants.component';
 import { PlannerProfileComponent } from './modules/eventplanner/planner-profile/planner-profile.component';
@@ -154,6 +153,9 @@ import { EventCatgoriesComponent } from './modules/admin/event-catgories/event-c
 import { AdminIdverifyComponent } from './modules/admin/admin-idverify/admin-idverify.component';
 import { AdminBusinessverifyComponent } from './modules/admin/admin-businessverify/admin-businessverify.component';
 import { EventNotificationComponent } from './modules/event/event-notification/event-notification.component';
+import { EventServiceSearchComponent } from './modules/event/event-service-search/event-service-search.component';
+import { EventProductSearchComponent } from './modules/event/event-product-search/event-product-search.component';
+import { EventBudgetReportComponent } from './modules/event/event-budget-report/event-budget-report.component';
 
 
 
@@ -234,7 +236,6 @@ import { EventNotificationComponent } from './modules/event/event-notification/e
     PlannerAppointsComponent,
     PlannerOrdersComponent,
     EventPlanComponent,
-    EventPlanSegmentComponent,
     EventScheduleComponent,
     EventParticipantsComponent,
     PlannerProfileComponent,
@@ -268,6 +269,9 @@ import { EventNotificationComponent } from './modules/event/event-notification/e
     AdminIdverifyComponent,
     AdminBusinessverifyComponent,
     EventNotificationComponent,
+    EventServiceSearchComponent,
+    EventProductSearchComponent,
+    EventBudgetReportComponent,
 
 
 

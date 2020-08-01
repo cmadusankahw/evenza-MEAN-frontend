@@ -20,27 +20,34 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   private productSub: Subscription ;
   private categorySub: Subscription ;
   private deliveryServiceSub: Subscription;
-
   // created date
   private today = new Date();
 
   // service is editable by parent comp
-  @Input() isowner = false;
-
+  @Input() public isowner = false;
   // editablity
-  @Input() editable = true;
-
+  @Input() public editable = true;
   // recived values
-  @Input() islogged: boolean;
+  @Input() public islogged: boolean;
+  // recieved eventId for event based product search
+  @Input() public eventId: string;
 
   // edit mode by parent comp
-  editmode = false;
-
+  public editmode = false;
   // product removed
-  removed = false;
-
+  public removed = false;
   // order enabled
-  orderUser = false;
+  public orderUser = false;
+  // recieved product
+  public product: Product;
+  // recieved categories
+  public categories: ProductCategories[] = [];
+  // recieved quantities
+  public quantities: QuantityTypes[] = [];
+  // delivery services
+  public deliveryServices: DeliveryService[] = [];
+  // delivery service of the product
+  public delService: DeliveryService;
 
   // images to upload
   image01: File;
@@ -49,21 +56,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   image02Url: any = './assets/images/merchant/nopic.png';
   image03: File;
   image03Url: any = './assets/images/merchant/nopic.png';
-
-  // recieved product
-  product: Product;
-
-  // recieved categories
-  categories: ProductCategories[] = [];
-
-  // recieved quantities
-  quantities: QuantityTypes[] = [];
-
-  // delivery services
-  deliveryServices: DeliveryService[] = [];
-
-  // delivery service of the product
-  delService: DeliveryService;
 
   // total amount
   totalAmount = 0.0;
@@ -105,9 +97,14 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
                   console.log(this.categories);
               });
 
-              // import quantity types
+            // import quantity types
                 this.quantities = this.productService.getQuantities();
 
+              }
+
+            // check for recieved eventId
+            if (this.eventId) {
+                console.log(this.eventId);
               }
           }
     });
@@ -140,6 +137,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         order_id: 'OR0',
         product_id: this.product.product_id,
         product: this.product.product,
+        event_id: 'none',
         qty_type: this.product.qty_type,
         product_category: this.product.product_category,
         business_name: this.product.business_name,
@@ -154,8 +152,14 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         amount_paid: orderForm.value.amount_paid,
         delivery_service: this.getDeliveryService(this.product.delivery_service)
         };
+
+      if (this.eventId) {
+          order.event_id = this.eventId;
+          this.productService.createEventOrder(order);
+      } else {
+          this.productService.createOrder(order);
+      }
       console.log(order);
-      this.productService.createOrder(order);
       this.orderUser = !this.orderUser;
     }
   }

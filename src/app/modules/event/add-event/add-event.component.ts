@@ -44,6 +44,7 @@ export class AddEventComponent implements OnInit, OnDestroy {
     to_date: this.tday.toISOString(),
     location: {lat: 0, lang: 0, homeTown: ''},
     total_budget: 0,
+    total_spent_budget: 0,
     no_of_participants: 1,
     service_categories: [],
     product_categories: [],
@@ -152,6 +153,7 @@ createEvent(eventForm : NgForm) {
         attachments: []
       }],
       total_budget: this.createdEvent.total_budget,
+      total_spent_budget: this.createdEvent.total_spent_budget,
       event_segments: {
         tasks: [],
         services: [],

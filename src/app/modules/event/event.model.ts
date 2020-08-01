@@ -16,6 +16,7 @@ export interface TheEvent {
       approved_participants: number};
   alerts: Alert[]; // invitation and other alert messages // first alet should be the invitation
   total_budget: number;
+  total_spent_budget: number;
   event_segments: {
     tasks: Task[],
     services: Service[],

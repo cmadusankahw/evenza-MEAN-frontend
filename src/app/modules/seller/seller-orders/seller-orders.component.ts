@@ -24,38 +24,22 @@ export class SellerOrdersComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  @Output() countEmit = new EventEmitter<any>();
-
   // subscription
   private orderSub: Subscription;
   private catSub: Subscription;
 
   // order types
   @Input() orderType = 'pending';
-
   // Create sample bookings
   orders: Order[] ;
-
   // recieved orders
   recievedOrders: Order[] = [];
-
   // selected order
   selectedOrder: Order;
-
   // categories
   categories: ProductCategories[] = [];
-
   // cancel message
   cancelMsg: string;
-
-  orderCounts = {
-    pendingOrders: 0,
-    completedOrders: 0,
-    cancelledOrders: 0 ,
-    pendingOrderDate: '',
-    completedOrderDate: '',
-    cancelledOrderDate: ''};
-
 
   constructor(private sellerService: SellerService,
               private productService: ProductService,
@@ -71,7 +55,6 @@ export class SellerOrdersComponent implements OnInit, OnDestroy {
               this.dataSource = new MatTableDataSource(this.addOrders(this.orders, this.orderType));
               this.dataSource.paginator = this.paginator;
               this.dataSource.sort = this.sort;
-              this.updateCount(this.orders);
            }
       });
     this.productService.getCategories();
@@ -176,33 +159,6 @@ export class SellerOrdersComponent implements OnInit, OnDestroy {
     };
     this.sellerService.sendEmail(mail);
     document.getElementById('discardBtn').click();
-  }
-
-  async updateCount(orders: Order[]) {
-    for (const order of orders) {
-     // const month = book.to_date.slice(5, 7) ;
-      if (order.state === 'pending'){
-        this.orderCounts.pendingOrders++;
-        this.orderCounts.pendingOrderDate = order.created_date.slice(0, 10);
-      }
-      if (order.state === 'delivered'){
-        this.orderCounts.completedOrders++;
-        this.orderCounts.completedOrderDate = order.created_date.slice(0, 10);
-      }
-      if (order.state === 'cancelled'){
-        this.orderCounts.cancelledOrders++;
-        this.orderCounts.cancelledOrderDate = order.created_date.slice(0, 10);
-      }
-    }
-    console.log(this.orderCounts);
-    setTimeout( () => {
-      this.setCountEmit();
-    }, 1500);
-
-  }
-
-  setCountEmit() {
-    this.countEmit.emit(this.orderCounts);
   }
 
 

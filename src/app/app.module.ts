@@ -74,7 +74,6 @@ import { BprofileComponent } from './modules/auth/business-profile/bprofile/bpro
 import { ServiceCardComponent } from './modules/service/service-card/service-card.component';
 import { EarningsComponent } from './modules/serviceprovider/earnings/earnings.component';
 import { ServiceDetailsComponent } from './modules/service/service-details/service-details.component';
-import { BusinessStatComponent } from './modules/serviceprovider/serviceprovider-dash/comps/business-stat/business-stat.component';
 import { BusinessOpenDaysComponent } from './modules/auth/business-profile/business-open-days/business-open-days.component';
 import { AppointmentsComponent } from './modules/serviceprovider/appointments/appointments.component';
 import { CalendarComponent } from './modules/serviceprovider/calendar/calendar.component';
@@ -83,7 +82,6 @@ import { MerchantProfileComponent } from './modules/auth/merchant-profile/mercha
 import { ProductCardComponent } from './modules/product/product-card/product-card.component';
 import { ContactUsComponent } from './modules/home/contact-us/contact-us.component';
 import { SellerDashboardComponent } from './modules/seller/seller-dash/seller-dashboard/seller-dashboard.component';
-import { SellerBusinessStatComponent } from './modules/seller/seller-dash/comps/seller-business-stat/seller-business-stat.component';
 import { SellerDashStatComponent } from './modules/seller/seller-dash/comps/seller-dash-stat/seller-dash-stat.component';
 import { SellerPayStatComponent } from './modules/seller/seller-dash/comps/seller-pay-stat/seller-pay-stat.component';
 import { BookingsGraphComponent } from './modules/serviceprovider/serviceprovider-dash/graphs/bookings-graph/bookings-graph.component';
@@ -194,7 +192,6 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     ServiceCardComponent,
     EarningsComponent,
     ServiceDetailsComponent,
-    BusinessStatComponent,
     BusinessOpenDaysComponent,
     AppointmentsComponent,
     CalendarComponent,
@@ -203,7 +200,6 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     ProductCardComponent,
     ContactUsComponent,
     SellerDashboardComponent,
-    SellerBusinessStatComponent,
     SellerDashStatComponent,
     SellerPayStatComponent,
     BookingsGraphComponent,

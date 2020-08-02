@@ -1,19 +1,27 @@
 <div class="container-fluid pd-top-min">
-
-  <h4>
+  <h5>
+    <mat-icon>money</mat-icon>
+    <b>
+    Total Paid
+  </b></h5>
+  <br>
+  <div class="pay-amt">
+    Rs. {{total_paid}}
+  </div>
+  <hr>
+  <h5>
     <mat-icon>money</mat-icon>
     <b>
     Due Payments
-  </b></h4>
-  <hr>
+  </b></h5>
+  <br>
   <div class="pay-amt">
-    Rs. {{payStat[0].pay_amount}}
+    Rs. {{due_amount}}
   </div>
-  <p class="overdue">{{payStat[0].overdue ? 'Payment is Overdue!!' : ''}}</p>
   <div class="pay-text">
     <span>Payment Due by </span>
   <br>
-  <span class="pay-date"> {{payStat[0].pay_due_date}}</span>
+  <span class="pay-date"> {{due_date}}</span>
   </div>
   <div class="pay-btn">
     <button mdbBtn color="secondary" mdbWavesEffect class="btn btn-md" class="button">
@@ -21,4 +29,62 @@
     </button>
   </div>
   <hr>
+  <div class="text-center">
+    <button mdbBtn mdbWavesEffect role="buton" class="btn btn-secondary btn-md cnt-center" (click)="earnings.show()">
+      View All Earnings
+    </button>
+    <hr>
+</div>
+
+
+<!--View Earnings Modal-->
+<div
+  mdbModal
+  #earnings="mdbModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-hidden="true"
+
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-lg"
+    role="document"
+    style="overflow-y: initial !important"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="earnings.hide()"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel" >
+          <mat-icon>money</mat-icon> Your earnings
+        </h4>
+      </div>
+
+      <div class="modal-body " style="height: 400px; overflow-y: auto;">
+
+        <app-seller-earnings></app-seller-earnings>
+
+      </div>
+
+      <div class="modal-footer">
+        <button
+          mdbBtn
+          color="link"
+          (click)="earnings.hide()"
+          mdbWavesEffect
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

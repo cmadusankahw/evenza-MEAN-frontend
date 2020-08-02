@@ -62,15 +62,12 @@ export interface Earnings {
   transaction_id: string;
   booking_id: string;
   service_booked: string;
-  duration: number;
-  booking_type: string;
-  cust_name: string;
   earned_date: string;
   earned_time: string;
-  comments: string;
   payment_type: string;
   commission_due: number;
-  net_earning: number;
+  amount_paid: number;
+  amount: number;
 }
 
 export interface IDVerify  {
@@ -115,3 +112,22 @@ export interface CalendarBooking {
   start: string;
   end: string;
 }
+
+export interface BookingStat {
+  booking_id: string;
+  service_id: string;
+  service_name: string;
+  created_date: string;
+  amount: number;
+  amount_paid: number;
+  state: string;
+}
+
+export interface AppointStat {
+  appoint_id: string;
+  service_id: string;
+  service_name: string;
+  created_date: string;
+  state: string;
+}
+

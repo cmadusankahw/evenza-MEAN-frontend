@@ -1,5 +1,5 @@
 <!--header row-->
-<app-dash-stat [(bookingCounts)] = "bookingCounts" (datesEmit) = "setAppointDates($event)"></app-dash-stat>
+<app-dash-stat></app-dash-stat>
 
 
 <!--component row-->
@@ -7,14 +7,12 @@
 
   <!--left component-->
   <div class="col-md-8">
-    <app-bookings (countEmit) = "setCounts($event)" (datesEmit)= "setDates($event)"></app-bookings>
+    <app-bookings></app-bookings>
   </div>
 
   <!--right component-->
   <div class="col-md-4">
-    <app-pay-stat></app-pay-stat>
-    <br>
-   <app-bookings-graph [(bookingMonths)] = "bookingDates" [(appointMonths)] = "appointDates"></app-bookings-graph>
+   <app-bookings-graph ></app-bookings-graph>
   </div>
 
 </div>

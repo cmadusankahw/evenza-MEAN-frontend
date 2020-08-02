@@ -8,7 +8,7 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 br-back stat-num">
           <span class="stat-no">
-            {{orderCounts ? orderCounts.pendingOrders : 0}}
+            {{orderCounts ? orderCounts.pending_orders : 0}}
           </span>
         </div>
 
@@ -20,7 +20,7 @@
           <hr />
           Latest order on:
           <br />
-          <span class="date-text">{{orderCounts ? orderCounts.pendingOrderDate: ''}}</span>
+          <span class="date-text">{{orderCounts ? orderCounts.last_order_date: ''}}</span>
         </div>
       </div>
     </mat-card-body>
@@ -36,7 +36,7 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 ar-back stat-num">
           <span class="stat-no">
-            {{orderCounts? orderCounts.completedOrders: 0}}
+            {{orderCounts? orderCounts.delivered_orders: 0}}
           </span>
         </div>
 
@@ -47,7 +47,7 @@
           <hr />
             Last order on:
           <br />
-          <span class="date-text">{{orderCounts ? orderCounts.completedOrderDate : ''}}</span>
+          <span class="date-text">{{orderCounts ? orderCounts.last_delivery_date : ''}}</span>
         </div>
       </div>
     </mdb-card>
@@ -62,7 +62,7 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 cb-back stat-num">
           <span class="stat-no">
-            {{orderCounts ? orderCounts.cancelledOrders : 0}}
+            {{orderCounts ? orderCounts.cancelled_orders : 0}}
           </span>
         </div>
 
@@ -73,7 +73,7 @@
           <hr />
           Cancelled on:
           <br />
-          <span class="date-text">{{orderCounts? orderCounts.cancelledOrderDate: ''}}</span>
+          <span class="date-text">{{orderCounts? orderCounts.last_cancelled_date: ''}}</span>
         </div>
       </div>
     </mdb-card>
@@ -88,7 +88,7 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 er-back stat-num">
           <span class="stat-no">
-            {{orderCounts ? orderCounts.totalInventory : 0}}
+            {{orderCounts ? orderCounts.inventory : 0}}
           </span>
         </div>
 
@@ -99,7 +99,7 @@
           <hr />
           Latest Modified:
           <br />
-          <span class="date-text">{{orderCounts ?  orderCounts.inventoryUpdatedDate : ''}}</span>
+          <span class="date-text">{{orderCounts ?  orderCounts.lasT_modified_date : ''}}</span>
         </div>
       </div>
     </mdb-card>

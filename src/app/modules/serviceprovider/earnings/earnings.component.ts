@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { Booking } from '../serviceprovider.model';
+import { Booking, BusinessStat, Earnings } from '../serviceprovider.model';
 import { ServiceProviderService } from '../serviceprovider.service';
 import { Subscription } from 'rxjs';
 
@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs';
 export class EarningsComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['id', 'service_booked', 'earned_date_time', 'amount', 'action', 'amt'];
-  dataSource: MatTableDataSource<Booking>;
+  dataSource: MatTableDataSource<Earnings>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -25,40 +25,21 @@ export class EarningsComponent implements OnInit, OnDestroy {
   private bookingSub: Subscription;
 
   // recieved bookings
-  recievedBookings: Booking[] = [];
+  earninigs: Earnings[];
 
-  // output values to parent comp
-  @Output() amountsEmit = new EventEmitter<object>();
-
-  // total values
-  totalAmountPaid = 0;
-  totalCommissionDue = 0;
-  totalEarning = 0;
-  noOfBookings = 0;
 
   constructor(private serviceProviderService: ServiceProviderService) {}
 
   ngOnInit() {
-    this.serviceProviderService.getBookings();
-    this.bookingSub = this.serviceProviderService.getBookingsUpdateListener()
-          .subscribe((recievedBookings: Booking[]) => {
-              for (const book of recievedBookings) {
-                if (book.state === 'pending' || book.state === 'completed') {
-                  this.recievedBookings.push(book);
-                  this.totalAmountPaid += book.amount_paid;
-                  this.totalCommissionDue += book.commission_due;
-                  this.totalEarning += book.amount;
-                  this.noOfBookings++;
-                }
-              }
-              console.log(this.recievedBookings);
-              if (this.recievedBookings) {
-                this.dataSource = new MatTableDataSource(this.recievedBookings);
-                console.log(this.dataSource);
+    this.serviceProviderService.getEarnings();
+    this.bookingSub = this.serviceProviderService.getEarningstUpdatedListener()
+          .subscribe((res: Earnings[]) => {
+              if (res) {
+                this.earninigs = res;
+                this.dataSource = new MatTableDataSource(this.earninigs);
                 this.dataSource.paginator = this.paginator;
                 this.dataSource.sort = this.sort;
               }
-              this.updateAmounts();
       });
   }
 
@@ -75,16 +56,6 @@ export class EarningsComponent implements OnInit, OnDestroy {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-  }
-
-
-  // send business verify details
-  updateAmounts() {
-    this.amountsEmit.emit({
-      totalCommisionDue: this.totalCommissionDue,
-      totalEarning: this.totalEarning,
-      no_of_bookings: this.noOfBookings
-    });
   }
 
 

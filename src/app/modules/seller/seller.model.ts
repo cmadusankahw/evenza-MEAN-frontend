@@ -21,14 +21,12 @@ export interface BusinessStat {
 }
 
 export interface DashStat {
-  business_id: string;
-  merchant_id: string;
   pending_orders: number;
   last_order_date: string;
-  to_delivery_orders: number;
-  next_delivery_date: string;
-  completed_orders: number;
-  last_completed_date: string;
+  delivered_orders: number;
+  last_delivery_date: string;
+  cancelled_orders: number;
+  last_cancelled_date: string;
   inventory: number;
   lasT_modified_date: string;
 }
@@ -44,18 +42,15 @@ export interface PayStat {
 
 
 export interface Earnings {
-  transaction_id: string;
   order_id: string;
+  product_id: string;
   product: string;
-  quantity: number;
-  qty_type: string;
-  cust_name: string;
   earned_date: string;
   earned_time: string;
-  comments: string;
   payment_type: string;
   commission_due: number;
-  net_earning: number;
+  amount_paid: number;
+  amount: number;
 }
 
 export interface IDVerify  {
@@ -104,5 +99,18 @@ export interface Order {
 
 
 
+export interface OrderStat {
+  order_id: string;
+  product_id: string;
+  product: string;
+  quantity: number;
+  qty_type: string;
+  product_category: string;
+  state: string;
+  created_date: string;
+  commission_due: number;
+  amount_paid: number;
+  amount: number;
+}
 
 

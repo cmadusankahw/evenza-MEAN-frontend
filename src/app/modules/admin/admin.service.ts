@@ -16,6 +16,7 @@ export class AdminService {
   private adminUpdated = new Subject<Admin>();
   private dashboardDataUpdated = new Subject<DashboardData>();
   private adminPaymentsUpdated = new Subject<MerchantPayments[]>();
+  private merchantPaymentUpdated = new Subject<MerchantPayments>();
 
   // to get merchant/event planner once logged in
   private admin: Admin;
@@ -28,6 +29,9 @@ export class AdminService {
 
 
   adminPayments: MerchantPayments[];
+
+  // recieved merchant's payment
+  merchantPayment: MerchantPayments;
 
 
 
@@ -76,6 +80,16 @@ export class AdminService {
     });
   }
 
+  // get merchants' paymentss for merchant dashboards
+  getMerchantPayment() {
+    this.http.get<{message: string, merchantPayment: MerchantPayments}>(this.url + 'admin/get/payment')
+    .subscribe((res) => {
+      console.log(res);
+      this.merchantPayment = res.merchantPayment;
+      this.merchantPaymentUpdated.next(this.merchantPayment);
+    });
+  }
+
 
 
   // listners for subjects
@@ -97,6 +111,10 @@ export class AdminService {
 
   getMerchantPaymentsUpdateListener() {
     return this.adminPaymentsUpdated.asObservable();
+  }
+
+  getMerchantPaymentUpdateListener() {
+    return this.merchantPaymentUpdated.asObservable();
   }
 
 

@@ -158,6 +158,7 @@ import { EventServiceSearchComponent } from './modules/event/event-service-searc
 import { EventProductSearchComponent } from './modules/event/event-product-search/event-product-search.component';
 import { EventBudgetReportComponent } from './modules/event/event-budget-report/event-budget-report.component';
 import { PlannerChatComponent } from './modules/eventplanner/planner-chat/planner-chat.component';
+import { InqueryForumComponent } from './modules/eventplanner/inquery-forum/inquery-forum.component';
 
 // socket io ocnfiguration
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
@@ -275,6 +276,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     EventProductSearchComponent,
     EventBudgetReportComponent,
     PlannerChatComponent,
+    InqueryForumComponent,
 
 
 

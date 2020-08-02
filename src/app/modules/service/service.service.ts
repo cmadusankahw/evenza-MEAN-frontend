@@ -329,19 +329,20 @@ export class ServiceService  {
 
   // create new booking
   createBooking(booking: Booking) {
-   //       this.checkAvailability(booking.from_date,
-  //        booking.to_date,
-  //        booking.service_id)
-      //    .subscribe ( availabilityState => {
-      //      if (availabilityState.availability) {
+          this.checkAvailability(booking.from_date,
+          booking.to_date,
+          booking.service_id)
+          .subscribe ( availabilityState => {
+            console.log(availabilityState);
+            if (availabilityState.availability) {
               this.http.post<{ message: string, bookingId: string }>(this.url + 'service/booking/add', booking)
               .subscribe((recievedData) => {
                 console.log(recievedData.message);
                 this.router.navigate(['/print/booking/' + recievedData.bookingId]);
                 this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
             });
-        //    }
-       //   } );
+            }
+          } );
   }
 
 

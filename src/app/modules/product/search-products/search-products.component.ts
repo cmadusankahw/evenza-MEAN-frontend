@@ -7,6 +7,7 @@ import { NgForm } from '@angular/forms';
 
 import { ProductCategories, Product, ProductQuery } from '../product.model';
 import { ProductService } from '../product.service';
+import { EventPlannerService } from '../../eventplanner/eventplanner.service';
 
 
 @Component({
@@ -55,7 +56,8 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
 
 
   constructor(private breakpointObserver: BreakpointObserver,
-              public productService: ProductService) { }
+              public productService: ProductService,
+              private eventPlannerService: EventPlannerService) { }
 
   ngOnInit() {
         // get the product
@@ -108,6 +110,10 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
    });
   }
 
+     // send user details to the inquery for
+     emitUser() {
+      this.eventPlannerService.setUser('');
+     }
 
 
   sendProduct(product: Product) {

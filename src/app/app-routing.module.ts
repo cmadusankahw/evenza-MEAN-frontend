@@ -70,6 +70,7 @@ const routes: Routes = [
   { path: 'services', component: SearchServicesComponent },
   { path: 'products', component: SearchProductsComponent },
   { path: 'terms', component: TeramsConditionsComponent},
+  { path: 'inquery', component: PlannerChatComponent },
   { path: 'print/booking/:id', component: BookingNoteComponent },
   { path: 'print/appoint/:id', component: BookingNoteComponent },
   { path: 'print/order/:id', component: BookingNoteComponent },
@@ -117,7 +118,6 @@ const routes: Routes = [
       { path: 'event/add/:id', component: AddEventComponent },
       { path: 'event/edit/:id', component: AddEventComponent },
       { path: 'services', component: EventServiceSearchComponent },
-      { path: 'chat', component: PlannerChatComponent },
       { path: 'products', component: EventProductSearchComponent },
       { path: 'service/:id', component: ServiceDetailsComponent }, // needd configuration
       { path: 'product/:id', component: ProductDetailsComponent }, // needd configuration

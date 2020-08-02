@@ -211,8 +211,8 @@ service.post('/search', (req, res, next) => {
                   }},
                 // step 3: check booking possibilities
                 {$match: {
-                  "bookings.from_date": [{$lte:{ $toDate: req.body.fromDate}}], // not working
-                  "bookings.to_date": [{$gte: { $toDate: req.body.toDate}}], // not working
+                  "bookings.from_date": [{$lte:req.body.fromDate}], // not working
+                  "bookings.to_date": [{$gte: req.body.toDate}], // not working
                 }}
               ])
   .then (finalResult => {
@@ -257,28 +257,30 @@ service.post('/event/search', (req, res, next) => {
 
 // check booking availability  !!!!! update with capacity
 service.post('/booking/check', (req, res, next) => {
-  req.body.fromDate = new Date(req.body.fromDate);
-  req.body.toDate = new Date(req.body.toDate);
   console.log(req.body);
+  let availability = false;
   Booking.find({ service_id: req.serviceId,
-                    $or: [{from_date: { $gte :req.body.fromDate }}, // not working
-                     {to_date: { $lte :req.body.toDate}}] // not working
-                      })
+                 from_date: { $gte :req.body.fromDate },
+                 to_date: { $lte :req.body.toDate}})
                       .then( result => {
+                        console.log('found bookings :' , result);
                         Service.findOne({service_id: req.body.serviceId, capacity: {$gte: result.length}})
   .then(result2 => {
-    let availability = false;
-    console.log(result2);
-    if (result2.length){
-      availability = true;
-    }
+      console.log('found services' ,result2);
+      if (result2.length){
+        availability = true;
+      };
       res.status(200).json({
         message: 'availability information recieved successfully!',
         availability: availability
       });
+    }).catch(err=>{
+      console.log(err);
+      res.status(500).json({
+        message: 'Error occured while checking for bookiing information!'
+      });
     });
-  })
-    .catch(err=>{
+  }).catch(err=>{
       console.log(err);
       res.status(500).json({
         message: 'Error occured while checking for bookiing information!'

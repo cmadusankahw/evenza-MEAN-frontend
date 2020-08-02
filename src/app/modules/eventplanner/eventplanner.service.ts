@@ -3,7 +3,7 @@ import { Subject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
-import { Socket } from 'ngx-socket-io';
+import * as io from 'socket.io-client';
 
 import { Booking, Appointment, Email, Order } from '../eventplanner/eventplanner.model';
 import { SuccessComponent } from 'src/app/success/success.component';
@@ -13,6 +13,9 @@ import { Message } from './message';
 
 @Injectable({ providedIn: 'root' })
 export class EventPlannerService {
+
+  // socket connection
+  private socket = io('http://localhost:3000');
 
 
   private bookingsUpdated = new Subject<Booking[]>();
@@ -38,13 +41,15 @@ export class EventPlannerService {
   // recieved single appointment
   private appointment: Appointment;
 
+  // relatime chat users
+  private chatUser: string;
+
   // api url (to be centralized)
   url = 'http://localhost:3000/api/';
 
     constructor(private router: Router,
                 public dialog: MatDialog,
-                private http: HttpClient,
-                private socket: Socket) {}
+                private http: HttpClient) {}
 
 
     // send emails
@@ -161,17 +166,62 @@ export class EventPlannerService {
     }
 
     // socket based chat message handeling
-    public sendMessage(message) {
-      this.socket.emit('new-message', message);
+    setUser(type: string) {
+    this.chatUser = type;
+
     }
 
-    // socket based chat message recoeving
-    public getMessages = () => {
-      return Observable.create((observer) => {
-              this.socket.on('new-message', (message) => {
-                  observer.next(message.message);
-              });
-      });
-  }
+    getUser() {
+      return this.chatUser;
+    }
+
+
+    joinRoom(data)
+    {
+        this.socket.emit('join', data);
+    }
+
+    newUserJoined()
+    {
+        let observable = new Observable<{user: String, message: String}>( observer => {
+            this.socket.on('new user joined', (data) => {
+                observer.next(data);
+            });
+            return () => {this.socket.disconnect();}
+        });
+
+        return observable;
+    }
+
+    leaveRoom(data) {
+        this.socket.emit('leave',data);
+    }
+
+    userLeftRoom(){
+        let observable = new Observable<{user: String, message: String}>( observer => {
+            this.socket.on('left room', (data) => {
+                observer.next(data);
+            });
+            return () => {this.socket.disconnect(); };
+        });
+
+        return observable;
+    }
+
+    sendMessage(data)
+    {
+        this.socket.emit('message',data);
+    }
+
+    newMessageReceived(){
+        let observable = new Observable<{user: String, message: String}>(observer => {
+            this.socket.on('new message', (data) => {
+                observer.next(data);
+            });
+            return () => {this.socket.disconnect(); };
+        });
+
+        return observable;
+    }
 
 }

@@ -35,6 +35,7 @@ const eventsSchema = mongoose.Schema(
                   attachments: {type: [String]},
              }]},
     total_budget: {type: Number, required: true},
+    total_spent_budget: {type: Number, required: true},
     event_segments: {type: {
       tasks:{type: [{
         task_id: {type: String, required: true},

@@ -16,6 +16,7 @@ export interface TheEvent {
       approved_participants: number};
   alerts: Alert[]; // invitation and other alert messages // first alet should be the invitation
   total_budget: number;
+  total_spent_budget: number;
   event_segments: {
     tasks: Task[],
     services: Service[],
@@ -141,6 +142,13 @@ export interface ScheduleAlert {
   message: string;
   date: string; // ISO date and time string
   state: string; // critical - less than 3 hrs, modarate - today, neutral -within 3 days
+}
+
+export interface Filteration {
+ // location: BusinessLocation;
+  eventId: string;
+  allocated_budget: number;
+  category: string;
 }
 
 export function refactorDate(date: Date, time: {hour: number, minute: number}): string {

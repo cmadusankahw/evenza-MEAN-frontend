@@ -6,6 +6,7 @@ const orderSchema = mongoose.Schema(
     order_id: {type: String, required: true, unique: true},
     product_id: {type: String, required: true},
     product: {type: String, required: true},
+    event_id: {type: String, required: true},
     qty_type: {type: String, required: true},
     business_name: {type: String, required: true},
     delivery_address: {type: String, required: true},

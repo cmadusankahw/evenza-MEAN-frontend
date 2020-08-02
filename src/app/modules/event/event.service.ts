@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
 
 
-import { TheEvent, EventCategory, EventCard, Task, Participant, Alert, ScheduleAlert } from './event.model';
+import { TheEvent, EventCategory, EventCard, Task, Participant, Alert, ScheduleAlert, Filteration } from './event.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 
 
@@ -31,12 +31,36 @@ export class EventService {
 
   private recievedAlerts: ScheduleAlert[];
 
+  // passing selected event for service/ product search
+  private eventId: string;
+
+  // passing selected filterations for service/ product search
+  private filter: Filteration;
 
     constructor(private router: Router,
                 public dialog: MatDialog,
                 private http: HttpClient) {}
 
-    // get methods
+
+  // setters
+  setSelectedEvent(eventId: string) {
+    this.eventId = eventId;
+  }
+
+  setSelectedFilteration(filter: Filteration) {
+    this.filter = filter;
+  }
+
+  // getters
+
+  getSelectedEvent() {
+    return this.eventId;
+  }
+
+  getSelectedFilteration() {
+    return this.filter;
+  }
+
 
     getEvents() {
       this.http.get<{ message: string, events: EventCard[] }>(this.url + 'event/get' )
@@ -96,12 +120,18 @@ export class EventService {
             }
             this.http.post<{ message: string}>(this.url + 'event/cat/create',  eventCategory )
             .subscribe((recievedData) => {
+              this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+              this.router.onSameUrlNavigation = 'reload';
+              this.router.navigate(['/admin/categories']);
               this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
            });
           });
       } else {
         this.http.post<{ message: string}>(this.url + 'event/cat/create',  eventCategory )
         .subscribe((recievedData) => {
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate(['/admin/categories']);
           this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
        });
       }
@@ -111,6 +141,9 @@ export class EventService {
     removeCategory(id: string) {
       this.http.post<{ message: string }>(this.url + 'event/cat/remove',  id )
       .subscribe((recievedData) => {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/admin/categories']);
         this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
      });
     }

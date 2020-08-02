@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 
-import { Service, ServiceCategories, ServiceRates, ServiceQuery, Booking, Appointment } from './service.model';
+import { Service, ServiceCategories, ServiceRates, ServiceQuery, Booking, Appointment, EventServiceQuery } from './service.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 import { Merchant, BusinessLocation } from '../auth/auth.model';
 import { ErrorComponent } from 'src/app/error/error.component';
@@ -17,6 +17,7 @@ export class ServiceService  {
   private serviceUpdated = new Subject<Service>();
   private serviceProviderServiceUpdated = new Subject<Service[]>();
   private searchedServiceUpdated = new Subject<Service[]>();
+  private searchedEventServiceUpdated = new Subject<Service[]>();
   private servicesUpdated = new Subject<Service[]>();
   private categoriesUpdated = new Subject<ServiceCategories[]>();
   private bookingsUpdated = new Subject<Booking[]>();
@@ -28,6 +29,10 @@ export class ServiceService  {
 
    // to add searched services
    private searchedServices: Service[] = [];
+
+
+   // event realte searched services
+   private searchedEventServices: Service[] = [];
 
   // list of service provider services
   private serviceProviderServices: Service[] = [];
@@ -68,6 +73,20 @@ export class ServiceService  {
  getService() {
     this.serviceUpdated.next(this.service);
  }
+
+
+  // set current service
+  setService(service: Service) {
+    this.service = service;
+    this.serviceUpdated.next(this.service);
+    return true;
+  }
+
+  // return current services
+  getUpdatedServices(){
+    return this.services;
+  }
+
 
   // get list of available services
   getServices() {
@@ -137,6 +156,11 @@ export class ServiceService  {
   getSearchedServiceUpdatedListener() {
     return this.searchedServiceUpdated.asObservable();
   }
+
+  getSearchedEventServiceUpdatedListener() {
+    return this.searchedEventServiceUpdated.asObservable();
+  }
+
 
   getServiceProviderServiceUpdateListener() {
     return this.serviceProviderServiceUpdated.asObservable();
@@ -273,18 +297,6 @@ export class ServiceService  {
     });
   }
 
-  // set current service
-  setService(service: Service) {
-    this.service = service;
-    this.serviceUpdated.next(this.service);
-    return true;
-  }
-
-  // return current services
-  getUpdatedServices(){
-    return this.services;
-  }
-
 
   // search services
   searchServices(searchQuery: ServiceQuery) {
@@ -295,6 +307,16 @@ export class ServiceService  {
       console.log(serviceList.message);
     });
   }
+
+    // search event related services
+    searchEventServices(searchQuery: EventServiceQuery) {
+      this.http.post<{ message: string, services: Service[] }>(this.url + 'service/event/search', searchQuery)
+      .subscribe((serviceList) => {
+        this.searchedEventServices = serviceList.services;
+        this.searchedEventServiceUpdated.next([...this.searchedEventServices]);
+        console.log(serviceList.message);
+      });
+    }
 
     // rating a product
     rateService(id: string, rate: number, review: string) {
@@ -307,20 +329,53 @@ export class ServiceService  {
 
   // create new booking
   createBooking(booking: Booking) {
-   //       this.checkAvailability(booking.from_date,
-  //        booking.to_date,
-  //        booking.service_id)
-      //    .subscribe ( availabilityState => {
-      //      if (availabilityState.availability) {
+          this.checkAvailability(booking.from_date,
+          booking.to_date,
+          booking.service_id)
+          .subscribe ( availabilityState => {
+            console.log(availabilityState);
+            if (availabilityState.availability) {
               this.http.post<{ message: string, bookingId: string }>(this.url + 'service/booking/add', booking)
               .subscribe((recievedData) => {
                 console.log(recievedData.message);
                 this.router.navigate(['/print/booking/' + recievedData.bookingId]);
                 this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
             });
-        //    }
-       //   } );
+            }
+          } );
   }
+
+
+  // create new event related booking
+  createEventBooking(booking: Booking) {
+    //       this.checkAvailability(booking.from_date,
+   //        booking.to_date,
+   //        booking.service_id)
+       //    .subscribe ( availabilityState => {
+       //      if (availabilityState.availability) {
+            this.http.post<{ message: string, bookingId: string }>(this.url + 'service/booking/add', booking)
+            .subscribe((recievedData) => {
+               console.log(recievedData.message);
+               this.http.post<{ message: string }>(this.url + 'service/booking/event', {
+                event_id: booking.event_id,
+                service_id: booking.service_id,
+                service_name: booking.service_name,
+                service_category: booking.service_category,
+                booking_id: recievedData.bookingId,
+                allocated_budget: booking.amount,
+                spent_budget: booking.amount,
+                booking_from_date: booking.from_date,
+                booking_to_date: booking.to_date,
+               })
+               .subscribe((recievedMsg) => {
+                 console.log(recievedMsg.message);
+                 this.router.navigate(['/print/booking/' + recievedData.bookingId]);
+                 this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
+             });
+            });
+        // }
+        //   });
+   }
 
    // create new calendar booking
    createCalendarBooking(booking: Booking) {
@@ -350,6 +405,26 @@ export class ServiceService  {
         this.router.navigate(['/print/appoint/' + recievedData.appointId]);
         this.dialog.open(SuccessComponent, {data: {message: 'Appointment Successfull! Your Appointment Id: ' + recievedData.appointId}});
     });
+  }
+
+    // create new  event related appointment
+    createEventAppointment(appointment: Appointment) {
+      this.http.post<{ message: string, appointId: string }>(this.url + 'service/appoint/add', appointment)
+      .subscribe((recievedData) => {
+        this.http.post<{ message: string }>(this.url + 'service/appoint/event', {
+          event_id: appointment.event_id,
+          service_id: appointment.service_id,
+          appoint_id: appointment.appoint_id,
+          service_name: appointment.service_name,
+          service_category: appointment.service_category,
+          appointed_date: appointment.appointed_date,
+         })
+         .subscribe((recievedMsg) => {
+        console.log(recievedMsg.message);
+        this.router.navigate(['/print/appoint/' + recievedData.appointId]);
+        this.dialog.open(SuccessComponent, {data: {message: 'Appointment Successfull! Your Appointment Id: ' + recievedData.appointId}});
+    });
+  });
   }
 
   // check booking availability

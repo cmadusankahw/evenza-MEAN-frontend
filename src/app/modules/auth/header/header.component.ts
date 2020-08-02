@@ -4,6 +4,7 @@ import { AuthService } from '../auth.service';
 import { Subscription } from 'rxjs';
 
 import { Merchant, EventPlanner } from '../auth.model';
+import { EventPlannerService } from '../../eventplanner/eventplanner.service';
 
 @Component({
   selector: 'app-header',
@@ -16,7 +17,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onLogin = false;
   onRegister = false;
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService, private eventPlannerService: EventPlannerService) { }
 
   private authSubs: Subscription;
   private headerDetailsSubs: Subscription;
@@ -85,6 +86,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onSignOut() {
     this.authService.signOut();
+  }
+
+  // send user details to the inquery for
+  emitUser(userType: string) {
+      this.eventPlannerService.setUser(userType);
   }
 
 

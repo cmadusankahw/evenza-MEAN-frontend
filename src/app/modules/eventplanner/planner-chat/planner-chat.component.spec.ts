@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EventPlanSegmentComponent } from './event-plan-segment.component';
+import { PlannerChatComponent } from './planner-chat.component';
 
-describe('EventPlanSegmentComponent', () => {
-  let component: EventPlanSegmentComponent;
-  let fixture: ComponentFixture<EventPlanSegmentComponent>;
+describe('PlannerChatComponent', () => {
+  let component: PlannerChatComponent;
+  let fixture: ComponentFixture<PlannerChatComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EventPlanSegmentComponent ]
+      declarations: [ PlannerChatComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EventPlanSegmentComponent);
+    fixture = TestBed.createComponent(PlannerChatComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

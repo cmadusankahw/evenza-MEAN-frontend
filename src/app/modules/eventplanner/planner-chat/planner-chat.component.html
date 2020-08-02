@@ -1,0 +1,64 @@
+<div class="container pt-5">
+  <div class="text-center" style="font-weight:bold; color:darkmagenta;">
+      <h2>Evenza Inqueries</h2>
+      <hr>
+  </div>
+   <div class="join-req text-center" *ngIf="!chatMode">
+          <div class="form-group"  style="width:400px;  margin:0 auto;">
+              <label for="username">Username</label>
+              <input type="text" [(ngModel)]="user" class="form-control" id="username" placeholder="Enter username">
+              <!-- <small id="userHelp" class="form-text text-muted">Type your username.</small> -->
+          </div>
+          <br>
+          <label for="roomInput">Choose room</label>
+          <select name="roomInput" id="roomInput" class="form-control" [(ngModel)]="room"  style="width:400px; margin:0 auto;"
+        >
+              <option [value] = "r" *ngFor="let r of RoomList">{{r}}</option>
+          </select>
+          <br>
+          <div style="margin-top:19px;" class="pull-right">
+              <button mdbBtn mdbWavesEffect color="primary" type="button" class="btn btn-lg" (click)="join()"
+              (click) = "chatMode = !chatMode">Join Room</button>
+      </div>
+    </div>
+
+  <div  *ngIf="chatMode">
+    <div class="text-center pt-2">
+      <p> Once a Service Provider, or a Evenza HelpDesk representative has joined, you will be informed below. You can chat and clarify any inquiries...</p>
+    </div>
+    <hr>
+  <div class="chat-cls">
+    <div class="row">
+      <div class="col-md-9 pt-2">
+        <h5><b>  <mdb-icon fas icon="user-friends"></mdb-icon> You have joined:  {{room}}</b></h5>
+      </div>
+      <div class="col-md-3 text-center">
+        <button mdbBtn mdbWavesEffect color="red" type="button" class="btn btn-md pull-left" (click)="leave()"
+        (click) = "chatMode = !chatMode">Leave Room</button>
+      </div>
+    </div>
+    <hr>
+  <div class="row container-fluid">
+      <div class="well">
+          <div *ngFor="let item of messageArray">
+          <span><strong>{{item.user}} : </strong> {{item.message}}</span>
+          </div>
+      </div>
+  </div>
+  <div class="row pt-3">
+      <div class="col-md-9">
+        <mat-form-field style="width:100%">
+          <mat-label>
+            <mat-icon>face</mat-icon>
+            Enter a message </mat-label>
+          <input matInput type="text"  [(ngModel)]="messageText" name="chat_msg">
+        </mat-form-field>
+
+      </div>
+      <div class="col-md-3 text-center">
+              <button mdbBtn mdbWavesEffect type="button" color="secondary" class="btn btn-md pull-left" (click)="sendMessage()">Send Message</button>
+      </div>
+  </div>
+  </div>
+  </div>
+</div>

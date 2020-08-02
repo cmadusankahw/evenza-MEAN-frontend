@@ -54,6 +54,10 @@ import { AdminDashProfileComponent } from './modules/admin/admin-dash/pages/admi
 import { AdminDashCategoriesComponent } from './modules/admin/admin-dash/pages/admin-dash-categories/admin-dash-categories.component';
 import { AdminDashReportsComponent } from './modules/admin/admin-dash/pages/admin-dash-reports/admin-dash-reports.component';
 import { TeramsConditionsComponent } from './modules/home/terams-conditions/terams-conditions.component';
+import { EventServiceSearchComponent } from './modules/event/event-service-search/event-service-search.component';
+import { EventProductSearchComponent } from './modules/event/event-product-search/event-product-search.component';
+import { EventBudgetReportComponent } from './modules/event/event-budget-report/event-budget-report.component';
+import { PlannerChatComponent } from './modules/eventplanner/planner-chat/planner-chat.component';
 
 
 const routes: Routes = [
@@ -66,6 +70,7 @@ const routes: Routes = [
   { path: 'services', component: SearchServicesComponent },
   { path: 'products', component: SearchProductsComponent },
   { path: 'terms', component: TeramsConditionsComponent},
+  { path: 'inquery', component: PlannerChatComponent },
   { path: 'print/booking/:id', component: BookingNoteComponent },
   { path: 'print/appoint/:id', component: BookingNoteComponent },
   { path: 'print/order/:id', component: BookingNoteComponent },
@@ -106,15 +111,16 @@ const routes: Routes = [
       { path: '', component: EventplannerDashHomeComponent },
       { path: 'event/details/:id', component: EventDetailsComponent },
       { path: 'event/plan/:id', component: EventPlanComponent },
+      { path: 'event/reports/budget/:id', component: EventBudgetReportComponent },
       { path: 'event/schedule/:id', component: EventScheduleComponent },
       { path: 'event/participants/:id', component: EventParticipantsComponent },
       { path: 'event/select', component: EventSelectComponent },
       { path: 'event/add/:id', component: AddEventComponent },
       { path: 'event/edit/:id', component: AddEventComponent },
-      { path: 'event/services/:id', component: SearchServicesComponent }, // needd configuration
-      { path: 'event/products/:id', component: SearchProductsComponent }, // needd configuration
-      { path: 'event/service/:id', component: ServiceDetailsComponent }, // needd configuration
-      { path: 'event/product/:id', component: ProductDetailsComponent }, // needd configuration
+      { path: 'services', component: EventServiceSearchComponent },
+      { path: 'products', component: EventProductSearchComponent },
+      { path: 'service/:id', component: ServiceDetailsComponent }, // needd configuration
+      { path: 'product/:id', component: ProductDetailsComponent }, // needd configuration
       { path: 'events', component: EventplannerDashEventsComponent },
       { path: 'bookings', component: EventplannerDashBookingsComponent },
       { path: 'appoints', component: EventplannerDashAppointmentsComponent },

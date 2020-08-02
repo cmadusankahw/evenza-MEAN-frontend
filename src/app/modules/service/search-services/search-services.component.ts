@@ -12,6 +12,7 @@ import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 import { BusinessLocation } from '../../auth/auth.model';
 import { refactorDate } from '../../event/event.model';
+import { EventPlannerService } from '../../eventplanner/eventplanner.service';
 
 @Component({
   selector: 'app-search-services',
@@ -80,7 +81,8 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
   model: any;
 
   constructor(private breakpointObserver: BreakpointObserver,
-              public serviceService: ServiceService) {}
+              public serviceService: ServiceService,
+              private eventPlannerService: EventPlannerService) {}
 
 
   @ViewChild('instance', {static: true}) instance: NgbTypeahead;
@@ -172,6 +174,11 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
   sendService(service: Service) {
     this.success = this.serviceService.setService(service);
    }
+
+ // send user details to the inquery for
+ emitUser() {
+  this.eventPlannerService.setUser('');
+ }
 
 
    // get available list of services

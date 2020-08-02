@@ -40,6 +40,7 @@ import { AgmCoreModule } from '@agm/core';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { QuillModule } from 'ngx-quill';
 import { QRCodeModule } from 'angularx-qrcode';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -120,7 +121,6 @@ import { PlannerBookingsComponent } from './modules/eventplanner/planner-booking
 import { PlannerAppointsComponent } from './modules/eventplanner/planner-appoints/planner-appoints.component';
 import { PlannerOrdersComponent } from './modules/eventplanner/planner-orders/planner-orders.component';
 import { EventPlanComponent } from './modules/event/event-plan/event-plan.component';
-import { EventPlanSegmentComponent } from './modules/event/event-plan-segment/event-plan-segment.component';
 import { EventScheduleComponent } from './modules/event/event-schedule/event-schedule.component';
 import { EventParticipantsComponent } from './modules/event/event-participants/event-participants.component';
 import { PlannerProfileComponent } from './modules/eventplanner/planner-profile/planner-profile.component';
@@ -154,9 +154,13 @@ import { EventCatgoriesComponent } from './modules/admin/event-catgories/event-c
 import { AdminIdverifyComponent } from './modules/admin/admin-idverify/admin-idverify.component';
 import { AdminBusinessverifyComponent } from './modules/admin/admin-businessverify/admin-businessverify.component';
 import { EventNotificationComponent } from './modules/event/event-notification/event-notification.component';
+import { EventServiceSearchComponent } from './modules/event/event-service-search/event-service-search.component';
+import { EventProductSearchComponent } from './modules/event/event-product-search/event-product-search.component';
+import { EventBudgetReportComponent } from './modules/event/event-budget-report/event-budget-report.component';
+import { PlannerChatComponent } from './modules/eventplanner/planner-chat/planner-chat.component';
 
-
-
+// socket io ocnfiguration
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 
 @NgModule({
@@ -234,7 +238,6 @@ import { EventNotificationComponent } from './modules/event/event-notification/e
     PlannerAppointsComponent,
     PlannerOrdersComponent,
     EventPlanComponent,
-    EventPlanSegmentComponent,
     EventScheduleComponent,
     EventParticipantsComponent,
     PlannerProfileComponent,
@@ -268,6 +271,10 @@ import { EventNotificationComponent } from './modules/event/event-notification/e
     AdminIdverifyComponent,
     AdminBusinessverifyComponent,
     EventNotificationComponent,
+    EventServiceSearchComponent,
+    EventProductSearchComponent,
+    EventBudgetReportComponent,
+    PlannerChatComponent,
 
 
 
@@ -322,6 +329,7 @@ import { EventNotificationComponent } from './modules/event/event-notification/e
     DragDropModule,
     NgbProgressbarModule,
     QRCodeModule,
+    SocketIoModule.forRoot(config),
     QuillModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyB4MIX31RUspo9HAkq90KM3W3Ltyw4UIx0',

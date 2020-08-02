@@ -62,6 +62,7 @@ export interface Order {
   order_id: string;
   product_id: string; // fk
   product: string; // retrived from product
+  event_id: string;
   qty_type: string; // retrived from produc
   product_category: string;
   business_name: string; // retrived from product

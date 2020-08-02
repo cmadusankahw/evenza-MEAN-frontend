@@ -41,6 +41,14 @@ export interface ServiceQuery {
   toDate: string;
 }
 
+export interface EventServiceQuery {
+  category: string;
+  minPrice: number;
+  maxPrice: number;
+  payOnMeet: boolean;
+  userRating: number;
+}
+
 
 export interface Booking {
   booking_id: string;
@@ -71,6 +79,7 @@ export interface Appointment {
   event_id: string; // fk
   service_name: string; // retrived from service
   event_name: string; // retrived from event
+  service_category: string;
   business_name: string;
   created_date: string;
   state: string;

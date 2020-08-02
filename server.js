@@ -1,6 +1,7 @@
 const app = require("./backend/src/app");
 const debug = require("debug")("node-angular");
 const http = require("http");
+const socketIO = require('socket.io');
 
 const normalizePort = val => {
   var port = parseInt(val, 10);
@@ -49,6 +50,39 @@ app.set("port", port);
 const server = http.createServer(app);
 server.on("error", onError);
 server.on("listening", onListening);
+
+const io = socketIO(server);
+
+// use socket-io to recieve messages
+io.on('connection',(socket)=>{
+
+  console.log('new connection made.');
+
+
+  socket.on('join', function(data){
+    //joining
+    socket.join(data.room);
+
+    console.log(data.user + 'joined the room : ' + data.room);
+
+    socket.broadcast.to(data.room).emit('new user joined', {user:data.user, message:'has joined this room.'});
+  });
+
+
+  socket.on('leave', function(data){
+
+    console.log(data.user + 'left the room : ' + data.room);
+
+    socket.broadcast.to(data.room).emit('left room', {user:data.user, message:'has left this room.'});
+
+    socket.leave(data.room);
+  });
+
+  socket.on('message',function(data){
+
+    io.in(data.room).emit('new message', {user:data.user, message:data.message});
+  })
+});
 
 server.listen(port, () =>{
   console.log("Node JS Server is running on port "+ port.toString())

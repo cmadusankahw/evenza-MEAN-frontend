@@ -5,6 +5,7 @@ const Appointment = require("../../model/service/appointment.model");
 const ServiceCategories = require("../../model/service/categories.model");
 const EventPlanner = require ("../../model/auth/eventPlanner.model");
 const Merchant = require("../../model/auth/merchant.model");
+const Event = require("../../model/event/event.model");
 const checkAuth = require("../../middleware/auth-check");
 const Login = require("../../../data/user/emailAuthentication.json");
 
@@ -13,6 +14,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require ("multer");
 const nodemailer = require("nodemailer");
+const { update } = require("../../model/event/event.model");
 
 //express app declaration
 const service = express();
@@ -209,8 +211,8 @@ service.post('/search', (req, res, next) => {
                   }},
                 // step 3: check booking possibilities
                 {$match: {
-                  "bookings.from_date": [{$lte:{ $toDate: req.body.fromDate}}], // not working
-                  "bookings.to_date": [{$gte: { $toDate: req.body.toDate}}], // not working
+                  "bookings.from_date": [{$lte:req.body.fromDate}], // not working
+                  "bookings.to_date": [{$gte: req.body.toDate}], // not working
                 }}
               ])
   .then (finalResult => {
@@ -228,30 +230,57 @@ service.post('/search', (req, res, next) => {
 });
 
 
+
+//search services for an event
+service.post('/event/search', (req, res, next) => {
+  console.log(req.body);
+  Service.find({"service_category": req.body.category,
+                "rate": {$lte: req.body.maxPrice},
+                "pay_on_meet":req.body.payOnMeet,
+                "rating": {$gte: req.body.userRating},
+                "available_booking": true})
+  .then (finalResult => {
+    console.log(finalResult);
+      res.status(200).json({
+        message: 'services recieved successfully!',
+        services: finalResult
+      });
+    })
+    .catch( err =>{
+      console.log(err);
+      res.status(500).json({
+        message: 'Error occured while recieving services! Please Retry!'
+      });
+    });
+});
+
+
 // check booking availability  !!!!! update with capacity
 service.post('/booking/check', (req, res, next) => {
-  req.body.fromDate = new Date(req.body.fromDate);
-  req.body.toDate = new Date(req.body.toDate);
   console.log(req.body);
+  let availability = false;
   Booking.find({ service_id: req.serviceId,
-                    $or: [{from_date: { $gte :req.body.fromDate }}, // not working
-                     {to_date: { $lte :req.body.toDate}}] // not working
-                      })
-                      .then( res => {
-                        Service.findOne({service_id: req.body.serviceId, capacity: {$gte: res.length}})
-  .then(result => {
-    let availability = false;
-    console.log(result);
-    if (result.length){
-      availability = true;
-    }
+                 from_date: { $gte :req.body.fromDate },
+                 to_date: { $lte :req.body.toDate}})
+                      .then( result => {
+                        console.log('found bookings :' , result);
+                        Service.findOne({service_id: req.body.serviceId, capacity: {$gte: result.length}})
+  .then(result2 => {
+      console.log('found services' ,result2);
+      if (result2.length){
+        availability = true;
+      };
       res.status(200).json({
         message: 'availability information recieved successfully!',
         availability: availability
       });
+    }).catch(err=>{
+      console.log(err);
+      res.status(500).json({
+        message: 'Error occured while checking for bookiing information!'
+      });
     });
-  })
-    .catch(err=>{
+  }).catch(err=>{
       console.log(err);
       res.status(500).json({
         message: 'Error occured while checking for bookiing information!'
@@ -394,6 +423,57 @@ service.post('/calbooking/add',checkAuth, (req, res, next) => {
 });
 
 
+// manipulat event when creating a booking
+service.post('/booking/event', (req, res, next) => {
+
+  var serviceCategories;
+
+  Event.findOne({ event_id : req.body.event_id})
+  .then( result => {
+    console.log(result);
+      // filter booked service from service categories
+      serviceCategories = result.service_categories;
+      serviceCategories = serviceCategories.filter(obj => obj.category !== req.body.service_category);
+
+      // updating the event
+       Event.updateOne({event_id: req.body.event_id},{
+          $push : {'event_segments.services' : {
+            service_id: req.body.service_id,
+            service_name:  req.body.service_name,
+            service_category:  req.body.service_category,
+            booking_id:  req.body.booking_id,
+            appoint_id: null,
+            allocated_budget:  req.body.allocated_budget,
+            spent_budget:  req.body.spent_budget,
+            booking_from_date:  req.body.booking_from_date,
+            booking_to_date:  req.body.booking_to_date,
+            appointed_date: null,
+            state: 'booked'
+          }},
+         'service_categories': serviceCategories,
+          $inc: { 'total_spent_budget': req.body.spent_budget }
+       }).then( (updatedResult) => {
+         console.log(updatedResult);
+      res.status(200).json({
+        message: 'booking deatils updated to the event successfully!!',
+      });
+    })
+    .catch(err=>{
+      console.log(err);
+      res.status(500).json({
+        message: 'Error occured while creating your booking! Please try again!'
+      });
+    });
+}).catch(err=>{
+  console.log(err);
+  res.status(500).json({
+    message: 'Error occured while creating your booking! Please try again!'
+  });
+});
+});
+
+
+
 // !!!!!!!!!! add aggrogate
 
 //add new appointment
@@ -483,6 +563,38 @@ service.post('/appoint/add',checkAuth, (req, res, next) => {
     message: 'Error occured while creating Appointment! Please Retry!'
   });
  });
+});
+
+
+// manipulat event when creating a appointment
+service.post('/appoint/event', (req, res, next) => {
+  console.log(req.body);
+  Event.findOneAndUpdate({ event_id : req.body.event_id}, {
+    $push : {'event_segments.services' : {
+      service_id: req.body.service_id,
+      service_name:  req.body.service_name,
+      service_category:  req.body.service_category,
+      booking_id: null,
+      appoint_id: req.body.appoint_id,
+      allocated_budget:  0,
+      spent_budget:  0,
+      booking_from_date:  null,
+      booking_to_date:  null,
+      appointed_date: req.body.appointed_date,
+      state: 'appointed'
+    }}})
+  .then( result => {
+    console.log(result);
+      res.status(200).json({
+        message: 'appointment deatils updated to the event successfully!!',
+      });
+    })
+    .catch(err=>{
+      console.log(err);
+      res.status(500).json({
+        message: 'Error occured while creating your appointment! Please try again!'
+      });
+    });
 });
 
 // add a rating to a service

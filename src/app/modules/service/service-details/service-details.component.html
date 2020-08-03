@@ -50,6 +50,8 @@
       <div class="col-md-5 edit-cls" *ngIf="isowner">
           <a mdbBtn color="secondary" class="btn btn-md edit-btn" mdbWavesEffect
           (click)="editmode = !editmode">Edit Details</a>
+          <a mdbBtn color="secondary" class="btn btn-md edit-btn" outline="yes" style="border-radius:25px; margin-top:10px;" mdbWavesEffect
+          (click)="promotionModal.show()">Add Promotions</a>
       </div>
 
       <!--if only shown to users-->
@@ -62,7 +64,7 @@
 
 
       <hr>
-      <div class="row">
+      <div class="row" 8ngIf="service">
         <div class=" col-md-7 content-text">
           {{service ? service.description: 'Loading...'}}
           <br>
@@ -77,6 +79,16 @@
             <mdb-icon fas icon="bookmark"> </mdb-icon> {{service ? service.no_of_bookings : 'Loading...'}} Active Bookings
             <br>
             <mdb-icon far icon="calendar-check"> </mdb-icon> {{service ? service.no_of_appoints : 'Loading...'}} Active Appointments
+          </div>
+          <hr>
+          <div *ngIf="service.promotions.length">
+              <div class="row container-fluid">
+                  <div class="promotion shadow text-center" *ngFor="let promo of service.promotions">
+                    <p style="font-weight:bold; color:darkslategray;"> {{promo.title}} </p>
+                    <h3 style="font-weight:bold; color:darkmagenta;"> {{promo.precentage }} %</h3>
+                    <span style="color:darkslategray;"> Valid Till: {{promo.to_date.slice(0,10)}}</span>
+                  </div>
+              </div>
           </div>
         </div>
 
@@ -572,6 +584,12 @@
                         <span class="payment-cls"> <b> Rs. {{totalAmount}}</b></span>
                       </div>
 
+                      <div class="pay-dispaly pd-top-min" style="text-align:right;" *ngIf="service.promotions.length">
+                        <p style="margin:0px;"> Discounts:</p>
+                        <span class="payment-cls-promo"> <b> Rs. -{{totalPromotion}}</b></span>
+                      </div>
+
+
                       <div class="pay-dispaly pd-top-min" style="text-align:right;" *ngIf="!service.pay_on_meet">
                         <p style="margin:0px;"> Now Paying:</p>
                         <span class="payment-cls"> <b> Rs. {{totalAmount}}</b></span>
@@ -683,6 +701,144 @@
           color="link"
           (click)="success=false"
           (click)="cardDetails.hide()"
+          mdbWavesEffect
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--Add Promotion Modal-->
+<div
+  mdbModal
+  #promotionModal="mdbModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-hidden="true"
+
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-md"
+    role="document"
+    style="overflow-y: initial !important"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="success=false"
+          (click)="promotionModal.hide()"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel" >
+          <mat-icon>service</mat-icon>Add Promotion
+        </h4>
+      </div>
+
+      <div class="modal-body " style="height: 400px; overflow-y: auto;">
+
+        <div class="pt-1">
+          <form #addPromotionForm="ngForm">
+            <div class="text-center">
+              <p><b> Provide required details to create a promotion </b></p>
+            </div>
+            <hr>
+                <div class="row">
+                  <div class="col-md-4">
+                    <mdb-icon fas icon="clock"></mdb-icon> <span> Promotion Title</span>
+                  </div>
+                  <div class="col-md-8">
+                    <mat-form-field class="service-full-width">
+                      <mat-label>  Enter Promotion title </mat-label>
+                      <input matInput
+                      required
+                      [(ngModel)]="promotion.title"
+                      name="promo_title"
+                      #taskTitle="ngModel">
+                      <mat-error *ngIf="taskTitle.invalid">A promotion should given a title </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <mdb-icon fas icon="clock"></mdb-icon> <span> Precentage (On Price) </span>
+                  </div>
+                  <div class="col-md-8">
+                    <mat-form-field class="service-full-width">
+                      <mat-label>  Enter Promotion precentage </mat-label>
+                      <input matInput type="number"
+                      required
+                      [(ngModel)]="promotion.precentage"
+                      name="promo_precentage"
+                      #PromoPrecent="ngModel">
+                      <mat-error *ngIf="PromoPrecent.invalid">Promotion precentage is required </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-6">
+                <mdb-icon fas icon="calendar-alt"></mdb-icon> <span> <b> Starting Date  </b></span> <br>
+                <mat-form-field class="pt-1" >
+                  <mat-label > From Date : </mat-label>
+                  <input matInput [matDatepicker]="picker1" required [min]="today"
+                  name="from_date" [(ngModel)]="start" #fDate="ngModel"
+                  (dateChange) = "end = start "/>
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker1"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #picker1 [startAt]="start"></mat-datepicker>
+                  <mat-error *ngIf="fDate.invalid">Please select a date</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mdb-icon fas icon="calendar-alt"></mdb-icon> <span><b> To Date </b></span> <br>
+                <mat-form-field class="pt-1" >
+                  <mat-label > To Date : </mat-label>
+                  <input matInput [matDatepicker]="picker2" required [min]="today"
+                  name="to_date" [(ngModel)]="end" #tDate="ngModel"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker2"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #picker2 [startAt]="end"></mat-datepicker>
+                  <mat-error *ngIf="tDate.invalid">Please select a date</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <hr>
+            <div class="text-center" >
+              <button  mdbBtn mdbWavesEffect color="secondary" text="white" class="btn btn-md"
+              (click)="addPromotion()" (click) = "addPromotionForm.resetForm()" (click) = "promotionModal.hide()">
+                Create Promotion
+              </button>
+              <button  mdbBtn mdbWavesEffect color="red" text="white" class="btn btn-md"
+              (click)="promotionModal.hide()" >
+                Discard
+              </button>
+            </div>
+          </form>
+          </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          mdbBtn
+          color="link"
+          (click)="success=false"
+          (click)="promotionModal.hide()"
           mdbWavesEffect
         >
           Close

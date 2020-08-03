@@ -378,6 +378,25 @@ product.post('/rating/add',checkAuth, (req, res, next) => {
 });
 });
 
+// add a promotion to a product
+product.post('/promotion/add',checkAuth, (req, res, next) => {
+
+  Product.findOneAndUpdate({ product_id: req.body.productId },{
+    $push: {promotions: req.body.promotion}
+  }).then( (result) => {
+    console.log(result);
+    res.status(200).json(
+      {
+        message: 'Promotion added Successfully!',
+      }
+    );
+  }).catch( (err) => {
+    res.status(500).json(
+      { message: 'Promotion unsuccessfull! Please try again'}
+      );
+  });
+});
+
 
 
 

@@ -8,6 +8,7 @@ export interface Service {
   available_appoints: boolean;
   rating: number;
   reviews: Review[];
+  promotions: Promotion[];
   no_of_ratings: number;
   no_of_bookings: number;
   no_of_appoints: number;
@@ -89,8 +90,15 @@ export interface Appointment {
   // user
 }
 
-export interface Review{
+export interface Review {
   user: string;
   rating: number;
   review: string;
+}
+
+export interface Promotion {
+  from_date: string;
+  to_date: string;
+  title: string;
+  precentage: number;
 }

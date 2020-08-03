@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 
-import { Product, ProductCategories, QuantityTypes, ProductQuery, DeliveryService, Order } from './product.model';
+import { Product, ProductCategories, QuantityTypes, ProductQuery, DeliveryService, Order, Promotion } from './product.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 
 
@@ -280,6 +280,18 @@ export class ProductService  {
     this.http.post<{ message: string }>(this.url + 'product/rating/add', {id,  rate, review})
     .subscribe((recievedData) => {
       console.log(recievedData.message);
+      this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+  });
+  }
+
+  // add promotion
+  addPromotion(promotion: Promotion, productId: string ) {
+    this.http.post<{ message: string }>(this.url + 'product/promotion/add', {promotion, productId})
+    .subscribe((recievedData) => {
+      console.log(recievedData.message);
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate(['/sel/dash/bprofile']);
       this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
   });
   }

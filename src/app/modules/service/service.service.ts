@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 
-import { Service, ServiceCategories, ServiceRates, ServiceQuery, Booking, Appointment, EventServiceQuery } from './service.model';
+import { Service, ServiceCategories, ServiceRates, ServiceQuery, Booking, Appointment, EventServiceQuery, Promotion } from './service.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 import { Merchant, BusinessLocation } from '../auth/auth.model';
 import { ErrorComponent } from 'src/app/error/error.component';
@@ -326,6 +326,19 @@ export class ServiceService  {
         this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
     });
     }
+
+
+  // add promotion
+  addPromotion(promotion: Promotion, serviceId: string ) {
+    this.http.post<{ message: string }>(this.url + 'service/promotion/add', {promotion, serviceId})
+    .subscribe((recievedData) => {
+      console.log(recievedData.message);
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate(['/sp/dash/bprofile']);
+      this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+  });
+  }
 
   // create new booking
   createBooking(booking: Booking) {

@@ -12,7 +12,7 @@
           <!-- <small id="userHelp" class="form-text text-muted">Type your username.</small> -->
       </div>
        </div>
-       <div class="col-md-5 text-center">
+       <div class="col-md-4 text-center">
 
         <label for="roomInput">Choose room</label>
         <select name="roomInput" id="roomInput" class="form-control" [(ngModel)]="room"  style="width:400px; margin:0 auto;"
@@ -20,7 +20,7 @@
             <option [value] = "r" *ngFor="let r of RoomList">{{r}}</option>
         </select>
        </div>
-       <div class="col-md-2 text-center">
+       <div class="col-md-3 text-center">
         <div style="margin-top:19px;" class="pull-right">
           <button mdbBtn mdbWavesEffect color="primary" type="button" class="btn btn-lg" (click)="join()"
           (click) = "chatMode = !chatMode">Join Room</button>

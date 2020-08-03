@@ -5,6 +5,7 @@ const Appointment = require ("../../model/service/appointment.model");
 const DeliveryService = require ("../../model/product/deliveryService.model");
 const checkAuth = require("../../middleware/auth-check");
 const Login = require("../../../data/user/emailAuthentication.json");
+const Inquery = require("../../model/eventplanner/inquery.model");
 
 //dependency imports
 const express = require("express");
@@ -137,6 +138,49 @@ eventPlanner.get('/order/get',checkAuth, (req, res, next) => {
       }
     );
   });
+});
+
+
+//get list of orders
+eventPlanner.get('/inquery/get',checkAuth, (req, res, next) => {
+  Inquery.find().then( (inquries) => {
+    console.log(inquries);
+    res.status(200).json(
+      {
+        message: 'inquery list recieved successfully!',
+        inqueries: inquries
+      }
+    );
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json(
+      { message: 'No Inquries Found!'}
+      );
+  });
+});
+
+
+//get list of orders
+eventPlanner.post('/inquery/create',checkAuth, (req, res, next) => {
+  var inqRes = req.body;
+  inqRes['user_id'] = req.userData.user_id;
+
+  const newInq = new Inquery(inqRes);
+
+  newInq.save().then(
+    (inquries) => {
+      console.log(inquries);
+      res.status(200).json(
+        {
+          message: 'inquery created successfully!',
+        }
+      ).catch( err => {
+        console.log(err);
+    res.status(500).json(
+      { message: 'Inquery Creation unsuccessfull!'}
+      );
+  });
+});
 });
 
 

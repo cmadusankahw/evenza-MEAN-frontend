@@ -65,13 +65,14 @@ export class EventDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateEventState(state: string) {
-
-  }
-
   // publish the event
   publishEvent(eventId: string){
     this.eventService.publishEvent(eventId);
+  }
+
+  // cancel event
+  cancelEvent() {
+    this.eventService.cancelEvent(this.event.event_id);
   }
 
 

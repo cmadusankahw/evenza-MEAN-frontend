@@ -18,6 +18,7 @@ const multer = require ("multer");
 const nodemailer = require("nodemailer");
 var backup = require('mongodb-backup');
 var restore = require('mongodb-restore');
+const cron = require("node-cron"); // running scheduled tasks
 
 //express app declaration
 const admin = express();
@@ -50,6 +51,56 @@ const storage = multer.diskStorage({
 //middleware
 admin.use(bodyParser.json());
 admin.use(bodyParser.urlencoded({ extended: false }));
+
+// running scheduled payment updates
+
+// variables
+
+var i=0;
+
+// schedule tasks to be run on the server - update payments
+cron.schedule("* * 28 * *", function() {
+
+  Admin.findOne().select('payment_details').then( result => {
+    var paymentDetails = result.payment_details;
+    var merchantIndex = 0;
+    var paysIndex = 0;
+    var dueAmt = 0;
+    var timeStamp;
+    for(let pd of paymentDetails) {
+        for (let p of pd.pays) {
+          dueAmt += p.due_amount;
+          timeStamp = p.timestamp;
+          paysIndex++;
+        }
+        // deduct due amount and pass to the latest month
+        for (let i =0; i< paysIndex; i++){
+          paymentDetails[merchantIndex].pays[i].due_amount = 0;
+        }
+        // create new entry to hold updated payment details
+        paymentDetails[merchantIndex].pays[paysIndex]= {
+          due_amount: dueAmt,
+          paid_amount: 0,
+          paid_date: null,
+          timestamp: {
+            year: timeStamp.year,
+            month: timeStamp.month +1,
+          }
+        }
+        merchantIndex++;
+    }
+    console.log(paymentDetails);
+    Admin.updateOne({},{
+      'payment_details' : paymentDetails
+    }).then ( (res2) => {
+      console.log(res2);
+    }).catch ( err => {
+      console.log(err);
+    })
+  }).catch( err => {
+    console.log(err);
+  })
+});
 
 
 // add admin photos
@@ -238,7 +289,7 @@ admin.get('/get/payments',checkAuth, (req, res, next) => {
   Query.exec().then((result) => {
     console.log(result);
     res.status(200).json({
-      message: 'payment details successfully!',
+      message: 'payment details retrived successfully!',
       paymentDetails: result[0].payment_details
     });
   })
@@ -267,7 +318,7 @@ admin.get('/get/payment',checkAuth, (req, res, next) => {
       }
     }
     res.status(200).json({
-      message: 'payment details successfully!',
+      message: 'payment details retrived successfully!',
       merchantPayment: merchantPay
     });
   })
@@ -279,7 +330,53 @@ admin.get('/get/payment',checkAuth, (req, res, next) => {
   });
 });
 
+// get admin payments
+admin.post('/make/payment',checkAuth, (req, res, next) => {
 
+  var Query = Admin.findOne().select('payment_details');
+  var paymentDetails;
+  var i=0;
+  var merchantIndex = 0;
+  var paysIndex = -1;
+
+  Query.exec().then((result) => {
+    console.log(result);
+    paymentDetails = result.payment_details;
+    for(let pd of paymentDetails) {
+      if (pd.user_id = req.userData.user_id) {
+        merchantIndex = i;
+        for (let p of pd.pays) {
+          paysIndex++;
+        }
+      }
+      i++;
+    }
+    console.log(merchantIndex, ' : ', paysIndex);
+    // updating payment
+    paymentDetails[merchantIndex].pays[paysIndex].paid_amount += req.body.amount;
+    paymentDetails[merchantIndex].pays[paysIndex].due_amount -= req.body.amount;
+    console.log('final pays :', paymentDetails);
+    Admin.updateOne({},{
+      'payment_details' : paymentDetails
+    }).then ( result2 => {
+      console.log(result2);
+      res.status(200).json({
+        message: 'payment details updated successfully!',
+      });
+    }) .catch(err=>{
+      console.log(err);
+      res.status(500).json({
+        message: 'Payment Details update unsuccessfull! Please Try Again!'
+      });
+    });
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).json({
+      message: 'Payment Details update unsuccessfull! Please Try Again!'
+    });
+  });
+});
 
 
 

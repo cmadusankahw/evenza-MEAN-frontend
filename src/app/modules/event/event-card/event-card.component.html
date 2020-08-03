@@ -31,7 +31,7 @@
                         <span style="font-size:17px; font-weight:bold;"> <mdb-icon fas icon="calendar"></mdb-icon>{{event.from_date.slice(0,10)}}</span>
                       </div>
                       <div class="left-btn">
-                        <a mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect
+                        <a mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect *ngIf="event.state != 'cancelled'"
                        routerLink="/planner/event/details/{{event.event_id}}">
                           View Details
                         </a>

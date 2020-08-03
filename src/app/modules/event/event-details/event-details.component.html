@@ -199,11 +199,11 @@
            </button>
           </div>
           <hr>
-          <div class="danger-zone" >
+          <div class="danger-zone"  >
             <div class="pb-2" >
               <p class="button-box-sub"><mdb-icon fas icon="users"> </mdb-icon> Cancel Event:</p>
              <button mdbBtn color="danger" text="white" class="btn btn-md text-center"
-             (click) = "cancelDialog.show()">
+             (click) = "cancelDialog.show()" [disabled] ="event.state != 'published'">
                CANCEL EVENT
              </button>
             </div>
@@ -311,7 +311,7 @@ id="frameModalTop" tabindex="-1" role="dialog"
       <!--Footer-->
       <div class="modal-footer justify-content-center">
         <a type="button" mdbBtn color="danger" class="waves-effect"
-        (click)="cancelDialog.hide()" routerLink="/planner/event/cancel/{{event ? event.event_id: 'any'}}"
+        (click)="cancelDialog.hide()" (click)="cancelEvent()"
         mdbWavesEffect>Cancel Event
           <mdb-btn far icon="ban" class="ml-1"></mdb-btn>
         </a>

@@ -30,7 +30,7 @@ const adminSchema = mongoose.Schema(
           timestamp: {type: { year:{type: Number, required: true},
                               month: {type: Number, required: true},
                     }, required: true},
-          paid_date: {type: Date, required: true},
+          paid_date: {type: Date},
           paid_amount: {type: Number, required: true},
           due_amount: {type: Number, required: true},
         }]

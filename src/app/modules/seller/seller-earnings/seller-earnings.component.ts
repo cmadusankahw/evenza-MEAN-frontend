@@ -16,7 +16,7 @@ export class SellerEarningsComponent implements OnInit, OnDestroy {
 
 
   displayedColumns: string[] = ['id', 'service_booked', 'earned_date_time', 'amount', 'action', 'amt'];
-  dataSource: MatTableDataSource<Order>;
+  dataSource: MatTableDataSource<Earnings>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -25,10 +25,7 @@ export class SellerEarningsComponent implements OnInit, OnDestroy {
   private orderSub: Subscription;
 
   // recieved bookings
-  recievedOrders: Order[];
-
-  // output values to parent comp
-  @Output() amountsEmit = new EventEmitter<object>();
+  earninigs: Earnings[];
 
   // total values
   totalAmountPaid = 0;
@@ -37,26 +34,18 @@ export class SellerEarningsComponent implements OnInit, OnDestroy {
   noOfBookings = 0;
 
 
-  constructor(private sellerService : SellerService) {}
+  constructor(private sellerService: SellerService) {}
 
   ngOnInit() {
-    this.sellerService.getOrders();
-    this.orderSub = this.sellerService.getOrdersUpdateListener()
-          .subscribe((recievedOrders: Order[]) => {
-              this.recievedOrders = recievedOrders;
-              console.log(this.recievedOrders);
-              if (this.recievedOrders) {
-                this.dataSource = new MatTableDataSource(this.recievedOrders);
+    this.sellerService.getEarnings();
+    this.orderSub = this.sellerService.getEarningsUpdateListener()
+          .subscribe((res: Earnings[]) => {
+              if (res) {
+                this.earninigs = res;
+                this.dataSource = new MatTableDataSource(this.earninigs);
                 this.dataSource.paginator = this.paginator;
                 this.dataSource.sort = this.sort;
               }
-              for (const book of recievedOrders) {
-                this.totalAmountPaid += book.amount_paid;
-                this.totalCommissionDue += book.commission_due;
-                this.totalEarning += book.amount;
-                this.noOfBookings++;
-              }
-              this.updateAmounts();
       });
   }
 
@@ -74,15 +63,5 @@ export class SellerEarningsComponent implements OnInit, OnDestroy {
       this.dataSource.paginator.firstPage();
     }
   }
-
-   // send business verify details
-   updateAmounts() {
-    this.amountsEmit.emit({
-      totalCommisionDue: this.totalCommissionDue,
-      totalEarning: this.totalEarning,
-      no_of_bookings: this.noOfBookings
-    });
-  }
-
 
 }

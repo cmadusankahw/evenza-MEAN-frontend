@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { NgForm, FormGroup, Validators, FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
-import { Service, ServiceCategories, ServiceRates, Booking, Appointment } from '../service.model';
+import { Service, ServiceCategories, ServiceRates, Booking, Appointment, Promotion } from '../service.model';
 import { ServiceService } from '../service.service';
 import { MatDialog } from '@angular/material';
 import { SuccessComponent } from 'src/app/success/success.component';
@@ -57,11 +57,19 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   public rates: ServiceRates[] = [];
   // recieved service (initial declaration)
   public service: Service ;
+   // created promotion
+   public promotion: Promotion = { from_date: '',
+                                    to_date: '',
+                                    title: 'New Promotion',
+                                    precentage: 0 };
 
   public tday = new Date();
   public totalAmount = 0.0;
+  public totalPromotion = 0;
   public payAmount = 0.0;
   public duration = 0;
+  public start = new Date();
+  public end = new Date();
 
   // images to upload
   image01: File;
@@ -148,6 +156,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
         available_appoints: this.service.available_appoints,
         rating: this.service.rating,
         reviews: this.service.reviews,
+        promotions: this.service.promotions,
         no_of_ratings: this.service.no_of_ratings,
         no_of_bookings: this.service.no_of_bookings,
         no_of_appoints: this.service.no_of_appoints,
@@ -183,6 +192,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
     const date1 = refactorDate(this.bookingTime.fromDate, this.bookingTime.fromTime);
     const date2 = refactorDate(this.bookingTime.toDate, this.bookingTime.toTime);
     const diffDays = calcDateDuration(new Date(date1), new Date(date2));
+    let promotion = 0;
     console.log(this.duration);
     console.log(diffDays);
     let newRate = rate;
@@ -195,7 +205,13 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
     } else  {
       this.duration = diffDays;
     }
-    this.totalAmount = newRate;
+    if (this.service.promotions.length) {
+        for (const p of this.service.promotions) {
+          promotion += (newRate * p.precentage) / 100;
+        }
+    }
+    this.totalAmount = newRate - promotion;
+    this.totalPromotion = promotion;
     this.payAmount = newRate / 10;
     return newRate;
   }
@@ -308,6 +324,16 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   showBprofile() {
    // this.router.navigate(['/sp/bprofile']);
   }
+
+
+  // add new promotion
+  addPromotion() {
+    this.promotion.from_date = this.start.toISOString();
+    this.promotion.to_date = this.end.toISOString();
+    console.log(this.promotion);
+    this.serviceService.addPromotion(this.promotion, this.service.service_id);
+  }
+
 
   // image 01 uploading
   onImage01Uploaded(event: Event) {

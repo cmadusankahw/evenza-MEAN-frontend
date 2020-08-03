@@ -18,6 +18,12 @@ const productSchema = mongoose.Schema(
       rating: Number,
       review: String
     }]},
+    promotions: { type: [
+      {from_date: String,
+      to_date: String,
+      title: String,
+      precentage: Number}
+    ]},
     no_of_ratings: {type: Number, default: 0},
     no_of_orders: {type: Number, default: 0},
     delivery_service: {type: String, required: true},

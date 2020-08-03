@@ -14,9 +14,6 @@ const nodemailer = require("nodemailer");
 //express app declaration
 const serviceProvider = express();
 
-var dashStat = { pending_bookings: 0, last_book_date:'', completed_bookings : 0, last_completed_book_date: '',
-pending_appointments:0, last_appointment__date: '', approved_appointments: 0 , last_approved_appointment_date: ''};
-
 // multer setup for image upload
 const MIME_TYPE_MAP = {
   'image/png' : 'png',
@@ -159,58 +156,29 @@ serviceProvider.get('/calbooking/get',checkAuth, (req, res, next) => {
   });
 });
 
-//get dashboard stats
-serviceProvider.get('/dashstat/get',checkAuth, (req, res, next) => {
-  let pBook, cBook, pAppoint, cAppoint = 0;
-  let pbDate, cbDate, paDate, caDate = '';
-  Booking.find({ 'serviceProvider.serviceProvider_id': req.userData.user_id }, function (err,resBooks) {
-    if (err) return handleError(err => {
-      console.log(err);
-      res.status(500).json(
-        { message: 'Error while loading Booking stats! Please Refresh!'}
-        );
-    });
-  }).then((resBooks) => {
-    for (let book in resBooks.state) {
-      if (book == 'pending'){
-        pBook++;
-        pbDate = book.created_date;};
-      if (book == 'completed'){
-        cBook++;
-        cbDate = book.to_date;};
-    }
-    Appointment.find({ 'serviceProvider.serviceProvider_id': req.userData.user_id }, function (err,resApps) {
-      if (err) return handleError(err => {
-        console.log(err);
-        res.status(500).json(
-          { message: 'Error while loading Booking stats! Please Refresh!'}
-          );
-      });
 
-    }).then((resApps)=> {
-      for (let app in resApps.state) {
-        if (app == 'pending'){
-          pAppoint++;
-          paDate = app.created_date;};
-        if (app == 'confirmed'){
-          cAppoint++;
-          caDate = app.appointed_date;};
-      }
+
+//get dashboard stats
+serviceProvider.get('/stat/get',checkAuth, (req, res, next) => {
+
+  var bookingQuery = Booking.find({ 'serviceProvider.serviceProvider_id': req.userData.user_id}).select('booking_id service_id service_name created_date state amount amount_paid');
+  var appointQuery = Appointment.find({ 'serviceProvider.serviceProvider_id': req.userData.user_id}).select('appoint_id service_id service_name created_date state');
+
+  bookingQuery.exec().then((resBooks) => {
+    console.log(resBooks);
+    appointQuery.exec().then( (resAppoints) => {
+      console.log(resAppoints);
       res.status(200).json(
         {
-          message: 'Dashboard Data recieved successfully!',
-          dashstat: { pending_bookings: pBook,
-                      last_book_date:pbDate,
-                      completed_bookings : cBook,
-                      last_completed_book_date: cbDate,
-                      pending_appointments:pAppoint,
-                      last_appointment__date: paDate,
-                      approved_appointments: cAppoint ,
-                      last_approved_appointment_date: caDate}
-        }
-      );
-    });
-  });
+          message: 'Report Data recieved successfully!',
+          bookings: resBooks,
+          appoints: resAppoints
+        });
+    })
+
+  }).catch( err=> {
+    console.log(err);
+  })
 });
 
 

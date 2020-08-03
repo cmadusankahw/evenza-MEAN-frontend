@@ -153,18 +153,30 @@
           <div class="col-md-1">
           </div>
           <div class="col-md-4 search-result-btn-pd">
-            <div style="text-align:right;">
-              <a role="button" class="btn btn-md" color="secondary" text="white" mdbBtn mdbWavesEffect
-              (click)= "sendProduct(product)" (click)="productDetails.show()">
-              <mdb-icon fas icon="gem"></mdb-icon> Order Now</a>
+              <div class="row">
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-3">
+                  <div class="promo" *ngIf="product.promotions.length">
+                    <span style="color:darkmagenta;">{{product.promotions[0].precentage }} %</span>
+                </div>
+                </div>
+              <div class="col-md-6">
+                <div style="text-align:right;">
+                  <a role="button" class="btn btn-md" color="secondary" text="white" mdbBtn mdbWavesEffect
+                  (click)= "sendProduct(product)" (click)="productDetails.show()">
+                  <mdb-icon fas icon="gem"></mdb-icon> Order Now</a>
+                </div>
+                <div class="rating-mini">
+                  <ngb-rating readonly="true" [rate]="product.rating" max="5">
+                    <ng-template  let-fill="fill" let-index="index">
+                      <span class="star-mini" [class.filled]="fill === 100">&#9733;</span>
+                    </ng-template>
+                  </ngb-rating>
+                </div>
+              </div>
             </div>
-             <div class="rating-mini">
-              <ngb-rating readonly="true" [rate]="product.rating" max="5">
-                <ng-template  let-fill="fill" let-index="index">
-                  <span class="star-mini" [class.filled]="fill === 100">&#9733;</span>
-                </ng-template>
-              </ngb-rating>
-            </div>
+
           </div>
 
         </div>

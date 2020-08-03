@@ -12,6 +12,7 @@ export interface Product {
   inventory: number;
   rating: number;
   reviews: Review[];
+  promotions: Promotion[];
   no_of_ratings: number;
   no_of_orders: number;
   delivery_service: string; // fk
@@ -80,8 +81,15 @@ export interface Order {
   // user
 }
 
-export interface Review{
+export interface Review {
   user: string;
   rating: number;
   review: string;
+}
+
+export interface Promotion {
+  from_date: string;
+  to_date: string;
+  title: string;
+  precentage: number;
 }

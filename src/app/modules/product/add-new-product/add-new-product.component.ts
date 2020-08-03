@@ -106,6 +106,7 @@ export class AddNewProductComponent implements OnInit, OnDestroy {
           inventory:  addProductForm.value.inventory,
           rating: 0,
           reviews: [],
+          promotions:[],
           no_of_ratings: 0,
           no_of_orders: 0,
           delivery_service: addProductForm.value.delivery_service,

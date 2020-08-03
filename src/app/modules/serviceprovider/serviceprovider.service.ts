@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
 import { Router } from '@angular/router';
 
-import { Booking, Appointment, DashStat, PayStat, CalendarBooking } from './serviceprovider.model';
+import { Booking, Appointment, DashStat, PayStat, CalendarBooking, AppointStat, BookingStat, Earnings } from './serviceprovider.model';
 import { Email } from '../eventplanner/eventplanner.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 
@@ -19,35 +19,34 @@ export class ServiceProviderService {
   private bookingsUpdated = new Subject<Booking[]>();
   private appointmentsUpdated = new Subject<Appointment[]>();
   private calendarBookingsUpdated = new Subject<CalendarBooking[]>();
-
   private bookingUpdated = new Subject<Booking>();
   private appointmentUpdated = new Subject<Appointment>();
   private dashStatUpdated = new Subject<DashStat>();
-  private payStatUpdated = new Subject<PayStat>();
+  private payStatupdated = new Subject<PayStat>();
+  private earningsUpdated = new Subject<Earnings[]>();
+  private reportStatUpdated = new Subject<boolean>();
 
   // recieved bookings
   private bookings: Booking[];
-
   // recieved appointments
   private appointments: Appointment[];
-
   // recieved calendar bookings
   private calendarBookings: CalendarBooking[] = [];
-
    // recieved single booking
    private booking: Booking;
-
    // recieved single appointment
   private appointment: Appointment;
-
   // dashboard stat
   private dashstat: DashStat;
-
-  // payment stat
-  private paystat: PayStat;
-
+  // service provider earnings
+  private earnings: Earnings[] = [];
+  // snack bars for notification display
   private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+
+  // keep stat for report generation
+  private bookingStat: BookingStat[] = [];
+  private appointStat: AppointStat[] = [];
 
 
   constructor(private http: HttpClient,
@@ -149,23 +148,17 @@ export class ServiceProviderService {
     });
   }
 
-  // get dashboard stat
-  getDashStat() {
-    this.http.get<{ message: string, dashstat: DashStat }>(this.url + 'sp/dashstat/get')
-    .subscribe((recievedData) => {
-      this.dashstat = recievedData.dashstat;
-      this.dashStatUpdated.next(this.dashstat);
-    });
+  // get stat for report generation (only once)
+  getReportStat() {
+      this.http.get<{ message: string, appoints: AppointStat[] , bookings: BookingStat[] }>(this.url + 'sp/stat/get')
+      .subscribe((recievedData) => {
+        this.bookingStat = recievedData.bookings;
+        this.appointStat = recievedData.appoints;
+        this.reportStatUpdated.next(true);
+      });
   }
 
-  // get dashboard stat
-  getPaymentStat() {
-    this.http.get<{ message: string, paystat: PayStat }>(this.url + 'sp/paystat/get')
-    .subscribe((recievedData) => {
-      this.paystat = recievedData.paystat;
-      this.payStatUpdated.next(this.paystat);
-    });
-  }
+
 
   // get list of bookings of an event planner
   updateBookings() {
@@ -218,12 +211,107 @@ export class ServiceProviderService {
     return this.dashStatUpdated.asObservable();
   }
 
-  getPayStatUpdatedListener() {
-    return this.payStatUpdated.asObservable();
+  getEarningstUpdatedListener() {
+    return this.earningsUpdated.asObservable();
+  }
+
+
+  getPaystatUpdatedListener() {
+    return this.payStatupdated.asObservable();
   }
 
   getCalendarBookingsUpdatedListener() {
     return this.calendarBookingsUpdated.asObservable();
+  }
+
+  getReportStatUpdatedListener() {
+    return this.reportStatUpdated.asObservable();
+  }
+
+  // get dashboard stats
+  getDashStat() {
+    // initial declaration
+    var dashStat: DashStat = {
+      pending_bookings: 0,
+      last_book_date: 'loading...',
+      pending_appointments: 0,
+      last_appointment_date: 'loading...',
+      completed_bookings: 0,
+      last_completed_book_date: 'loading...',
+      approved_appointments: 0,
+      last_approved_appointment_date: 'loading...',
+    };
+
+    // booking stat
+    var c = 0;
+    var a = 0;
+    var b = 0;
+    var n = 0;
+    var m = 0;
+    var k = 0;
+
+    if (this.bookingStat) {
+      for (let book of this.bookingStat) {
+        if (book.state === 'pending') {
+          dashStat.pending_bookings++;
+          n = k;
+        }
+        if (book.state === 'completed') {
+          dashStat.completed_bookings++;
+          m = k;
+        }
+        k++;
+      }
+      dashStat.last_book_date =  this.bookingStat[n].created_date.slice(0,10);
+      dashStat.last_completed_book_date =  this.bookingStat[m].created_date.slice(0,10);
+    }
+
+    if (this.appointStat) {
+      for (let app of this.appointStat) {
+        if (app.state === 'pending') {
+          dashStat.pending_appointments++;
+          a = c;
+        }
+        if (app.state === 'confirmed') {
+          dashStat.approved_appointments++;
+          b = c;
+        }
+        c++;
+      }
+      dashStat.last_appointment_date =  this.appointStat[a].created_date.slice(0,10);
+      dashStat.last_approved_appointment_date =  this.appointStat[b].created_date.slice(0,10);
+    }
+    setTimeout ( () => {
+      this.dashstat = dashStat;
+      this.dashStatUpdated.next(dashStat);
+    }, 1000);
+  }
+
+  // get business stat for business profile
+  getEarnings() {
+    var earnings: Earnings[] = [];
+
+    // loop through bookings
+    if (this.bookingStat) {
+      for (let book of this.bookingStat) {
+        const earning: Earnings = {
+          transaction_id: book.booking_id,
+          booking_id: book.booking_id,
+          service_booked: book.service_name,
+          earned_date: book.created_date.slice(0,10),
+          earned_time: book.created_date.slice(11,16),
+          payment_type: 'card',
+          commission_due: (book.amount* 5)/ 100,
+          amount_paid: book.amount_paid,
+          amount: book.amount
+        };
+        earnings.push(earning);
+      }
+    }
+    setTimeout ( () => {
+      this.earnings = earnings;
+      this.earningsUpdated.next(earnings);
+    }, 1000);
   }
 
 

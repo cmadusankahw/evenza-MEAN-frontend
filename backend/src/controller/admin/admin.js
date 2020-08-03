@@ -251,6 +251,36 @@ admin.get('/get/payments',checkAuth, (req, res, next) => {
 });
 
 
+// get admin payments
+admin.get('/get/payment',checkAuth, (req, res, next) => {
+
+  var Query = Admin.findOne().select('payment_details');
+  var paymentDetails;
+  var merchantPay;
+
+  Query.exec().then((result) => {
+    console.log(result);
+    paymentDetails = result.payment_details;
+    for(let pd of paymentDetails) {
+      if (pd.user_id = req.userData.user_id) {
+        merchantPay = pd;
+      }
+    }
+    res.status(200).json({
+      message: 'payment details successfully!',
+      merchantPayment: merchantPay
+    });
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).json({
+      message: 'Payment Details Retrival unsuccessfull! Please Try Again!'
+    });
+  });
+});
+
+
+
 
 
 // nodemailer send email function

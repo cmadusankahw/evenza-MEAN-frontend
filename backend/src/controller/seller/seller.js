@@ -43,9 +43,6 @@ seller.use(bodyParser.json());
 seller.use(bodyParser.urlencoded({ extended: false }));
 
 
- // change order state
-
-
 // add seller photos
 seller.post('/add/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
     const url = req.protocol + '://' + req.get("host");
@@ -63,13 +60,7 @@ seller.post('/add/img',checkAuth, multer({storage:storage}).array("images[]"), (
 //update order state
 seller.post('/order/edit',checkAuth, (req, res, next) => {
 
-  Order.findOneAndUpdate({ 'order_id': req.body.orderId},{'state':req.body.state}, function (err,recievedOrder) {
-    if (err) return handleError(err => {
-      console.log(err);
-      res.status(500).json(
-        { message: 'Error while updating Order State! Please Retry!'}
-        );
-    });
+  Order.findOneAndUpdate({ 'order_id': req.body.orderId},{'state':req.body.state}).then( (recievedOrder) => {
     console.log(recievedOrder);
     res.status(200).json(
       {
@@ -77,7 +68,12 @@ seller.post('/order/edit',checkAuth, (req, res, next) => {
         order: recievedOrder
       }
     );
-  });
+  }).catch( err => {
+       console.log(err);
+      res.status(500).json(
+        { message: 'Error while updating Order State! Please Retry!'}
+        );
+    });
 });
 
 
@@ -138,6 +134,24 @@ seller.get('/order/get/:id',checkAuth, (req, res, next) => {
       }
     );
   });
+});
+
+
+//get dashboard stats
+seller.get('/stat/get',checkAuth, (req, res, next) => {
+
+  var orderQuery = Order.find({ 'seller.seller_id': req.userData.user_id}).select(' order_id product_id product quantity qty_type product_category state created_date commission_due amount_paid amount');
+
+  orderQuery.exec().then((resOrders) => {
+    console.log(resOrders);
+      res.status(200).json(
+        {
+          message: 'Report Data recieved successfully!',
+          orders: resOrders,
+        });
+  }).catch( err=> {
+    console.log(err);
+  })
 });
 
 

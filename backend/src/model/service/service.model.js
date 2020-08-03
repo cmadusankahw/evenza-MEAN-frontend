@@ -15,6 +15,12 @@ const serviceSchema = mongoose.Schema(
       rating: Number,
       review: String
     }]},
+    promotions: { type: [
+      {from_date: String,
+      to_date: String,
+      title: String,
+      precentage: Number}
+    ]},
     no_of_ratings: {type: Number, required: true},
     no_of_bookings: {type: Number, required: true},
     no_of_appoints: {type: Number, required: true},

@@ -192,12 +192,12 @@ service.post('/cat/remove',checkAuth, (req, res, next) => {
 
 
 
-//search services
+//search services // need to modify to compare dates
 service.post('/search', (req, res, next) => {
-  console.log(req.body);
   Service.aggregate([
                 // step 1 : matching filters from service model
                 {$match: {"service_category": req.body.category,
+                "rate": {$lte: req.body.maxPrice},
                 "rate": {$gte: req.body.minPrice},
                 "pay_on_meet":req.body.payOnMeet,
                 "rating": {$gte: req.body.userRating},
@@ -209,11 +209,6 @@ service.post('/search', (req, res, next) => {
                       foreignField : "service_id",
                       as : "bookings"
                   }},
-                // step 3: check booking possibilities
-                {$match: {
-                  "bookings.from_date": [{$lte:req.body.fromDate}], // not working
-                  "bookings.to_date": [{$gte: req.body.toDate}], // not working
-                }}
               ])
   .then (finalResult => {
       res.status(200).json({
@@ -255,19 +250,24 @@ service.post('/event/search', (req, res, next) => {
 });
 
 
-// check booking availability  !!!!! update with capacity
+// check booking availability  // need to modify
 service.post('/booking/check', (req, res, next) => {
   console.log(req.body);
+  reqFromDate = new Date(req.body.fromDate).getTime();
+  reqToDate = new Date(req.body.toDate).getTime();
+  // count to check with capacity
+  var count = 0;
+  // returning availability state
   let availability = false;
-  Booking.find({ service_id: req.serviceId,
-                 from_date: { $gte :req.body.fromDate },
-                 to_date: { $lte :req.body.toDate}})
+
+  Booking.countDocuments({ service_id: req.serviceId,
+                 from_date: { $gte :req.body.fromDate.slice(0,10) },
+                 to_date: { $lte :req.body.toDate.slice(0,10)}})
                       .then( result => {
                         console.log('found bookings :' , result);
-                        Service.findOne({service_id: req.body.serviceId, capacity: {$gte: result.length}})
+                        Service.countDocuments({service_id: req.body.serviceId, capacity: {$gte: result+1}})
   .then(result2 => {
-      console.log('found services' ,result2);
-      if (result2.length){
+      if (result2>0){
         availability = true;
       };
       res.status(200).json({
@@ -630,6 +630,26 @@ service.post('/rating/add',checkAuth, (req, res, next) => {
 });
 
 
+// add a promotion to a product
+service.post('/promotion/add',checkAuth, (req, res, next) => {
+
+  Product.findOneAndUpdate({ service_id: req.body.serviceId },{
+    $push: {promotions: req.body.promotion}
+  }).then( (result) => {
+    console.log(result);
+    res.status(200).json(
+      {
+        message: 'Promotion added Successfully!',
+      }
+    );
+  }).catch( (err) => {
+    res.status(500).json(
+      { message: 'Promotion unsuccessfull! Please try again'}
+      );
+  });
+});
+
+
 
 // get methods
 
@@ -691,7 +711,7 @@ service.get('/booking/get',checkAuth, (req, res, next) => {
 
 
 //get business locations
-service.get('/location/get',checkAuth, (req, res, next) => {
+service.get('/location/get', (req, res, next) => {
 
   var query =  Merchant.find({business:{$ne : null}}).select(['business.location', 'business.title']);
 

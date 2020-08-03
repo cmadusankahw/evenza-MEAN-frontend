@@ -91,6 +91,7 @@ createService(addServiceForm: NgForm) {
       available_appoints: this.booleanValue(this.availableAppoint),
       rating: 0,
       reviews: [],
+      promotions: [],
       no_of_ratings: 0,
       no_of_bookings: 0,
       no_of_appoints: 0,

@@ -44,7 +44,7 @@
       <!-- Color Column -->
       <ng-container matColumnDef="duration">
         <th mat-header-cell *matHeaderCellDef mat-sort-header > Appointed time </th>
-        <td mat-cell *matCellDef="let row" > {{row.appointed_time.hour > 9 ? '' + row.appointed_time.hour: '0' + row.appointed_time.hour}} : {{row.appointed_time.minute > 9 ? '' + row.appointed_time.minute: '0' + row.appointed_time.minute}}</td>
+        <td mat-cell *matCellDef="let row" > {{row.appointed_date.slice(11,16)}}</td>
       </ng-container>
 
 
@@ -200,7 +200,7 @@
                       Appointed Visit Time
                     </div>
                     <div class="col info-input">
-                      <input type="text" matInput disabled value="{{selectedAppointment.appointed_time.hour > 9 ? '' + selectedAppointment.appointed_time.hour: '0' + selectedAppointment.appointed_time.hour}} : {{selectedAppointment.appointed_time.minute > 9 ? '' + selectedAppointment.appointed_time.minute: '0' + selectedAppointment.appointed_time.minute}}">
+                      <input type="text" matInput disabled value="{{selectedAppointment.appointed_date.slice(11,16)}}">
                     </div>
                   </div>
 

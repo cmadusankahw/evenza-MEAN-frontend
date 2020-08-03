@@ -102,6 +102,13 @@ export interface Email {
   html: string;
 }
 
+export interface Inquery {
+  id: string;
+  heading: string;
+  category: string;
+  message: string;
+}
+
 
  // print the document
 export function printData(htmlContent: string, type: string) {

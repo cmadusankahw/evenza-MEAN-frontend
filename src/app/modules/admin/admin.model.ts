@@ -68,6 +68,25 @@ export interface DashboardData {
   users: [UsersData];
 }
 
+// interfaces nd function expoers regarding stratergic report generation
+
+export interface MonthHolder {
+  year: number;
+  jan: number;
+  feb: number;
+  mar: number;
+  apr: number;
+  may: number;
+  jun: number;
+  july: number;
+  aug: number;
+  sep: number;
+  oct: number;
+  nov: number;
+  dec: number;
+}
+
+
 export function getLastSixMonths(date: Date): string[] {
   const newArr = [];
   const returnArr = [];
@@ -100,4 +119,35 @@ export function findMonth(no: number): string{
     case 12: month = 'Dec'; break;
   }
   return month;
+}
+
+
+export function updateCount(date: string, appMonths: MonthHolder) {
+  const month = date.slice(5, 7) ;
+  if ( month === '01') {
+    this.appMonths.jan++;
+  } else if ( month === '02') {
+    this.appMonths.feb++;
+  } else if ( month === '03') {
+    this.appMonths.mar++;
+  } else if ( month === '04') {
+    this.appMonths.apr++;
+  } else if ( month === '05') {
+    this.appMonths.may++;
+  } else if ( month === '06') {
+    this.appMonths.jun++;
+  } else if ( month === '07') {
+    this.appMonths.jul++;
+  } else if ( month === '08') {
+    this.appMonths.aug++;
+  } else if ( month === '09') {
+    this.appMonths.sep++;
+  } else if ( month === '10') {
+    this.appMonths.oct++;
+  } else if ( month === '11') {
+    this.appMonths.nov++;
+  } else if ( month === '12') {
+    this.appMonths.dec++;
+  }
+  return appMonths;
 }

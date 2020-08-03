@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
-import { Product, ProductCategories, QuantityTypes, Order, DeliveryService } from '../product.model';
+import { Product, ProductCategories, QuantityTypes, Order, DeliveryService, Promotion } from '../product.model';
 import { ProductService } from '../product.service';
 import { MatDialog } from '@angular/material';
 
@@ -48,6 +48,11 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   public deliveryServices: DeliveryService[] = [];
   // delivery service of the product
   public delService: DeliveryService;
+  // created promotion
+  public promotion: Promotion = { from_date: '',
+                                  to_date: '',
+                                  title: 'New Promotion',
+                                  precentage: 0 };
 
   // images to upload
   image01: File;
@@ -57,11 +62,13 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   image03: File;
   image03Url: any = './assets/images/merchant/nopic.png';
 
-  // total amount
+  //  temp variables for calculation
   totalAmount = 0.0;
+  totalPromotion = 0;
   payAmount = 0.0;
   qty = 1;
-
+  start = new Date();
+  end = new Date();
 
   constructor(private router: Router,
               public productService: ProductService,
@@ -182,6 +189,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         inventory:  updateProductForm.value.inventory,
         rating: this.product.rating,
         reviews: this.product.reviews,
+        promotions: this.product.promotions,
         no_of_ratings: this.product.no_of_ratings,
         no_of_orders: this.product.no_of_orders,
         delivery_service: updateProductForm.value.delivery_service,
@@ -211,7 +219,14 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   // calculate payment for product
   calcPayment(price: number, quantity: number) {
-    this.totalAmount = (price * quantity) + this.delService.delivery_rate;
+    let discount = 0;
+    if (this.product.promotions.length) {
+      for (const p of this.product.promotions) {
+        discount += ((price * quantity) * p.precentage) / 100;
+      }
+    }
+    this.totalPromotion = discount;
+    this.totalAmount = (price * quantity) + this.delService.delivery_rate - discount;
     this.payAmount = this.totalAmount / 10;
   }
 
@@ -230,6 +245,14 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   // to be modified later (optional function)
   showBprofile() {
    // this.router.navigate(['/sp/bprofile']);
+  }
+
+  // add new promotion
+  addPromotion() {
+    this.promotion.from_date = this.start.toISOString();
+    this.promotion.to_date = this.end.toISOString();
+    console.log(this.promotion);
+    this.productService.addPromotion(this.promotion, this.product.product_id);
   }
 
   // image 01 uploading

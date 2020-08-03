@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import * as io from 'socket.io-client';
 
-import { Booking, Appointment, Email, Order } from '../eventplanner/eventplanner.model';
+import { Booking, Appointment, Email, Order, Inquery } from '../eventplanner/eventplanner.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 import { Message } from './message';
 
@@ -25,6 +25,7 @@ export class EventPlannerService {
   private bookingUpdated = new Subject<Booking>();
   private orderUpdated = new Subject<Order>();
   private appointmentUpdated = new Subject<Appointment>();
+  private inqueriesupdated = new Subject<Inquery[]>();
 
   private bookings: Booking[];
 
@@ -43,6 +44,9 @@ export class EventPlannerService {
 
   // relatime chat users
   private chatUser: string;
+
+  // recieved inqueries
+  inqueries: Inquery[] = [];
 
   // api url (to be centralized)
   url = 'http://localhost:3000/api/';
@@ -80,6 +84,22 @@ export class EventPlannerService {
 
     }
 
+    // create an inquery
+    createInquery(inq: Inquery) {
+      this.http.post<{ message: string }>(this.url + 'planner/inquery/create' , inq)
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/inquery']);
+     });
+    }
+
+    // remove an inquery
+    removeInquery(inqId: string) {
+
+    }
 
    // get methods
 
@@ -109,6 +129,15 @@ export class EventPlannerService {
         this.appointmentsUpdated.next([...this.appointments]);
       });
     }
+
+       // get list of appointments of an event planner
+       getInqueries() {
+        this.http.get<{ message: string, inqueries: Inquery[] }>(this.url + 'planner/inquery/get')
+        .subscribe((resData) => {
+          this.inqueries = resData.inqueries;
+          this.inqueriesupdated.next([...this.inqueries]);
+        });
+      }
 
 
 
@@ -163,6 +192,10 @@ export class EventPlannerService {
 
     getAppointmentUpdatedListener() {
       return this.appointmentUpdated.asObservable();
+    }
+
+    getInqueriesUpdatedListener() {
+      return this.inqueriesupdated.asObservable();
     }
 
     // socket based chat message handeling

@@ -211,16 +211,19 @@ export class EventService {
     }
 
     // cancel an event
-    removeEvent() {
+    cancelEvent(eventId: string) {
       // event state will be changed to cancelled
       // all pending servies and prodcuts will be sent with cancell requests
       // all participants will be sent a cancellation notice
+      this.http.post<{ message: string }>(this.url + 'event/remove',  eventId )
+      .subscribe((recievedData) => {
+        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/planner']);
+     });
     }
 
-    // change state planned/ completed/ published
-    changeEventState() {
-
-    }
 
     // create new alert
     createAlert() {

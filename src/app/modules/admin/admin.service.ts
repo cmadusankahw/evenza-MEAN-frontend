@@ -120,7 +120,7 @@ export class AdminService {
 
   // backups
   createBackup(path: string) {
-    this.http.post<{ message: string }>(this.url + 'admin/backup/create', path)
+    this.http.post<{ message: string }>(this.url + 'admin/backup/create', {path})
     .subscribe((recievedData) => {
       console.log(recievedData.message);
       this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
@@ -128,7 +128,16 @@ export class AdminService {
   }
 
   restoreBackup(path: string) {
-    this.http.post<{ message: string }>(this.url + 'admin/backup/restore', path)
+    this.http.post<{ message: string }>(this.url + 'admin/backup/restore', {path})
+    .subscribe((recievedData) => {
+      console.log(recievedData.message);
+      this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+  });
+  }
+
+  // collect sprovider payment
+  makePayment(amount: number) {
+    this.http.post<{ message: string }>(this.url + 'admin/make/payment', {amount})
     .subscribe((recievedData) => {
       console.log(recievedData.message);
       this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});

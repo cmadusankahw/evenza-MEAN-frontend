@@ -194,7 +194,7 @@
                   </div>
                   <div class="col info-input">
                     <input type="text" matInput disabled
-                    value=" {{selectedBooking.from_time.hour > 9 ? '' + selectedBooking.from_time.hour: '0' + selectedBooking.from_time.hour}} : {{selectedBooking.from_time.minute > 9 ? '' + selectedBooking.from_time.minute: '0' + selectedBooking.from_time.minute}}">
+                    value=" {{selectedBooking.from_date.slice(11,16)}}">
                   </div>
                 </div>
 
@@ -203,7 +203,7 @@
                     Booked Time (to)
                   </div>
                   <div class="col info-input">
-                    <input type="text" matInput disabled   value=" {{selectedBooking.to_time.hour > 9 ? '' + selectedBooking.to_time.hour: '0' + selectedBooking.to_time.hour}} : {{selectedBooking.to_time.minute > 9 ? '' + selectedBooking.to_time.minute: '0' + selectedBooking.to_time.minute}}">
+                    <input type="text" matInput disabled   value=" {{selectedBooking.to_date.slice(11,16)}}">
 
                   </div>
                 </div>

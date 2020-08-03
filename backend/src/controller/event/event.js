@@ -190,15 +190,27 @@ event.post('/edit',checkAuth, (req, res, next) => {
 
 //cancel an event
 event.post('/remove',checkAuth, (req, res, next) => {
-  Event.updateOne({'event_id': req.body.event_id}, {
+  Event.findOneAndUpdate({'event_id': req.body.event_id}, {
     state: 'cancelled'
   }).then(
-    // should include sending cancellation notices for pending services, orders and all participnts
     result => {
       console.log(result);
-      res.status(200).json({ message: "event was cancelled!" });
+      pars = result.participants.participants;
+      console.log('event participants: ',pars);
+      // sending cancellation mails to participants
+      for (const  doc of pars) {
+        const mail= {
+          email:doc.email,
+          subject: 'Cancellation Notice: '+ result.event_title,
+          html: createCancelHTML(result.event_title,result.from_date.toISOString(),result.to_date.toISOString())
+        };
+        console.log( 'new Mail:' , mail);
+        sendMail(mail, () => {});
+      }
+      res.status(200).json({ message: "event was cancelled! All participants were informed!" });
     }
   ).catch((err) => {
+    console.log(err);
     res.status(500).json({ message: "cancel request failed Please try again!" });
   })
 });
@@ -501,6 +513,13 @@ function createHTML(content, pid, eventId) {
    return message;
   }
 
+  // create cancel HTML
+function createCancelHTML(eventTitle, fromDate, toDate) {
+  const message = "<h3> Cancellation Notice! </h3><br> Dear Sir/Madam," +
+  +"<br><br> <b> The Event : "+ eventTitle +"</b> which is to be held from " + fromDate.slice(0,10) + " to "+  toDate.slice(0,10) + " , was cancelled due to an unavoidable reason."  + "<br><br>"
+  + "<div> <hr> Thank You for your understanding,,<br> <br> Your Sincere, <br><br> Event Organizer at Evenza</div>"
+  return message;
+ }
 
 
 

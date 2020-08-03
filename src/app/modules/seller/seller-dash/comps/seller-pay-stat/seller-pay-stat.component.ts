@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
-import { PayStat } from '../../../seller.model';
-import { MerchantPayments } from 'src/app/modules/admin/admin.model';
+
 import { AdminService } from 'src/app/modules/admin/admin.service';
+import { MerchantPayments, PaymentData } from 'src/app/modules/admin/admin.model';
 
 @Component({
   selector: 'app-seller-pay-stat',
@@ -11,6 +14,13 @@ import { AdminService } from 'src/app/modules/admin/admin.service';
 })
 export class SellerPayStatComponent implements OnInit {
 
+
+  displayedColumns: string[] = ['Year', 'Month','paidDate', 'due', 'paid'];
+  dataSource: MatTableDataSource<PaymentData>;
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+
   // recieved payment history
   myPayments: MerchantPayments;
 
@@ -18,6 +28,11 @@ export class SellerPayStatComponent implements OnInit {
   total_paid: number = 0;
   due_amount: number = 0;
   due_date: string = new Date().toISOString().slice(0, 10);
+
+  // for payments
+  pay_amount = 0;
+
+  subscription = 299;
 
 
   constructor(private adminService: AdminService) { }
@@ -34,9 +49,25 @@ export class SellerPayStatComponent implements OnInit {
 
   getLastMonthPayment() {
     for ( const p of this.myPayments.pays) {
-      this.due_date = p.timestamp.year + '-' + p.timestamp.month + '-' + '30';
+      this.due_date = p.timestamp.year + '-' + p.timestamp.month + '-' + '228';
       this.total_paid += p.paid_amount;
       this.due_amount = p.due_amount;
+    }
+  }
+
+
+  // make payment
+  makePayment(amount: number) {
+    this.adminService.makePayment(amount);
+  }
+
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
   }
 

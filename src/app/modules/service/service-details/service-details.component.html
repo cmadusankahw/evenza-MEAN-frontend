@@ -64,7 +64,7 @@
 
 
       <hr>
-      <div class="row" 8ngIf="service">
+      <div class="row" *ngIf="service">
         <div class=" col-md-7 content-text">
           {{service ? service.description: 'Loading...'}}
           <br>

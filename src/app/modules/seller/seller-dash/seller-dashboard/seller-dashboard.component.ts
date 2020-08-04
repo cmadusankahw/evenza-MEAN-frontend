@@ -3,7 +3,10 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, Subscription } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Router, NavigationStart } from '@angular/router';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
+
 import { AuthService } from 'src/app/modules/auth/auth.service';
+import { ProductService } from 'src/app/modules/product/product.service';
 
 
 @Component({
@@ -25,6 +28,10 @@ export class SellerDashboardComponent implements OnInit, OnDestroy {
 
    private headerSubs: Subscription;
 
+       // snack bars for notification display
+  private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+
   // recieved merchant
   headerDetails: {userType: string, userName: string, profilePic: string};
 
@@ -39,7 +46,25 @@ export class SellerDashboardComponent implements OnInit, OnDestroy {
     );
 
   constructor(private breakpointObserver: BreakpointObserver,
-              private router: Router, private authService: AuthService) { }
+              private router: Router, private authService: AuthService,
+              private _snackBar: MatSnackBar,
+              private productService: ProductService) {
+
+               // handeling booking created notification
+                this.productService.newOrderCreated()
+                .subscribe(data => {
+                  this._snackBar.open('New Order on ' + data.product
+                + ' Placed! quantity:  ' + data.quantity , 'Dismiss', {
+                  duration: 5000,
+                  horizontalPosition: this.horizontalPosition,
+                  verticalPosition: this.verticalPosition,
+                  });
+                  this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+                  this.router.onSameUrlNavigation = 'reload';
+                  this.router.navigate(['/sel/dash']);
+                });
+
+               }
 
   ngOnInit() {
     this.routerEvents();

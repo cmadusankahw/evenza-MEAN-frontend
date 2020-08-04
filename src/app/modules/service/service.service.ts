@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { MatDialog } from '@angular/material';
+import { MatDialog , MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
 import { Router } from '@angular/router';
+import * as io from 'socket.io-client';
 
 import { Service, ServiceCategories, ServiceRates, ServiceQuery, Booking, Appointment, EventServiceQuery, Promotion } from './service.model';
 import { SuccessComponent } from 'src/app/success/success.component';
@@ -13,6 +14,9 @@ import { ErrorComponent } from 'src/app/error/error.component';
 
 @Injectable({ providedIn: 'root' })
 export class ServiceService  {
+
+    // socket connection
+  private socket = io('http://localhost:3000');
 
   private serviceUpdated = new Subject<Service>();
   private serviceProviderServiceUpdated = new Subject<Service[]>();
@@ -59,12 +63,15 @@ export class ServiceService  {
   // api url (to be centralized)
   url = 'http://localhost:3000/api/';
 
-
+    // snack bars for notification display
+  private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
 
   constructor(private http: HttpClient,
               public dialog: MatDialog,
-              private router: Router) { }
+              private router: Router,
+              private _snackBar: MatSnackBar) { }
 
 
 // get methods
@@ -269,6 +276,11 @@ export class ServiceService  {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
         this.router.navigate(['/sp/dash/bprofile']);
+        this._snackBar.open('Service :' + serviceId + ' removed!', 'Dismiss', {
+          duration: 2500,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          });
       });
   }
 
@@ -282,6 +294,11 @@ export class ServiceService  {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
         this.router.navigate(['/admin/categories']);
+        this._snackBar.open('New service Category Added!', 'Dismiss', {
+          duration: 2500,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          });
     });
   }
 
@@ -294,6 +311,11 @@ export class ServiceService  {
         const updatedCategories = this.categories.filter(catr => catr.val !== cat);
         this.categories = updatedCategories;
         this.categoriesUpdated.next([...this.categories]);
+        this._snackBar.open('Category has removed!', 'Dismiss', {
+          duration: 2500,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          });
     });
   }
 
@@ -352,6 +374,7 @@ export class ServiceService  {
               .subscribe((recievedData) => {
                 console.log(recievedData.message);
                 this.router.navigate(['/print/booking/' + recievedData.bookingId]);
+                this.sendBooking(booking.service_name, booking.from_date.slice(0,10), booking.to_date.slice(0,10));
                 this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
             });
             }
@@ -383,6 +406,7 @@ export class ServiceService  {
                .subscribe((recievedMsg) => {
                  console.log(recievedMsg.message);
                  this.router.navigate(['/print/booking/' + recievedData.bookingId]);
+                 this.sendBooking(booking.service_name, booking.from_date.slice(0,10), booking.to_date.slice(0,10));
                  this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
              });
             });
@@ -416,6 +440,7 @@ export class ServiceService  {
       .subscribe((recievedData) => {
         console.log(recievedData.message);
         this.router.navigate(['/print/appoint/' + recievedData.appointId]);
+        this.sendAppointment(appointment.service_name, appointment.appointed_date.slice(0,10), appointment.appointed_date.slice(11,16));
         this.dialog.open(SuccessComponent, {data: {message: 'Appointment Successfull! Your Appointment Id: ' + recievedData.appointId}});
     });
   }
@@ -435,6 +460,7 @@ export class ServiceService  {
          .subscribe((recievedMsg) => {
         console.log(recievedMsg.message);
         this.router.navigate(['/print/appoint/' + recievedData.appointId]);
+        this.sendAppointment(appointment.service_name, appointment.appointed_date.slice(0,10), appointment.appointed_date.slice(11,16));
         this.dialog.open(SuccessComponent, {data: {message: 'Appointment Successfull! Your Appointment Id: ' + recievedData.appointId}});
     });
   });
@@ -446,6 +472,39 @@ export class ServiceService  {
     return this.http.post<{ message: string, availability: boolean }>(this.url + 'service/booking/check', {fromDate, toDate, serviceId});
   }
 
+  // realtime notifications with socket.io
+
+  // trigger booking created event realtime for interested listeners
+    newBookingCreated(){
+      let observable = new Observable<{service: string, fromDate: string , toDate: string}>(observer => {
+          this.socket.on('booking add', (data) => {
+              observer.next(data);
+          });
+          return () => {this.socket.disconnect(); };
+      });
+      return observable;
+  }
+
+  // emit socket once a booking is created
+  sendBooking(service: string, fromDate: string, toDate: string) {
+        this.socket.emit('booking-add', {service, fromDate, toDate});
+  }
+
+   // emit socket once a booking is created
+  sendAppointment(service: string, appointedDate: string, appointedtime: string) {
+        this.socket.emit('booking-add', {service, appointedDate, appointedtime});
+  }
+
+  // appointment handeling
+  newApointCreated(){
+    let observable = new Observable<{service: string, appointedDate: string , appointedTime: string}>(observer => {
+        this.socket.on('appoint add', (data) => {
+            observer.next(data);
+        });
+        return () => {this.socket.disconnect(); };
+    });
+    return observable;
+  }
 
 
 }

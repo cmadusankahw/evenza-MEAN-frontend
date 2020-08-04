@@ -3,10 +3,13 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
 
 import { EventPlanner } from '../../eventplanner.model';
 import { AuthService } from '../../../auth/auth.service';
 import { Router, NavigationStart } from '@angular/router';
+import { ServiceProviderService } from 'src/app/modules/serviceprovider/serviceprovider.service';
+import { SellerService } from 'src/app/modules/seller/seller.service';
 
 
 @Component({
@@ -34,6 +37,9 @@ export class EventplannerDashboardComponent implements OnInit, OnDestroy {
    // side nav controller
    opened = false;
 
+       // snack bars for notification display
+  private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -45,7 +51,47 @@ export class EventplannerDashboardComponent implements OnInit, OnDestroy {
 
 
   constructor(private breakpointObserver: BreakpointObserver,
-              private router: Router, private authService: AuthService) { }
+              private router: Router, private authService: AuthService,
+              private serviceProviderservice: ServiceProviderService,
+              private sellerService: SellerService,
+              private _snackBar: MatSnackBar) {
+
+                // hadeling booking state changed notification
+                 this.serviceProviderservice.onBookingStateChanged()
+                 .subscribe( data => {
+                   this._snackBar.open('Booking ' + data.bookingId
+                   + ' on ' + data.service
+                   + ' was ' + data.state, 'Dismiss', {
+                   duration: 5000,
+                   horizontalPosition: this.horizontalPosition,
+                   verticalPosition: this.verticalPosition,
+                   });
+                 });
+
+                  // hadeling apointment state changed notification
+                 this.serviceProviderservice.onAppointmentStateChanged()
+                  .subscribe( data => {
+                    this._snackBar.open('Appointment ' + data.appointId
+                    + ' on ' + data.service
+                    + ' was ' + data.state, 'Dismiss', {
+                    duration: 5000,
+                    horizontalPosition: this.horizontalPosition,
+                    verticalPosition: this.verticalPosition,
+                    });
+                  });
+
+                     // hadeling apointment state changed notification
+                 this.sellerService.onOrderStateChanged()
+                 .subscribe( data => {
+                   this._snackBar.open('Order ' + data.orderId
+                   + ' on ' + data.product
+                   + ' was ' + data.state, 'Dismiss', {
+                   duration: 5000,
+                   horizontalPosition: this.horizontalPosition,
+                   verticalPosition: this.verticalPosition,
+                   });
+                 });
+              }
 
   ngOnInit() {
     this.routerEvents();
@@ -57,7 +103,7 @@ export class EventplannerDashboardComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     if (this.eventPlannerSub) {
       this.eventPlannerSub.unsubscribe();
     }
@@ -88,27 +134,27 @@ export class EventplannerDashboardComponent implements OnInit, OnDestroy {
     this.events = this.bookings = this.appoints = this.orders = this.profile = 'txt-white row';
   }
 
-  navEvents(){
+  navEvents() {
     this.events = 'txt-white row active-nav';
     this.home = this.bookings = this.appoints = this.orders = this.profile = 'txt-white row';
   }
 
-  navBookings(){
+  navBookings() {
     this.bookings = 'txt-white row active-nav';
     this.events = this.home = this.appoints = this.orders = this.profile = 'txt-white row';
   }
 
-  navAppoints(){
+  navAppoints() {
     this.appoints = 'txt-white row active-nav';
     this.events = this.bookings = this.home = this.orders = this.profile = 'txt-white row';
   }
 
-  navOrders(){
+  navOrders() {
     this.orders = 'txt-white row active-nav';
     this.events = this.bookings = this.appoints = this.home = this.profile = 'txt-white row';
   }
 
-  navProfile(){
+  navProfile() {
     this.profile = 'txt-white row active-nav';
     this.events = this.bookings = this.appoints = this.orders = this.home = 'txt-white row';
   }

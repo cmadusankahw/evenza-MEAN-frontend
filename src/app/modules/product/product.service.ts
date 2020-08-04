@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { MatDialog } from '@angular/material';
+import { MatDialog , MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
 import { Router } from '@angular/router';
+import * as io from 'socket.io-client';
 
 import { Product, ProductCategories, QuantityTypes, ProductQuery, DeliveryService, Order, Promotion } from './product.model';
 import { SuccessComponent } from 'src/app/success/success.component';
@@ -10,6 +11,11 @@ import { SuccessComponent } from 'src/app/success/success.component';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService  {
+
+
+    // socket connection
+  private socket = io('http://localhost:3000');
+
 
   private productUpdated = new Subject<Product>();
   private sellerProductsUpdated = new Subject<Product[]>();
@@ -48,9 +54,16 @@ export class ProductService  {
   url = 'http://localhost:3000/api/';
 
 
+    // snack bars for notification display
+  private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+
+
+
   constructor(private http: HttpClient,
               public dialog: MatDialog,
-              private router: Router) { }
+              private router: Router,
+              private _snackBar: MatSnackBar) { }
 
 
   // get methods
@@ -229,6 +242,11 @@ export class ProductService  {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
         this.router.navigate(['/sel/dash/bprofile']);
+        this._snackBar.open('Product :' + productId + ' removed!', 'Dismiss', {
+          duration: 2500,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          });
       });
   }
 
@@ -242,6 +260,11 @@ export class ProductService  {
           this.router.routeReuseStrategy.shouldReuseRoute = () => false;
           this.router.onSameUrlNavigation = 'reload';
           this.router.navigate(['/admin/categories']);
+          this._snackBar.open('New product Category Added!', 'Dismiss', {
+            duration: 2500,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            });
       });
     }
 
@@ -254,6 +277,11 @@ export class ProductService  {
           const updatedCategories = this.categories.filter(catr => catr.val !== cat);
           this.categories = updatedCategories;
           this.categoriesUpdated.next([...this.categories]);
+          this._snackBar.open('Category has removed!', 'Dismiss', {
+            duration: 2500,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            });
       });
     }
 
@@ -302,6 +330,7 @@ export class ProductService  {
     .subscribe((recievedData) => {
       console.log(recievedData.message);
       this.router.navigate(['/print/order/' + recievedData.orderId]);
+      this.sendOrder(order.product, order.quantity.toString());
       this.dialog.open(SuccessComponent, {data: {message: 'Order Successfull! Your Order Id: ' + recievedData.orderId}});
   });
   }
@@ -326,10 +355,31 @@ export class ProductService  {
                .subscribe((recievedMsg) => {
                  console.log(recievedMsg.message);
                  this.router.navigate(['/print/order/' + recievedData.orderId]);
+                 this.sendOrder(order.product, order.quantity.toString());
                  this.dialog.open(SuccessComponent, {data: {message: 'Order Successfull! Your Order Id: ' + recievedData.orderId}});
                 });
             });
    }
+
+
+   // socket.io based realtime order notifications
+
+  // trigger booking created event realtime for interested listeners
+  newOrderCreated(){
+    let observable = new Observable<{product: string, quantity: string }>(observer => {
+        this.socket.on('order add', (data) => {
+            observer.next(data);
+        });
+        return () => {this.socket.disconnect(); };
+    });
+    return observable;
+}
+
+// emit socket once a booking is created
+sendOrder(product: string, quantity: string) {
+      this.socket.emit('order-add', {product, quantity});
+}
+
 
 
 }

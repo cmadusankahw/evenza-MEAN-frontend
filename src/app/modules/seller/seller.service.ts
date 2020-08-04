@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
+import * as io from 'socket.io-client';
 
 import { Order, DashStat, OrderStat, Earnings } from './seller.model';
 import { Email } from '../eventplanner/eventplanner.model';
@@ -33,6 +34,9 @@ export class SellerService {
   // retrived dashboard stats
   dashStat: DashStat;
 
+    // socket connection
+  private socket = io('http://localhost:3000');
+
   url = 'http://localhost:3000/api/';
 
 
@@ -47,6 +51,7 @@ export class SellerService {
       .subscribe((recievedData) => {
         this.order = recievedData.order;
         this.orderUpdated.next(this.order);
+        this.sendOrderState(orderState.orderId, recievedData.order.product, orderState.state);
         console.log(recievedData.message);
       });
   }
@@ -191,6 +196,25 @@ export class SellerService {
   getEarningsUpdateListener() {
     return this.earningsUpdated.asObservable();
   }
+
+   // realtime notifications with socket.io
+
+  // trigger order state change event realtime for interested listeners
+  onOrderStateChanged(){
+    let observable = new Observable<{orderId: string, product: string , state: string}>(observer => {
+        this.socket.on('order state', (data) => {
+            observer.next(data);
+        });
+        return () => {this.socket.disconnect(); };
+    });
+    return observable;
+}
+
+  // emit socket once a order state chnaged
+  sendOrderState(orderId: string, product: string, state: string) {
+        this.socket.emit('order-state', {orderId, product, state});
+  }
+
 
 
 }

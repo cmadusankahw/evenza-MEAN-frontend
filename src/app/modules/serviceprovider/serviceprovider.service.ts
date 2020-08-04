@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { MatDialog, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
+import * as io from 'socket.io-client';
 
 import { Booking, Appointment, DashStat, PayStat, CalendarBooking, AppointStat, BookingStat, Earnings } from './serviceprovider.model';
 import { Email } from '../eventplanner/eventplanner.model';
@@ -11,6 +12,11 @@ import { SuccessComponent } from 'src/app/success/success.component';
 
 @Injectable({providedIn: 'root'})
 export class ServiceProviderService {
+
+
+    // socket connection
+  private socket = io('http://localhost:3000');
+
 
   // api url
   url = 'http://localhost:3000/api/';
@@ -41,8 +47,6 @@ export class ServiceProviderService {
   // service provider earnings
   private earnings: Earnings[] = [];
   // snack bars for notification display
-  private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
-  private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
   // keep stat for report generation
   private bookingStat: BookingStat[] = [];
@@ -51,8 +55,7 @@ export class ServiceProviderService {
 
   constructor(private http: HttpClient,
               private router: Router,
-              public dialog: MatDialog,
-              private _snackBar: MatSnackBar) {}
+              public dialog: MatDialog) {}
 
 
   // change booking stste
@@ -61,6 +64,7 @@ export class ServiceProviderService {
       .subscribe((recievedData) => {
         this.booking = recievedData.booking;
         this.bookingUpdated.next(this.booking);
+        this.sendBookingState(bookingState.bookingId, recievedData.booking.service_name, bookingState.state);
         this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
       });
   }
@@ -69,13 +73,7 @@ export class ServiceProviderService {
    updateBookingState(bookingState: {bookingId: string, state: string}) {
     this.http.post<{ message: string, booking: Booking }>(this.url + 'sp/booking/edit' , bookingState)
       .subscribe((recievedData) => {
-        this._snackBar.open('Booking ' + recievedData.booking.booking_id
-                            + ' was due on ' + recievedData.booking.to_date.slice(0, 10)
-                            + ' updated as Completed', 'Dismiss', {
-          duration: 1500,
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-        });
+        this.sendBookingState(bookingState.bookingId, recievedData.booking.service_name, bookingState.state);
       });
   }
 
@@ -85,6 +83,7 @@ export class ServiceProviderService {
       .subscribe((recievedData) => {
         this.appointment = recievedData.appointment;
         this.appointmentUpdated.next(this.appointment);
+        this.sendAppointmentState(appointState.appointId, recievedData.appointment.service_name, appointState.state);
         this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
       });
   }
@@ -160,7 +159,7 @@ export class ServiceProviderService {
 
 
 
-  // get list of bookings of an event planner
+  // update bookinfs on completion !!!! realtime
   updateBookings() {
     this.http.get<{ message: string, bookings: Booking[] }>(this.url + 'sp/booking/get')
       .subscribe((recievedBookings) => {
@@ -313,6 +312,42 @@ export class ServiceProviderService {
       this.earningsUpdated.next(earnings);
     }, 1000);
   }
+
+
+  // realtime notifications with socket.io
+
+  // trigger booking state change event realtime for interested listeners
+  onBookingStateChanged(){
+    let observable = new Observable<{bookingId: string, service: string , state: string}>(observer => {
+        this.socket.on('booking state', (data) => {
+            observer.next(data);
+        });
+        return () => {this.socket.disconnect(); };
+    });
+    return observable;
+}
+
+  // emit socket once a booking state chnaged
+  sendBookingState(bookingId: string, service: string, state: string) {
+        this.socket.emit('booking-state', {bookingId, service, state});
+  }
+
+  // emit socket once a appoint state changed
+  sendAppointmentState(appointId: string, service: string, state: string) {
+    this.socket.emit('appoint-state', {appointId, service, state});
+  }
+
+
+// trigger appointment state change event realtime for interested listeners
+onAppointmentStateChanged(){
+  let observable = new Observable<{appointId: string, service: string , state: string}>(observer => {
+      this.socket.on('appoint stat', (data) => {
+          observer.next(data);
+      });
+      return () => {this.socket.disconnect(); };
+  });
+  return observable;
+}
 
 
 }

@@ -65,7 +65,7 @@ cron.schedule("* * 28 * *", function() {
     var paymentDetails = result.payment_details;
     var merchantIndex = 0;
     var paysIndex = 0;
-    var dueAmt = 0;
+    var dueAmt = 299;
     var timeStamp;
     for(let pd of paymentDetails) {
         for (let p of pd.pays) {
@@ -81,7 +81,7 @@ cron.schedule("* * 28 * *", function() {
         paymentDetails[merchantIndex].pays[paysIndex]= {
           due_amount: dueAmt,
           paid_amount: 0,
-          paid_date: null,
+          paid_date: 'Not Payed',
           timestamp: {
             year: timeStamp.year,
             month: timeStamp.month +1,

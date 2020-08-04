@@ -57,7 +57,7 @@
       <!--if only shown to users-->
       <div class="col-md-5 edit-cls" *ngIf="!isowner">
         <a mdbBtn color="secondary" outline="yes" class="btn btn-lg book-btn" mdbWavesEffect [disabled] = "!service.available_booking"
-        (click) = "bookUser = !bookUser" >Book Now</a>
+        (click) = "bookUser = !bookUser"  (click) = "addPaypal()" >Book Now</a>
       </div>
 
     </div>
@@ -618,11 +618,13 @@
                     </div>
                     <hr>
 
-                    <div class="btns">
-                      <button mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect
-                       type="submit" > Make Payment</button>
+                    <div class="btns row container-fluid text-center" >
+                      <button mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect id="placeOrder"
+                       type="submit" > Pay with Card</button>
                     <button mdbBtn color="secondary" class="btn btn-md edtbt" outline="yes" mdbWavesEffect
                     (click)="bookUser = !bookUser && appoint = false && bookingForm.resetForm()" >Cancel</button>
+                    <div style="margin-left:15px; margin-right:15px;" id="paybtn"
+                        > Paypal Checkout</div>
                     </div>
                   </div>
 

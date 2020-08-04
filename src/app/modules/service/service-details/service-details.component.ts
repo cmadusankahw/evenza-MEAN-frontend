@@ -11,6 +11,7 @@ import { SuccessComponent } from 'src/app/success/success.component';
 import { ErrorComponent } from 'src/app/error/error.component';
 import { refactorDate, calcDateDuration } from '../../event/event.model';
 
+declare let paypal: any;
 
 @Component({
   selector: 'app-service-details',
@@ -79,6 +80,34 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   image03: File;
   image03Url: any = './assets/images/merchant/nopic.png';
 
+
+  // paypal integration
+  paypalConfig = {
+    env: 'sandbox',
+    client: {
+      sandbox: 'ASFjH19PwcA-QJn05nR3Lh2g_T3LJtEfX8NnXXTCNvlNgA5zri1wOOUoDzCdFNPYOC3SM2YfKNR8HvAg',
+      production: ''
+    },
+    commit: true,
+    payment: (data, actions) => {
+      return actions.payment.create ( {
+        payment: {
+          transactions: [
+            {amount: { total: this.payAmount , currency: 'USD'}}
+          ]
+        }
+      });
+    },
+    onAuthorize : (data, actions) => {
+      return actions.payment.execute().then ( payment => {
+        // make order if the payment is successed
+        document.getElementById('placeOrder').click();
+      });
+    }
+  };
+
+  addScript = false;
+
   constructor(private router: Router,
               public serviceService: ServiceService,
               public datepipe: DatePipe,
@@ -124,6 +153,25 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
     // import rate types
       this.rates = this.serviceService.getRates();
     }
+  }
+
+
+  addPaypal() {
+    if(!this.addScript) {
+      this.addPaypalScript().then( () =>{
+        paypal.Button.render( this.paypalConfig, '#paybtn');
+      });
+    }
+  }
+
+  addPaypalScript() {
+    this.addScript = true;
+    return new Promise( ( resolve, reject) => {
+      let scriptTagelement = document.createElement('script');
+      scriptTagelement.src = 'https://www.paypalobjects.com/api/checkout.js';
+      scriptTagelement.onload = resolve;
+      document.body.appendChild(scriptTagelement);
+    })
   }
 
   ngOnDestroy() {

@@ -131,3 +131,55 @@ export interface AppointStat {
   state: string;
 }
 
+// reports
+
+export interface ServiceOrderRequest {
+  from_date: string;
+  to_date: string;
+  service_category: string;
+  service_id: string;
+  user_id: string;
+  event_id: string;
+  homeTown: string; // event location
+  rating: number;
+  amount: number;
+  sort: string;
+  group: string;
+}
+
+export interface ServiceAppointRequest {
+  from_date: string;
+  to_date: string;
+  service_id: string;
+  user_id: string;
+  event_id: string;
+  sort: string;
+  group: string;
+}
+
+
+export interface PaymentHistoryRequest {
+  from_date: string;
+  to_date: string;
+  service_id: string;
+  user_id: string;
+  event_id: string;
+  sort: string;
+  group: string;
+}
+
+export interface ServiceDetailsRequest {
+  service_category: string;
+  user_id: string;
+  event_id: string;
+  sort: string;
+  group: string;
+}
+
+export interface RateReviewRequest {
+  service_id: string;
+  user_id: string;
+  rating: number;
+  sort: string;
+  group: string;
+}

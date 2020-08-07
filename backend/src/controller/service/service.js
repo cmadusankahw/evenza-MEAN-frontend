@@ -196,8 +196,7 @@ service.post('/search', (req, res, next) => {
   Service.aggregate([
                 // step 1 : matching filters from service model
                 {$match: {"service_category": req.body.category,
-                "rate": {$lte: req.body.maxPrice},
-                "rate": {$gte: req.body.minPrice},
+                "rate": {$lte: req.body.maxPrice, $gte: req.body.minPrice },
                 "pay_on_meet":req.body.payOnMeet,
                 "rating": {$gte: req.body.userRating},
                 "available_booking": true}},

@@ -41,6 +41,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { QuillModule } from 'ngx-quill';
 import { QRCodeModule } from 'angularx-qrcode';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import {MatTabsModule} from '@angular/material/tabs';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -157,6 +159,10 @@ import { EventProductSearchComponent } from './modules/event/event-product-searc
 import { EventBudgetReportComponent } from './modules/event/event-budget-report/event-budget-report.component';
 import { PlannerChatComponent } from './modules/eventplanner/planner-chat/planner-chat.component';
 import { InqueryForumComponent } from './modules/eventplanner/inquery-forum/inquery-forum.component';
+import { SpServiceOrdersReportComponent } from './modules/serviceprovider/reports/sp-service-orders-report/sp-service-orders-report.component';
+import { SpServiceAppointmentsReportComponent } from './modules/serviceprovider/reports/sp-service-appointments-report/sp-service-appointments-report.component';
+import { SpPaymentsReportComponent } from './modules/serviceprovider/reports/sp-payments-report/sp-payments-report.component';
+import { SpBusinessForecastingReportComponent } from './modules/serviceprovider/reports/sp-business-forecasting-report/sp-business-forecasting-report.component';
 
 // socket io ocnfiguration
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
@@ -273,6 +279,10 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     EventBudgetReportComponent,
     PlannerChatComponent,
     InqueryForumComponent,
+    SpServiceOrdersReportComponent,
+    SpServiceAppointmentsReportComponent,
+    SpPaymentsReportComponent,
+    SpBusinessForecastingReportComponent,
 
 
 
@@ -327,6 +337,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     DragDropModule,
     NgbProgressbarModule,
     QRCodeModule,
+    MatTabsModule,
     SocketIoModule.forRoot(config),
     QuillModule.forRoot(),
     AgmCoreModule.forRoot({

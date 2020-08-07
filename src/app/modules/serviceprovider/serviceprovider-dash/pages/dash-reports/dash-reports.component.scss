@@ -1,0 +1,39 @@
+.rep-part {
+  border:2px solid;
+  border-color:lightgray;
+  padding:12px;
+  margin: 12px;
+  border-radius:4px;
+}
+
+.mfield {
+  width:90%;
+  padding-left:5px;
+}
+
+
+//star ratings
+.star {
+  font-size:24px;
+  color: #f9ffa7;
+}
+
+.star-2 {
+  font-size:25px;
+  color: #f9ffa7;
+}
+
+.filled {
+  color: #eeb90d;
+
+}
+.bad {
+  color: #deb0b0;
+}
+.filled.bad {
+  color: #ffa91e;
+}
+
+.rating{
+  text-align:center;
+}

@@ -1,7 +1,7 @@
-const Service = require ("../../model/service/service.model");
-const Merchant = require ("../../model/auth/merchant.model");
+const Service = require("../../model/service/service.model");
+const Merchant = require("../../model/auth/merchant.model");
 const Booking = require("../../model/service/booking.model");
-const Appointment = require ("../../model/service/appointment.model");
+const Appointment = require("../../model/service/appointment.model");
 const checkAuth = require("../../middleware/auth-check");
 const email = require("../common/mail");
 const Spreport = require("./sp-report");
@@ -9,26 +9,26 @@ const Spreport = require("./sp-report");
 //dependency imports
 const express = require("express");
 const bodyParser = require("body-parser");
-const multer = require ("multer");
+const multer = require("multer");
 
 //express app declaration
 const serviceProvider = express();
 
 // multer setup for image upload
 const MIME_TYPE_MAP = {
-  'image/png' : 'png',
-  'image/jpeg' : 'jpg',
-  'image/jpg' : 'jpg',
-  'image/gif' : 'gif'
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/jpg': 'jpg',
+  'image/gif': 'gif'
 };
 const storage = multer.diskStorage({
-  destination: (req, file, cb) =>{
+  destination: (req, file, cb) => {
     const isValid = MIME_TYPE_MAP[file.mimetype];
-    let error= new Error("Invalid Image");
-    if(isValid){
-      error=null;
+    let error = new Error("Invalid Image");
+    if (isValid) {
+      error = null;
     }
-    cb(error,"src/assets/images/merchant");
+    cb(error, "src/assets/images/merchant");
   },
   filename: (req, file, cb) => {
     const name = file.originalname.toLowerCase().split(' ').join('-');
@@ -44,15 +44,15 @@ serviceProvider.use(bodyParser.urlencoded({ extended: false }));
 
 
 // add serviceProvider photos
-serviceProvider.post('/add/img',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
-    const url = req.protocol + '://' + req.get("host");
-    let imagePaths = [];
-    for (let f of req.files){
-      imagePaths.push(url+ "/images/merchant/" + f.filename);
-    }
-    res.status(200).json({
-      imagePaths: imagePaths
-    });
+serviceProvider.post('/add/img', checkAuth, multer({ storage: storage }).array("images[]"), (req, res, next) => {
+  const url = req.protocol + '://' + req.get("host");
+  let imagePaths = [];
+  for (let f of req.files) {
+    imagePaths.push(url + "/images/merchant/" + f.filename);
+  }
+  res.status(200).json({
+    imagePaths: imagePaths
+  });
 
 });
 
@@ -60,13 +60,13 @@ serviceProvider.post('/add/img',checkAuth, multer({storage:storage}).array("imag
 // get methods
 
 //get list of bookings
-serviceProvider.get('/booking/get',checkAuth, (req, res, next) => {
-  Booking.find({'serviceProvider.serviceProvider_id': req.userData.user_id},function (err, bookings) {
+serviceProvider.get('/booking/get', checkAuth, (req, res, next) => {
+  Booking.find({ 'serviceProvider.serviceProvider_id': req.userData.user_id }, function (err, bookings) {
     console.log(bookings);
     if (err) return handleError(err => {
       res.status(500).json(
-        { message: 'No bookings Found!'}
-        );
+        { message: 'No bookings Found!' }
+      );
     });
     res.status(200).json(
       {
@@ -79,13 +79,13 @@ serviceProvider.get('/booking/get',checkAuth, (req, res, next) => {
 
 
 //get list of appointments
-serviceProvider.get('/appoint/get',checkAuth, (req, res, next) => {
-  Appointment.find({'serviceProvider.serviceProvider_id': req.userData.user_id},function (err, appointments) {
+serviceProvider.get('/appoint/get', checkAuth, (req, res, next) => {
+  Appointment.find({ 'serviceProvider.serviceProvider_id': req.userData.user_id }, function (err, appointments) {
     console.log(appointments);
     if (err) return handleError(err => {
       res.status(500).json(
-        { message: 'No Appointments Found!'}
-        );
+        { message: 'No Appointments Found!' }
+      );
     });
     res.status(200).json(
       {
@@ -98,14 +98,14 @@ serviceProvider.get('/appoint/get',checkAuth, (req, res, next) => {
 
 
 //get selected booking
-serviceProvider.get('/booking/get/:id',checkAuth, (req, res, next) => {
+serviceProvider.get('/booking/get/:id', checkAuth, (req, res, next) => {
 
-  Booking.findOne({ 'booking_id': req.params.id }, function (err,recievedBooking) {
+  Booking.findOne({ 'booking_id': req.params.id }, function (err, recievedBooking) {
     if (err) return handleError(err => {
       console.log(err);
       res.status(500).json(
-        { message: 'Error while loading Booking Details! Please Retry!'}
-        );
+        { message: 'Error while loading Booking Details! Please Retry!' }
+      );
     });
     console.log(recievedBooking);
     res.status(200).json(
@@ -118,14 +118,14 @@ serviceProvider.get('/booking/get/:id',checkAuth, (req, res, next) => {
 });
 
 //get selected appointment
-serviceProvider.get('/appoint/get/:id',checkAuth, (req, res, next) => {
+serviceProvider.get('/appoint/get/:id', checkAuth, (req, res, next) => {
 
-  Appointment.findOne({ 'appoint_id': req.params.id }, function (err,recievedAppoint) {
+  Appointment.findOne({ 'appoint_id': req.params.id }, function (err, recievedAppoint) {
     if (err) return handleError(err => {
       console.log(err);
       res.status(500).json(
-        { message: 'Error while loading Appointment Details! Please Retry!'}
-        );
+        { message: 'Error while loading Appointment Details! Please Retry!' }
+      );
     });
     console.log(recievedAppoint);
     res.status(200).json(
@@ -138,13 +138,13 @@ serviceProvider.get('/appoint/get/:id',checkAuth, (req, res, next) => {
 });
 
 //get calendar bookings
-serviceProvider.get('/calbooking/get',checkAuth, (req, res, next) => {
-  Booking.find({ 'serviceProvider.serviceProvider_id': req.userData.user_id, 'state': {$ne: 'cancelled'} }, function (err,recievedBookings) {
+serviceProvider.get('/calbooking/get', checkAuth, (req, res, next) => {
+  Booking.find({ 'serviceProvider.serviceProvider_id': req.userData.user_id, 'state': { $ne: 'cancelled' } }, function (err, recievedBookings) {
     if (err) return handleError(err => {
       console.log(err);
       res.status(500).json(
-        { message: 'Error while loading Calendar Booking Details! Please Retry!'}
-        );
+        { message: 'Error while loading Calendar Booking Details! Please Retry!' }
+      );
     });
     console.log(recievedBookings);
     res.status(200).json(
@@ -159,14 +159,14 @@ serviceProvider.get('/calbooking/get',checkAuth, (req, res, next) => {
 
 
 //get dashboard stats
-serviceProvider.get('/stat/get',checkAuth, (req, res, next) => {
+serviceProvider.get('/stat/get', checkAuth, (req, res, next) => {
 
-  var bookingQuery = Booking.find({ 'serviceProvider.serviceProvider_id': req.userData.user_id}).select('booking_id service_id service_name created_date state amount amount_paid');
-  var appointQuery = Appointment.find({ 'serviceProvider.serviceProvider_id': req.userData.user_id}).select('appoint_id service_id service_name created_date state');
+  var bookingQuery = Booking.find({ 'serviceProvider.serviceProvider_id': req.userData.user_id }).select('booking_id service_id service_name created_date state amount amount_paid');
+  var appointQuery = Appointment.find({ 'serviceProvider.serviceProvider_id': req.userData.user_id }).select('appoint_id service_id service_name created_date state');
 
   bookingQuery.exec().then((resBooks) => {
     console.log(resBooks);
-    appointQuery.exec().then( (resAppoints) => {
+    appointQuery.exec().then((resAppoints) => {
       console.log(resAppoints);
       res.status(200).json(
         {
@@ -176,7 +176,25 @@ serviceProvider.get('/stat/get',checkAuth, (req, res, next) => {
         });
     })
 
-  }).catch( err=> {
+  }).catch(err => {
+    console.log(err);
+  })
+});
+
+
+//get service provider names list for report queries
+serviceProvider.get('/get/spnames', checkAuth, (req, res, next) => {
+
+  var query = Service.find({ user_id: req.userData.user_id }).select('service_name service_id');
+
+  query.exec().then((resBooks) => {
+    console.log(resBooks);
+    res.status(200).json(
+      {
+        message: 'Report Data recieved successfully!',
+        spnames: resBooks
+      });
+  }).catch(err => {
     console.log(err);
   })
 });
@@ -187,14 +205,14 @@ serviceProvider.get('/stat/get',checkAuth, (req, res, next) => {
 // post methods
 
 //update booking state
-serviceProvider.post('/booking/edit',checkAuth, (req, res, next) => {
+serviceProvider.post('/booking/edit', checkAuth, (req, res, next) => {
 
-  Booking.findOneAndUpdate({ 'booking_id': req.body.bookingId },{'state':req.body.state}, function (err,recievedBooking) {
+  Booking.findOneAndUpdate({ 'booking_id': req.body.bookingId }, { 'state': req.body.state }, function (err, recievedBooking) {
     if (err) return handleError(err => {
       console.log(err);
       res.status(500).json(
-        { message: 'Error while updating Booking State! Please Retry!'}
-        );
+        { message: 'Error while updating Booking State! Please Retry!' }
+      );
     });
     console.log(recievedBooking);
     res.status(200).json(
@@ -208,14 +226,14 @@ serviceProvider.post('/booking/edit',checkAuth, (req, res, next) => {
 
 
 //update appointment state
-serviceProvider.post('/appoint/edit',checkAuth, (req, res, next) => {
+serviceProvider.post('/appoint/edit', checkAuth, (req, res, next) => {
 
-  Appointment.findOneAndUpdate({ 'appoint_id': req.body.appointId },{'state':req.body.state}, function (err,recievedAppoint) {
+  Appointment.findOneAndUpdate({ 'appoint_id': req.body.appointId }, { 'state': req.body.state }, function (err, recievedAppoint) {
     if (err) return handleError(err => {
       console.log(err);
       res.status(500).json(
-        { message: 'Error while updating Appointment State! Please Retry!'}
-        );
+        { message: 'Error while updating Appointment State! Please Retry!' }
+      );
     });
     console.log(recievedAppoint);
     res.status(200).json(
@@ -231,7 +249,7 @@ serviceProvider.post('/appoint/edit',checkAuth, (req, res, next) => {
 
 
 // send an  email
-serviceProvider.post("/mail", checkAuth, (req,res,next) => {
+serviceProvider.post("/mail", checkAuth, (req, res, next) => {
   let mail = req.body;
   mail.email = req.userData.email;
   console.log(mail);

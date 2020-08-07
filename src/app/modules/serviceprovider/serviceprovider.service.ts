@@ -31,6 +31,7 @@ export class ServiceProviderService {
   private payStatupdated = new Subject<PayStat>();
   private earningsUpdated = new Subject<Earnings[]>();
   private reportStatUpdated = new Subject<boolean>();
+  private spNamesUpdated = new Subject<any>();
 
   // recieved bookings
   private bookings: Booking[];
@@ -189,6 +190,16 @@ export class ServiceProviderService {
           });
     }
 
+
+
+// get service provider names for reporting
+getSpNames() {
+  this.http.get<{ message: string, spnames: {service_name: string, service_id: string}[] }>(this.url + 'sp/get/spnames')
+  .subscribe((res) => {
+    this.spNamesUpdated.next(res.spnames);
+  });
+}
+
   // listners for subjects
   getBookingsUpdateListener() {
     return this.bookingsUpdated.asObservable();
@@ -225,6 +236,10 @@ export class ServiceProviderService {
 
   getReportStatUpdatedListener() {
     return this.reportStatUpdated.asObservable();
+  }
+
+  getSpNamesupdatedListener() {
+    return this.spNamesUpdated.asObservable();
   }
 
   // get dashboard stats

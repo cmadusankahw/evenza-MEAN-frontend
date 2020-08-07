@@ -405,7 +405,7 @@
       <mat-form-field class="service-full-width" >
         <mat-label>Paying Amount (Rs.): </mat-label>
         <input matInput required #payInput2="ngModel" type="number" [min]="totalAmount / 10" [max]="totalAmount" class="amount-input"
-        [(ngModel)]="payAmount" name="amount_paid" >
+        [(ngModel)]="payAmount" name="amount_paid" (change) ="payPalAmount = (payAmount/190).toFixed(2)" >
       </mat-form-field>
       <mat-error *ngIf="payInput2.invalid"> Please Enter a valid amount ( Min: Rs.{{totalAmount/10}} Max: Rs.{{totalAmount}} ) </mat-error>
     </div>

@@ -162,7 +162,7 @@
                 <mat-label>
                   <mat-icon>money</mat-icon>
                   Pay Amount</mat-label>
-                <input matInput type="number" [(ngModel)]="pay_amount" name="pay_amt" required>
+                <input matInput type="number" [(ngModel)]="pay_amount" name="pay_amt" required (change) ="payPalAmount = (pay_amount/190).toFixed(2)">
               </mat-form-field>
               </div>
             </div>
@@ -252,13 +252,6 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Month </th>
       <td mat-cell *matCellDef="let row"> {{row.timestamp.month}}</td>
       <td></td>
-    </ng-container>
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="paidDate">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Paid Date </th>
-      <td mat-cell *matCellDef="let row"> {{row.paid_date.slice(0,10) }} </td>
-      <td class="t-txt" > Total :</td>
     </ng-container>
 
     <!-- Color Column -->

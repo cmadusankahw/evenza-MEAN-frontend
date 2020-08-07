@@ -15,7 +15,7 @@ declare let paypal: any;
 })
 export class PayStatComponent implements OnInit {
 
-  displayedColumns: string[] = ['Year', 'Month','paidDate', 'due', 'paid'];
+  displayedColumns: string[] = ['Year', 'Month', 'due', 'paid'];
   dataSource: MatTableDataSource<PaymentData>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -26,9 +26,10 @@ export class PayStatComponent implements OnInit {
   myPayments: MerchantPayments;
 
   // last month payments
-  total_paid: number = 0;
-  due_amount: number = 0;
-  due_date: string = new Date().toISOString().slice(0, 10);
+  public total_paid = 0;
+  public due_amount = 0;
+  public payPalAmount = 0;
+  public due_date: string = new Date().toISOString().slice(0, 10);
 
   // for payments
   pay_amount = 0;
@@ -48,7 +49,7 @@ export class PayStatComponent implements OnInit {
       return actions.payment.create ( {
         payment: {
           transactions: [
-            {amount: { total: this.pay_amount , currency: 'USD'}}
+            {amount: { total: this.payPalAmount , currency: 'USD'}}
           ]
         }
       });
@@ -91,8 +92,8 @@ export class PayStatComponent implements OnInit {
 
 
   addPaypal() {
-    if(!this.addScript) {
-      this.addPaypalScript().then( () =>{
+    if (!this.addScript) {
+      this.addPaypalScript().then( () => {
         paypal.Button.render( this.paypalConfig, '#paybtn');
       });
     }
@@ -101,11 +102,11 @@ export class PayStatComponent implements OnInit {
   addPaypalScript() {
     this.addScript = true;
     return new Promise( ( resolve, reject) => {
-      let scriptTagelement = document.createElement('script');
+      const scriptTagelement = document.createElement('script');
       scriptTagelement.src = 'https://www.paypalobjects.com/api/checkout.js';
       scriptTagelement.onload = resolve;
       document.body.appendChild(scriptTagelement);
-    })
+    });
   }
 
   // make payment

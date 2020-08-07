@@ -17,24 +17,25 @@ declare let paypal: any;
 export class SellerPayStatComponent implements OnInit {
 
 
-  displayedColumns: string[] = ['Year', 'Month','paidDate', 'due', 'paid'];
+  displayedColumns: string[] = ['Year', 'Month', 'due', 'paid'];
   dataSource: MatTableDataSource<PaymentData>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   // recieved payment history
-  myPayments: MerchantPayments;
+  public myPayments: MerchantPayments;
 
   // last month payments
-  total_paid: number = 0;
-  due_amount: number = 0;
-  due_date: string = new Date().toISOString().slice(0, 10);
+   public total_paid: number = 0;
+   public due_amount: number = 0;
+   public payPalAmount = 0;
+   public due_date: string = new Date().toISOString().slice(0, 10);
 
   // for payments
-  pay_amount = 0;
+  public pay_amount = 0;
 
-  subscription = 299;
+  public subscription = 299;
 
 
   // paypal integration
@@ -49,7 +50,7 @@ export class SellerPayStatComponent implements OnInit {
       return actions.payment.create ( {
         payment: {
           transactions: [
-            {amount: { total: this.pay_amount , currency: 'USD'}}
+            {amount: { total: this.payPalAmount , currency: 'USD'}}
           ]
         }
       });

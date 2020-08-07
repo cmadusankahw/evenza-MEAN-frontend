@@ -68,6 +68,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   public totalAmount = 0.0;
   public totalPromotion = 0;
   public payAmount = 0.0;
+  public payPalAmount = 0;
   public duration = 0;
   public start = new Date();
   public end = new Date();
@@ -93,7 +94,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
       return actions.payment.create ( {
         payment: {
           transactions: [
-            {amount: { total: this.payAmount , currency: 'USD'}}
+            {amount: { total: this.payPalAmount , currency: 'USD'}}
           ]
         }
       });

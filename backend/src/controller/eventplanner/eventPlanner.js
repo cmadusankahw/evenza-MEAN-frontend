@@ -2,16 +2,14 @@
 const Order = require("../../model/product/order.model");
 const Booking = require("../../model/service/booking.model");
 const Appointment = require ("../../model/service/appointment.model");
-const DeliveryService = require ("../../model/product/deliveryService.model");
 const checkAuth = require("../../middleware/auth-check");
-const Login = require("../../../data/user/emailAuthentication.json");
 const Inquery = require("../../model/eventplanner/inquery.model");
+const email = require("../common/mail");
 
 //dependency imports
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require ("multer");
-const nodemailer = require("nodemailer");
 
 //express app declaration
 const eventPlanner = express();
@@ -268,7 +266,7 @@ eventPlanner.post("/mail", checkAuth, (req,res,next) => {
   let mail = req.body;
   mail.email = req.userData.email;
   console.log(mail);
-  sendMail(mail, info => {
+  email.sendMail(mail, info => {
     res.status(200).json(
       {
         message: 'mail sent successfully!',
@@ -285,35 +283,6 @@ eventPlanner.post("/mail", checkAuth, (req,res,next) => {
   })
 });
 
-
-// nodemailer send email function
-async function sendMail(mail, callback) {
-
-  let testAccount = await nodemailer.createTestAccount();
-
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: Login.user,
-      pass: Login.pass
-    }
-  });
-
-  let mailOptions = {
-    from: '"Evenza HelpDesk "<support@evenza.biz>', // sender address
-    to: mail.email, // list of receivers
-    subject: mail.subject, // Subject line
-    html: mail.html
-  };
-
-  // send mail with defined transport object
-  let info = await transporter.sendMail(mailOptions);
-
-  callback(info);
-}
 
 
 

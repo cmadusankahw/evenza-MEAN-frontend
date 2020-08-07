@@ -7,13 +7,12 @@ const EventPlanner = require ("../../model/auth/eventPlanner.model");
 const Merchant = require("../../model/auth/merchant.model");
 const Event = require("../../model/event/event.model");
 const checkAuth = require("../../middleware/auth-check");
-const Login = require("../../../data/user/emailAuthentication.json");
+const email = require("../common/mail");
 
 //dependency imports
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require ("multer");
-const nodemailer = require("nodemailer");
 const { update } = require("../../model/event/event.model");
 
 //express app declaration
@@ -336,7 +335,7 @@ service.post('/booking/add',checkAuth, (req, res, next) => {
           console.log(' final booking ', newBooking);
           // save booking
           newBooking.save().then(result => {
-            sendMail(mail, () => {});
+            email.sendMail(mail, () => {});
             res.status(200).json({
                 message: 'Booking created successfully!',
                 bookingId: result.booking_id // booking id as result
@@ -528,7 +527,7 @@ service.post('/appoint/add',checkAuth, (req, res, next) => {
 
           // saving final appointment
           newAppoint.save().then(result => {
-            sendMail(mail, () => {});
+            email.sendMail(mail, () => {});
             res.status(200).json({
                 message: 'Appointment created successfully!',
                 appointId: result.appoint_id // booking id as result
@@ -766,32 +765,6 @@ service.get('/cat', (req, res, next) => {
 });
 
 
-// nodemailer send email function
-async function sendMail(mail, callback) {
-
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: Login.user,
-      pass: Login.pass
-    }
-  });
-
-  let mailOptions = {
-    from: '"Evenza HelpDesk "<support@evenza.biz>', // sender address
-    to: mail.email, // list of receivers
-    subject: mail.subject, // Subject line
-    html: mail.html
-  };
-
-  // send mail with defined transport object
-  let info = await transporter.sendMail(mailOptions);
-
-  callback(info);
-}
 
 // create custom HTML
 function createHTML(mailType,content) {

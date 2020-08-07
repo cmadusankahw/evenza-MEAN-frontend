@@ -68,7 +68,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   totalPromotion = 0;
   payAmount = 0.0;
   // paypal checkout
-  paypalamount = 0;
+  payPalAmount = 0;
   qty = 1;
   start = new Date();
   end = new Date();
@@ -85,7 +85,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       return actions.payment.create ( {
         payment: {
           transactions: [
-            {amount: { total: this.payAmount , currency: 'USD'}}
+            {amount: { total: this.payPalAmount , currency: 'USD'}}
           ]
         }
       });

@@ -2,20 +2,16 @@
 const Admin = require("../../model/admin/admin.model");
 const Booking = require("../../model/service/booking.model");
 const Order = require("../../model/product/order.model");
-const ServiceCategories = require("../../model/service/categories.model");
-const Productcategories = require("../../model/product/categories.model");
-const DeliveryServices = require("../../model/product/deliveryService.model");
-const EventCategories = require("../../model/event/categories.model");
 const Merchant = require("../../model/auth/merchant.model");
 const EventPlanner = require("../../model/auth/eventPlanner.model");
 const checkAuth = require("../../middleware/auth-check");
-const Login = require("../../../data/user/emailAuthentication.json");
+const email = require("../common/mail");
+const Areport = require ("./admin-report");
 
 //dependency imports
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require ("multer");
-const nodemailer = require("nodemailer");
 var backup = require('mongodb-backup');
 var restore = require('mongodb-restore');
 const cron = require("node-cron"); // running scheduled tasks
@@ -379,34 +375,6 @@ admin.post('/make/payment',checkAuth, (req, res, next) => {
 });
 
 
-
-// nodemailer send email function
-async function sendMail(mail, callback) {
-
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: Login.user,
-      pass: Login.pass
-    }
-  });
-
-  let mailOptions = {
-    from: '"Evenza HelpDesk "<support@evenza.biz>', // sender address
-    to: mail.email, // list of receivers
-    subject: mail.subject, // Subject line
-    html: mail.html
-  };
-
-  // send mail with defined transport object
-  let info = await transporter.sendMail(mailOptions);
-
-  callback(info);
-}
-
 // create custom HTML
 function createHTML(mailType,content) {
   if(mailType == 'Booking'){
@@ -426,6 +394,9 @@ function createHTML(mailType,content) {
   }
 
   }
+
+// use reports
+admin.use('/reports', Areport);
 
 
 module.exports = admin;

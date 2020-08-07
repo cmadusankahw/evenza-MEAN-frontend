@@ -5,13 +5,12 @@ const EventPlanner = require("../../model/auth/eventPlanner.model");
 const Order = require ("../../model/product/order.model");
 const Booking = require ("../../model/service/booking.model");
 const checkAuth = require("../../middleware/auth-check");
-const Login = require("../../../data/user/emailAuthentication.json");
+const email = require("../common/mail");
 
 //dependency imports
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require ("multer");
-const nodemailer = require ("nodemailer");
 
 //express app declaration
 const event = express();
@@ -205,7 +204,7 @@ event.post('/remove',checkAuth, (req, res, next) => {
           html: createCancelHTML(result.event_title,result.from_date.toISOString(),result.to_date.toISOString())
         };
         console.log( 'new Mail:' , mail);
-        sendMail(mail, () => {});
+        email.sendMail(mail, () => {});
       }
       res.status(200).json({ message: "event was cancelled! All participants were informed!" });
     }
@@ -357,7 +356,7 @@ event.post('/publish',checkAuth, (req, res, next) => {
           html: createHTML(result.alerts[0].message,doc.participant_id,req.body.eventId)
         };
         console.log( 'new Mail:' , mail);
-        sendMail(mail, () => {});
+        email.sendMail(mail, () => {});
         const index = pars.indexOf(doc);
         pars[index].state = "invited";
       }
@@ -478,32 +477,6 @@ event.get('/get/alerts/:id', (req, res, next) => {
   });
 
 
-// nodemailer send email function
-async function sendMail(mail, callback) {
-
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: Login.user,
-      pass: Login.pass
-    }
-  });
-
-  let mailOptions = {
-    from: '"Evenza HelpDesk "<support@evenza.biz>', // sender address
-    to: mail.email, // list of receivers
-    subject: mail.subject, // Subject line
-    html: mail.html
-  };
-
-  // send mail with defined transport object
-  let info = await transporter.sendMail(mailOptions);
-
-  callback(info);
-}
 
 // create custom HTML
 function createHTML(content, pid, eventId) {

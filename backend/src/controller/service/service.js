@@ -252,20 +252,36 @@ service.post('/event/search', (req, res, next) => {
 // check booking availability  // need to modify
 service.post('/booking/check', (req, res, next) => {
   console.log(req.body);
-  reqFromDate = new Date(req.body.fromDate).getTime();
-  reqToDate = new Date(req.body.toDate).getTime();
+  reqFromDate = new Date(req.body.fromDate);
+  reqToDate = new Date(req.body.toDate);
+  console.log('converted dates: ', reqFromDate, reqToDate);
   // count to check with capacity
   var count = 0;
   // returning availability state
   let availability = false;
 
-  Booking.countDocuments({ service_id: req.serviceId,
-                 from_date: { $gte :req.body.fromDate.slice(0,10) },
-                 to_date: { $lte :req.body.toDate.slice(0,10)}})
-                      .then( result => {
-                        console.log('found bookings :' , result);
-                        Service.countDocuments({service_id: req.body.serviceId, capacity: {$gte: result+1}})
-  .then(result2 => {
+  Booking.aggregate([
+    {
+      '$match': {
+        'from_date': {
+          '$gte': new Date(reqFromDate)
+        },
+        'to_date': {
+          '$lte': new Date(reqToDate)
+        }
+      }
+    }, {
+      '$count': 'booking_id'
+    }
+  ]).then( result => {
+      console.log('found bookings :' , result);
+        if (result[0]) {
+          count= result[0].booking_id + 1;
+        }
+        console.log(count);
+   Service.countDocuments({service_id: req.body.serviceId, capacity: {$gte: count}})
+    .then(result2 => {
+      console.log('after checking capacity: ',result2);
       if (result2>0){
         availability = true;
       };

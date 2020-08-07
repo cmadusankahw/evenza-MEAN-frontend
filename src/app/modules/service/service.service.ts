@@ -377,6 +377,9 @@ export class ServiceService  {
                 this.sendBooking(booking.service_name, booking.from_date.slice(0,10), booking.to_date.slice(0,10));
                 this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
             });
+            } else {
+              this.dialog.open(ErrorComponent, {data: {message: 'Selected dates are already booked! Please try again'}});
+
             }
           } );
   }
@@ -384,11 +387,11 @@ export class ServiceService  {
 
   // create new event related booking
   createEventBooking(booking: Booking) {
-    //       this.checkAvailability(booking.from_date,
-   //        booking.to_date,
-   //        booking.service_id)
-       //    .subscribe ( availabilityState => {
-       //      if (availabilityState.availability) {
+           this.checkAvailability(booking.from_date,
+           booking.to_date,
+           booking.service_id)
+           .subscribe ( availabilityState => {
+             if (availabilityState.availability) {
             this.http.post<{ message: string, bookingId: string }>(this.url + 'service/booking/add', booking)
             .subscribe((recievedData) => {
                console.log(recievedData.message);
@@ -410,8 +413,10 @@ export class ServiceService  {
                  this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
              });
             });
-        // }
-        //   });
+         } else {
+          this.dialog.open(ErrorComponent, {data: {message: 'Selected dates are already booked! Please try again'}});
+        }
+           });
    }
 
    // create new calendar booking

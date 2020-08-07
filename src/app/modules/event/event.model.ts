@@ -154,6 +154,7 @@ export interface Filteration {
 export function refactorDate(date: Date, time: {hour: number, minute: number}): string {
   let ISODate = date.toISOString();
   let timeString = '';
+
   if (time.hour < 10) {
     timeString += ('0' + time.hour.toString() + ':') ;
   } else {

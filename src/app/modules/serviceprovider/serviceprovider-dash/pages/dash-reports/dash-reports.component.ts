@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ServiceOrderRequest } from '../../../serviceprovider.model';
+import { ServiceOrderRequest, ServiceAppointRequest, PaymentHistoryRequest, ServiceDetailsRequest } from '../../../serviceprovider.model';
 import { ServiceProviderService } from '../../../serviceprovider.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -23,22 +23,52 @@ export class DashReportsComponent implements OnInit, OnDestroy {
   public toDate =  new Date();
 
   // report view changer
-  public selectedSOReport = 1;
-  public selectedSAReport = 1;
-  public selectedSDReport = 1;
-  public selectedBFReport = 1;
+  public selectedSOReport = false;
+  public selectedSAReport = false;
+  public selectedSDReport = false;
+  public selectedPEReport = false;
+  public selectedBFReport = false;
 
   // service order report
   public serviceOrder: ServiceOrderRequest = {
-    from_date: new Date().toISOString(),
-    to_date: new Date().toISOString(),
-    service_category: null,
+    from_date: new Date(),
+    to_date: new Date(),
+    booking_type: null,
     service_id: null,
-    user_id:  null,
-    event_id: null,
     homeTown:  null, // event location
     rating: 0,
     amount: 0,
+    sort:  null,
+    group:  null
+  }
+
+    // service appointment report
+  public serviceAppoint: ServiceAppointRequest = {
+    from_date: new Date(),
+    to_date: new Date(),
+    appoint_type: null,
+    service_id: null,
+    sort:  null,
+    group:  null
+  }
+
+     // payments and earnings report
+  public paymentEarning: PaymentHistoryRequest = {
+    from_date: new Date(),
+    to_date: new Date(),
+    service_id: null,
+    payment: 0,
+    earning: 0,
+    due: 0,
+    sort:  null,
+    group:  null
+  }
+
+    // payments and earnings report
+  public serviceDetails: ServiceDetailsRequest = {
+    service_id: null,
+    rating: 0,
+    earning: 0,
     sort:  null,
     group:  null
   }
@@ -60,25 +90,5 @@ export class DashReportsComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  public getServiceOrderReport() {
-
-  }
-
-  public getServiceAppointReport() {
-
-  }
-
-  public getPaymentHistoryreport() {
-
-  }
-
-  public getRatingReviewReport() {
-
-  }
-
-  public getServiceDetailsReport() {
-
-  }
 
 }

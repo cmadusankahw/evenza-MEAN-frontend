@@ -32,14 +32,14 @@ export interface Booking {
   from_date: string;
   to_date: string;
   duration: number;
-  from_time: {hour: number, minute: number, second: number};
-  to_time: {hour: number, minute: number, second: number};
+  from_time: { hour: number, minute: number, second: number };
+  to_time: { hour: number, minute: number, second: number };
   comment: string;
   amount: number;
   commission_due: number;
   amount_paid: number;
-  serviceProvider: {serviceProvider_id: string, email: string, name: string};
-  user: { user_id: string, email: string, name: string};
+  serviceProvider: { serviceProvider_id: string, email: string, name: string };
+  user: { user_id: string, email: string, name: string };
 }
 
 export interface Appointment {
@@ -52,10 +52,10 @@ export interface Appointment {
   created_date: string;
   state: string;
   appointed_date: string;
-  appointed_time: {hour: number, minute: number, second: number};
+  appointed_time: { hour: number, minute: number, second: number };
   comment: string;
-  serviceProvider: {serviceProvider_id: string, email: string, name: string};
-  user: { user_id: string, email: string, name: string};
+  serviceProvider: { serviceProvider_id: string, email: string, name: string };
+  user: { user_id: string, email: string, name: string };
 }
 
 export interface Earnings {
@@ -70,7 +70,7 @@ export interface Earnings {
   amount: number;
 }
 
-export interface IDVerify  {
+export interface IDVerify {
   isverified: string;
   id_type: string;
   sideA_image: object;
@@ -131,15 +131,13 @@ export interface AppointStat {
   state: string;
 }
 
-// reports
+// frontend report data models
 
 export interface ServiceOrderRequest {
-  from_date: string;
-  to_date: string;
-  service_category: string;
+  from_date: Date;
+  to_date: Date;
+  booking_type: string;
   service_id: string;
-  user_id: string;
-  event_id: string;
   homeTown: string; // event location
   rating: number;
   amount: number;
@@ -148,30 +146,30 @@ export interface ServiceOrderRequest {
 }
 
 export interface ServiceAppointRequest {
-  from_date: string;
-  to_date: string;
+  from_date: Date;
+  to_date: Date;
   service_id: string;
-  user_id: string;
-  event_id: string;
+  appoint_type: string;
   sort: string;
   group: string;
 }
 
 
 export interface PaymentHistoryRequest {
-  from_date: string;
-  to_date: string;
+  from_date: Date;
+  to_date: Date;
   service_id: string;
-  user_id: string;
-  event_id: string;
+  payment: number;
+  earning: number;
+  due: number;
   sort: string;
   group: string;
 }
 
 export interface ServiceDetailsRequest {
-  service_category: string;
-  user_id: string;
-  event_id: string;
+  service_id: string;
+  earning: number;
+  rating: number;
   sort: string;
   group: string;
 }
@@ -182,4 +180,41 @@ export interface RateReviewRequest {
   rating: number;
   sort: string;
   group: string;
+}
+
+// backend report data models
+
+export interface BookingReport {
+  booking_id: string;
+  year: number;
+  month: number;
+  amount: number;
+  amount_paid: number;
+  commision_due: number;
+  from_date: string;
+  to_date: string;
+  duration: number;
+  user: { user_id: string, email: string, name: string };
+  serviceProvider: { serviceProvider_id: string, email: string, name: string };
+  rate_type: string;
+  business_name: string;
+  service_category: string;
+  state: string;
+  service_name: string;
+  service_id: string;
+}
+
+
+export interface AppointmentReport {
+  appoint_id: string;
+  year: number;
+  month: number;
+  appointed_date: string;
+  user: { user_id: string, email: string, name: string };
+  serviceProvider: { serviceProvider_id: string, email: string, name: string };
+  business_name: string;
+  service_category: string;
+  state: string;
+  service_name: string;
+  service_id: string;
 }

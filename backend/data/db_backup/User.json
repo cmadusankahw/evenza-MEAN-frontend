@@ -1,0 +1,38 @@
+[
+    {
+        "_id": "5eb1e26c6563d6146e5d86f7",
+        "state": false,
+        "user_id": "U1",
+        "email": "cmadusankahw@gmail.com",
+        "user_type": "admin",
+        "password": "$2b$10$nPJl4UgjKl.Y0.EpF6r07OII4146wJvSfdRauL2WUsbzuTEoCndWy",
+        "__v": 0
+    },
+    {
+        "_id": "5ebede7498a6487898ac49bf",
+        "state": false,
+        "user_id": "U25",
+        "email": "planner@evenza.com",
+        "user_type": "eventPlanner",
+        "password": "$2b$10$0.8SjwaXAANJv4NIqQigFuU1abCxwTNHQ5N1SyP4oT48qYRMGalim",
+        "__v": 0
+    },
+    {
+        "_id": "5eff6736c0a8a03290fbf612",
+        "state": false,
+        "user_id": "U49",
+        "email": "sp@evenza.com",
+        "user_type": "serviceProvider",
+        "password": "$2b$10$2p776/LwLDq45tHnfLZdHuLb.wC7VQ4BaVwahjYOnWT4MCwv3Nf96",
+        "__v": 0
+    },
+    {
+        "_id": "5f0024af74ecb04e19963d67",
+        "state": false,
+        "user_id": "U50",
+        "email": "seller@evenza.com",
+        "user_type": "seller",
+        "password": "$2b$10$.pwoe544TDgYeCRJEkAkAuiGfGNLA.0HyFANoNiyzBM3ddrk.ttI6",
+        "__v": 0
+    }
+]

@@ -18,12 +18,12 @@ spreport.use(bodyParser.urlencoded({ extended: false }));
 
 
 // report: bookings - between 2 dates with year and month
-spreport.get('/booking',checkAuth, (req, res, next) => {
+spreport.post('/booking',checkAuth, (req, res, next) => {
   console.log(req.body);
   reqFromDate = new Date(req.body.fromDate);
   reqToDate = new Date(req.body.toDate);
 
-  Booking.aggrogate(
+  Booking.aggregate(
     [
       {
         '$match': {
@@ -56,9 +56,10 @@ spreport.get('/booking',checkAuth, (req, res, next) => {
           'service_category': 1,
           'state': 1,
           'service_name': 1,
-          'business_name': 1
+          'service_id' : 1
         }
-      }, {
+      },
+       {
         '$sort': {
           'from_date': 1
         }
@@ -71,6 +72,162 @@ spreport.get('/booking',checkAuth, (req, res, next) => {
         {
           message: 'booking list recieved successfully!',
           bookings: bookings
+        }
+      );
+
+  });
+});
+
+
+
+// report: appontments - between 2 dates with year and month
+spreport.post('/appoint',checkAuth, (req, res, next) => {
+  console.log(req.body);
+  reqFromDate = new Date(req.body.fromDate);
+  reqToDate = new Date(req.body.toDate);
+
+  Appointment.aggregate(
+    [
+      {
+        '$match': {
+          'appointed_date': {
+            '$gte': new Date(reqFromDate)
+          },
+          'appointed_date': {
+            '$lte': new Date(reqToDate)
+          }
+        }
+      }, {
+        '$project': {
+          'year': {
+            '$year': '$appointed_date'
+          },
+          'month': {
+            '$month': '$appointed_date'
+          },
+          'appoint_id': 1,
+          'appointed_date': 1,
+          'user': 1,
+          'serviceProvider': 1,
+          'business_name': 1,
+          'service_category': 1,
+          'state': 1,
+          'service_name': 1,
+          'service_id' : 1
+        }
+      },{
+
+      },
+       {
+        '$sort': {
+          'appointed_date': 1
+        }
+      }
+    ]
+  ).then( (appoints) => {
+    console.log(appoints);
+
+      res.status(200).json(
+        {
+          message: 'appointment details recieved successfully!',
+          appoints: appoints
+        }
+      );
+
+  });
+});
+
+// report: bookings - between 2 dates with year and month - filter booking_type
+spreport.post('/booking/count',checkAuth, (req, res, next) => {
+  console.log(req.body);
+  reqFromDate = new Date(req.body.fromDate);
+  reqToDate = new Date(req.body.toDate);
+
+  Booking.aggregate(
+    [
+      {
+        '$match': {
+          'from_date': {
+            '$gte': new Date('Fri, 07 Aug 2020 08:00:00 GMT')
+          },
+          'to_date': {
+            '$lte': new Date('Sat, 08 Aug 2020 08:00:00 GMT')
+          }
+        }
+      },
+        {
+          '$facet': {
+            'pending': [
+              {
+                '$match': {
+                  'state': {
+                    '$exists': true,
+                    '$in': [
+                      'pending'
+                    ]
+                  }
+                }
+              }, {
+                '$count': 'pending'
+              }
+            ],
+            'completed': [
+              {
+                '$match': {
+                  'state': {
+                    '$exists': true,
+                    '$in': [
+                      'completed'
+                    ]
+                  }
+                }
+              }, {
+                '$count': 'completed'
+              }
+            ],
+            'cancelled': [
+              {
+                '$match': {
+                  'state': {
+                    '$exists': true,
+                    '$in': [
+                      'cancelled'
+                    ]
+                  }
+                }
+              }, {
+                '$count': 'cancelled'
+              }
+            ]
+          }
+        }, {}, {
+          '$project': {
+            'pending': {
+              '$arrayElemAt': [
+                '$pending.pending', 0
+              ]
+            },
+            'completed': {
+              '$arrayElemAt': [
+                '$completed.completed', 0
+              ]
+            },
+            'cancelled': {
+              '$arrayElemAt': [
+                '$cancelled.cancelled', 0
+              ]
+            }
+          }
+        }
+
+    ]
+  ).then( (bcounts) => {
+    console.log(bcounts);
+
+      res.status(200).json(
+        {
+          message: 'booking counts recieved successfully!',
+          counts: bcounts
         }
       );
 

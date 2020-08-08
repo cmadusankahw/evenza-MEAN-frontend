@@ -1,0 +1,60 @@
+[
+    {
+        "_id": "5f00315d74ecb04e19963d69",
+        "availability": true,
+        "rating": 0,
+        "reviews": [],
+        "no_of_ratings": 0,
+        "no_of_orders": 0,
+        "price": 99900,
+        "pay_on_delivery": true,
+        "product_id": "P2",
+        "business_name": "THE SCENES",
+        "product": "Senses Cameras",
+        "promotions": [
+            {
+                "_id": "5f276e4852aed6406dc31761",
+                "from_date": "2020-08-03T01:45:18.190Z",
+                "to_date": "2020-08-18T18:30:00.000Z",
+                "title": "New Promotion",
+                "precentage": 12
+            }
+        ],
+        "product_category": "Camers & Equipments",
+        "qty_type": "Units",
+        "description": "Best Quality Cameras & Equpiments for sale and rent",
+        "created_date": "04/07/2020",
+        "created_time": "1:05 PM",
+        "inventory": 96.5,
+        "delivery_service": "D1",
+        "image_01": "http://localhost:3000/images/products/bigstock-travel-photographer-taking-a-p-302170048-min-653x300.jpg-1593848157761.jpg",
+        "image_02": "http://localhost:3000/images/products/photography-1.jpg-1593848196973.jpg",
+        "image_03": "http://localhost:3000/images/products/juhaazl.jpg-1593848196970.jpg",
+        "user_id": "U50",
+        "__v": 0
+    },
+    {
+        "_id": "5f276d3c3b33d13cab71a6d1",
+        "availability": true,
+        "rating": 0,
+        "no_of_ratings": 0,
+        "no_of_orders": 0,
+        "price": 12750,
+        "pay_on_delivery": true,
+        "product_id": "P3",
+        "business_name": "THE SCENES",
+        "product": "Electro Cameras",
+        "product_category": "Camers & Equipments",
+        "qty_type": "Units",
+        "description": "Best",
+        "created_date": "2020-08-03T01:49:45.359Z",
+        "inventory": 100,
+        "reviews": [],
+        "delivery_service": "D2",
+        "image_01": "http://localhost:3000/images/products/photo-1542038784456-1ea8e935640e.jpeg-1596419387481.jpg",
+        "image_02": "http://localhost:3000/images/products/photography-1.jpg-1596419387484.jpg",
+        "image_03": "http://localhost:3000/images/products/photography-1.jpg-1596419387567.jpg",
+        "user_id": "U50",
+        "__v": 0
+    }
+]

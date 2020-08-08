@@ -1,0 +1,24 @@
+[
+    {
+        "_id": "5ecbf14db9f6520e7642efe3",
+        "delivery_service": "D1",
+        "title": "DHL",
+        "email": "cmadusankahw@gmail.com",
+        "address": "No 112, Bake St, Colombo 2",
+        "hotline": "0712345678",
+        "delivery_rate": 299,
+        "min_delivery_time": "2",
+        "max_delivery_time": "3"
+    },
+    {
+        "_id": "5ecbf1b5b9f6520e7642efe4",
+        "delivery_service": "D2",
+        "title": "Daraz Partner Delivery",
+        "email": "cmadusankahw@gmail.com",
+        "address": "Daraz Co.op , Kaluthra",
+        "hotline": "0456789678",
+        "delivery_rate": 390,
+        "min_delivery_time": "2",
+        "max_delivery_time": "3"
+    }
+]

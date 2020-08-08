@@ -1,0 +1,362 @@
+[
+    {
+        "_id": "5f0fc544c6f7a4448534c389",
+        "event_id": "undefined",
+        "event_title": "Evenza smart Hackathon",
+        "description": "test description",
+        "event_type": "closed",
+        "event_category": "Tech events",
+        "from_date": "2020-07-12T04:54:51.255Z",
+        "to_date": "2020-07-15T02:00:51.255Z",
+        "created_date": "2020-07-06T04:54:51.255Z",
+        "location": {
+            "lat": 12.113456,
+            "lang": 39.8765,
+            "homeTown": "Matara"
+        },
+        "no_of_participants": 200,
+        "participants": {
+            "participants": [],
+            "approved_participants": 1
+        },
+        "alerts": [],
+        "total_budget": 200000,
+        "event_segments": {
+            "tasks": [
+                {
+                    "task_id": "task_visit_dressing_saloon_123",
+                    "title": "Visit Dressing Saloon",
+                    "description": "test",
+                    "scheduled_from_date": "2020-07-08T08:54:51.255Z",
+                    "scheduled_to_date": "2020-07-08T11:54:51.255Z",
+                    "state": "pending"
+                }
+            ],
+            "services": [
+                {
+                    "service_id": "S1",
+                    "service_name": "Sarasi Hotel",
+                    "service_category": "Reception halls",
+                    "booking_id": "B1",
+                    "appoint_id": null,
+                    "allocated_budget": 90000,
+                    "spent_budget": 87000,
+                    "booking_from_date": "2020-07-12T04:54:51.255Z",
+                    "booking_to_date": "2020-07-15T00:54:51.255Z",
+                    "appointed_date": null,
+                    "state": "booked"
+                }
+            ],
+            "products": [
+                {
+                    "product_id": "P1",
+                    "product": "Dinusha Catering",
+                    "product_category": "Catering Services",
+                    "order_id": "OR1",
+                    "allocated_budget": 25000,
+                    "spent_budget": 27000,
+                    "ordered_date": "2020-07-09T04:54:51.255Z",
+                    "state": "ordered"
+                }
+            ]
+        },
+        "service_categories": [
+            {
+                "id": "1",
+                "category": "Reception Halls",
+                "precentage": 24
+            }
+        ],
+        "product_categories": [
+            {
+                "id": "1",
+                "category": "Audio & Sound System",
+                "precentage": 12
+            }
+        ],
+        "feature_img": "./assets/images/events/2.jpg",
+        "qr_code": "",
+        "state": "planned",
+        "social_links": {
+            "fb": "",
+            "instagram": "",
+            "other": ""
+        },
+        "host": {
+            "user_id": "U25",
+            "email": "cmadusankahw@gmail.com",
+            "name": "Chiran"
+        }
+    },
+    {
+        "_id": "5f20539b45c8ab4ea031bd95",
+        "event_id": "E6",
+        "event_title": "Our Wedding",
+        "description": "Wedding Ceromany and Home Coming at Sanara hotels, Matara",
+        "event_type": "closed",
+        "event_category": "Wedding",
+        "from_date": "2020-07-30T08:00:00.255Z",
+        "to_date": "2020-07-30T20:00:00.255Z",
+        "created_date": "2020-07-28T16:34:34.970Z",
+        "location": {
+            "lat": 5.945669136774422,
+            "lang": 80.5093391751953,
+            "homeTown": " Matara"
+        },
+        "no_of_participants": 150,
+        "participants": {
+            "participants": [
+                {
+                    "participant_id": "chiran423",
+                    "first_name": "chiran",
+                    "last_name": "hewawitharana",
+                    "email": "cmadusankahw@gmail.com",
+                    "state": "accepted"
+                },
+                {
+                    "participant_id": "biguni465",
+                    "first_name": "biguni",
+                    "last_name": "vidushika",
+                    "email": "biguniemail@gmail.com",
+                    "state": "invited"
+                },
+                {
+                    "participant_id": "Chiran653",
+                    "first_name": "Chiran",
+                    "last_name": "HW ",
+                    "email": "chiran.hw@gmail.com",
+                    "state": "accepted"
+                },
+                {
+                    "participant_id": "Himasha37",
+                    "first_name": "Himasha",
+                    "last_name": "Pramuditha",
+                    "email": "himashapramuditha1998@gmail.com",
+                    "state": "invited"
+                },
+                {
+                    "participant_id": "Gayan24",
+                    "first_name": "Gayan",
+                    "last_name": "Kalutharachchi",
+                    "email": "chiran.hw@gmail.com",
+                    "state": "accepted"
+                }
+            ],
+            "approved_participants": 0
+        },
+        "alerts": [
+            {
+                "attachments": [],
+                "_id": "5f20539b45c8ab4ea031bd96",
+                "id": "A1",
+                "type": "invitation",
+                "heading": "Invitation to Event: My first Event 2",
+                "message": "<h1><strong><em>We are inviting you to the Wedding of Chiran and Binguni.</em></strong></h1><p><br></p><p><span class=\"ql-size-large\">Poruwa Ceremonies will start from 2020-07-28 08.30 AM</span></p><p><br></p>",
+                "created_date": "2020-07-28T16:34:34.971Z",
+                "state": "draft"
+            }
+        ],
+        "total_budget": 500000,
+        "total_spent_budget": 40675,
+        "event_segments": {
+            "tasks": [
+                {
+                    "task_id": "task_visit_saloon_15",
+                    "title": "Visit Saloon",
+                    "description": "to check a hair style",
+                    "scheduled_from_date": "2020-08-02T13:00:00.255Z",
+                    "scheduled_to_date": "2020-08-02T15:00:00.255Z",
+                    "state": "pending"
+                },
+                {
+                    "task_id": "task_do_dressing_484",
+                    "title": "Check Sarees",
+                    "description": "Do it tight",
+                    "scheduled_from_date": "2020-07-29T12:40:00.255Z",
+                    "scheduled_to_date": "2020-07-29T15:40:00.255Z",
+                    "state": "pending"
+                },
+                {
+                    "task_id": "task_meet_doctor_523",
+                    "title": "Meet Doctor",
+                    "description": "To check my tooth",
+                    "scheduled_from_date": "2020-08-03T10:00:00.255Z",
+                    "scheduled_to_date": "2020-08-03T11:30:00.255Z",
+                    "state": "pending"
+                },
+                {
+                    "task_id": "task_new_task_340",
+                    "title": "New Task",
+                    "description": "",
+                    "scheduled_from_date": "2020-07-31T09:30:00.255Z",
+                    "scheduled_to_date": "2020-07-31T10:00:00.255Z",
+                    "state": "pending"
+                },
+                {
+                    "task_id": "task_new_task_173",
+                    "title": "New Task",
+                    "description": "",
+                    "scheduled_from_date": "2020-08-01T16:00:00.255Z",
+                    "scheduled_to_date": "2020-08-01T17:00:00.255Z",
+                    "state": "pending"
+                }
+            ],
+            "services": [
+                {
+                    "service_id": "S6",
+                    "service_name": "Chiran Photography",
+                    "service_category": "Photography",
+                    "booking_id": "B0",
+                    "appoint_id": null,
+                    "allocated_budget": 32790,
+                    "spent_budget": 32790,
+                    "booking_from_date": "2020-08-02T08:00:00.255Z",
+                    "booking_to_date": "2020-08-02T19:00:00.255Z",
+                    "appointed_date": null,
+                    "state": "booked"
+                }
+            ],
+            "products": [
+                {
+                    "product_id": "P3",
+                    "product": "Creative Wall Arts",
+                    "product_category": "Decorations",
+                    "order_id": "OR28",
+                    "allocated_budget": 7885,
+                    "spent_budget": 7885,
+                    "ordered_date": "2020-08-01T06:14:58.870Z",
+                    "state": "ordered"
+                }
+            ]
+        },
+        "service_categories": [
+            {
+                "_id": "5f20539b45c8ab4ea031bd97",
+                "id": "1",
+                "category": "Reception Halls",
+                "precentage": 35
+            }
+        ],
+        "product_categories": [
+            {
+                "_id": "5f20539b45c8ab4ea031bd99",
+                "id": "2",
+                "category": "Sweets & Cakes",
+                "precentage": 7
+            }
+        ],
+        "feature_img": "http://localhost:3000/images/events/67466342_2953216598084014_3973907147615371264_o.jpg-1595956887597.jpg",
+        "qr_code": "http://evenza.biz/events/My first Event 2",
+        "state": "published",
+        "social_links": {
+            "fb": "https://fb.com/cb_wedding",
+            "instagram": "https://instagram.com/cb_wedding",
+            "other": ""
+        },
+        "host": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": ""
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f254748c8b9df5eb821c960",
+        "event_id": "E7",
+        "event_title": "test wedding",
+        "description": "sample description",
+        "event_type": "closed",
+        "event_category": "Wedding",
+        "from_date": "2020-08-01T08:00:00.255Z",
+        "to_date": "2020-08-02T16:00:00.255Z",
+        "created_date": "2020-08-01T10:43:20.632Z",
+        "location": {
+            "lat": 6.864796988376413,
+            "lang": 79.9057777738281,
+            "homeTown": " Nugegoda"
+        },
+        "no_of_participants": 150,
+        "participants": {
+            "participants": [
+                {
+                    "participant_id": "chiran76",
+                    "first_name": "chiran",
+                    "last_name": "hewawitharana",
+                    "email": "cmadusankahw@gmail.com",
+                    "state": "invited"
+                }
+            ],
+            "approved_participants": 0
+        },
+        "alerts": [
+            {
+                "attachments": [],
+                "_id": "5f254748c8b9df5eb821c961",
+                "id": "A1",
+                "type": "invitation",
+                "heading": "Invitation to Event: test wedding",
+                "message": "We are inviting you to the Wedding : test wedding<br> <br> Edit your Invitation Here",
+                "created_date": "2020-08-01T10:43:20.632Z",
+                "state": "draft"
+            }
+        ],
+        "total_budget": 500000,
+        "total_spent_budget": 0,
+        "event_segments": {
+            "tasks": [
+                {
+                    "task_id": "task_new_task_191",
+                    "title": "New Task",
+                    "description": "test",
+                    "scheduled_from_date": "2020-08-01T17:15:00.255Z",
+                    "scheduled_to_date": "2020-08-01T19:15:00.255Z",
+                    "state": "pending"
+                }
+            ],
+            "services": [],
+            "products": []
+        },
+        "service_categories": [
+            {
+                "_id": "5f254748c8b9df5eb821c962",
+                "id": "1",
+                "category": "Reception Halls",
+                "precentage": 35
+            },
+            {
+                "_id": "5f254748c8b9df5eb821c963",
+                "id": "3",
+                "category": "Catering",
+                "precentage": 11
+            }
+        ],
+        "product_categories": [
+            {
+                "_id": "5f254748c8b9df5eb821c964",
+                "id": "2",
+                "category": "Sweets & Cakes",
+                "precentage": 7
+            },
+            {
+                "_id": "5f254748c8b9df5eb821c965",
+                "id": "1",
+                "category": "Decorations",
+                "precentage": 35
+            }
+        ],
+        "feature_img": "./assets/images/events/feature.jpg",
+        "qr_code": "http://evenza.biz/events/test wedding",
+        "state": "published",
+        "social_links": {
+            "fb": "https://fb.com/",
+            "instagram": "https://instagram.com/",
+            "other": ""
+        },
+        "host": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": ""
+        },
+        "__v": 0
+    }
+]

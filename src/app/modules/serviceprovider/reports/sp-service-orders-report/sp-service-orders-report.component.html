@@ -1,4 +1,130 @@
-<div class="report pt-1">
+<div class="report pt-1 container">
+  <div id="content" class="shadow">
+  <div  class="pt-5 pb-3" *ngIf="bookingData.length" >
+    <div class="title text-center">
+      <h2 style="font-weight:bold; color: darkmagenta;" class="strong"> Evenza - Smart event Management & Resourcing Platform</h2>
+      <br>
+      <h3><b> <mdb-icon fas icon="calendar-check"> </mdb-icon> Service Order Business report : </b></h3>
+    </div>
+    <hr>
+    <h5><b> From : {{serviceOrder.from_date }}  To : {{serviceOrder.to_date}}</b></h5>
+    <br>
+    <h5><b> Service Provider : {{bookingData[0].serviceProvider.name + " | " + bookingData[0].serviceProvider.email }}</b></h5>
+    <hr>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <iframe style="background: #FFFFFF;border: none;border-radius: 2px;box-shadow: 0 2px 10px 0 rgba(70, 76, 79, .2);"
+      width="100%" height="400" src="https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=5de5c3ad-fb12-4032-a17f-6a169442cef5&theme=light"></iframe>
+    </div>
+    <div class="col-md-4">
+      <iframe style="background: #FFFFFF;border: none;border-radius: 2px;box-shadow: 0 2px 10px 0 rgba(70, 76, 79, .2);"
+      width="100%" height="400" src="https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=b05302e7-f7e0-4bbe-830b-f4a19b392472&theme=light"></iframe>
+    </div>
+    <div class="col-md-4">
+      <iframe style="background: #FFFFFF;border: none;border-radius: 2px;box-shadow: 0 2px 10px 0 rgba(70, 76, 79, .2);"
+      width="100%" height="400" src="https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=5b39d79c-f9d8-425b-a5a5-43ae3e5f22ea&theme=light"></iframe>
+    </div>
+  </div>
+  <br><br>
+  <div class="text-center" *ngIf="bookingData.length">
+    <h3> <strong> Service Order History</strong></h3>
+    <br>
+  <table class="table-striped pt-1"  style="width:100%">
+    <thead>
+      <tr>
+        <th> <b>
+          Year & Month
+        </b>
+        </th>
+        <th >
+          Service Order ID
+        </th>
+        <th >
+          Service Booked
+        </th>
+        <th>
+          From Date
+        </th>
+        <th >
+          To Date
+        </th>
+        <th>
+          Customer
+        </th>
+        <th>
+         <b> Status </b>
+        </th>
+        <th style="color:darkgreen;">
+          Earned by Now
+        </th>
+        <th style="color:darkred;">
+          Due Amount
+        </th>
+        <th style="color:darkmagenta;">
+          Total Amount
+        </th>
+      </tr>
+    </thead>
+      <tbody>
+        <tr style="padding-bottom:10px;" *ngFor="let s of bookingData">
+          <td>
+            {{s.year + ' - ' + s.month}}
+          </td>
+          <td>
+            {{ s.booking_id}}
+          </td>
+          <td>
+              {{ s.service_name}}
+          </td>
+          <td>
+            {{s.from_date.slice(0,10)}}
+          </td>
+          <td>
+            {{s.to_date.slice(0,10)}}
+          </td>
+          <td>
+            {{s.user.name}}
+          </td>
+          <td>
+            {{s.state}}
+          </td>
+          <td style="text-align:right;">
+            {{s.amount_paid}}
+          </td>
+          <td style="text-align:right; color:darkred;">
+             {{s.amount - s.amount_paid}}
+          </td>
+          <td style="text-align:right; color:darkmagenta;">
+            {{ s.amount}}
+          </td>
+        </tr>
+
+      </tbody>
+  </table>
+  <hr>
+</div>
+<div class="row pt-1">
+  <div class="col-md-9" style="text-align:right;">
+    <h5 style="color:darkred;"><b> Due Amount: </b></h5>
+    <h5 style="color:darkgreen;"><b> Earned by Now: </b></h5>
+    <h4><b> Total Earnings: </b></h4>
+  </div>
+  <div class="col-md-3" style="text-align:right;">
+    <h5><b> Rs. {{ total_due}}</b></h5>
+    <h5><b> Rs. {{ total_amount_paid}}</b></h5>
+    <h5 style="color: darkgreen;"><b> Rs. {{ total_amount}}</b></h5>
+  </div>
+</div>
+<hr>
+<div class="text-center">
+  Report is generated and approved by Evenza Systems. No Signature required.
+  <br>
+  <b> Evenza 2020</b>
+</div>
+</div>
+<!-- end of report-->
+<hr>
 
   <div class="btns text-center">
     <button mdbBtn color="primary" class="btn btn-md edtbt" mdbWavesEffect
@@ -7,4 +133,8 @@
     (click) ="emailReport('content')" > Request by Email </button>
   </div>
 
-  </div>
+
+</div>
+
+
+

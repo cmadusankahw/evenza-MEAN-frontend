@@ -163,6 +163,7 @@ import { SpServiceOrdersReportComponent } from './modules/serviceprovider/report
 import { SpServiceAppointmentsReportComponent } from './modules/serviceprovider/reports/sp-service-appointments-report/sp-service-appointments-report.component';
 import { SpPaymentsReportComponent } from './modules/serviceprovider/reports/sp-payments-report/sp-payments-report.component';
 import { SpBusinessForecastingReportComponent } from './modules/serviceprovider/reports/sp-business-forecasting-report/sp-business-forecasting-report.component';
+import { SpServieDetailsReportComponent } from './modules/serviceprovider/reports/sp-servie-details-report/sp-servie-details-report.component';
 
 // socket io ocnfiguration
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
@@ -283,6 +284,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     SpServiceAppointmentsReportComponent,
     SpPaymentsReportComponent,
     SpBusinessForecastingReportComponent,
+    SpServieDetailsReportComponent,
 
 
 

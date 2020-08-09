@@ -1,5 +1,6 @@
 const Service = require ("../../model/service/service.model");
 const Merchant = require ("../../model/auth/merchant.model");
+const Admin = require("../../model/admin/admin.model");
 const Booking = require("../../model/service/booking.model");
 const Appointment = require ("../../model/service/appointment.model");
 const checkAuth = require("../../middleware/auth-check");
@@ -115,8 +116,6 @@ spreport.post('/appoint',checkAuth, (req, res, next) => {
           'service_name': 1,
           'service_id' : 1
         }
-      },{
-
       },
        {
         '$sort': {
@@ -135,6 +134,37 @@ spreport.post('/appoint',checkAuth, (req, res, next) => {
       );
 
   });
+});
+
+
+
+// report: appontments - between 2 dates with year and month
+spreport.get('/payment',checkAuth, (req, res, next) => {
+  console.log(req.body);
+  var PaymentDetail;
+  Admin.findOne().select('payment_details').then( result => {
+    var paymentDetails = result.payment_details;
+    for(let pd of paymentDetails) {
+       if (pd.user_id == req.userData.user_id) {
+        PaymentDetail = pd;
+       }
+      }
+  Booking.find({'serviceProvider.serviceProvider_id': req.userData.user_id}).select('booking_id service_name service_id user.name amount_paid amount created_date').then( (pdetails) => {
+    console.log(' P & E ::::::' ,PaymentDetail, pdetails);
+      res.status(200).json(
+        {
+          message: 'appointment details recieved successfully!',
+          payments: PaymentDetail,
+          earnings: pdetails
+        }
+      );
+
+  }).catch( err => {
+    console.log(err);
+  })
+}).catch( err => {
+  console.log(err);
+})
 });
 
 // report: bookings - between 2 dates with year and month - filter booking_type

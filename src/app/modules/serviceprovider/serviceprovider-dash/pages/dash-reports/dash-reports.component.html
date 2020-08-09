@@ -89,7 +89,7 @@
 
             <!-- generatedd report-->
             <div class="report-sorder" *ngIf="selectedSOReport == true">
-                <app-sp-service-orders-report [serviceOrder] ="serviceOrder"></app-sp-service-orders-report>
+                <app-sp-service-orders-report [serviceOrder] ="serviceOrder" [spId] = "spId"></app-sp-service-orders-report>
               <div class ="text-center pt-2">
                 <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
                 (click) ="selectedSOReport = false" > Go Back</button>
@@ -125,7 +125,7 @@
                   <mat-form-field class="mfield">
                     <mat-label> Report To Date : </mat-label>
                     <input matInput [matDatepicker]="picker4" required
-                    name="to_date_2" [(ngModel)]="serviceOrder.to_date" #tDate2="ngModel"
+                    name="to_date_2" [(ngModel)]="serviceAppoint.to_date" #tDate2="ngModel"
                     />
                     <mat-datepicker-toggle
                       matSuffix
@@ -183,7 +183,7 @@
 
           <!-- generatedd report-->
           <div class="report-sorder" *ngIf="selectedSAReport == true">
-              <app-sp-service-appoints-report [serviceOrder]="serviceOrder"></app-sp-service-appoints-report>
+              <app-sp-service-appointments-report [ServiceAppoint]="serviceAppoint" [spId] ="spId"></app-sp-service-appointments-report>
             <div class ="text-center pt-2">
               <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
               (click) ="selectedSAReport = false" > Go Back</button>
@@ -204,7 +204,7 @@
                   <mat-form-field class="mfield">
                     <mat-label> Report From Date : </mat-label>
                     <input matInput [matDatepicker]="picker5" required
-                    name="from_date_3" [(ngModel)]="serviceOrder.from_date" #fDate3="ngModel"
+                    name="from_date_3" [(ngModel)]="paymentEarning.from_date" #fDate3="ngModel"
                     (dateChange) = "paymentEarning.to_date = paymentEarning.from_date"  />
                     <mat-datepicker-toggle
                       matSuffix
@@ -271,7 +271,7 @@
 
           <!-- generatedd report-->
           <div class="report-sorder" *ngIf="selectedPEReport == true">
-              <app-sp-service-orders-report [serviceOrder]="serviceOrder"></app-sp-service-orders-report>
+              <app-sp-payments-report [paymentEarning] = "paymentEarning" [spId] = "spId"></app-sp-payments-report>
             <div class ="text-center pt-2">
               <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
               (click) ="selectedPEReport = false" > Go Back</button>
@@ -312,12 +312,6 @@
                 <mat-error *ngIf="earnings2.invalid">Please enter valid amount </mat-error>
               </mat-form-field>
               <br>
-              <span style="color:darkmagenta;"> By Rating given</span><br>
-              <ngb-rating [(rate)]="serviceDetails.rating" max="5" >
-                <ng-template let-fill="fill" let-index="index">
-                  <span class="star" [class.filled]="fill === 100">&#9733;</span>
-                </ng-template>
-              </ngb-rating>
 
             </div>
             <div class ="text-center pt-2">
@@ -328,7 +322,7 @@
 
           <!-- generatedd report-->
           <div class="report-sorder" *ngIf="selectedSDReport == true">
-              <app-sp-service-orders-report [serviceOrder]="serviceOrder"></app-sp-service-orders-report>
+              <app-sp-servie-details-report [serviceDetails]="serviceDetails" [spId] = "spId"></app-sp-servie-details-report>
             <div class ="text-center pt-2">
               <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
               (click) ="selectedSDReport = false" > Go Back</button>

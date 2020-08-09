@@ -22,6 +22,9 @@ export class DashReportsComponent implements OnInit, OnDestroy {
   public fromDate =  new Date();
   public toDate =  new Date();
 
+  // serviceprovider ID
+  public spId: string;
+
   // report view changer
   public selectedSOReport = false;
   public selectedSAReport = false;
@@ -82,6 +85,13 @@ export class DashReportsComponent implements OnInit, OnDestroy {
       this.spnames = data;
     });
 
+    // getting service provider user id
+    this.serviceProviderService.getSPId();
+    this.serviceProviderService.getSpIdUpdatedListener()
+      .subscribe( (data: string) => {
+        this.spId = data;
+        console.log(this.spId);
+      });
   }
 
   ngOnDestroy() {

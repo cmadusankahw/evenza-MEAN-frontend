@@ -200,6 +200,16 @@ serviceProvider.get('/get/spnames', checkAuth, (req, res, next) => {
 });
 
 
+//get service provider names list for report queries
+serviceProvider.get('/get/spid', checkAuth, (req, res, next) => {
+    res.status(200).json(
+      {
+        id: req.userData.user_id
+      });
+  });
+
+
+
 
 
 // post methods

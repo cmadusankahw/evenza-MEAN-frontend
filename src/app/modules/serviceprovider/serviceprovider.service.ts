@@ -8,6 +8,7 @@ import * as io from 'socket.io-client';
 import { Booking, Appointment, DashStat, PayStat, CalendarBooking, AppointStat, BookingStat, Earnings, BookingReport, AppointmentReport } from './serviceprovider.model';
 import { Email } from '../eventplanner/eventplanner.model';
 import { SuccessComponent } from 'src/app/success/success.component';
+import { PaymentData, MerchantPayments } from '../admin/admin.model';
 
 
 @Injectable({ providedIn: 'root' })
@@ -36,6 +37,8 @@ export class ServiceProviderService {
   // report generation related subjects
   private bookingReportUpdated = new Subject<BookingReport[]>();
   private appointReportUpdated = new Subject<AppointmentReport[]>();
+  private paymentDetailsUpdated = new Subject<any>();
+  private spIdUpdated = new Subject<string>();
 
   // recieved bookings
   private bookings: Booking[];
@@ -54,6 +57,8 @@ export class ServiceProviderService {
   // keep stat for report generation
   private bookingStat: BookingStat[] = [];
   private appointStat: AppointStat[] = [];
+  // get service provider ID for report generation
+  private spId: string;
 
 
 
@@ -205,6 +210,15 @@ export class ServiceProviderService {
       });
   }
 
+  getSPId() {
+    this.http.get<{  id: string }>(this.url + 'sp/get/spid')
+      .subscribe((res) => {
+        this.spId = res.id;
+        this.spIdUpdated.next(res.id);
+      });
+  }
+
+
   // get booking details for service order report
   public getServiceOrderReport(fromDate: string, toDate: string) {
     this.http.post<{ message: string, bookings: BookingReport[] }>(this.url + 'sp/reports/booking', { fromDate, toDate })
@@ -220,6 +234,15 @@ export class ServiceProviderService {
       .subscribe((res) => {
         console.log(res.message);
         this.appointReportUpdated.next(res.appoints);
+      });
+  }
+
+// get payments & earnings details for service order report
+  public getPaymentEarningReport() {
+    this.http.get<{ message: string, payments: MerchantPayments, earnings: any[]}>(this.url + 'sp/reports/payment')
+      .subscribe((res) => {
+        console.log(res);
+        this.paymentDetailsUpdated.next(res);
       });
   }
 
@@ -275,8 +298,13 @@ export class ServiceProviderService {
     return this.appointReportUpdated.asObservable();
   }
 
+  getPaymentsDetailsUpdatedListener() {
+    return this.paymentDetailsUpdated.asObservable();
+  }
 
-
+  getSpIdUpdatedListener() {
+    return this.spIdUpdated.asObservable();
+  }
 
 
   // get dashboard stats

@@ -1,0 +1,65 @@
+[
+    {
+        "_id": "5f1bbcb57c133a3603bf39af",
+        "user_id": "U1",
+        "first_name": "Chiran",
+        "last_name": "Hewawitharana",
+        "profile_pic": "http://localhost:3000/images/merchant/0.jpeg-1595905658371.jpg",
+        "email": "cmadusankahw@gmail.com",
+        "contact_no": "0719725562",
+        "address_line1": "sripali, Aththudawa",
+        "address_line2": "Palatuwa",
+        "postal_code": "81000",
+        "gender": "male",
+        "card_details": {
+            "name_on_card": "Chiran Heawitharana",
+            "card_no": "2244-5678-8890-5675",
+            "cvc_no": "313",
+            "bank": "sampath bank ",
+            "branch": "Sampath Super - Matara",
+            "exp_month": "03",
+            "exp_year": "2022"
+        },
+        "payment_details": [
+            {
+                "_id": "5f2884fc29256c53ee2a2ec6",
+                "pays": [
+                    {
+                        "_id": "5f2884fc29256c53ee2a2ec7",
+                        "timestamp": {
+                            "year": 2020,
+                            "month": 5
+                        },
+                        "paid_date": "2020-06-02T12:55:44.255Z",
+                        "paid_amount": 1300,
+                        "due_amount": 0
+                    },
+                    {
+                        "_id": "5f2884fc29256c53ee2a2ec8",
+                        "timestamp": {
+                            "year": 2020,
+                            "month": 6
+                        },
+                        "paid_date": "2020-07-03T12:55:44.255Z",
+                        "paid_amount": 2070,
+                        "due_amount": 0
+                    },
+                    {
+                        "_id": "5f2892b8b3afc45cdfbef183",
+                        "due_amount": 180,
+                        "timestamp": {
+                            "year": "2020",
+                            "month": "7"
+                        },
+                        "paid_amount": 300
+                    }
+                ],
+                "user_id": "U49",
+                "user_type": "serviceProvider",
+                "first_name": "Chiran",
+                "last_name": "HW",
+                "email": "chiran.hw@gmail.com"
+            }
+        ]
+    }
+]

@@ -7,6 +7,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AdminService } from 'src/app/modules/admin/admin.service';
 import { MerchantPayments, PaymentData } from 'src/app/modules/admin/admin.model';
 
+declare let paypal: any;
+
 @Component({
   selector: 'app-seller-pay-stat',
   templateUrl: './seller-pay-stat.component.html',
@@ -15,24 +17,53 @@ import { MerchantPayments, PaymentData } from 'src/app/modules/admin/admin.model
 export class SellerPayStatComponent implements OnInit {
 
 
-  displayedColumns: string[] = ['Year', 'Month','paidDate', 'due', 'paid'];
+  displayedColumns: string[] = ['Year', 'Month', 'due', 'paid'];
   dataSource: MatTableDataSource<PaymentData>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   // recieved payment history
-  myPayments: MerchantPayments;
+  public myPayments: MerchantPayments;
 
   // last month payments
-  total_paid: number = 0;
-  due_amount: number = 0;
-  due_date: string = new Date().toISOString().slice(0, 10);
+   public total_paid: number = 0;
+   public due_amount: number = 0;
+   public payPalAmount = 0;
+   public due_date: string = new Date().toISOString().slice(0, 10);
 
   // for payments
-  pay_amount = 0;
+  public pay_amount = 0;
 
-  subscription = 299;
+  public subscription = 299;
+
+
+  // paypal integration
+  paypalConfig = {
+    env: 'sandbox',
+    client: {
+      sandbox: 'ASFjH19PwcA-QJn05nR3Lh2g_T3LJtEfX8NnXXTCNvlNgA5zri1wOOUoDzCdFNPYOC3SM2YfKNR8HvAg',
+      production: ''
+    },
+    commit: true,
+    payment: (data, actions) => {
+      return actions.payment.create ( {
+        payment: {
+          transactions: [
+            {amount: { total: this.payPalAmount , currency: 'USD'}}
+          ]
+        }
+      });
+    },
+    onAuthorize : (data, actions) => {
+      return actions.payment.execute().then ( payment => {
+        // make order if the payment is successed
+        document.getElementById('placeOrder').click();
+      });
+    }
+  };
+
+  addScript = false;
 
 
   constructor(private adminService: AdminService) { }
@@ -53,6 +84,25 @@ export class SellerPayStatComponent implements OnInit {
       this.total_paid += p.paid_amount;
       this.due_amount = p.due_amount;
     }
+  }
+
+
+  addPaypal() {
+    if(!this.addScript) {
+      this.addPaypalScript().then( () =>{
+        paypal.Button.render( this.paypalConfig, '#paybtn');
+      });
+    }
+  }
+
+  addPaypalScript() {
+    this.addScript = true;
+    return new Promise( ( resolve, reject) => {
+      let scriptTagelement = document.createElement('script');
+      scriptTagelement.src = 'https://www.paypalobjects.com/api/checkout.js';
+      scriptTagelement.onload = resolve;
+      document.body.appendChild(scriptTagelement);
+    })
   }
 
 

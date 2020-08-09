@@ -3,9 +3,10 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, Subscription } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Router, NavigationStart } from '@angular/router';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
+
 import { AuthService } from 'src/app/modules/auth/auth.service';
-
-
+import { ServiceService } from 'src/app/modules/service/service.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,6 +23,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
    calendar = 'txt-white row';
    reports = 'txt-white row';
    profile = 'txt-white row';
+
+
+    // snack bars for notification display
+  private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
 
   private headerSubs: Subscription;
@@ -41,7 +47,39 @@ export class DashboardComponent implements OnInit, OnDestroy {
     );
 
   constructor(private breakpointObserver: BreakpointObserver,
-              private router: Router, private authService: AuthService) { }
+              private router: Router, private authService: AuthService,
+              private serviceService: ServiceService,
+              private _snackBar: MatSnackBar) {
+
+                // handeling booking created notification
+                this.serviceService.newBookingCreated()
+                .subscribe(data => {
+                  this._snackBar.open('New Booking on ' + data.service
+                + ' from ' + data.fromDate + ' to ' + data.toDate + '- Evenza', 'Dismiss', {
+                  duration: 5000,
+                  horizontalPosition: this.horizontalPosition,
+                  verticalPosition: this.verticalPosition,
+                  });
+                  this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+                  this.router.onSameUrlNavigation = 'reload';
+                  this.router.navigate(['/sp/dash']);
+                });
+
+                // handeling appointment created notification
+                this.serviceService.newApointCreated()
+                .subscribe(data => {
+                  this._snackBar.open('New Appointment on ' + data.service
+                + ' from ' + data.appointedDate + ' to ' + data.appointedTime + '- Evenza', 'Dismiss', {
+                  duration: 5000,
+                  horizontalPosition: this.horizontalPosition,
+                  verticalPosition: this.verticalPosition,
+                  });
+                  this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+                  this.router.onSameUrlNavigation = 'reload';
+                  this.router.navigate(['/sp/dash']);
+                });
+
+              }
 
   ngOnInit() {
     this.routerEvents();

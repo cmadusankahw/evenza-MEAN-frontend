@@ -1,0 +1,682 @@
+[
+    {
+        "_id": "5f00b6fe9f040c2b3b0706e4",
+        "booking_id": "B35",
+        "service_id": "S3",
+        "event_id": "Not Assigned",
+        "service_name": "NOWYOUSEEME photography",
+        "service_category": "sample category 2",
+        "event_name": "Not Assigned",
+        "business_name": "Test Business",
+        "rate_type": "/Hr",
+        "created_date": "2020-07-04T16:11:40.638Z",
+        "state": "pending",
+        "review": "not reviewed yet",
+        "from_date": "2020-07-04T16:11:40.325Z",
+        "to_date": "2020-07-04T18:30:00.000Z",
+        "duration": 20,
+        "from_time": {
+            "hour": 8,
+            "minute": 0,
+            "second": 0
+        },
+        "to_time": {
+            "hour": 18,
+            "minute": 0,
+            "second": 0
+        },
+        "amount": 24000,
+        "commission_due": 2400,
+        "amount_paid": 2400,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U20",
+            "email": "chiran@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f00b76f9f040c2b3b0706e5",
+        "booking_id": "B36",
+        "service_id": "S3",
+        "event_id": "Not Assigned",
+        "service_name": "NOWYOUSEEME photography",
+        "service_category": "sample category 2",
+        "event_name": "Not Assigned",
+        "business_name": "Test Business",
+        "rate_type": "/Hr",
+        "created_date": "2020-07-04T17:07:45.363Z",
+        "state": "pending",
+        "review": "not reviewed yet",
+        "from_date": "2020-07-04T17:07:45.246Z",
+        "to_date": "2020-07-05T18:30:00.000Z",
+        "duration": 30,
+        "from_time": {
+            "hour": 8,
+            "minute": 0,
+            "second": 0
+        },
+        "to_time": {
+            "hour": 18,
+            "minute": 0,
+            "second": 0
+        },
+        "amount": 36000,
+        "commission_due": 3600,
+        "amount_paid": 3600,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U20",
+            "email": "chiran@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f020333d8843c730898e860",
+        "booking_id": "B37",
+        "service_id": "S6",
+        "event_id": "Not Assigned",
+        "service_name": "Chiran Photography",
+        "service_category": "Photography",
+        "event_name": "Not Assigned",
+        "business_name": "Professional Photographer",
+        "rate_type": "/Hr",
+        "created_date": "2020-07-05T16:43:18.819Z",
+        "state": "completed",
+        "review": "not reviewed yet",
+        "from_date": "2020-07-05T16:43:18.819Z",
+        "to_date": "2020-07-05T16:43:18.819Z",
+        "duration": 10,
+        "from_time": {
+            "hour": 8,
+            "minute": 0,
+            "second": 0
+        },
+        "to_time": {
+            "hour": 18,
+            "minute": 0,
+            "second": 0
+        },
+        "amount": 14900,
+        "commission_due": 1490,
+        "amount_paid": 1490,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U49",
+            "email": "sprint2sp@gmail.com",
+            "name": "Chiran Hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f02a9d1055e3a5e883fe176",
+        "booking_id": "B38",
+        "service_id": "S6",
+        "event_id": "Not Assigned",
+        "service_name": "Chiran Photography",
+        "service_category": "Photography",
+        "event_name": "Not Assigned",
+        "business_name": "Professional Photographer",
+        "rate_type": "/Hr",
+        "created_date": "2020-07-06T04:34:09.149Z",
+        "state": "completed",
+        "review": "not reviewed yet",
+        "from_date": "2020-07-06T04:34:09.023Z",
+        "to_date": "2020-07-06T04:34:09.023Z",
+        "duration": 10,
+        "from_time": {
+            "hour": 8,
+            "minute": 0,
+            "second": 0
+        },
+        "to_time": {
+            "hour": 18,
+            "minute": 0,
+            "second": 0
+        },
+        "amount": 14900,
+        "commission_due": 1490,
+        "amount_paid": 1490,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U49",
+            "email": "sprint2sp@gmail.com",
+            "name": "Chiran Hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f02aeaa4cd9a661f074a6c7",
+        "booking_id": "B39",
+        "service_id": "S6",
+        "event_id": "Not Assigned",
+        "service_name": "Chiran Photography",
+        "service_category": "Photography",
+        "event_name": "Not Assigned",
+        "business_name": "Professional Photographer",
+        "rate_type": "/Hr",
+        "created_date": "2020-07-06T04:54:51.433Z",
+        "state": "completed",
+        "review": "not reviewed yet",
+        "from_date": "2020-07-06T04:54:51.255Z",
+        "to_date": "2020-07-06T04:54:51.255Z",
+        "duration": 10,
+        "from_time": {
+            "hour": 8,
+            "minute": 0,
+            "second": 0
+        },
+        "to_time": {
+            "hour": 18,
+            "minute": 0,
+            "second": 0
+        },
+        "amount": 14900,
+        "commission_due": 1490,
+        "amount_paid": 1490,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U49",
+            "email": "sprint2sp@gmail.com",
+            "name": "Chiran Hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f02b42fdcc9816ac1ee457d",
+        "booking_id": "B40",
+        "service_id": "S6",
+        "event_id": "Not Assigned",
+        "service_name": "Chiran Photography",
+        "service_category": "Photography",
+        "event_name": "Not Assigned",
+        "business_name": "Professional Photographer",
+        "rate_type": "/Hr",
+        "created_date": "2020-07-06T05:17:47.686Z",
+        "state": "completed",
+        "review": "not reviewed yet",
+        "from_date": "2020-07-06T05:17:47.561Z",
+        "to_date": "2020-07-06T05:17:47.561Z",
+        "duration": 10,
+        "from_time": {
+            "hour": 8,
+            "minute": 0,
+            "second": 0
+        },
+        "to_time": {
+            "hour": 18,
+            "minute": 0,
+            "second": 0
+        },
+        "amount": 14900,
+        "commission_due": 1490,
+        "amount_paid": 1490,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U49",
+            "email": "sprint2sp@gmail.com",
+            "name": "Chiran Hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f1aac820b8302018ea9c998",
+        "booking_id": "B41",
+        "service_id": "S6",
+        "event_id": "Not Assigned",
+        "service_name": "Chiran Photography",
+        "service_category": "Photography",
+        "event_name": "Not Assigned",
+        "business_name": "Professional Photographer",
+        "rate_type": "/Hr",
+        "created_date": "2020-07-24T09:40:17.518Z",
+        "state": "completed",
+        "review": "not reviewed yet",
+        "from_date": "2020-07-24T08:00:00.255Z",
+        "to_date": "2020-07-24T18:00:00.255Z",
+        "duration": 10,
+        "amount": 14900,
+        "commission_due": 1490,
+        "amount_paid": 1490,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U49",
+            "email": "sprint2sp@gmail.com",
+            "name": "Chiran Hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f1b4cb983307740f9971528",
+        "booking_id": "B42",
+        "service_id": "S6",
+        "event_id": "Not Assigned",
+        "service_name": "Chiran Photography",
+        "service_category": "Photography",
+        "event_name": "Not Assigned",
+        "business_name": "Professional Photographer",
+        "rate_type": "/Hr",
+        "created_date": "2020-07-24T21:03:52.758Z",
+        "state": "completed",
+        "review": "not reviewed yet",
+        "from_date": "2020-07-24T08:00:00.255Z",
+        "to_date": "2020-07-25T18:00:00.255Z",
+        "duration": 20,
+        "amount": 29800,
+        "commission_due": 2980,
+        "amount_paid": 2980,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U49",
+            "email": "sprint2sp@gmail.com",
+            "name": "Chiran Hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f2214ef2f96c95009412ab8",
+        "booking_id": "B43",
+        "service_id": "S6",
+        "event_id": "Not Assigned",
+        "service_name": "Chiran Photography",
+        "service_category": "Photography",
+        "event_name": "Not Assigned",
+        "business_name": "Professional Photographer",
+        "rate_type": "/Hr",
+        "created_date": "2020-07-30T00:31:43.346Z",
+        "state": "completed",
+        "review": "not reviewed yet",
+        "from_date": "2020-07-30T08:00:00.255Z",
+        "to_date": "2020-07-30T18:00:00.255Z",
+        "duration": 10,
+        "amount": 14900,
+        "commission_due": 1490,
+        "amount_paid": 1490,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U49",
+            "email": "sprint2sp@gmail.com",
+            "name": "Chiran Hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f24aeeb85fb4a440fdc8a71",
+        "booking_id": "B44",
+        "service_id": "S6",
+        "event_id": "E6",
+        "service_name": "Chiran Photography",
+        "service_category": "Photography",
+        "event_name": "Not Assigned",
+        "business_name": "Professional Photographer",
+        "rate_type": "/Hr",
+        "created_date": "2020-07-31T23:53:14.027Z",
+        "state": "completed",
+        "review": "not reviewed yet",
+        "from_date": "2020-08-01T08:00:00.255Z",
+        "to_date": "2020-08-01T19:00:00.255Z",
+        "duration": 22,
+        "amount": 32780,
+        "commission_due": 3278,
+        "amount_paid": 3278,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U49",
+            "email": "sprint2sp@gmail.com",
+            "name": "Chiran Hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f24bf6734d80e589c8e749a",
+        "booking_id": "B45",
+        "service_id": "S6",
+        "event_id": "E6",
+        "service_name": "Chiran Photography",
+        "service_category": "Photography",
+        "event_name": "Not Assigned",
+        "business_name": "Professional Photographer",
+        "rate_type": "/Hr",
+        "created_date": "2020-08-01T01:03:34.758Z",
+        "state": "completed",
+        "review": "not reviewed yet",
+        "from_date": "2020-08-02T08:00:00.255Z",
+        "to_date": "2020-08-02T19:00:00.255Z",
+        "duration": 22,
+        "amount": 32780,
+        "commission_due": 3278,
+        "amount_paid": 3500,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U49",
+            "email": "sprint2sp@gmail.com",
+            "name": "Chiran Hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f260293ea03160ecab60ddf",
+        "booking_id": "B46",
+        "service_id": "S6",
+        "event_id": "none",
+        "service_name": "Chiran Photography",
+        "service_category": "Photography",
+        "event_name": "Not Assigned",
+        "business_name": "Professional Photographer",
+        "rate_type": "/Hr",
+        "created_date": "2020-08-02T00:02:26.087Z",
+        "state": "completed",
+        "review": "not reviewed yet",
+        "from_date": "2020-08-01T08:00:00.255Z",
+        "to_date": "2020-08-01T13:00:00.255Z",
+        "duration": 5,
+        "amount": 7450,
+        "commission_due": 745,
+        "amount_paid": 745,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U49",
+            "email": "sprint2sp@gmail.com",
+            "name": "Chiran Hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f2602beea03160ecab60de0",
+        "booking_id": "B47",
+        "service_id": "S6",
+        "event_id": "none",
+        "service_name": "Chiran Photography",
+        "service_category": "Photography",
+        "event_name": "Not Assigned",
+        "business_name": "Professional Photographer",
+        "rate_type": "/Hr",
+        "created_date": "2020-08-02T00:03:10.275Z",
+        "state": "completed",
+        "review": "not reviewed yet",
+        "from_date": "2020-08-02T08:00:00.255Z",
+        "to_date": "2020-08-02T12:00:00.255Z",
+        "duration": 4,
+        "amount": 5960,
+        "commission_due": 596,
+        "amount_paid": 1490,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U49",
+            "email": "sprint2sp@gmail.com",
+            "name": "Chiran Hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f260321ea03160ecab60de1",
+        "booking_id": "B48",
+        "service_id": "S6",
+        "event_id": "none",
+        "service_name": "Chiran Photography",
+        "service_category": "Photography",
+        "event_name": "Not Assigned",
+        "business_name": "Professional Photographer",
+        "rate_type": "/Hr",
+        "created_date": "2020-08-02T00:04:48.385Z",
+        "state": "completed",
+        "review": "not reviewed yet",
+        "from_date": "2020-08-02T08:00:00.255Z",
+        "to_date": "2020-08-02T12:00:00.255Z",
+        "duration": 4,
+        "amount": 5960,
+        "commission_due": 596,
+        "amount_paid": 1490,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U49",
+            "email": "sprint2sp@gmail.com",
+            "name": "Chiran Hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f26032fea03160ecab60de2",
+        "booking_id": "B49",
+        "service_id": "S6",
+        "event_id": "none",
+        "service_name": "Chiran Photography",
+        "service_category": "Photography",
+        "event_name": "Not Assigned",
+        "business_name": "Professional Photographer",
+        "rate_type": "/Hr",
+        "created_date": "2020-08-02T00:05:02.708Z",
+        "state": "completed",
+        "review": "not reviewed yet",
+        "from_date": "2020-08-02T08:00:00.255Z",
+        "to_date": "2020-08-02T12:00:00.255Z",
+        "duration": 4,
+        "amount": 5960,
+        "commission_due": 596,
+        "amount_paid": 1490,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U49",
+            "email": "sprint2sp@gmail.com",
+            "name": "Chiran Hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f264e99ebeec35e26766607",
+        "booking_id": "B50",
+        "service_id": "S6",
+        "event_id": "none",
+        "service_name": "Chiran Photography",
+        "service_category": "Photography",
+        "event_name": "Not Assigned",
+        "business_name": "Professional Photographer",
+        "rate_type": "/Hr",
+        "created_date": "2020-08-02T05:26:48.208Z",
+        "state": "completed",
+        "review": "not reviewed yet",
+        "from_date": "2020-08-02T08:00:00.255Z",
+        "to_date": "2020-08-03T18:00:00.255Z",
+        "duration": 20,
+        "amount": 29800,
+        "commission_due": 2980,
+        "amount_paid": 2980,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U49",
+            "email": "sprint2sp@gmail.com",
+            "name": "Chiran Hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f264f0211e86a5e6a15de6f",
+        "booking_id": "B51",
+        "service_id": "S6",
+        "event_id": "none",
+        "service_name": "Chiran Photography",
+        "service_category": "Photography",
+        "event_name": "Not Assigned",
+        "business_name": "Professional Photographer",
+        "rate_type": "/Hr",
+        "created_date": "2020-08-02T05:28:33.962Z",
+        "state": "completed",
+        "review": "not reviewed yet",
+        "from_date": "2020-08-02T08:00:00.255Z",
+        "to_date": "2020-08-03T18:00:00.255Z",
+        "duration": 20,
+        "amount": 29800,
+        "commission_due": 2980,
+        "amount_paid": 2980,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U49",
+            "email": "sprint2sp@gmail.com",
+            "name": "Chiran Hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f28a87b158cd06ad6c11847",
+        "booking_id": "B52",
+        "service_id": "S6",
+        "event_id": "none",
+        "service_name": "Chiran Photography",
+        "service_category": "Photography",
+        "event_name": "Not Assigned",
+        "business_name": "Professional Photographer",
+        "rate_type": "/Hr",
+        "created_date": "2020-08-04T00:14:48.292Z",
+        "state": "completed",
+        "review": "not reviewed yet",
+        "from_date": "2020-08-04T08:00:00.255Z",
+        "to_date": "2020-08-05T18:00:00.255Z",
+        "duration": 20,
+        "amount": 29800,
+        "commission_due": 2980,
+        "amount_paid": 2980,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U49",
+            "email": "sp@evenza.com",
+            "name": "Chiran Hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f28c1a6a55e776efc129e9e",
+        "booking_id": "B53",
+        "service_id": "S6",
+        "event_id": "none",
+        "service_name": "Chiran Photography",
+        "service_category": "Photography",
+        "event_name": "Not Assigned",
+        "business_name": "Professional Photographer",
+        "rate_type": "/Hr",
+        "created_date": "2020-08-04T02:02:13.465Z",
+        "state": "completed",
+        "review": "not reviewed yet",
+        "from_date": "2020-08-04T08:00:00.255Z",
+        "to_date": "2020-08-04T18:00:00.255Z",
+        "duration": 10,
+        "amount": 14900,
+        "commission_due": 1490,
+        "amount_paid": 1490,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U49",
+            "email": "sp@evenza.com",
+            "name": "Chiran Hewawitharana"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f28c2025acd2506e62cd441",
+        "booking_id": "B54",
+        "service_id": "S6",
+        "event_id": "none",
+        "service_name": "Chiran Photography",
+        "service_category": "Photography",
+        "event_name": "Not Assigned",
+        "business_name": "Professional Photographer",
+        "rate_type": "/Hr",
+        "created_date": "2020-08-04T02:03:45.940Z",
+        "state": "completed",
+        "review": "not reviewed yet",
+        "from_date": "2020-08-04T08:00:00.255Z",
+        "to_date": "2020-08-04T18:00:00.255Z",
+        "duration": 10,
+        "amount": 14900,
+        "commission_due": 1490,
+        "amount_paid": 1490,
+        "user": {
+            "user_id": "U25",
+            "email": "planner@evenza.com",
+            "name": "chiran hewawitharana"
+        },
+        "serviceProvider": {
+            "serviceProvider_id": "U49",
+            "email": "sp@evenza.com",
+            "name": "Chiran Hewawitharana"
+        },
+        "__v": 0
+    }
+]

@@ -70,12 +70,13 @@ export class AuthService {
 
   // get methods
 
+  // get user Id from header detaisl
+
   // return merchant Temp array between comps
   getMerchantTemp() {
       if (this.merchantTemp) {
         return this.merchantTemp;
       }
-
   }
 
   // get users list to login

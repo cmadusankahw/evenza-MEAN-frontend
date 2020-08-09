@@ -1,0 +1,36 @@
+[
+    {
+        "_id": "5f020148d8843c730898e85b",
+        "available_booking": true,
+        "available_appoints": true,
+        "pay_on_meet": true,
+        "service_id": "S6",
+        "service_name": "Chiran Photography",
+        "business_name": "Professional Photographer",
+        "description": "best photography service",
+        "service_category": "Photography",
+        "rating": 0.6666666666666666,
+        "reviews": [
+            {
+                "_id": "5f23ca8bfdcb853490336b67",
+                "user": "chiran hewawitharana",
+                "rating": 3,
+                "review": "Best Experience!!!!!!!"
+            }
+        ],
+        "no_of_ratings": 0,
+        "promotions": [],
+        "no_of_bookings": 45,
+        "no_of_appoints": 6,
+        "created_date": "05/07/2020",
+        "created_time": "10:05 PM",
+        "rate": 1490,
+        "rate_type": "/Hr",
+        "capacity": 2,
+        "image_01": "http://localhost:3000/images/services/slider-image-4.jpg-1593966920693.jpg",
+        "image_02": "http://localhost:3000/images/services/bigstock-travel-photographer-taking-a-p-302170048-min-653x300.jpg-1593966920712.jpg",
+        "image_03": "http://localhost:3000/images/services/67466342_2953216598084014_3973907147615371264_o.jpg-1593966920713.jpg",
+        "user_id": "U49",
+        "__v": 0
+    }
+]

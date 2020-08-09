@@ -2,20 +2,17 @@
 const Admin = require("../../model/admin/admin.model");
 const Booking = require("../../model/service/booking.model");
 const Order = require("../../model/product/order.model");
-const ServiceCategories = require("../../model/service/categories.model");
-const Productcategories = require("../../model/product/categories.model");
-const DeliveryServices = require("../../model/product/deliveryService.model");
-const EventCategories = require("../../model/event/categories.model");
 const Merchant = require("../../model/auth/merchant.model");
 const EventPlanner = require("../../model/auth/eventPlanner.model");
+const Event = require("../../model/event/event.model");
 const checkAuth = require("../../middleware/auth-check");
-const Login = require("../../../data/user/emailAuthentication.json");
+const email = require("../common/mail");
+const Areport = require ("./admin-report");
 
 //dependency imports
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require ("multer");
-const nodemailer = require("nodemailer");
 var backup = require('mongodb-backup');
 var restore = require('mongodb-restore');
 const cron = require("node-cron"); // running scheduled tasks
@@ -65,7 +62,7 @@ cron.schedule("* * 28 * *", function() {
     var paymentDetails = result.payment_details;
     var merchantIndex = 0;
     var paysIndex = 0;
-    var dueAmt = 0;
+    var dueAmt = 299;
     var timeStamp;
     for(let pd of paymentDetails) {
         for (let p of pd.pays) {
@@ -81,7 +78,7 @@ cron.schedule("* * 28 * *", function() {
         paymentDetails[merchantIndex].pays[paysIndex]= {
           due_amount: dueAmt,
           paid_amount: 0,
-          paid_date: null,
+          paid_date: 'Not Payed',
           timestamp: {
             year: timeStamp.year,
             month: timeStamp.month +1,
@@ -378,34 +375,44 @@ admin.post('/make/payment',checkAuth, (req, res, next) => {
   });
 });
 
+// get service locations
+admin.get('/get/location/m',checkAuth, (req, res, next) => {
 
+  var Query = Merchant.find().select('business.location business.title');
 
-// nodemailer send email function
-async function sendMail(mail, callback) {
-
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: Login.user,
-      pass: Login.pass
-    }
+  Query.exec().then((result) => {
+    console.log(result);
+    res.status(200).json({
+      locations: result
+    });
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).json({
+      message: 'Location details unsuccessfull! Please Try Again!'
+    });
   });
+});
 
-  let mailOptions = {
-    from: '"Evenza HelpDesk "<support@evenza.biz>', // sender address
-    to: mail.email, // list of receivers
-    subject: mail.subject, // Subject line
-    html: mail.html
-  };
+// get event locations
+admin.get('/get/location/e',checkAuth, (req, res, next) => {
 
-  // send mail with defined transport object
-  let info = await transporter.sendMail(mailOptions);
+  var Query = Event.find().select('location event_title');
 
-  callback(info);
-}
+  Query.exec().then((result) => {
+    console.log(result);
+    res.status(200).json({
+      locations: result
+    });
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).json({
+      message: 'Location details unsuccessfull! Please Try Again!'
+    });
+  });
+});
+
 
 // create custom HTML
 function createHTML(mailType,content) {
@@ -426,6 +433,9 @@ function createHTML(mailType,content) {
   }
 
   }
+
+// use reports
+admin.use('/reports', Areport);
 
 
 module.exports = admin;

@@ -1,1 +1,342 @@
-<p>dash-reports works!</p>
+
+<div class="query-content mr-3">
+  <div class= "serice-orders pt-3">
+    <H4 style="font-weight:bold; color:darkmagenta"> Reports: Service Orders. Earnings & Payments </H4>
+    <p>This section will generate Service bookings and earning based reports.</p>
+    <hr>
+      <mat-tab-group mat-align-tabs="center">
+        <!--servie order report-->
+        <mat-tab label="Service Order Reports">
+          <div class="container-fluid" style="width:600px;" *ngIf="selectedSOReport == false">
+
+              <div class="rep-part">
+                <p> Select Filters..</p>
+                <br>
+                <div class="row container-fluid pt-3">
+                  <div class="col-md-6 text-center">
+                    <mat-form-field class="mfield">
+                      <mat-label> Report From Date : </mat-label>
+                      <input matInput [matDatepicker]="picker1" required
+                      name="from_date" [(ngModel)]="serviceOrder.from_date" #fDate="ngModel"
+                      (dateChange) = "serviceOrder.to_date = serviceOrder.from_date" />
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="picker1"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #picker1 [startAt]="serviceOrder.from_date"></mat-datepicker>
+                      <mat-error *ngIf="fDate.invalid">Please select a date</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-6">
+                    <mat-form-field class="mfield">
+                      <mat-label> Report To Date : </mat-label>
+                      <input matInput [matDatepicker]="picker2" required
+                      name="to_date" [(ngModel)]="serviceOrder.to_date" #tDate="ngModel"
+                     />
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="picker2"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #picker2 [startAt]="serviceOrder.to_date"></mat-datepicker>
+                      <mat-error *ngIf="tDate.invalid">Please select a date</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                 <hr>
+                <span style="color:darkmagenta;"> By Service</span><br>
+                <mat-form-field class="mfield">
+                  <mat-label>Select a Service</mat-label>
+                  <mat-select
+                  required
+                  name="service"
+                  #merchantSelect="ngModel"
+                  [(ngModel)] = serviceOrder.service_id>
+                  <mat-option value="all">
+                    All </mat-option>
+                    <mat-option [value]="s.service_id" *ngFor="let s of spnames">
+                      {{s.service_name}}</mat-option>
+
+                  </mat-select>
+                  <mat-error *ngIf="merchantSelect.invalid">Please select a Service or All </mat-error>
+                </mat-form-field>
+                <br>
+                <span style="color:darkmagenta;"> By Booking Type</span><br>
+                <mat-form-field class="mfield">
+                  <mat-label>Select a Service</mat-label>
+                  <mat-select
+                  required
+                  name="booking_type"
+                  #typeSelect="ngModel"
+                  [(ngModel)] = serviceOrder.booking_type>
+                  <mat-option value="all">
+                    All Bookings </mat-option>
+                  <mat-option value="completed">
+                    Completed Bookings </mat-option>
+                    <mat-option value="pending" >
+                      Pendinng Bookings </mat-option>
+                      <mat-option value="cancelled" >
+                        Cancelled Bookings </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="typeSelect.invalid">Please select a Booking Type or All </mat-error>
+                </mat-form-field>
+                <br>
+              </div>
+              <div class ="text-center pt-2">
+                <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
+                (click) ="selectedSOReport = true" > Generate ServiceOrder report</button>
+                </div>
+            </div>
+
+            <!-- generatedd report-->
+            <div class="report-sorder" *ngIf="selectedSOReport == true">
+                <app-sp-service-orders-report [serviceOrder] ="serviceOrder" [spId] = "spId"></app-sp-service-orders-report>
+              <div class ="text-center pt-2">
+                <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
+                (click) ="selectedSOReport = false" > Go Back</button>
+                </div>
+            </div>
+
+        </mat-tab>
+
+        <!--appointmnt report-->
+        <mat-tab label="Service Appointment Reports">
+
+          <div class="container-fluid" style="width:600px;" *ngIf="selectedSAReport == false">
+
+            <div class="rep-part">
+              <p> Select Filters..</p>
+              <br>
+              <div class="row container-fluid pt-3">
+                <div class="col-md-6 text-center">
+                  <mat-form-field class="mfield">
+                    <mat-label> Report From Date : </mat-label>
+                    <input matInput [matDatepicker]="picker3" required
+                    name="from_date_2" [(ngModel)]="serviceAppoint.from_date" #fDate2="ngModel"
+                    (dateChange) = "serviceAppoint.to_date = serviceAppoint.from_date"  />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="picker3"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker3 [startAt]="serviceAppoint.from_date"></mat-datepicker>
+                    <mat-error *ngIf="fDate2.invalid">Please select a date</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="mfield">
+                    <mat-label> Report To Date : </mat-label>
+                    <input matInput [matDatepicker]="picker4" required
+                    name="to_date_2" [(ngModel)]="serviceAppoint.to_date" #tDate2="ngModel"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="picker4"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker4 [startAt]="serviceAppoint.to_date"></mat-datepicker>
+                    <mat-error *ngIf="tDate2.invalid">Please select a date</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+               <hr>
+              <span style="color:darkmagenta;"> By Service</span><br>
+              <mat-form-field class="mfield">
+                <mat-label>Select a Service</mat-label>
+                <mat-select
+                required
+                name="service_2"
+                #merchantSelect2="ngModel"
+                [(ngModel)] = serviceAppoint.service_id>
+                <mat-option value="all">
+                  All </mat-option>
+                  <mat-option [value]="s.service_id" *ngFor="let s of spnames">
+                    {{s.service_name}}</mat-option>
+
+                </mat-select>
+                <mat-error *ngIf="merchantSelect2.invalid">Please select a Service or All </mat-error>
+              </mat-form-field>
+              <br>
+              <span style="color:darkmagenta;"> By Appointment Type</span><br>
+              <mat-form-field class="mfield">
+                <mat-label>Select a Service</mat-label>
+                <mat-select
+                required
+                name="appoint_type"
+                #typeSelect2="ngModel"
+                [(ngModel)] = serviceAppoint.appoint_type>
+                <mat-option value="all">
+                  All Appointments </mat-option>
+                <mat-option value="confirmed">
+                  Approved Appointments </mat-option>
+                  <mat-option value="pending" >
+                    Pendinng Appointments </mat-option>
+                    <mat-option value="cancelled" >
+                      Cancelled Appointments </mat-option>
+                </mat-select>
+                <mat-error *ngIf="typeSelect2.invalid">Please select a Appointment Type or All </mat-error>
+              </mat-form-field>
+              <br>
+            </div>
+            <div class ="text-center pt-2">
+              <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
+              (click) ="selectedSAReport = true" > Generate Service Appointment report</button>
+              </div>
+          </div>
+
+          <!-- generatedd report-->
+          <div class="report-sorder" *ngIf="selectedSAReport == true">
+              <app-sp-service-appointments-report [ServiceAppoint]="serviceAppoint" [spId] ="spId"></app-sp-service-appointments-report>
+            <div class ="text-center pt-2">
+              <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
+              (click) ="selectedSAReport = false" > Go Back</button>
+
+              </div>
+          </div>
+        </mat-tab>
+
+        <!--payments and earnings-->
+        <mat-tab label="Payments & Earnings">
+          <div class="container-fluid" style="width:600px;" *ngIf="selectedPEReport == false">
+
+            <div class="rep-part">
+              <p> Select Filters..</p>
+              <br>
+              <div class="row container-fluid pt-3">
+                <div class="col-md-6 text-center">
+                  <mat-form-field class="mfield">
+                    <mat-label> Report From Date : </mat-label>
+                    <input matInput [matDatepicker]="picker5" required
+                    name="from_date_3" [(ngModel)]="paymentEarning.from_date" #fDate3="ngModel"
+                    (dateChange) = "paymentEarning.to_date = paymentEarning.from_date"  />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="picker5"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker5 [startAt]="paymentEarning.from_date"></mat-datepicker>
+                    <mat-error *ngIf="fDate3.invalid">Please select a date</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="mfield">
+                    <mat-label> Report To Date : </mat-label>
+                    <input matInput [matDatepicker]="picker6" required
+                    name="to_date3" [(ngModel)]="paymentEarning.to_date" #tDate3="ngModel"
+                   />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="picker6"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker6 [startAt]="paymentEarning.to_date"></mat-datepicker>
+                    <mat-error *ngIf="tDate3.invalid">Please select a date</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+               <hr>
+              <span style="color:darkmagenta;"> By Service</span><br>
+              <mat-form-field class="mfield">
+                <mat-label>Select a Service</mat-label>
+                <mat-select
+                required
+                name="service3"
+                #merchantSelect3="ngModel"
+                [(ngModel)] = paymentEarning.service_id>
+                <mat-option value="all">
+                  All </mat-option>
+                  <mat-option [value]="s.service_id" *ngFor="let s of spnames">
+                    {{s.service_name}}</mat-option>
+
+                </mat-select>
+                <mat-error *ngIf="merchantSelect3.invalid">Please select a Service or All </mat-error>
+              </mat-form-field>
+              <br>
+              <span style="color:darkmagenta;"> Earning Greater than > </span><br>
+              <mat-form-field class="mfield">
+                <mat-label>Enter an amount</mat-label>
+                  <input matInput type="number" required [(ngModel)] = "paymentEarning.earning" #earnings="ngModel" name="earnings">
+                <mat-error *ngIf="earnings.invalid">Please enter valid amount </mat-error>
+              </mat-form-field>
+              <br>
+              <span style="color:darkmagenta;"> Payments Greater than ></span><br>
+              <mat-form-field class="mfield">
+                <mat-label>Enter an amount</mat-label>
+                  <input matInput type="number" required [(ngModel)] = "paymentEarning.payment" #payments="ngModel" name="payments">
+                <mat-error *ngIf="payments.invalid">Please enter valid amount </mat-error>
+              </mat-form-field>
+              <br>
+
+            </div>
+            <div class ="text-center pt-2">
+              <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
+              (click) ="selectedPEReport = true" > Generate Payment & Earning report</button>
+              </div>
+          </div>
+
+          <!-- generatedd report-->
+          <div class="report-sorder" *ngIf="selectedPEReport == true">
+              <app-sp-payments-report [paymentEarning] = "paymentEarning" [spId] = "spId"></app-sp-payments-report>
+            <div class ="text-center pt-2">
+              <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
+              (click) ="selectedPEReport = false" > Go Back</button>
+
+              </div>
+          </div>
+        </mat-tab>
+
+         <!--business forecasting-->
+         <mat-tab label="Service details">
+          <div class="container-fluid" style="width:600px;" *ngIf="selectedSDReport == false">
+
+            <div class="rep-part">
+              <p> Select Filters..</p>
+              <br>
+
+              <span style="color:darkmagenta;"> By Service</span><br>
+              <mat-form-field class="mfield">
+                <mat-label>Select a Service</mat-label>
+                <mat-select
+                required
+                name="service4"
+                #merchantSelect4="ngModel"
+                [(ngModel)] = serviceDetails.service_id>
+                <mat-option value="all">
+                  All </mat-option>
+                  <mat-option [value]="s.service_id" *ngFor="let s of spnames">
+                    {{s.service_name}}</mat-option>
+
+                </mat-select>
+                <mat-error *ngIf="merchantSelect4.invalid">Please select a Service or All </mat-error>
+              </mat-form-field>
+              <br>
+              <span style="color:darkmagenta;"> Earning Greater than > </span><br>
+              <mat-form-field class="mfield">
+                <mat-label>Enter an amount</mat-label>
+                  <input matInput type="number" required [(ngModel)] = "serviceDetails.earning" #earnings2="ngModel" name="earnings2">
+                <mat-error *ngIf="earnings2.invalid">Please enter valid amount </mat-error>
+              </mat-form-field>
+              <br>
+
+            </div>
+            <div class ="text-center pt-2">
+              <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
+              (click) ="selectedSDReport = true" > Generate Service Details report</button>
+              </div>
+          </div>
+
+          <!-- generatedd report-->
+          <div class="report-sorder" *ngIf="selectedSDReport == true">
+              <app-sp-servie-details-report [serviceDetails]="serviceDetails" [spId] = "spId"></app-sp-servie-details-report>
+            <div class ="text-center pt-2">
+              <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
+              (click) ="selectedSDReport = false" > Go Back</button>
+
+              </div>
+          </div>
+        </mat-tab>
+
+        <!--business forevcasting report-->
+        <mat-tab label="Business Forecasting">
+
+
+        </mat-tab>
+      </mat-tab-group>
+
+  </div>
+</div>

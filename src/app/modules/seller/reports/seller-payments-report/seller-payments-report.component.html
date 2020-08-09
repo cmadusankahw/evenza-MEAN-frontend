@@ -1,0 +1,166 @@
+<div class="report pt-1 container">
+  <div id="content" class="shadow" style="padding-left:10px; padding-right:10px;">
+  <div  class="pt-5 pb-3" *ngIf="paymentEarning" >
+    <div class="title text-center">
+      <h2 style="font-weight:bold; color: darkmagenta;" class="strong"> Evenza - Smart event Management & Resourcing Platform</h2>
+      <br>
+      <h3><b> <mdb-icon fas icon="calendar-check"> </mdb-icon> Payments & Earnings Analysis Report </b></h3>
+    </div>
+    <hr>
+    <h5><b> From : {{paymentEarning.from_date.toISOString().slice(0,10) }}  To : {{paymentEarning.to_date.toISOString().slice(0,10)}}</b></h5>
+    <br>
+       <hr>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <iframe style="background: #FFFFFF;border: none;border-radius: 2px;box-shadow: 0 2px 10px 0 rgba(70, 76, 79, .2);"
+      width="100%" height="400" [src]='sellerFilter(url1)'></iframe>
+    </div>
+    <div class="col-md-4">
+      <iframe style="background: #FFFFFF;border: none;border-radius: 2px;box-shadow: 0 2px 10px 0 rgba(70, 76, 79, .2);"
+      width="100%" height="400" [src]='sellerPaymentFilter(url2)'></iframe>
+    </div>
+    <div class="col-md-4">
+      <iframe style="background: #FFFFFF;border: none;border-radius: 2px;box-shadow: 0 2px 10px 0 rgba(70, 76, 79, .2);"
+      width="100%" height="400" [src]='sellerFilter(url3)'></iframe>
+    </div>
+  </div>
+  <br><br>
+  <div class="text-center">
+    <h3> <strong> Payment & Earning Details</strong></h3>
+    <h5>Your Monthly Subscription : <b> Rs. 299</b></h5>
+    <hr>
+    <h5> Payment History : </h5>
+  <table class="table-striped pt-1"  style="width:100%" *ngIf="pays.length">
+    <thead>
+      <tr>
+        <th> <b>
+          Year & Month
+        </b>
+        </th>
+        <th >
+          Paid Date
+        </th>
+        <th style="color:darkgreen;">
+          Paid Amount
+        </th>
+        <th style="color:darkred;">
+          Due Amount
+        </th>
+      </tr>
+    </thead>
+      <tbody>
+        <tr style="padding-bottom:10px;" *ngFor="let s of pays">
+          <td>
+            {{s.timestamp.year + ' - ' + s.monthString}}
+          </td>
+          <td>
+            {{ s.paid_date ?s.paid_date.slice(0,10) : 'Not Paid yet'}}
+          </td>
+          <td style="text-align:right;">
+            {{ s.paid_amount}}
+          </td>
+          <td style="text-align:right; color:darkred;">
+            {{s.due_amount}}
+          </td>
+        </tr>
+
+      </tbody>
+  </table>
+  <div class="pt-4" *ngIf="!pays.length"> No Payments Made Yet </div>
+  <hr>
+  <h5> Earnings by Service Orders : </h5>
+  <table class="table-striped pt-1"  style="width:100%" *ngIf="earnings.length">
+    <thead>
+      <tr>
+        <th> <b>
+          Earned Date
+        </b>
+        </th>
+        <th >
+          Order ID
+        </th>
+        <th >
+          Product
+        </th>
+        <th >
+          Quantity
+        </th>
+        <th>
+          Customer
+        </th>
+        <th style="color:darkgreen;">
+          Amount Paid
+        </th>
+        <th style="color:darkmagenta;">
+          Total Amount
+        </th>
+      </tr>
+    </thead>
+      <tbody>
+        <tr style="padding-bottom:10px;" *ngFor="let p of earnings">
+          <td>
+            {{ p.created_date.slice(0,10)}
+          </td>
+          <td>
+            {{ p.order_id}}
+          </td>
+          <td>
+              {{ p.product}}
+          </td>
+          <td>
+            {{ p.quantity}}
+        </td>
+          <td>
+            {{ p.user.name}}
+          </td>
+
+          <td style="text-align:right;">
+            {{ p.amount_paid}}
+          </td>
+          <td style="text-align:right; color:darkmagenta;">
+            {{ p.amount}}
+          </td>
+        </tr>
+
+      </tbody>
+  </table>
+  <div class="pt-4" *ngIf="!earnings.length"> No Earnings made yet </div>
+   <hr>
+</div>
+<div class="row pt-1">
+  <div class="col-md-9" style="text-align:right;">
+    <h5 style="color:darkred;"><b> Due Amount(Subscription): </b></h5>
+    <h5 style="color:darkgreen;"><b> Total Paid( Subscription): </b></h5>
+    <h4><b> Total Earnings: </b></h4>
+  </div>
+  <div class="col-md-3" style="text-align:right;">
+    <h5><b> Rs. {{ total_due}}</b></h5>
+    <h5><b> Rs. {{ total_amount_paid}}</b></h5>
+    <h5 style="color: darkgreen;"><b> Rs. {{ total_amount}}</b></h5>
+  </div>
+</div>
+<hr>
+<div class="text-center">
+  Report is generated and approved by Evenza Systems. No Signature required.
+  <br>
+  <b> Evenza 2020</b>
+  <br>
+  <br>
+</div>
+</div>
+<!-- end of report-->
+<hr>
+
+  <div class="btns text-center">
+    <button mdbBtn color="primary" class="btn btn-md edtbt" mdbWavesEffect
+    (click) ="printReport('content', 'Service_Order_Report')" > Print Report </button>
+    <button mdbBtn color="primary" class="btn btn-md edtbt" mdbWavesEffect
+    (click) ="emailReport('content')" > Request by Email </button>
+  </div>
+
+
+</div>
+
+
+

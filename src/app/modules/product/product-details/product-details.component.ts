@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, AfterViewChecked } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NgForm } from '@angular/forms';
@@ -8,6 +8,7 @@ import { Product, ProductCategories, QuantityTypes, Order, DeliveryService, Prom
 import { ProductService } from '../product.service';
 import { MatDialog } from '@angular/material';
 
+declare let paypal: any;
 
 @Component({
   selector: 'app-product-details',
@@ -66,9 +67,38 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   totalAmount = 0.0;
   totalPromotion = 0;
   payAmount = 0.0;
+  // paypal checkout
+  payPalAmount = 0;
   qty = 1;
   start = new Date();
   end = new Date();
+
+  // paypal integration
+  paypalConfig = {
+    env: 'sandbox',
+    client: {
+      sandbox: 'ASFjH19PwcA-QJn05nR3Lh2g_T3LJtEfX8NnXXTCNvlNgA5zri1wOOUoDzCdFNPYOC3SM2YfKNR8HvAg',
+      production: ''
+    },
+    commit: true,
+    payment: (data, actions) => {
+      return actions.payment.create ( {
+        payment: {
+          transactions: [
+            {amount: { total: this.payPalAmount , currency: 'USD'}}
+          ]
+        }
+      });
+    },
+    onAuthorize : (data, actions) => {
+      return actions.payment.execute().then ( payment => {
+        // make order if the payment is successed
+        document.getElementById('placeOrder').click();
+      });
+    }
+  };
+
+  addScript = false;
 
   constructor(private router: Router,
               public productService: ProductService,
@@ -116,6 +146,24 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
           }
     });
 
+  }
+
+  addPaypal() {
+    if(!this.addScript) {
+      this.addPaypalScript().then( () =>{
+        paypal.Button.render( this.paypalConfig, '#paybtn');
+      });
+    }
+  }
+
+  addPaypalScript() {
+    this.addScript = true;
+    return new Promise( ( resolve, reject) => {
+      let scriptTagelement = document.createElement('script');
+      scriptTagelement.src = 'https://www.paypalobjects.com/api/checkout.js';
+      scriptTagelement.onload = resolve;
+      document.body.appendChild(scriptTagelement);
+    })
   }
 
   ngOnDestroy() {

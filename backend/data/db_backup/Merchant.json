@@ -1,0 +1,202 @@
+[
+    {
+        "_id": "5edcbdfc7707ed0ea79ddd5d",
+        "gender": "male",
+        "user_id": "U49",
+        "user_type": "serviceProvider",
+        "first_name": "Chiran",
+        "last_name": "Hewawitharana",
+        "nic": "965767899V",
+        "profile_pic": "http://localhost:3000/images/merchant/logo.jpg-1596837536466.jpg",
+        "email": "sp@evenza.com",
+        "contact_no": "0719725562",
+        "address_line1": "Sriplai",
+        "address_line2": "Sooriyawatta",
+        "postal_code": "82000",
+        "date_of_birth": "1995-07-16T18:30:00.000Z",
+        "id_verification": {
+            "isverified": true,
+            "id_sideA": null,
+            "id_sideB": null,
+            "issuer": null
+        },
+        "reg_date": "2020-06-07T10:14:06.196Z",
+        "business": {
+            "title": "Capture it Multimedia",
+            "description": "Best Photography, Videography services islandwide!!!",
+            "email": "cmadusankahw@gmail.com",
+            "contact_no": "0719725562",
+            "address_line1": "Sriplai",
+            "address_line2": "Sooriyawatta",
+            "postal_code": "81000",
+            "created_date": "2020-08-02T09:21:39.313Z",
+            "location": {
+                "lang": 80.0087746,
+                "lat": 6.901608599999999,
+                "homeTown": " Sri Lanka"
+            },
+            "business_verification": {
+                "business_isverified": true,
+                "br_side_a": "http://localhost:3000/images/merchant/download.png-1591608545230.png",
+                "br_side_b": "./assets/images/merchant/nopic.png"
+            },
+            "open_days": [
+                {
+                    "day": 0,
+                    "isopened": false,
+                    "from_time": 8,
+                    "to_time": 18
+                },
+                {
+                    "day": 1,
+                    "isopened": true,
+                    "from_time": 8,
+                    "to_time": 16
+                },
+                {
+                    "day": 2,
+                    "isopened": true,
+                    "from_time": 8,
+                    "to_time": 16
+                },
+                {
+                    "day": 3,
+                    "isopened": true,
+                    "from_time": 8,
+                    "to_time": 16
+                },
+                {
+                    "day": 4,
+                    "isopened": true,
+                    "from_time": 8,
+                    "to_time": 16
+                },
+                {
+                    "day": 5,
+                    "isopened": true,
+                    "from_time": 8,
+                    "to_time": 14
+                },
+                {
+                    "day": 6,
+                    "isopened": false,
+                    "from_time": 0,
+                    "to_time": 0
+                }
+            ],
+            "payment_verified": true,
+            "card_details": {
+                "name_on_card": "",
+                "card_no": "",
+                "cvc_no": "",
+                "bank": "",
+                "branch": "",
+                "exp_month": "1",
+                "exp_year": "2020"
+            },
+            "feature_img": "./assets/images/back/bprofile.jpg",
+            "logo": "http://localhost:3000/images/merchant/logo.jpg-1596360167821.jpg"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "5f0024b074ecb04e19963d68",
+        "gender": "male",
+        "user_id": "U50",
+        "user_type": "seller",
+        "first_name": "Chiran",
+        "last_name": "Hewawitharana",
+        "nic": "965767899V",
+        "profile_pic": "http://localhost:3000/images/merchant/44913467.jpg-1593845326592.jpg",
+        "email": "seller@evenza.com",
+        "contact_no": "0719725562",
+        "address_line1": "Sriplai",
+        "address_line2": "Sooriyawatta",
+        "postal_code": "81000",
+        "date_of_birth": "1995-07-16T18:30:00.000Z",
+        "id_verification": {
+            "isverified": true,
+            "id_sideA": null,
+            "id_sideB": null,
+            "issuer": null
+        },
+        "reg_date": "2020-07-04T06:41:39.581Z",
+        "business": {
+            "title": "THE SCENES",
+            "description": "Scenes is a potgraphy, Videography business ",
+            "email": "cmadusankahw@gmail.com",
+            "contact_no": "0719725562",
+            "address_line1": "Sriplai",
+            "address_line2": "Sooriyawatta",
+            "postal_code": "81000",
+            "created_date": "2020-07-04T07:32:04.819Z",
+            "location": {
+                "lang": 80.5190788722168,
+                "lat": 5.974212722934009,
+                "homeTown": " Godagama"
+            },
+            "business_verification": {
+                "business_isverified": false,
+                "br_side_a": "./assets/images/merchant/nopic.png",
+                "br_side_b": "./assets/images/merchant/nopic.png"
+            },
+            "open_days": [
+                {
+                    "day": 0,
+                    "isopened": true,
+                    "from_time": 8,
+                    "to_time": 18
+                },
+                {
+                    "day": 1,
+                    "isopened": true,
+                    "from_time": 8,
+                    "to_time": 18
+                },
+                {
+                    "day": 2,
+                    "isopened": true,
+                    "from_time": 8,
+                    "to_time": 18
+                },
+                {
+                    "day": 3,
+                    "isopened": true,
+                    "from_time": 8,
+                    "to_time": 18
+                },
+                {
+                    "day": 4,
+                    "isopened": true,
+                    "from_time": 8,
+                    "to_time": 18
+                },
+                {
+                    "day": 5,
+                    "isopened": false,
+                    "from_time": 8,
+                    "to_time": 18
+                },
+                {
+                    "day": 6,
+                    "isopened": false,
+                    "from_time": 0,
+                    "to_time": 0
+                }
+            ],
+            "payment_verified": true,
+            "card_details": {
+                "name_on_card": "Madushanka H.W.C",
+                "card_no": "1995-8989-7656-7890-3456",
+                "cvc_no": "211",
+                "bank": "Sampath",
+                "branch": "Matara",
+                "exp_month": "1",
+                "exp_year": "2021"
+            },
+            "feature_img": "./assets/images/back/bprofile.jpg",
+            "logo": "http://localhost:3000/images/merchant/hotel-logo.jpg-1593848067013.jpg"
+        },
+        "__v": 0
+    }
+]

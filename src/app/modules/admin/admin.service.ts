@@ -18,6 +18,9 @@ export class AdminService {
   private adminPaymentsUpdated = new Subject<MerchantPayments[]>();
   private merchantPaymentUpdated = new Subject<MerchantPayments>();
 
+  private merchantLocationUpdated = new Subject<any[]>();
+  private eventLocationUpdated = new Subject<any[]>();
+
   // to get merchant/event planner once logged in
   private admin: Admin;
 
@@ -90,6 +93,25 @@ export class AdminService {
     });
   }
 
+  // get location data
+  getMerchantLocation() {
+    this.http.get<{ locations: any[]}>(this.url + 'admin/get/location/m')
+    .subscribe((res) => {
+      console.log(res);
+      this.merchantLocationUpdated.next(res.locations);
+    });
+  }
+
+
+ // get location data
+  getEventLocation() {
+    this.http.get<{ locations: any[]}>(this.url + 'admin/get/location/e')
+    .subscribe((res) => {
+      console.log(res);
+      this.eventLocationUpdated.next(res.locations);
+    });
+  }
+
 
 
   // listners for subjects
@@ -116,6 +138,15 @@ export class AdminService {
   getMerchantPaymentUpdateListener() {
     return this.merchantPaymentUpdated.asObservable();
   }
+
+  getMerchantLocationUpdateListener() {
+    return this.merchantLocationUpdated.asObservable();
+  }
+
+  getEventLocationUpdateListener() {
+    return this.eventLocationUpdated.asObservable();
+  }
+
 
 
   // backups

@@ -1,4 +1,5 @@
 import { CardDetails } from '../auth/auth.model';
+import html2canvas from 'html2canvas';
 
 export interface Admin {
   user_id: string;
@@ -150,4 +151,19 @@ export function updateCount(date: string, appMonths: MonthHolder) {
     this.appMonths.dec++;
   }
   return appMonths;
+}
+
+// exporting the report canvas
+export function printCanvas(content: string, title: string) {
+  const element = document.getElementById('content');
+  html2canvas(element).then((canvas) => {
+      // Convert the canvas to blob
+      canvas.toBlob((blob) => {
+          // To download directly on browser default 'downloads' location
+          const link = document.createElement('a');
+          link.download = title + '.png';
+          link.href = URL.createObjectURL(blob);
+          link.click();
+      }, 'image/png');
+  });
 }

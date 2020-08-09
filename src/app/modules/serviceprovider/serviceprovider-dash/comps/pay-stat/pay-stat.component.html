@@ -24,7 +24,7 @@
   <span class="pay-date"> {{due_date}}</span>
   </div>
   <div class="pay-btn">
-    <button mdbBtn color="secondary" mdbWavesEffect class="btn btn-md" class="button" (click) = "makePaymentModal.show()">
+    <button mdbBtn color="secondary" mdbWavesEffect class="btn btn-md" class="button" (click) ="addPaypal()" (click) = "makePaymentModal.show()">
       Make Payment
     </button>
     <button mdbBtn color="primary" outline="yes" mdbWavesEffect class="btn btn-md" class="button" (click) = "payHistory.show()">
@@ -162,14 +162,16 @@
                 <mat-label>
                   <mat-icon>money</mat-icon>
                   Pay Amount</mat-label>
-                <input matInput type="number" [(ngModel)]="pay_amount" name="pay_amt" required>
+                <input matInput type="number" [(ngModel)]="pay_amount" name="pay_amt" required (change) ="payPalAmount = (pay_amount/190).toFixed(2)">
               </mat-form-field>
               </div>
             </div>
             <div class="col text-center">
-              <button class="btn-md" mdbBtn mdbWavesEffect color="primary" (click) ="makePayment(pay_amount)">
+              <button class="btn-md" mdbBtn mdbWavesEffect color="primary" (click) ="makePayment(pay_amount)" id="placeOrder">
                 Make Payment
               </button>
+              <div style="margin-left:15px; margin-right:15px;" id="paybtn"
+              > Paypal Checkout</div>
             </div>
 
         </div>
@@ -252,12 +254,6 @@
       <td></td>
     </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="paidDate">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Paid Date </th>
-      <td mat-cell *matCellDef="let row"> {{row.paid_date.slice(0,10) }} {{ row.paid_date.slice(11,16)}} </td>
-      <td class="t-txt" > Total :</td>
-    </ng-container>
 
     <!-- Color Column -->
     <ng-container matColumnDef="due">

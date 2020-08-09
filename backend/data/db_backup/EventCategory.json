@@ -1,0 +1,150 @@
+[
+    {
+        "_id": "5f255766760b476c6fb8c673",
+        "id": "CorporateGathering35.983864055561135",
+        "category": "Corporate Gathering",
+        "img": "http://localhost:3000/images/events/wallart3.jpg-1596282726229.jpg",
+        "services": [
+            {
+                "_id": "5f255766760b476c6fb8c674",
+                "id": "2020-08-01T11:47:26.827Z",
+                "category": "Photography",
+                "precentage": 15
+            },
+            {
+                "_id": "5f255766760b476c6fb8c675",
+                "id": "2020-08-01T11:47:30.285Z",
+                "category": "Event Coordination",
+                "precentage": 10
+            },
+            {
+                "_id": "5f255766760b476c6fb8c676",
+                "id": "2020-08-01T11:47:34.176Z",
+                "category": "Decorators",
+                "precentage": 12
+            },
+            {
+                "_id": "5f255766760b476c6fb8c677",
+                "id": "2020-08-01T11:47:37.121Z",
+                "category": "DJ & Sounds",
+                "precentage": 8
+            },
+            {
+                "_id": "5f255766760b476c6fb8c678",
+                "id": "2020-08-01T11:47:40.505Z",
+                "category": "Graphic Designing",
+                "precentage": 6
+            },
+            {
+                "_id": "5f255766760b476c6fb8c679",
+                "id": "2020-08-01T11:47:43.459Z",
+                "category": "Videography",
+                "precentage": 6
+            },
+            {
+                "_id": "5f255766760b476c6fb8c67a",
+                "id": "2020-08-01T11:47:46.480Z",
+                "category": "Annoucers & Moderators",
+                "precentage": 5
+            },
+            {
+                "_id": "5f255766760b476c6fb8c67b",
+                "id": "2020-08-01T11:47:48.888Z",
+                "category": "Cleaning Service",
+                "precentage": 4
+            },
+            {
+                "_id": "5f255766760b476c6fb8c67c",
+                "id": "2020-08-01T11:47:57.394Z",
+                "category": "Auditoriums",
+                "precentage": 25
+            }
+        ],
+        "products": [
+            {
+                "_id": "5f255766760b476c6fb8c67d",
+                "id": "2020-08-01T11:48:05.593Z",
+                "category": "Decorations",
+                "precentage": 15
+            },
+            {
+                "_id": "5f255766760b476c6fb8c67e",
+                "id": "2020-08-01T11:48:14.700Z",
+                "category": "Food Items",
+                "precentage": 25
+            }
+        ],
+        "__v": 0
+    },
+    {
+        "_id": "5f255884760b476c6fb8c67f",
+        "id": "Wedding63.2653413572599",
+        "category": "Wedding",
+        "img": "http://localhost:3000/images/events/67466342_2953216598084014_3973907147615371264_o.jpg-1596283012953.jpg",
+        "services": [
+            {
+                "_id": "5f255884760b476c6fb8c680",
+                "id": "2020-08-01T11:55:54.855Z",
+                "category": "Photography",
+                "precentage": 15
+            },
+            {
+                "_id": "5f255884760b476c6fb8c681",
+                "id": "2020-08-01T11:56:07.569Z",
+                "category": "Saloon & Dressing",
+                "precentage": 7
+            },
+            {
+                "_id": "5f255884760b476c6fb8c682",
+                "id": "2020-08-01T11:56:10.807Z",
+                "category": "Matchmaking",
+                "precentage": 6
+            },
+            {
+                "_id": "5f255884760b476c6fb8c683",
+                "id": "2020-08-01T11:56:19.207Z",
+                "category": "Event Coordination",
+                "precentage": 12
+            },
+            {
+                "_id": "5f255884760b476c6fb8c684",
+                "id": "2020-08-01T11:56:23.758Z",
+                "category": "DJ & Sounds",
+                "precentage": 8
+            },
+            {
+                "_id": "5f255884760b476c6fb8c685",
+                "id": "2020-08-01T11:56:26.757Z",
+                "category": "handycrafts",
+                "precentage": 4
+            },
+            {
+                "_id": "5f255884760b476c6fb8c686",
+                "id": "2020-08-01T11:56:29.894Z",
+                "category": "Videography",
+                "precentage": 6
+            },
+            {
+                "_id": "5f255884760b476c6fb8c687",
+                "id": "2020-08-01T11:56:35.294Z",
+                "category": "Hotel Service",
+                "precentage": 25
+            }
+        ],
+        "products": [
+            {
+                "_id": "5f255884760b476c6fb8c688",
+                "id": "2020-08-01T11:56:43.572Z",
+                "category": "Audio & Sount Systems",
+                "precentage": 5
+            },
+            {
+                "_id": "5f255884760b476c6fb8c689",
+                "id": "2020-08-01T11:56:50.103Z",
+                "category": "Food Items",
+                "precentage": 25
+            }
+        ],
+        "__v": 0
+    }
+]

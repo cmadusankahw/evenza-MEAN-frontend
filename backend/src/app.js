@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require ("path");
+require('dotenv').config();
 
 const app = express();
 
@@ -15,7 +16,7 @@ const seller = require ('./controller/seller/seller');
 const event = require ('./controller/event/event');
 const admin = require ('./controller/admin/admin');
 
-mongoose.connect('mongodb://localhost:27017/evenza',
+mongoose.connect('mongodb+srv://admin:abcd1234@cluster0.xnfvc.gcp.mongodb.net/evenza?retryWrites=true&w=majority', // mongodb+srv://:${process.env.DB_PASS}@cluster0.xnfvc.gcp.mongodb.net/evenza?retryWrites=true&w=majority    mongodb://localhost:27017/evenza
   { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('Connected to monogodb database..');

@@ -7,13 +7,12 @@ const Order = require ("../../model/product/order.model");
 const DeliveryService = require("../../model/product/deliveryService.model");
 const Event = require("../../model/event/event.model");
 const checkAuth = require("../../middleware/auth-check");
-const Login = require("../../../data/user/emailAuthentication.json");
+const email = require("../common/mail");
 
 //dependency imports
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require ("multer");
-const nodemailer = require ("nodemailer");
 
 //express app declaration
 const product = express();
@@ -261,7 +260,7 @@ product.post('/order/add',checkAuth, (req, res, next) => {
           const newOrder = new Order(reqOrder);
           console.log(' final order ', newOrder);
           newOrder.save().then(result => {
-              sendMail(mail, () => {});
+              email.sendMail(mail, () => {});
               res.status(200).json({
                 message: 'Order created successfully!',
                 orderId: result.order_id // booking id as result
@@ -512,34 +511,6 @@ product.get('/last', (req, res, next) => {
   });
 });
 
-
-
-// nodemailer send email function
-async function sendMail(mail, callback) {
-
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: Login.user,
-      pass: Login.pass
-    }
-  });
-
-  let mailOptions = {
-    from: '"Evenza HelpDesk "<support@evenza.biz>', // sender address
-    to: mail.email, // list of receivers
-    subject: mail.subject, // Subject line
-    html: mail.html
-  };
-
-  // send mail with defined transport object
-  let info = await transporter.sendMail(mailOptions);
-
-  callback(info);
-}
 
 // create custom HTML
 function createHTML(content) {

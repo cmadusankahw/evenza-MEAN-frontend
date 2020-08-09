@@ -7,13 +7,12 @@ const EventPlanner = require ("../../model/auth/eventPlanner.model");
 const Merchant = require("../../model/auth/merchant.model");
 const Event = require("../../model/event/event.model");
 const checkAuth = require("../../middleware/auth-check");
-const Login = require("../../../data/user/emailAuthentication.json");
+const email = require("../common/mail");
 
 //dependency imports
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require ("multer");
-const nodemailer = require("nodemailer");
 const { update } = require("../../model/event/event.model");
 
 //express app declaration
@@ -197,8 +196,7 @@ service.post('/search', (req, res, next) => {
   Service.aggregate([
                 // step 1 : matching filters from service model
                 {$match: {"service_category": req.body.category,
-                "rate": {$lte: req.body.maxPrice},
-                "rate": {$gte: req.body.minPrice},
+                "rate": {$lte: req.body.maxPrice, $gte: req.body.minPrice },
                 "pay_on_meet":req.body.payOnMeet,
                 "rating": {$gte: req.body.userRating},
                 "available_booking": true}},
@@ -253,20 +251,36 @@ service.post('/event/search', (req, res, next) => {
 // check booking availability  // need to modify
 service.post('/booking/check', (req, res, next) => {
   console.log(req.body);
-  reqFromDate = new Date(req.body.fromDate).getTime();
-  reqToDate = new Date(req.body.toDate).getTime();
+  reqFromDate = new Date(req.body.fromDate);
+  reqToDate = new Date(req.body.toDate);
+  console.log('converted dates: ', reqFromDate, reqToDate);
   // count to check with capacity
   var count = 0;
   // returning availability state
   let availability = false;
 
-  Booking.countDocuments({ service_id: req.serviceId,
-                 from_date: { $gte :req.body.fromDate.slice(0,10) },
-                 to_date: { $lte :req.body.toDate.slice(0,10)}})
-                      .then( result => {
-                        console.log('found bookings :' , result);
-                        Service.countDocuments({service_id: req.body.serviceId, capacity: {$gte: result+1}})
-  .then(result2 => {
+  Booking.aggregate([
+    {
+      '$match': {
+        'from_date': {
+          '$gte': new Date(reqFromDate)
+        },
+        'to_date': {
+          '$lte': new Date(reqToDate)
+        }
+      }
+    }, {
+      '$count': 'booking_id'
+    }
+  ]).then( result => {
+      console.log('found bookings :' , result);
+        if (result[0]) {
+          count= result[0].booking_id + 1;
+        }
+        console.log(count);
+   Service.countDocuments({service_id: req.body.serviceId, capacity: {$gte: count}})
+    .then(result2 => {
+      console.log('after checking capacity: ',result2);
       if (result2>0){
         availability = true;
       };
@@ -336,7 +350,7 @@ service.post('/booking/add',checkAuth, (req, res, next) => {
           console.log(' final booking ', newBooking);
           // save booking
           newBooking.save().then(result => {
-            sendMail(mail, () => {});
+            email.sendMail(mail, () => {});
             res.status(200).json({
                 message: 'Booking created successfully!',
                 bookingId: result.booking_id // booking id as result
@@ -528,7 +542,7 @@ service.post('/appoint/add',checkAuth, (req, res, next) => {
 
           // saving final appointment
           newAppoint.save().then(result => {
-            sendMail(mail, () => {});
+            email.sendMail(mail, () => {});
             res.status(200).json({
                 message: 'Appointment created successfully!',
                 appointId: result.appoint_id // booking id as result
@@ -766,32 +780,6 @@ service.get('/cat', (req, res, next) => {
 });
 
 
-// nodemailer send email function
-async function sendMail(mail, callback) {
-
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: Login.user,
-      pass: Login.pass
-    }
-  });
-
-  let mailOptions = {
-    from: '"Evenza HelpDesk "<support@evenza.biz>', // sender address
-    to: mail.email, // list of receivers
-    subject: mail.subject, // Subject line
-    html: mail.html
-  };
-
-  // send mail with defined transport object
-  let info = await transporter.sendMail(mailOptions);
-
-  callback(info);
-}
 
 // create custom HTML
 function createHTML(mailType,content) {

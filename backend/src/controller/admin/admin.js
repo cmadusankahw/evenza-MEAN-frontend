@@ -4,6 +4,7 @@ const Booking = require("../../model/service/booking.model");
 const Order = require("../../model/product/order.model");
 const Merchant = require("../../model/auth/merchant.model");
 const EventPlanner = require("../../model/auth/eventPlanner.model");
+const Event = require("../../model/event/event.model");
 const checkAuth = require("../../middleware/auth-check");
 const email = require("../common/mail");
 const Areport = require ("./admin-report");
@@ -370,6 +371,44 @@ admin.post('/make/payment',checkAuth, (req, res, next) => {
     console.log(err);
     res.status(500).json({
       message: 'Payment Details update unsuccessfull! Please Try Again!'
+    });
+  });
+});
+
+// get service locations
+admin.get('/get/location/m',checkAuth, (req, res, next) => {
+
+  var Query = Merchant.find().select('business.location business.title');
+
+  Query.exec().then((result) => {
+    console.log(result);
+    res.status(200).json({
+      locations: result
+    });
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).json({
+      message: 'Location details unsuccessfull! Please Try Again!'
+    });
+  });
+});
+
+// get event locations
+admin.get('/get/location/e',checkAuth, (req, res, next) => {
+
+  var Query = Event.find().select('location event_title');
+
+  Query.exec().then((result) => {
+    console.log(result);
+    res.status(200).json({
+      locations: result
+    });
+  })
+  .catch(err=>{
+    console.log(err);
+    res.status(500).json({
+      message: 'Location details unsuccessfull! Please Try Again!'
     });
   });
 });

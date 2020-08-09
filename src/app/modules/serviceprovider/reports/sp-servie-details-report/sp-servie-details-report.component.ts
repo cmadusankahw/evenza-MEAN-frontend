@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { printData } from 'src/app/modules/eventplanner/eventplanner.model';
 import { ServiceDetailsRequest } from '../../serviceprovider.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ServiceProviderService } from '../../serviceprovider.service';

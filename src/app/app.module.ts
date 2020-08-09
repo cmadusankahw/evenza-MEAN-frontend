@@ -164,6 +164,11 @@ import { SpServiceAppointmentsReportComponent } from './modules/serviceprovider/
 import { SpPaymentsReportComponent } from './modules/serviceprovider/reports/sp-payments-report/sp-payments-report.component';
 import { SpBusinessForecastingReportComponent } from './modules/serviceprovider/reports/sp-business-forecasting-report/sp-business-forecasting-report.component';
 import { SpServieDetailsReportComponent } from './modules/serviceprovider/reports/sp-servie-details-report/sp-servie-details-report.component';
+import { SellerOrdersReportComponent } from './modules/seller/reports/seller-orders-report/seller-orders-report.component';
+import { SellerPaymentsReportComponent } from './modules/seller/reports/seller-payments-report/seller-payments-report.component';
+import { SellerProductDetailsReportComponent } from './modules/seller/reports/seller-product-details-report/seller-product-details-report.component';
+import { SellerBusinessForecastComponent } from './modules/seller/reports/seller-business-forecast/seller-business-forecast.component';
+import { PlannerEventDetailsReportComponent } from './modules/eventplanner/reports/planner-event-details-report/planner-event-details-report.component';
 
 // socket io ocnfiguration
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
@@ -285,6 +290,11 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     SpPaymentsReportComponent,
     SpBusinessForecastingReportComponent,
     SpServieDetailsReportComponent,
+    SellerOrdersReportComponent,
+    SellerPaymentsReportComponent,
+    SellerProductDetailsReportComponent,
+    SellerBusinessForecastComponent,
+    PlannerEventDetailsReportComponent,
 
 
 

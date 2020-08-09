@@ -167,8 +167,3 @@ export function printCanvas(content: string, title: string) {
       }, 'image/png');
   });
 }
-
-// mailing the report canvas to generated user
-export function emailCanvas() {
-
-}

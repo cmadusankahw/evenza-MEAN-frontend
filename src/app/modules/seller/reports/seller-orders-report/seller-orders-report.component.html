@@ -1,36 +1,37 @@
 <div class="report pt-1 container">
   <div id="content" class="shadow" style="padding-left:10px; padding-right:10px;">
-  <div  class="pt-5 pb-3" *ngIf="serviceOrder && bookingData.length" >
+  <div  class="pt-5 pb-3" *ngIf="productOrder && orderData.length" >
     <div class="title text-center">
       <h2 style="font-weight:bold; color: darkmagenta;" class="strong"> Evenza - Smart event Management & Resourcing Platform</h2>
       <br>
-      <h3><b> <mdb-icon fas icon="calendar-check"> </mdb-icon> Service Order Business report : </b></h3>
+      <h3><b> <mdb-icon fas icon="calendar-check"> </mdb-icon> Sales Summary report : </b></h3>
     </div>
     <hr>
-    <h5><b> From : {{serviceOrder.from_date.toISOString().slice(0,10) }}  To : {{serviceOrder.to_date.toISOString().slice(0,10)}}</b></h5>
+    <h5><b> From : {{productOrder.from_date.toISOString().slice(0,10) }}  To : {{productOrder.to_date.toISOString().slice(0,10)}}</b></h5>
     <br>
-    <h5><b> Service Provider : {{bookingData[0].serviceProvider.name + " | " + bookingData[0].serviceProvider.email }}</b></h5>
+    <h5><b> Service Provider : {{orderData[0].seller.name + " | " + orderData[0].seller.email }}</b></h5>
     <hr>
   </div>
   <div class="row">
     <div class="col-md-4">
       <iframe style="background: #FFFFFF;border: none;border-radius: 2px;box-shadow: 0 2px 10px 0 rgba(70, 76, 79, .2);"
-      width="100%" height="400" [src]='sproviderFilter(url1)'></iframe>
+      width="100%" height="400" [src]='sellerFilter(url1)'></iframe>
     </div>
     <div class="col-md-4">
       <iframe style="background: #FFFFFF;border: none;border-radius: 2px;box-shadow: 0 2px 10px 0 rgba(70, 76, 79, .2);"
-      width="100%" height="400" [src]="sproviderFilter(url2)"></iframe>
+      width="100%" height="400" [src]="sellerFilter(url2)"></iframe>
     </div>
     <div class="col-md-4">
       <iframe style="background: #FFFFFF;border: none;border-radius: 2px;box-shadow: 0 2px 10px 0 rgba(70, 76, 79, .2);"
-      width="100%" height="400" [src]="sproviderFilter(url3)"></iframe>
+      width="100%" height="400" [src]="sellerFilter(url3)"></iframe>
     </div>
   </div>
+
   <br><br>
   <div class="text-center">
-    <h3> <strong> Service Order History</strong></h3>
+    <h3> <strong> Sales History</strong></h3>
     <hr>
-    <h5> Pending Service Orders: </h5>
+    <h5> Pending Orders: </h5>
   <table class="table-striped pt-1"  style="width:100%" *ngIf="pending.length">
     <thead>
       <tr>
@@ -39,16 +40,16 @@
         </b>
         </th>
         <th >
-          Service Order ID
+           Order ID
         </th>
         <th >
-          Service Booked
+          Product
         </th>
         <th>
-          From Date
+          Delivery Address
         </th>
         <th >
-          To Date
+          Delivery Service
         </th>
         <th>
           Customer
@@ -71,16 +72,16 @@
             {{s.year + ' - ' + s.month}}
           </td>
           <td>
-            {{ s.booking_id}}
+            {{ s.order_id}}
           </td>
           <td>
-              {{ s.service_name}}
+              {{ s.product}}
           </td>
           <td>
-            {{s.from_date.slice(0,10)}}
+            {{s.delivery_address}}
           </td>
           <td>
-            {{s.to_date.slice(0,10)}}
+            {{s.delivery_service.title}}
           </td>
           <td>
             {{s.user.name}}
@@ -98,10 +99,10 @@
 
       </tbody>
   </table>
-  <div class="pt-4" *ngIf="!pending.length"> No Pending Service Orders </div>
+  <div class="pt-4" *ngIf="!pending.length"> No Pending Sales Orders </div>
   <hr>
-  <h5> Completed Service Orders: </h5>
-  <table class="table-striped pt-1"  style="width:100%" *ngIf="completed.length">
+  <h5> Delivered Orders: </h5>
+  <table class="table-striped pt-1"  style="width:100%" *ngIf="delivered.length">
     <thead>
       <tr>
         <th> <b>
@@ -109,16 +110,16 @@
         </b>
         </th>
         <th >
-          Service Order ID
+          Order ID
         </th>
         <th >
-          Service Booked
+          Product
         </th>
         <th>
-          From Date
+          Delivery Address
         </th>
         <th >
-          To Date
+          Delivery Service
         </th>
         <th>
           Customer
@@ -136,21 +137,21 @@
       </tr>
     </thead>
       <tbody>
-        <tr style="padding-bottom:10px;" *ngFor="let s of completed">
+        <tr style="padding-bottom:10px;" *ngFor="let s of delivered">
           <td>
             {{s.year + ' - ' + s.month}}
           </td>
           <td>
-            {{ s.booking_id}}
+            {{ s.order_id}}
           </td>
           <td>
-              {{ s.service_name}}
+              {{ s.product}}
           </td>
           <td>
-            {{s.from_date.slice(0,10)}}
+            {{s.delivery_address}}
           </td>
           <td>
-            {{s.to_date.slice(0,10)}}
+            {{s.delivery_service.title}}
           </td>
           <td>
             {{s.user.name}}
@@ -169,9 +170,9 @@
 
       </tbody>
   </table>
-  <div class="pt-4" *ngIf="!completed.length"> No Completed Service Orders </div>
+  <div class="pt-4" *ngIf="!delivered.length"> No Orders Delivered yet</div>
   <hr>
-  <h5> Cancelled Service Orders: </h5>
+  <h5> Cancelled Orders: </h5>
   <table class="table-striped pt-1"  style="width:100%" *ngIf="cancelled.length">
     <thead>
       <tr>
@@ -180,16 +181,16 @@
         </b>
         </th>
         <th >
-          Service Order ID
+         Order ID
         </th>
         <th >
-          Service Booked
+          Product
         </th>
         <th>
-          From Date
+          Delivery Address
         </th>
         <th >
-          To Date
+          Delivery Service
         </th>
         <th>
           Customer
@@ -206,16 +207,16 @@
             {{s.year + ' - ' + s.month}}
           </td>
           <td>
-            {{ s.booking_id}}
+            {{ s.order_id}}
           </td>
           <td>
-              {{ s.service_name}}
+              {{ s.product}}
           </td>
           <td>
-            {{s.from_date.slice(0,10)}}
+            {{s.delivery_address}}
           </td>
           <td>
-            {{s.to_date.slice(0,10)}}
+            {{s.delivery_service}}
           </td>
           <td>
             {{s.user.name}}
@@ -228,7 +229,7 @@
 
       </tbody>
   </table>
-  <div class="pt-4" *ngIf="!cancelled.length"> No Cancelled Service Orders </div>
+  <div class="pt-4" *ngIf="!cancelled.length"> No Cancelled Sales Orders </div>
   <hr>
 </div>
 <div class="row pt-1">
@@ -248,6 +249,8 @@
   Report is generated and approved by Evenza Systems. No Signature required.
   <br>
   <b> Evenza 2020</b>
+  <br>
+  <br>
 </div>
 </div>
 <!-- end of report-->

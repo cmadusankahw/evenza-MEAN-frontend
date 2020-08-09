@@ -32,9 +32,9 @@ export class SpServiceAppointmentsReportComponent implements OnInit, OnDestroy {
   @Input() public spId: string;
 
   // chat URLs
-  url1 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=9a37a9a2-a0b2-4d5b-b0c2-92a8d8b5835f&theme=light&showAttribution=false&autoRefresh=300";
-  url2 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=4c6f550d-dfdf-4161-a9a0-b31cbbe00d6f&theme=light&showAttribution=false&autoRefresh=300";
-  url3 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=b733dc7c-d6ee-4216-b955-9a1020ca5d52&theme=light&showAttribution=false&autoRefresh=300";
+  url1 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=9a37a9a2-a0b2-4d5b-b0c2-92a8d8b5835f&theme=light&showAttribution=false&autoRefresh=3000";
+  url2 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=4c6f550d-dfdf-4161-a9a0-b31cbbe00d6f&theme=light&showAttribution=false&autoRefresh=3000";
+  url3 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=b733dc7c-d6ee-4216-b955-9a1020ca5d52&theme=light&showAttribution=false&autoRefresh=3000";
 
   constructor(private serviceProviderService: ServiceProviderService,
               public sanitizer: DomSanitizer) { }

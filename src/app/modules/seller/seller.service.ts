@@ -9,6 +9,9 @@ import { Order, DashStat, OrderStat, Earnings } from './seller.model';
 import { Email } from '../eventplanner/eventplanner.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 import { Product } from '../product/product.model';
+import { IfStmt } from '@angular/compiler';
+import { OrderReport } from '../seller/seller.model';
+import { MerchantPayments } from '../admin/admin.model';
 
 @Injectable({providedIn: 'root'})
 export class SellerService {
@@ -21,6 +24,12 @@ export class SellerService {
   private dashStatUpdated = new Subject<DashStat>();
   private earningsUpdated = new Subject<Earnings[]>();
 
+  // report generation related subjects
+  private orderReportUpdated = new Subject<OrderReport[]>();
+  private paymentDetailsUpdated = new Subject<any>();
+  private selIdUpdated = new Subject<string>();
+  private selNamesUpdated = new  Subject<any>();
+
   // recieved orders
   private orders: Order[];
   // recieved single order
@@ -32,9 +41,11 @@ export class SellerService {
   // order stats
   private orderStat: OrderStat[] = [];
   // retrived dashboard stats
-  dashStat: DashStat;
+  private dashStat: DashStat;
+  // recieved seller ID
+  private selId: string;
 
-    // socket connection
+  // socket connection
   private socket = io('http://localhost:3000');
 
   url = 'http://localhost:3000/api/';
@@ -134,9 +145,15 @@ export class SellerService {
         }
         d++;
       }
+      if(this.orderStat[a].created_date) {
       dashStat.last_order_date =  this.orderStat[a].created_date.slice(0,10);
+      }
+      if(this.orderStat[c].created_date) {
       dashStat.last_cancelled_date =  this.orderStat[c].created_date.slice(0,10);
+      }
+      if(this.orderStat[b].created_date) {
       dashStat.last_delivery_date =  this.orderStat[b].created_date.slice(0,10);
+      }
     }
     setTimeout ( () => {
       this.dashStat = dashStat;
@@ -171,6 +188,42 @@ export class SellerService {
       }, 1000);
     }
 
+  // report generation related functions
+  getSellerNames() {
+    this.http.get<{ message: string, selnames: { product: string, product_id: string }[] }>(this.url + 'seller/get/selnames')
+      .subscribe((res) => {
+        this.selNamesUpdated.next(res.selnames);
+      });
+  }
+
+  // get seller ID for report generation
+  getSelId() {
+    this.http.get<{  id: string }>(this.url + 'seller/get/selid')
+      .subscribe((res) => {
+        this.selId = res.id;
+        this.selIdUpdated.next(res.id);
+      });
+  }
+
+
+  // get booking details for product order report
+  public getProductOrderReport(fromDate: string, toDate: string) {
+    this.http.post<{ message: string, orders: OrderReport[] }>(this.url + 'seller/reports/orders', { fromDate, toDate })
+      .subscribe((res) => {
+        console.log(res.message);
+        this.orderReportUpdated.next(res.orders);
+      });
+  }
+
+// get payments & earnings details for product order report
+public getPaymentEarningReport() {
+  this.http.get<{ message: string, payments: MerchantPayments, earnings: any[]}>(this.url + 'seller/reports/payment')
+    .subscribe((res) => {
+      console.log(res);
+      this.paymentDetailsUpdated.next(res);
+    });
+}
+
 
   // listeners for subjects
   getOrdersUpdateListener() {
@@ -196,6 +249,25 @@ export class SellerService {
   getEarningsUpdateListener() {
     return this.earningsUpdated.asObservable();
   }
+
+  // report genration related listeners
+
+  getSelNamesupdatedListener() {
+    return this.selNamesUpdated.asObservable();
+  }
+
+  getOrderreportUpdatedListener() {
+    return this.orderReportUpdated.asObservable();
+  }
+
+  getPaymentsDetailsUpdatedListener() {
+    return this.paymentDetailsUpdated.asObservable();
+  }
+
+  getSelIdUpdatedListener() {
+    return this.selIdUpdated.asObservable();
+  }
+
 
    // realtime notifications with socket.io
 

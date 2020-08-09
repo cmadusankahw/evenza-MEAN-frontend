@@ -32,6 +32,7 @@ export class EventplannerDashboardComponent implements OnInit, OnDestroy {
    appoints = 'txt-white row';
    orders = 'txt-white row';
    profile = 'txt-white row';
+   reports = 'txt-white row';
 
 
    // side nav controller
@@ -124,6 +125,8 @@ export class EventplannerDashboardComponent implements OnInit, OnDestroy {
           this.navOrders();
         } else if (e.url === '/planner/profile') {
           this.navProfile();
+        }  else if (e.url === '/planner/reports') {
+          this.navReports();
       }
     }
   });
@@ -131,33 +134,39 @@ export class EventplannerDashboardComponent implements OnInit, OnDestroy {
 
   navHome() {
     this.home = 'txt-white row active-nav';
-    this.events = this.bookings = this.appoints = this.orders = this.profile = 'txt-white row';
+    this.events = this.bookings = this.appoints = this.orders = this.profile  = this.reports = 'txt-white row';
   }
 
   navEvents() {
     this.events = 'txt-white row active-nav';
-    this.home = this.bookings = this.appoints = this.orders = this.profile = 'txt-white row';
+    this.home = this.bookings = this.appoints = this.orders = this.profile  = this.reports = 'txt-white row';
   }
 
   navBookings() {
     this.bookings = 'txt-white row active-nav';
-    this.events = this.home = this.appoints = this.orders = this.profile = 'txt-white row';
+    this.events = this.home = this.appoints = this.orders = this.profile  = this.reports = 'txt-white row';
   }
 
   navAppoints() {
     this.appoints = 'txt-white row active-nav';
-    this.events = this.bookings = this.home = this.orders = this.profile = 'txt-white row';
+    this.events = this.bookings = this.home = this.orders = this.profile  = this.reports = 'txt-white row';
   }
 
   navOrders() {
     this.orders = 'txt-white row active-nav';
-    this.events = this.bookings = this.appoints = this.home = this.profile = 'txt-white row';
+    this.events = this.bookings = this.appoints = this.home = this.profile  = this.reports ='txt-white row';
   }
 
   navProfile() {
     this.profile = 'txt-white row active-nav';
-    this.events = this.bookings = this.appoints = this.orders = this.home = 'txt-white row';
+    this.events = this.bookings = this.appoints = this.orders = this.home = this.reports = 'txt-white row';
   }
+
+  navReports() {
+    this.reports = 'txt-white row active-nav';
+    this.events = this.bookings = this.appoints = this.orders = this.home = this.profile =  'txt-white row';
+  }
+
 
 
   applyFilter(event: Event) {

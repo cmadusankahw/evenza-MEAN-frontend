@@ -80,6 +80,17 @@
       </div>
       </a>
 
+      <a class="txt-white row" mat-list-item [ngClass] ="reports"
+      (click)="navReports()"  routerLink="/planner/reports">
+         <div class="col-md-11 side-start">
+           <mat-icon >book</mat-icon>
+           <span class="side-text">  Report Dashboard </span>
+         </div>
+         <div class="ol-md-1 side-end">
+         <mat-icon >arrow_right</mat-icon>
+       </div>
+       </a>
+
 
 
       <a class="txt-white row" mat-list-item [ngClass] ="profile"

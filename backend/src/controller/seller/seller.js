@@ -155,6 +155,34 @@ seller.get('/stat/get',checkAuth, (req, res, next) => {
 });
 
 
+
+//get service provider names list for report queries
+seller.get('/get/selnames', checkAuth, (req, res, next) => {
+
+  var query = Product.find({ user_id: req.userData.user_id }).select('product product_id');
+
+  query.exec().then((resBooks) => {
+    console.log(resBooks);
+    res.status(200).json(
+      {
+        message: 'Report Data recieved successfully!',
+        selnames: resBooks
+      });
+  }).catch(err => {
+    console.log(err);
+  })
+});
+
+
+//get service provider names list for report queries
+seller.get('/get/selid', checkAuth, (req, res, next) => {
+    res.status(200).json(
+      {
+        id: req.userData.user_id
+      });
+  });
+
+
 // send an  email
 seller.post("/mail", checkAuth, (req,res,next) => {
   let mail = req.body;

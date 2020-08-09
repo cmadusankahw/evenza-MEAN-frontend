@@ -67,7 +67,7 @@ export class DashReportsComponent implements OnInit, OnDestroy {
     group:  null
   }
 
-    // payments and earnings report
+    // product details report
   public serviceDetails: ServiceDetailsRequest = {
     service_id: null,
     rating: 0,

@@ -58,6 +58,7 @@ import { EventServiceSearchComponent } from './modules/event/event-service-searc
 import { EventProductSearchComponent } from './modules/event/event-product-search/event-product-search.component';
 import { EventBudgetReportComponent } from './modules/event/event-budget-report/event-budget-report.component';
 import { PlannerChatComponent } from './modules/eventplanner/planner-chat/planner-chat.component';
+import { PlannerEventDetailsReportComponent } from './modules/eventplanner/reports/planner-event-details-report/planner-event-details-report.component';
 
 
 const routes: Routes = [
@@ -125,6 +126,7 @@ const routes: Routes = [
       { path: 'bookings', component: EventplannerDashBookingsComponent },
       { path: 'appoints', component: EventplannerDashAppointmentsComponent },
       { path: 'orders', component: EventplannerDashOrdersComponent },
+      { path: 'reports', component: PlannerEventDetailsReportComponent },
       { path: 'profile', component: EventplannerDashProfileComponent },
       { path: '**', component: NotFoundPageComponent },
     ] , canActivate: [AuthGuard]

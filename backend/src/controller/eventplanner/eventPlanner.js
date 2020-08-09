@@ -120,6 +120,16 @@ eventPlanner.get('/booking/get',checkAuth, (req, res, next) => {
 });
 
 
+//get event planner id
+eventPlanner.get('/get/id', checkAuth, (req, res, next) => {
+  res.status(200).json(
+    {
+      id: req.userData.user_id
+    });
+});
+
+
+
 //get list of orders
 eventPlanner.get('/order/get',checkAuth, (req, res, next) => {
   Order.find({'user.user_id': req.userData.user_id},function (err, orders) {

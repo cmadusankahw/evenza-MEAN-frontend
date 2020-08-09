@@ -10,7 +10,7 @@ const orderSchema = mongoose.Schema(
     qty_type: {type: String, required: true},
     business_name: {type: String, required: true},
     delivery_address: {type: String, required: true},
-    created_date: {type: String, required: true},
+    created_date: {type: Date, required: true},
     state: {type: String, required: true},
     review:{type: String},
     quantity: {type: Number, required: true},

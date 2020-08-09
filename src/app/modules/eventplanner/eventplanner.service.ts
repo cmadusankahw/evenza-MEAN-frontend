@@ -26,6 +26,7 @@ export class EventPlannerService {
   private orderUpdated = new Subject<Order>();
   private appointmentUpdated = new Subject<Appointment>();
   private inqueriesupdated = new Subject<Inquery[]>();
+  private idupdated = new Subject<string>();
 
   private bookings: Booking[];
 
@@ -47,6 +48,9 @@ export class EventPlannerService {
 
   // recieved inqueries
   inqueries: Inquery[] = [];
+
+  // recieved event planner id
+  private id: string;
 
   // api url (to be centralized)
   url = 'http://localhost:3000/api/';
@@ -102,6 +106,15 @@ export class EventPlannerService {
     }
 
    // get methods
+
+  // get seller ID for report generation
+  getId() {
+    this.http.get<{  id: string }>(this.url + 'planner/get/id')
+      .subscribe((res) => {
+        this.id = res.id;
+        this.idupdated.next(res.id);
+      });
+  }
 
    // get list of bookings of an event planner
     getBookings() {
@@ -196,6 +209,10 @@ export class EventPlannerService {
 
     getInqueriesUpdatedListener() {
       return this.inqueriesupdated.asObservable();
+    }
+
+    getIdUpdatedListener() {
+      return this.idupdated.asObservable();
     }
 
     // socket based chat message handeling

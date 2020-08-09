@@ -1,16 +1,17 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { PaymentHistoryRequest } from '../../serviceprovider.model';
-import { ServiceProviderService } from '../../serviceprovider.service';
 import { Subscription } from 'rxjs';
 import {  MerchantPayments, findMonth, printCanvas } from 'src/app/modules/admin/admin.model';
 import { DomSanitizer } from '@angular/platform-browser';
+import { PaymentHistoryRequest } from '../../seller.model';
+import { SellerService } from '../../seller.service';
 
 @Component({
-  selector: 'app-sp-payments-report',
-  templateUrl: './sp-payments-report.component.html',
-  styleUrls: ['./sp-payments-report.component.scss']
+  selector: 'app-seller-payments-report',
+  templateUrl: './seller-payments-report.component.html',
+  styleUrls: ['./seller-payments-report.component.scss']
 })
-export class SpPaymentsReportComponent implements OnInit, OnDestroy {
+export class SellerPaymentsReportComponent implements OnInit, OnDestroy {
+
   private paySub: Subscription;
 
   @Input() public paymentEarning: PaymentHistoryRequest;
@@ -36,13 +37,13 @@ export class SpPaymentsReportComponent implements OnInit, OnDestroy {
   @Input() public spId: string;
 
   // chat URLs
-  url1 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=8f1dde2f-6427-429e-864b-42384d914906&autoRefresh=3000&theme=light";
-  url2 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=eb88acb5-759a-4b68-8a0f-422a2be098dc&autoRefresh=3000&theme=light";
-  url3 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=49e05742-09d3-4cf0-8df7-965ada65927b&autoRefresh=3000&theme=light";
+  url1 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=ec3b0d89-65df-464f-a325-ac62c631b28d&autoRefresh=3600&theme=light";
+  url2 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=b02a66b3-1bf5-4799-bcf4-8337c0081731&autoRefresh=3600&theme=light";
+  url3 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=f8701df1-b89e-4326-9745-8a9d8340b67c&autoRefresh=3600&theme=light";
 
 
 
-  constructor(private servieProviderService: ServiceProviderService,  public sanitizer: DomSanitizer) { }
+  constructor(private sellrService: SellerService,  public sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     if (this.paymentEarning) {
@@ -54,8 +55,8 @@ export class SpPaymentsReportComponent implements OnInit, OnDestroy {
     console.log(this.fromDate, this.toDate);
     console.log(this.paymentEarning);
 
-    this.servieProviderService.getPaymentEarningReport();
-    this.paySub = this.servieProviderService.getPaymentsDetailsUpdatedListener()
+    this.sellrService.getPaymentEarningReport();
+    this.paySub = this.sellrService.getPaymentsDetailsUpdatedListener()
     .subscribe( (data: { message: string, payments: MerchantPayments, earnings: any[]}) => {
       if (data.payments) {
         for ( const p of data.payments.pays) {
@@ -88,18 +89,15 @@ export class SpPaymentsReportComponent implements OnInit, OnDestroy {
   }
 
 
-  public sproviderFilter(url: string) {
-    const queryString = '&filter={"serviceProvider.serviceProvider_id":"'+ this.spId +'"}';
+  public sellerFilter(url: string) {
+    const queryString = '&filter={"seller.seller_id":"'+ this.spId +'"}';
     return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
   }
 
-  public sproviderPaymentFilter(url: string) {
+  public sellerPaymentFilter(url: string) {
     const queryString = '&filter={"payment_details.user_id":"'+ this.spId +'"}';
     return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
   }
-
-
-
 
   // print the report
   public printReport(content: string, title: string) {
@@ -110,5 +108,4 @@ export class SpPaymentsReportComponent implements OnInit, OnDestroy {
   public emailReport(content: string) {
 
   }
-
 }

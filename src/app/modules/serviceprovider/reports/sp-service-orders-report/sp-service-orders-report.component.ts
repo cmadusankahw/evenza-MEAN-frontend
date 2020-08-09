@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ServiceOrderRequest, BookingReport } from '../../serviceprovider.model';
 import { ServiceProviderService } from '../../serviceprovider.service';
 import { Subscription } from 'rxjs';
@@ -33,9 +33,9 @@ export class SpServiceOrdersReportComponent implements OnInit, OnDestroy {
   @Input() public spId: string;
 
   // Charl URLS
-  url1 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=5de5c3ad-fb12-4032-a17f-6a169442cef5&theme=light&showAttribution=false&autoRefresh=300";
-  url2 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=b05302e7-f7e0-4bbe-830b-f4a19b392472&theme=light&showAttribution=false&autoRefresh=300";
-  url3 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=5b39d79c-f9d8-425b-a5a5-43ae3e5f22ea&theme=light&showAttribution=false&autoRefresh=300";
+  url1 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=5de5c3ad-fb12-4032-a17f-6a169442cef5&theme=light&showAttribution=false&autoRefresh=3000";
+  url2 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=b05302e7-f7e0-4bbe-830b-f4a19b392472&theme=light&showAttribution=false&autoRefresh=3000";
+  url3 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=5b39d79c-f9d8-425b-a5a5-43ae3e5f22ea&theme=light&showAttribution=false&autoRefresh=3000";
 
   constructor(private serviceProviderService: ServiceProviderService,
               public sanitizer: DomSanitizer) { }

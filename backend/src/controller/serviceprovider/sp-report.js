@@ -266,31 +266,6 @@ spreport.post('/booking/count',checkAuth, (req, res, next) => {
 
 
 
-
-// post methods
-
-//update booking state
-spreport.post('/booking/edit',checkAuth, (req, res, next) => {
-
-  Booking.findOneAndUpdate({ 'booking_id': req.body.bookingId },{'state':req.body.state}, function (err,recievedBooking) {
-    if (err) return handleError(err => {
-      console.log(err);
-      res.status(500).json(
-        { message: 'Error while updating Booking State! Please Retry!'}
-        );
-    });
-    console.log(recievedBooking);
-    res.status(200).json(
-      {
-        message: 'Booking state updated successfully!',
-        booking: recievedBooking
-      }
-    );
-  });
-});
-
-
-
 // send an  email
 spreport.post("/mail", checkAuth, (req,res,next) => {
   let mail = req.body;

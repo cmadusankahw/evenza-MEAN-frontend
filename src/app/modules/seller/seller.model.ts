@@ -114,3 +114,65 @@ export interface OrderStat {
 }
 
 
+// frontend report data models
+
+export interface ProductOrderRequest {
+  from_date: Date;
+  to_date: Date;
+  order_type: string;
+  product_id: string;
+  rating: number;
+  amount: number;
+  sort: string;
+  group: string;
+}
+
+
+export interface PaymentHistoryRequest {
+  from_date: Date;
+  to_date: Date;
+  product_id: string;
+  payment: number;
+  earning: number;
+  due: number;
+  sort: string;
+  group: string;
+}
+
+export interface ProductDetailsRequest {
+  product_id: string;
+  earning: number;
+  rating: number;
+  sort: string;
+  group: string;
+}
+
+export interface RateReviewRequest {
+  product_id: string;
+  user_id: string;
+  rating: number;
+  sort: string;
+  group: string;
+}
+
+
+export interface OrderReport {
+  order_id: string;
+  year: number;
+  month: number;
+  amount: number;
+  amount_paid: number;
+  commision_due: number;
+  created_date: string;
+  user: { user_id: string, email: string, name: string };
+  seller: { seller_id: string, email: string, name: string };
+  qty_type: string;
+  delivery_address: string;
+  delivery_service: DeliveryService;
+  business_name: string;
+  product_category: string;
+  state: string;
+  product: string;
+  product_id: string;
+  quantity: number;
+}

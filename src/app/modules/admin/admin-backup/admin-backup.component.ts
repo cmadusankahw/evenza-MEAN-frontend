@@ -14,12 +14,11 @@ export class AdminBackupComponent implements OnInit {
 
   }
 
-  createBackup(path: string){
-    console.log(path);
-    this.adminService.createBackup(path);
+  public createBackup(){
+    this.adminService.createBackup();
   }
 
-  restoreBackup(path: string) {
+  public restoreBackup(path: string) {
     console.log(path);
     this.adminService.restoreBackup(path);
   }

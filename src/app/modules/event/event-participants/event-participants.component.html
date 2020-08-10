@@ -123,13 +123,18 @@
           Print Guest List</button>
       </div>
     </div>
-      <div class="row pt-3" *ngIf="participants" id="content">
+      <div  *ngIf="participants" id="content">
+        <div class="text-center">
+          <h5><strong> Event Guest List : {{event.event_title}}</strong></h5>
+        </div>
+        <hr>
         <!--accepted participants list-->
+        <div class="row">
         <div class="col" style="margin-left:20px;">
           <h5><b><mdb-icon fas icon="user-friends"> </mdb-icon> Pending Participants </b></h5>
           <div *ngFor="let par of participants">
           <div class="participant" >
-              <div class="row" *ngIf="par.state != 'accepted'">
+              <div class="row" *ngIf="par.state == 'pending' || par.state == 'invited'">
                 <div class="col-md-8">
                   Name: {{ par.first_name }}  {{ par.last_name }} <br>
                   Email:  {{ par.email}}
@@ -167,6 +172,7 @@
       </div>
     </div>
     </div>
+  </div>
   </div>
 
 

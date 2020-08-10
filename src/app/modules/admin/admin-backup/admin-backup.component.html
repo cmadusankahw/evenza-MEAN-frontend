@@ -11,10 +11,10 @@
         Create a Backup:
       </div>
       <div class="col-md-5">
-        <input type="file" hidden="true" id="backup" #backup  (change)="createBackup($event)"
+        <input type="file" hidden="true" id="backup" #backup
         ngModel name="backup"   directory>
         <button mdbBtn color="purple" text="white" class="btn  btn-md text-center"
-        (click)="backup.click()">
+        (click)="createBackup()">
           <span> Create Backup </span>
         </button>
       </div>

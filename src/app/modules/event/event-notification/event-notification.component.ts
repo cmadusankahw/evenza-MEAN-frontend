@@ -12,16 +12,17 @@ export class EventNotificationComponent implements OnInit, OnDestroy {
 
   private alertSub: Subscription;
 
-  @Input() eventId: string;
+  @Input() public eventId: string;
 
-  @Input() eventName: string;
+  @Input() public eventName: string;
 
 
-  alerts: ScheduleAlert[] = [];
+  public alerts: ScheduleAlert[] = [];
 
   constructor(private eventService: EventService) { }
 
-  filterAlerts(alert: any ){
+  // filter recieving alerts
+  public filterAlerts(alert: any ){
     this.alerts = this.alerts.filter(obj => obj !== alert);
   }
 

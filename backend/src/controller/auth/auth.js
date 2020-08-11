@@ -429,6 +429,23 @@ auth.get('/get/merchant',checkAuth, (req, res, next) => {
   });
 });
 
+// get merchant logged in
+auth.get('/get/merchant/:id',checkAuth, (req, res, next) => {
+  Merchant.findOne({ user_id: req.params.id}).then( (merchant) =>  {
+
+    res.status(200).json(
+      {
+        message: 'Merchant recieved successfully!',
+        merchant: merchant
+      }
+    );
+  }).catch( err => {
+    res.status(500).json(
+      {
+        message: 'Couldn\'t recieve Merchant Details! Please check your connetion'
+      });
+});
+});
 
 // get all moerchants for admin
 auth.get('/get/merchants',checkAuth, (req, res, next) => {

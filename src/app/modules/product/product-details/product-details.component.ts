@@ -40,7 +40,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   // order enabled
   public orderUser = false;
   // recieved product
-  public product: Product;
+  public product: any;
   // recieved categories
   public categories: ProductCategories[] = [];
   // recieved quantities

@@ -17,28 +17,35 @@ export class EventDetailsComponent implements OnInit, OnDestroy {
   productDataSource: MatTableDataSource<any[]>;
   serviceDataSource: MatTableDataSource<any[]>;
 
+  // ownership - enable edit mode
   @Input() isowner = true;
 
   // subscriptions
   private eventSub: Subscription;
 
   // edit mode
-  editmode = false;
+  public editmode = false;
+
+  // published  mode
+  public published = false;
 
   // event id
-  eventId: string;
+  public eventId: string;
 
   // recieved event
-  event: TheEvent ;
+  public event: TheEvent ;
 
   // products of the event
-  products = [];
+  public products = [];
 
   // services allocated with the event
-  services = [];
+  public services = [];
 
   constructor(private eventService: EventService, private route: ActivatedRoute) {
     this.eventId = route.snapshot.params.id;
+    if( route.snapshot.url[0].path === 'events'){
+      this.published = true;
+    }
    }
 
   ngOnInit() {

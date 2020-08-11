@@ -119,7 +119,7 @@
             <span>Owned by {{product ? product.business_name : '...'}}</span>
             <br>
             <a mdbBtn color="secondary" class="btn btn-md" outline="yes" mdbWavesEffect *ngIf="!isowner"
-              (click)="showBprofile()" >View Business</a>
+              routerLink="/bprofile/{{product.user_id}}" >View Business</a>
           </div>
 
         </div>

@@ -97,6 +97,15 @@ export class AuthService {
     });
   }
 
+   // get a merchant by ID for public profile view
+   getMerchantbyId(id: string) {
+    this.http.get<{message: string, merchant: Merchant}>(this.url + 'auth/get/merchant/' + id)
+    .subscribe((recievedMerchant) => {
+      this.merchant = recievedMerchant.merchant;
+      this.merchantUpdated.next(this.merchant);
+    });
+  }
+
   // get event planner after login
   getEventPlanner() {
     this.http.get<{message: string, eventPlanner: EventPlanner}>(this.url + 'auth/get/planner')

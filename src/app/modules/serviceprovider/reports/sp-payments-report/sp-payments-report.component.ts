@@ -4,6 +4,7 @@ import { ServiceProviderService } from '../../serviceprovider.service';
 import { Subscription } from 'rxjs';
 import {  MerchantPayments, findMonth, printCanvas } from 'src/app/modules/admin/admin.model';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AdminService } from 'src/app/modules/admin/admin.service';
 
 @Component({
   selector: 'app-sp-payments-report',
@@ -31,18 +32,21 @@ export class SpPaymentsReportComponent implements OnInit, OnDestroy {
   public total_amount_paid  = 0;
   public total_due = 0;
 
+  // report URL for emailing
+  public reportUrl: string;
+
 
   // service provider ID
   @Input() public spId: string;
 
   // chat URLs
-  url1 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=8f1dde2f-6427-429e-864b-42384d914906&autoRefresh=3000&theme=light";
-  url2 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=eb88acb5-759a-4b68-8a0f-422a2be098dc&autoRefresh=3000&theme=light";
-  url3 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=49e05742-09d3-4cf0-8df7-965ada65927b&autoRefresh=3000&theme=light";
+  url1: any = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=8f1dde2f-6427-429e-864b-42384d914906&autoRefresh=3000&theme=light";
+  url2: any = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=eb88acb5-759a-4b68-8a0f-422a2be098dc&autoRefresh=3000&theme=light";
+  url3: any = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=49e05742-09d3-4cf0-8df7-965ada65927b&autoRefresh=3000&theme=light";
 
 
 
-  constructor(private servieProviderService: ServiceProviderService,  public sanitizer: DomSanitizer) { }
+  constructor(private servieProviderService: ServiceProviderService,  public sanitizer: DomSanitizer, public adminService: AdminService) { }
 
   ngOnInit() {
     if (this.paymentEarning) {
@@ -78,6 +82,9 @@ export class SpPaymentsReportComponent implements OnInit, OnDestroy {
       console.log(this.pays);
       console.log(this.earnings);
       console.log(data.message);
+      this.url1 = this.sproviderFilter(this.url1);
+      this.url2 = this.sproviderPaymentFilter(this.url2);
+      this.url3 = this.sproviderFilter(this.url3);
     });
   }
 
@@ -103,12 +110,14 @@ export class SpPaymentsReportComponent implements OnInit, OnDestroy {
 
   // print the report
   public printReport(content: string, title: string) {
-    printCanvas(content, title);
+    this.reportUrl = printCanvas(content, title);
+    console.log(this.reportUrl);
   }
 
   // email report
-  public emailReport(content: string) {
-
+  public emailReport(attachment: string, title: string) {
+    this.adminService.emailReport(attachment, title);
   }
+
 
 }

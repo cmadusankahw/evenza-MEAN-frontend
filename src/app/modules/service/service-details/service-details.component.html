@@ -117,7 +117,7 @@
             <span>Owned by {{service ? service.business_name : 'Loading...'}}</span>
             <br>
             <a mdbBtn color="secondary" class="btn btn-md" outline="yes" mdbWavesEffect *ngIf="!isowner"
-              (click)="showBprofile()" >View Business</a>
+              routerLink="/bprofile/{{service.user_id}}" >View Business</a>
           </div>
 
         </div>

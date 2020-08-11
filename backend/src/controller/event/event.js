@@ -11,6 +11,7 @@ const email = require("../common/mail");
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require ("multer");
+const cron = require("node-cron"); // running scheduled tasks
 
 //express app declaration
 const event = express();
@@ -411,7 +412,7 @@ event.get('/confirm/:id', (req, res, next) => {
 
 
  // get task alerts
-event.get('/get/alerts/:id', (req, res, next) => {
+event.get('/get/alerts/:id', checkAuth, (req, res, next) => {
 
   var today = new Date();
   console.log('today date: ', today);
@@ -477,8 +478,49 @@ event.get('/get/alerts/:id', (req, res, next) => {
   });
 
 
+// schedule task : send task reminder emails : checked in every hour
+cron.schedule("59 1 * * *", function () {
+  var today = new Date();
+  var alerts;
 
-// create custom HTML
+  Event.find().then( result => {
+    // find and update confirmed participant state
+    for (const  doct of result) {
+      for ( let doc of doct.event_segments.tasks ) {
+      // necessary date operations
+      scheduledDate = new Date(doc.scheduled_from_date);
+      var hours = Math.floor(-(today - scheduledDate) / 36e5);
+      console.log ('Difference in hours :' ,hours);
+
+      // date comparisons by hours
+      if( hours> 0){
+        if  (hours < 3) {
+          const mail= {
+            email:doct.host.email,
+            subject: "Urgent: Reminder on scheduled task: " + doc.title + ' : Less than 3 hours Left!',
+            html: createTaskHTML(doc.title,' less than 03 Hours', doc.scheduled_from_date)
+          };
+          // sending task reminder in email
+          email.sendMail(mail, () => {});
+        } else if (hours < 24) {
+          const mail= {
+            email:doct.host.email,
+            subject: "Reminder on scheduled task: " + doc.title + ' : Less than a Day Left!',
+            html: createTaskHTML(doc.title,' less than a Day', doc.scheduled_from_date)
+          };
+          // sending task reminder in email
+          email.sendMail(mail, () => {});
+        }
+      };
+    }
+  }
+  }).catch(err => {
+    console.log(err);
+  });
+});
+
+
+// create event invitation HTML with confirmation link
 function createHTML(content, pid, eventId) {
    const message = "<h3> Invitation </h3><br> Dear Sir/Madam, <br><br>" + content
    +"<br><br> Click below link to confirm your participation:<hr> <b> <a href='http://localhost:3000/api/event/confirm/"+ pid + '_' + eventId + "' target='_blank'> Conirm My Participation</a></br>"
@@ -486,7 +528,7 @@ function createHTML(content, pid, eventId) {
    return message;
   }
 
-  // create cancel HTML
+  // create cancelrequest HTML
 function createCancelHTML(eventTitle, fromDate, toDate) {
   const message = "<h3> Cancellation Notice! </h3><br> Dear Sir/Madam," +
   +"<br><br> <b> The Event : "+ eventTitle +"</b> which is to be held from " + fromDate.slice(0,10) + " to "+  toDate.slice(0,10) + " , was cancelled due to an unavoidable reason."  + "<br><br>"
@@ -495,5 +537,11 @@ function createCancelHTML(eventTitle, fromDate, toDate) {
  }
 
 
+// create scheduled task reminder HTML
+function createTaskHTML(task ,timeLess, taskDate) {
+    const message = "<h3> You have a scheduled task:  "+ task + " on " + taskDate.slice(0,10) + " at " + taskDate.slice(11,16)+"</h3><hr>"
+    + "<b> <h5> <strong> Task Due in: " + timeLess + "</strong></h5></b><hr><div class='text-center'><p><b> Please log in to view more details.<br><br><a class='btn btn-lg' href='evenza.biz//login'>Log In</a></b></p></div>"
+    return message;
+}
 
 module.exports = event;

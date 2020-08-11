@@ -37,7 +37,7 @@
             <mdb-icon far icon="calendar-alt"></mdb-icon> Categry: {{ event.event_category}}
           </div>
           <hr>
-           <div class="notify" style="color:darkblue;">
+           <div class="notify" style="color:darkblue;" *ngIf="!published">
             <mdb-icon far icon="money-bill-alt"></mdb-icon> <b> Budget: Rs. {{ event.total_budget}} </b>
           </div>
           <br>
@@ -47,7 +47,7 @@
                <a routerLink="/planner/event/participants/{{event.event_id}}"> Event Participants</a> </span>
           </div>
           <hr>
-          <div classs="item-box" *ngIf="isowner">
+          <div classs="item-box" *ngIf="isowner && !published">
             <h4 class="pt-5">
               <mat-icon>check_circle</mat-icon>
              <b> Allocated Services</b>
@@ -125,7 +125,7 @@
                             </ng-container>
 
                              <!-- Action Column -->
-                             <ng-container matColumnDef="action">
+                             <ng-container matColumnDef="action" >
                               <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> Details </th>
                               <td mat-cell *matCellDef="let row2">
                                 <button mdbBtn color="primary" text="white" class="btn btn-sm text-center"
@@ -149,7 +149,7 @@
 
         <!--action buttons-->
         <div class="col-md-4 text-center">
-         <div class="button-box container-fluid">
+         <div class="button-box container-fluid" *ngIf="!published">
            <h4 class="button-box-heading"><b>
             <mat-icon>assignment</mat-icon> Action Pane
            </b></h4>
@@ -164,6 +164,7 @@
 
            <div class="pb-1" *ngIf="event.state == 'published'">
             <h5 style="color:darkgreen;"><b> Event is Published!</b></h5>
+            <p> <a routerLink="/events/{{event.event_id}}"> View Event </a></p>
           </div>
            <hr>
 
@@ -209,6 +210,31 @@
             </div>
           </div>
          </div>
+
+         <div class="button-box container-fluid" >
+          <h4 class="button-box-heading"><b>
+           <mat-icon>assignment</mat-icon> Social Share
+          </b></h4>
+          <p> View event on Social Media</p>
+          <hr>
+          <div class="row container-fluid">
+            <div class="col-md-4">
+              <a mdbBtn style="border-radius:50%; padding-top:19px; padding-bottom:19px;" color="primary" class="btn btn-md" [href]="event.social_links.fb" >
+                <mat-icon>facebook</mat-icon>
+              </a>
+            </div>
+            <div class="col-md-4">
+              <a mdbBtn style="border-radius:50%; padding-top:19px; padding-bottom:19px;" color="secondary" class="btn btn-md" [href]="event.social_links.instagram" >
+                <mat-icon>linked_camera</mat-icon>
+              </a>
+            </div>
+            <div class="col-md-4">
+              <a mdbBtn style="border-radius:50%; padding-top:19px; padding-bottom:19px;" color="green" class="btn btn-md" [href]="event.social_links.other" >
+                <mat-icon>language</mat-icon>
+              </a>
+            </div>
+          </div>
+          </div>
 
       </div>
     </div>

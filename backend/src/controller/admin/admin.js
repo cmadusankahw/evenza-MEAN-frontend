@@ -62,7 +62,7 @@ cron.schedule("* * 28 * *", function () {
 
   Admin.findOne().select('payment_details').then(result => {
 
-   var paymentDetails = result.payment_details;
+    var paymentDetails = result.payment_details;
     var merchantIndex = 0;
     var paysIndex = 0;
     var dueAmt = 299;
@@ -429,26 +429,45 @@ admin.get('/get/location/e', checkAuth, (req, res, next) => {
     });
 });
 
+// email business report
 
+// send an  email
+admin.post("/report/mail", checkAuth, (req, res, next) => {
+  // creating email
+  const mail = {
+    email: req.userData.email,
+    subject: "Generated Report " + req.body.title,
+    html: createHTML(req.body.title),
+    attachments: [{
+      filename: req.body.title + '_Report',
+      path: req.body.attachment
+    }]
+  };
+  console.log(mail);
+  mail.email = req.userData.email;
+  console.log(mail);
+  email.sendMail(mail, info => {
+    res.status(200).json(
+      {
+        message: 'Report has emailed successfully!',
+      }
+    );
+  }).catch(err => {
+    console.log(err);
+    res.status(500).json(
+      {
+        message: 'email sending failed!',
+      }
+    );
+  })
+});
 
 
 // create custom HTML
-function createHTML(mailType, content) {
-  if (mailType == 'Booking') {
-    const message = "<h3> You have new " + mailType + " on " + content.admin_name + "</h3><hr><h4>" + mailType + " ID : <b> " +
-      content.booking_id
-      + "</b></h4><h4>Booked Date : <b> " +
-      content.from_date.slice(0, 10)
-      + " </b></h4><h4>Duration : <b> " + content.duration + ' ' + content.rate_type.slice(1) + "(s) </b></h4><hr><div class='text-center'><p><b> Please log in to view more details.<br><br><a class='btn btn-lg' href='evenza.biz//login'>Log In</a></b></p></div>"
-    return message;
-  } else if (mailType == 'Appointment') {
-    const message = "<h3> You have new " + mailType + " on " + content.admin_name + "</h3><hr><h4>" + mailType + " ID : <b> " +
-      content.appoint_id
-      + "</b></h4><h4>Appointed Date : <b> " +
-      content.appointed_date.slice(0, 10)
-      + " </b></h4><h4>Appointed Time : <b> " + content.appointed_time.hour + ':' + content.appointed_time.minute + " Hrs </b></h4><hr><div class='text-center'><p><b> Please log in to view more details.<br><br><a class='btn btn-lg' href='evenza.biz//login'>Log In</a></b></p></div>"
-    return message;
-  }
+function createHTML(title) {
+  const message = "<h3> You business report: " + title + " has generated successfully.</h3><hr>"
+    + "</b></h4><hr><div class='text-center'><p><b> Please Find the attached Report.<br> <br> For more information, Log in to the System.<br><br><a class='btn btn-lg' href='evenza.biz//login'>Log In</a></b></p></div>"
+  return message;
 
 }
 

@@ -154,16 +154,22 @@ export function updateCount(date: string, appMonths: MonthHolder) {
 }
 
 // exporting the report canvas
-export function printCanvas(content: string, title: string) {
+export function printCanvas(content: string, title: string): string {
+  // image url
+  let linkHref = '';
   const element = document.getElementById('content');
   html2canvas(element).then((canvas) => {
       // Convert the canvas to blob
       canvas.toBlob((blob) => {
           // To download directly on browser default 'downloads' location
           const link = document.createElement('a');
-          link.download = title + '.png';
+          link.download = title + new Date().toISOString().slice(0,16) +'.png';
           link.href = URL.createObjectURL(blob);
+          linkHref = link.href;
           link.click();
       }, 'image/png');
   });
+  // send report via email
+  return linkHref;
 }
+

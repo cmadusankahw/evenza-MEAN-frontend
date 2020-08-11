@@ -17,30 +17,35 @@ export class SpServieDetailsReportComponent implements OnInit {
   @Input() public spId: string;
 
   // Charl URLS
-  url1 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=ce7f0a93-9d30-4076-b11c-1e1b97ad7178&autoRefresh=300&theme=light";
-  url2 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=93930bc8-b974-4042-aa75-b82c21276873&autoRefresh=300&theme=light";
-  url3 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=773a586c-19df-416b-ade0-4495ef82cf7c&autoRefresh=300&theme=light";
-  url4 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=a03717b5-5a5a-4e01-bb91-7d5b2ce56a84&autoRefresh=300&theme=light";
-  url5 = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=61e3c255-ae18-4d48-9641-67dee4c93003&autoRefresh=300&theme=light";
+  url1: any = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=ce7f0a93-9d30-4076-b11c-1e1b97ad7178&autoRefresh=300&theme=light";
+  url2: any = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=93930bc8-b974-4042-aa75-b82c21276873&autoRefresh=300&theme=light";
+  url3: any = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=773a586c-19df-416b-ade0-4495ef82cf7c&autoRefresh=300&theme=light";
+  url4: any = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=a03717b5-5a5a-4e01-bb91-7d5b2ce56a84&autoRefresh=300&theme=light";
+  url5: any = "https://charts.mongodb.com/charts-project-0-ywcjk/embed/charts?id=61e3c255-ae18-4d48-9641-67dee4c93003&autoRefresh=300&theme=light";
 
 
   constructor(private serviceProviderService: ServiceProviderService,
               public sanitizer: DomSanitizer) { }
 
   ngOnInit() {
-
+    this.url1 = this.sproviderUserFilter(this.url1);
+    this.url2 = this.sproviderUserFilter(this.url2);
+    this.url3 = this.sproviderFilter(this.url3);
+    this.url4 = this.sproviderUserFilter(this.url4);
+    this.url5 = this.sproviderUserFilter(this.url5);
   }
 
+  // appling report filters
   public sproviderFilter(url: string) {
     const queryString = '&filter={"serviceProvider.serviceProvider_id":"' + this.spId + '"}';
     return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
   }
 
+  // applying report filters
   public sproviderUserFilter(url: string) {
     const queryString = '&filter={"user_id":"' + this.spId + '"}';
     return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
   }
-
 
 
   // print the report

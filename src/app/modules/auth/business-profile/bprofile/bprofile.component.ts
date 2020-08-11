@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/auth.service';
 import { Merchant, OpenDays, BusinessLocation, BusinessVerification, Business, CardDetails } from 'src/app/modules/auth/auth.model';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -17,29 +17,30 @@ export class BprofileComponent implements OnInit, OnDestroy {
   // subscription
   private merchantSub: Subscription;
 
-  @Input() isowner;
+  // recieved ownership details
+  @Input() public isowner;
 
   // edit profile mode
-  editmode = false;
+  public editmode = false;
 
   // create new profile mode
-  addnew = false;
+  public addnew = false;
 
   // business-open-days edit mode
-  opendaysEditable = false;
+  public opendaysEditable = false;
 
   // today date
-  tday = new Date().toISOString();
+  public tday = new Date().toISOString();
 
   // recieved location data
-  location: BusinessLocation = {
+  public location: BusinessLocation = {
     lang: 80.0087746,
     lat: 6.901608599999999,
     homeTown: 'Colombo'
   };
 
   // recieved open days
-  openDays: OpenDays[] =  [
+  public openDays: OpenDays[] =  [
     { day: 0, isopened: true, from_time: 8, to_time: 18},
     { day: 1, isopened: true,  from_time: 8, to_time: 18 },
     { day: 2, isopened: true,  from_time: 8, to_time: 18 },
@@ -50,14 +51,14 @@ export class BprofileComponent implements OnInit, OnDestroy {
   ];
 
   // recieved busiiness verification
-  businessVerification: BusinessVerification = {
+  public businessVerification: BusinessVerification = {
     business_isverified: false,
     br_side_a: './assets/images/merchant/nopic.png',
     br_side_b: './assets/images/merchant/nopic.png',
   };
 
   // recieved card details
-  cardDetails: CardDetails = {
+  public cardDetails: CardDetails = {
     name_on_card: '',
     card_no: '',
     cvc_no: '',
@@ -74,15 +75,25 @@ export class BprofileComponent implements OnInit, OnDestroy {
   logoImageFile: File;
 
   // recieved Merchant
-  recievedMerchant: Merchant;
-
+  public recievedMerchant: Merchant;
+  // recieved merchant ID
+  public id: string;
 
 
   constructor(private authService: AuthService,
-              private router: Router) { }
+              private router: Router,
+              private route: ActivatedRoute) {
+                this.id = route.snapshot.params.id;
+              }
 
   ngOnInit() {
+    if ( !this.id) {
     this.authService.getMerchant();
+    }
+    if (this.id) {
+      this.authService.getMerchantbyId(this.id);
+      this.isowner = false;
+    }
     this.merchantSub = this.authService.getMerchantUpdateListener()
       .subscribe ( resMerchant => {
         if (resMerchant) {
@@ -96,6 +107,8 @@ export class BprofileComponent implements OnInit, OnDestroy {
           console.log(this.recievedMerchant);
          }});
   }
+
+
 
   ngOnDestroy() {
     if (this.merchantSub) {

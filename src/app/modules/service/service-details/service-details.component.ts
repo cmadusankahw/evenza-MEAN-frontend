@@ -57,7 +57,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   // recieved quantities
   public rates: ServiceRates[] = [];
   // recieved service (initial declaration)
-  public service: Service ;
+  public service: any ;
    // created promotion
    public promotion: Promotion = { from_date: '',
                                     to_date: '',

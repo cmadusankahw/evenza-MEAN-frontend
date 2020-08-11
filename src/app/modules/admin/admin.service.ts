@@ -176,4 +176,16 @@ export class AdminService {
       });
   }
 
+  // email business reports
+  emailReport(attachment: string, title: string) {
+    this.http.post<{ message: string }>(this.url + 'admin/report/mail', { attachment, title })
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
+      });
+  }
+
 }
+
+
+

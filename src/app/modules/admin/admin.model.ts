@@ -57,10 +57,10 @@ export interface BookingMonth {
 }
 
 export interface PaymentData {
-    timestamp: {year: string, month: string };
-    paid_date: string;
-    paid_amount: number;
-    due_amount: number;
+  timestamp: { year: string, month: string };
+  paid_date: string;
+  paid_amount: number;
+  due_amount: number;
 }
 
 export interface DashboardData {
@@ -92,20 +92,20 @@ export function getLastSixMonths(date: Date): string[] {
   const newArr = [];
   const returnArr = [];
   let newDate = date.getMonth() + 1;
-  for(var i=0 ; i<6 ; i++){
+  for (var i = 0; i < 6; i++) {
     newArr.push(newDate);
     newDate--;
   }
-  for(var d of newArr){
+  for (var d of newArr) {
     returnArr.push(findMonth(d));
   }
   console.log(returnArr);
   return returnArr;
 }
 
-export function findMonth(no: number): string{
+export function findMonth(no: number): string {
   var month: string;
-  switch (no){
+  switch (no) {
     case 1: month = 'January'; break;
     case 2: month = 'February'; break;
     case 3: month = 'March'; break;
@@ -116,7 +116,7 @@ export function findMonth(no: number): string{
     case 8: month = 'Aug'; break;
     case 9: month = 'Sept'; break;
     case 10: month = 'Oct'; break;
-    case 11: month = 'Nov';  break;
+    case 11: month = 'Nov'; break;
     case 12: month = 'Dec'; break;
   }
   return month;
@@ -124,30 +124,30 @@ export function findMonth(no: number): string{
 
 
 export function updateCount(date: string, appMonths: MonthHolder) {
-  const month = date.slice(5, 7) ;
-  if ( month === '01') {
+  const month = date.slice(5, 7);
+  if (month === '01') {
     this.appMonths.jan++;
-  } else if ( month === '02') {
+  } else if (month === '02') {
     this.appMonths.feb++;
-  } else if ( month === '03') {
+  } else if (month === '03') {
     this.appMonths.mar++;
-  } else if ( month === '04') {
+  } else if (month === '04') {
     this.appMonths.apr++;
-  } else if ( month === '05') {
+  } else if (month === '05') {
     this.appMonths.may++;
-  } else if ( month === '06') {
+  } else if (month === '06') {
     this.appMonths.jun++;
-  } else if ( month === '07') {
+  } else if (month === '07') {
     this.appMonths.jul++;
-  } else if ( month === '08') {
+  } else if (month === '08') {
     this.appMonths.aug++;
-  } else if ( month === '09') {
+  } else if (month === '09') {
     this.appMonths.sep++;
-  } else if ( month === '10') {
+  } else if (month === '10') {
     this.appMonths.oct++;
-  } else if ( month === '11') {
+  } else if (month === '11') {
     this.appMonths.nov++;
-  } else if ( month === '12') {
+  } else if (month === '12') {
     this.appMonths.dec++;
   }
   return appMonths;
@@ -159,15 +159,15 @@ export function printCanvas(content: string, title: string): string {
   let linkHref = '';
   const element = document.getElementById('content');
   html2canvas(element).then((canvas) => {
-      // Convert the canvas to blob
-      canvas.toBlob((blob) => {
-          // To download directly on browser default 'downloads' location
-          const link = document.createElement('a');
-          link.download = title + new Date().toISOString().slice(0,16) +'.png';
-          link.href = URL.createObjectURL(blob);
-          linkHref = link.href;
-          link.click();
-      }, 'image/png');
+    // Convert the canvas to blob
+    canvas.toBlob((blob) => {
+      // To download directly on browser default 'downloads' location
+      const link = document.createElement('a');
+      link.download = title + new Date().toISOString().slice(0, 16) + '.png';
+      link.href = URL.createObjectURL(blob);
+      linkHref = link.href;
+      link.click();
+    }, 'image/png');
   });
   // send report via email
   return linkHref;

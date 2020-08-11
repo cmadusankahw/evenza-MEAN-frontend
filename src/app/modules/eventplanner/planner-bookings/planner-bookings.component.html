@@ -1,342 +1,504 @@
 <div class="pd-top-min">
-
   <h4 *ngIf="bookingType == 'pending'">
     <mat-icon>library_books</mat-icon>
-   <b> Pending Bookings</b>
+    <b> Pending Bookings</b>
   </h4>
   <h4 *ngIf="bookingType == 'completed'">
     <mat-icon>check_circle</mat-icon>
-   <b> Completed Bookings</b>
+    <b> Completed Bookings</b>
   </h4>
-  <h4 *ngIf="bookingType == 'cancelled'" >
+  <h4 *ngIf="bookingType == 'cancelled'">
     <mat-icon>block</mat-icon>
-   <b> Cancelled Bookings</b>
+    <b> Cancelled Bookings</b>
   </h4>
   <mat-form-field>
-
     <mat-label>
       <mat-icon>search</mat-icon>
-      Search Bookings</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Photography">
+      Search Bookings</mat-label
+    >
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Ex. Photography"
+    />
   </mat-form-field>
 
   <div class="mat-elevation-z8" *ngIf="recievedBookings.length">
     <table class="table-responsive" mat-table [dataSource]="dataSource" matSort>
-
       <!-- ID Column -->
       <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header > Booking ID </th>
-        <td mat-cell *matCellDef="let row"> {{row.booking_id}} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Booking ID</th>
+        <td mat-cell *matCellDef="let row">{{ row.booking_id }}</td>
       </ng-container>
 
       <!-- Progress Column -->
       <ng-container matColumnDef="service_name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header > Service Booked </th>
-        <td mat-cell *matCellDef="let row"> {{row.service_name}} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Service Booked
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.service_name }}</td>
       </ng-container>
 
       <!-- Name Column -->
       <ng-container matColumnDef="booked_date">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header > Booked Date </th>
-        <td mat-cell *matCellDef="let row"> {{row.from_date.slice(0,10)}} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Booked Date</th>
+        <td mat-cell *matCellDef="let row">{{ row.from_date.slice(0, 10) }}</td>
       </ng-container>
 
       <!-- Color Column -->
       <ng-container matColumnDef="duration">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header > Duration </th>
-        <td mat-cell *matCellDef="let row" > {{row.duration}} {{row.rate_type == '/Hr' ? ' Hrs' : ' Days'}} </td>
-      </ng-container>
-
-       <!-- Color Column -->
-       <ng-container matColumnDef="amount_paid">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header > Amount Paid </th>
-        <td mat-cell *matCellDef="let row" > {{row.amount_paid}}  </td>
-      </ng-container>
-
-
-       <!-- Action Column -->
-       <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> ACTION </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Duration</th>
         <td mat-cell *matCellDef="let row">
-          <button mdbBtn color="purple" text="white" class="btn btn-sm text-center"
-          (click)= "showBookingDetails(row.booking_id)" (click)="bookingOptions.show()">
+          {{ row.duration }} {{ row.rate_type == "/Hr" ? " Hrs" : " Days" }}
+        </td>
+      </ng-container>
+
+      <!-- Color Column -->
+      <ng-container matColumnDef="amount_paid">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount Paid</th>
+        <td mat-cell *matCellDef="let row">{{ row.amount_paid }}</td>
+      </ng-container>
+
+      <!-- Action Column -->
+      <ng-container matColumnDef="action">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="text-align: center;"
+        >
+          ACTION
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <button
+            mdbBtn
+            color="purple"
+            text="white"
+            class="btn btn-sm text-center"
+            (click)="showBookingDetails(row.booking_id)"
+            (click)="bookingOptions.show()"
+          >
             ACTION
           </button>
-         </td>
+        </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
-      </tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
 
     <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
   </div>
 
-  <div class="text-center pd-top-min"  *ngIf="!recievedBookings.length">
+  <div class="text-center pd-top-min" *ngIf="!recievedBookings.length">
     Nothing Booked Here
   </div>
+</div>
 
-  </div>
-
-
-
-  <!--View Details Modal-->
+<!--View Details Modal-->
+<div
+  mdbModal
+  #bookingOptions="mdbModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-hidden="true"
+>
   <div
-    mdbModal
-    #bookingOptions="mdbModal"
-    class="modal fade"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="myBasicModalLabel"
-    [config]="{ backdrop: false, ignoreBackdropClick: true }"
-    aria-hidden="true"
-
-
+    class="modal-dialog modal-dialog-centered modal-lg"
+    role="document"
+    style="overflow-y: initial !important;"
   >
-    <div
-      class="modal-dialog modal-dialog-centered modal-lg"
-      role="document"
-      style="overflow-y: initial !important"
-    >
-      <div class="modal-content"   *ngIf = "selectedBooking">
-        <div class="modal-header">
-          <button
-            type="button"
-            class="close pull-right"
-            aria-label="Close"
-            (click)="bookingOptions.hide()"
-          >
-            <span aria-hidden="true">×</span>
-          </button>
-          <h4 class="modal-title w-100" id="myModalLabel" >
-            <mat-icon>service</mat-icon>Booking: {{selectedBooking.booking_id}} Details
-          </h4>
-        </div>
+    <div class="modal-content" *ngIf="selectedBooking">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="bookingOptions.hide()"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel">
+          <mat-icon>service</mat-icon>Booking:
+          {{ selectedBooking.booking_id }} Details
+        </h4>
+      </div>
 
-        <div class="modal-body " style="height: 450px; overflow-y: auto;">
+      <div class="modal-body" style="height: 450px; overflow-y: auto;">
+        <!--more info-->
+        <div class="text-center">
+          <section class="text-center dark-grey-text" *ngIf="!rateReview">
+            <!--booking info-->
+            <div class="row">
+              <div class="col-md-4 info-text">
+                Boking ID
+              </div>
+              <div class="col info-input">
+                <input
+                  type="text"
+                  matInput
+                  disabled
+                  value=" {{ selectedBooking.booking_id }}"
+                />
+              </div>
+            </div>
 
-              <!--more info-->
-              <div class="text-center">
-
-                <section class="text-center dark-grey-text" *ngIf="!rateReview">
-                  <!--booking info-->
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                      Boking ID
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{selectedBooking.booking_id}}">
-                    </div>
-                  </div>
-
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                      Service Name
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{selectedBooking.service_name}}">
-                    </div>
-                  </div>
-                  <div >
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                      Booked Date (from)
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{selectedBooking.from_date}}">
-                    </div>
-                  </div>
-
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                      Booked Date (to)
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{selectedBooking.to_date}}">
-                    </div>
-                  </div>
+            <div class="row">
+              <div class="col-md-4 info-text">
+                Service Name
+              </div>
+              <div class="col info-input">
+                <input
+                  type="text"
+                  matInput
+                  disabled
+                  value=" {{ selectedBooking.service_name }}"
+                />
+              </div>
+            </div>
+            <div>
+              <div class="row">
+                <div class="col-md-4 info-text">
+                  Booked Date (from)
                 </div>
-
-                <div *ngIf="selectedBooking.duration == 1 && selectedBooking.rate_type == '/Day'">
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                      Booked Date Type
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" Single Day Booking">
-                    </div>
-                  </div>
-
-
-
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                      Booked Time (from)
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{selectedBooking.from_time.hour > 9 ? '' + selectedBooking.from_time.hour: '0' + selectedBooking.from_time.hour}} : {{selectedBooking.from_time.minute > 9 ? '' + selectedBooking.from_time.minute: '0' + selectedBooking.from_time.minute}}">
-                    </div>
-                  </div>
-
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                      Booked Time (to)
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value="  {{selectedBooking.to_time.hour > 9 ? '' + selectedBooking.to_time.hour: '0' + selectedBooking.from_time.hour}} : {{selectedBooking.to_time.minute > 9 ? '' + selectedBooking.to_time.minute: '0' + selectedBooking.to_time.minute}}">
-                    </div>
-                  </div>
+                <div class="col info-input">
+                  <input
+                    type="text"
+                    matInput
+                    disabled
+                    value=" {{ selectedBooking.from_date }}"
+                  />
                 </div>
-
-                  <div class="row ">
-                    <div class="col-md-4 info-text-net">
-                      Duration
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{selectedBooking.duration}} {{selectedBooking.rate_type == '/Hr' ? 'Hr(s)' : 'Day(s)'}}">
-                    </div>
-                  </div>
-
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                      Event Assigned
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{selectedBooking.event_id +' : ' + selectedBooking.event_name }}">
-                    </div>
-                  </div>
-
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                      Created Date & Time
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{selectedBooking.created_date.slice(0,10) + ' '
-                      + selectedBooking.created_date.slice(11,19) }}">
-                    </div>
-                  </div>
-
-                  <hr>
-                  <h5><b> Write a Review</b></h5>
-                  <form #rForm ngForm="rForm">
-                  <div class="row">
-                    <div class="col-md-4 info-text">
-                      My Reviews
-                    </div>
-                    <div class="col-md-5 info-input-2">
-                      <mat-form-filed style="width:100%">
-                        <textarea matInput name="reviewMsg" [disabled]= "!addReview"  [(ngModel)]="selectedBooking.review"
-                        placeholder="Your review here..."></textarea>
-                      </mat-form-filed>
-                      <br>
-                      <button mdbBtn color="secondary"  class="btn  btn-sm" outline="yes" *ngIf="!addReview"
-                      (click)= "addReview = !addReview">
-                      <span > Add/ Edit Review </span>
-                      </button>
-                      <button mdbBtn color="primary"  class="btn  btn-sm" outline="yes" *ngIf="addReview"
-                       (click)= "submitReview(selectedBooking.booking_id,selectedBooking.review)">
-                      <span > Save Changes </span>
-                      </button>
-                      <button mdbBtn color="red"  class="btn  btn-sm" outline="yes" *ngIf="addReview"
-                      (click)= "addReview = !addReview">
-                      <span > Discard </span>
-                      </button>
-                    </div>
-                    <div class="col-md-3 pt-4 text-center">
-                      <button mdbBtn color="purple" text="white" class="btn  btn-md text-center"
-                      (click)= "rateReview = !rateReview">
-                       <span > <mdb-icon fas icon="star"></mdb-icon> Rate this Service </span>
-                      </button>
-                    </div>
-                  </div>
-                </form>
-                 <hr>
-                  <div class="row ">
-                    <div class="col-md-4 info-text-net">
-                      State
-                    </div>
-                    <div class="col info-input-net">
-                      <b><input type="text" matInput disabled value=" {{selectedBooking.state}}"></b>
-                    </div>
-                  </div>
-
-                  <hr>
-
-                  <div *ngIf="bookingType != 'cancelled'">
-                  <div class="row ">
-                    <div class="col-md-4 info-text-net">
-                      Total Fee
-                    </div>
-                    <div class="col info-input-net">
-                      <input type="text" matInput disabled value=" Rs. {{selectedBooking.amount}}">
-                    </div>
-                  </div>
-
-                  <div class="row ">
-                    <div class="col-md-4 info-text-net">
-                      Amount Paid
-                    </div>
-                    <div class="col info-input-net">
-                      <b><input type="text" matInput disabled value=" Rs. {{selectedBooking.amount_paid}}"></b>
-                    </div>
-                  </div>
-
-                  <div class="row " *ngIf="(selectedBooking.amount - selectedBooking.amount_paid) > 0">
-                    <div class="col-md-4 info-text-net">
-                      To be Paid
-                    </div>
-                    <div class="col info-input-net"  style="color:darkmagenta !important;">
-                      <b><input type="text" matInput disabled value=" Rs. {{selectedBooking.amount - selectedBooking.amount_paid}}"></b>
-                    </div>
-                  </div>
-                  <hr>
-                </div>
-                <div class="info-top"  >
-                  <button mdbBtn color="darkred" text="white" class="btn  btn-md btn-danger text-center"
-                  *ngIf="selectedBooking.state == 'pending'" (click)="cancelBooking.show()">
-                    <span>Send Cancel Request </span>
-                  </button>
-                </div>
-
-                </section>
-
-                <div *ngIf="rateReview">
-                  <app-rating-review [type]= "'service'" [id]= "selectedBooking.service_id" [recievedService]= "selectedBooking.service_name"></app-rating-review>
-                  <hr>
-                  <div class="info-top"  >
-                    <button mdbBtn color="purple" text="white" class="btn  btn-md text-center"
-                    (click)= "rateReview = !rateReview">
-                     <span > Rate & Go Back </span>
-                    </button>
-                    </div>
-                </div>
-
-
               </div>
 
+              <div class="row">
+                <div class="col-md-4 info-text">
+                  Booked Date (to)
+                </div>
+                <div class="col info-input">
+                  <input
+                    type="text"
+                    matInput
+                    disabled
+                    value=" {{ selectedBooking.to_date }}"
+                  />
+                </div>
+              </div>
+            </div>
 
-        </div>
+            <div
+              *ngIf="
+                selectedBooking.duration == 1 &&
+                selectedBooking.rate_type == '/Day'
+              "
+            >
+              <div class="row">
+                <div class="col-md-4 info-text">
+                  Booked Date Type
+                </div>
+                <div class="col info-input">
+                  <input
+                    type="text"
+                    matInput
+                    disabled
+                    value=" Single Day Booking"
+                  />
+                </div>
+              </div>
 
+              <div class="row">
+                <div class="col-md-4 info-text">
+                  Booked Time (from)
+                </div>
+                <div class="col info-input">
+                  <input
+                    type="text"
+                    matInput
+                    disabled
+                    value=" {{
+                      selectedBooking.from_time.hour > 9
+                        ? '' + selectedBooking.from_time.hour
+                        : '0' + selectedBooking.from_time.hour
+                    }} : {{
+                      selectedBooking.from_time.minute > 9
+                        ? '' + selectedBooking.from_time.minute
+                        : '0' + selectedBooking.from_time.minute
+                    }}"
+                  />
+                </div>
+              </div>
 
-        <div class="modal-footer">
-          <button
-            mdbBtn
-            color="link"
-            (click)="bookingOptions.hide()"
-            mdbWavesEffect
-          >
-            Close
-          </button>
+              <div class="row">
+                <div class="col-md-4 info-text">
+                  Booked Time (to)
+                </div>
+                <div class="col info-input">
+                  <input
+                    type="text"
+                    matInput
+                    disabled
+                    value="  {{
+                      selectedBooking.to_time.hour > 9
+                        ? '' + selectedBooking.to_time.hour
+                        : '0' + selectedBooking.from_time.hour
+                    }} : {{
+                      selectedBooking.to_time.minute > 9
+                        ? '' + selectedBooking.to_time.minute
+                        : '0' + selectedBooking.to_time.minute
+                    }}"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 info-text-net">
+                Duration
+              </div>
+              <div class="col info-input">
+                <input
+                  type="text"
+                  matInput
+                  disabled
+                  value=" {{ selectedBooking.duration }} {{
+                    selectedBooking.rate_type == '/Hr' ? 'Hr(s)' : 'Day(s)'
+                  }}"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 info-text">
+                Event Assigned
+              </div>
+              <div class="col info-input">
+                <input
+                  type="text"
+                  matInput
+                  disabled
+                  value=" {{
+                    selectedBooking.event_id +
+                      ' : ' +
+                      selectedBooking.event_name
+                  }}"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 info-text">
+                Created Date & Time
+              </div>
+              <div class="col info-input">
+                <input
+                  type="text"
+                  matInput
+                  disabled
+                  value=" {{
+                    selectedBooking.created_date.slice(0, 10) +
+                      ' ' +
+                      selectedBooking.created_date.slice(11, 19)
+                  }}"
+                />
+              </div>
+            </div>
+
+            <hr />
+            <h5><b> Write a Review</b></h5>
+            <form #rForm ngForm="rForm">
+              <div class="row">
+                <div class="col-md-4 info-text">
+                  My Reviews
+                </div>
+                <div class="col-md-5 info-input-2">
+                  <mat-form-filed style="width: 100%;">
+                    <textarea
+                      matInput
+                      name="reviewMsg"
+                      [disabled]="!addReview"
+                      [(ngModel)]="selectedBooking.review"
+                      placeholder="Your review here..."
+                    ></textarea>
+                  </mat-form-filed>
+                  <br />
+                  <button
+                    mdbBtn
+                    color="secondary"
+                    class="btn btn-sm"
+                    outline="yes"
+                    *ngIf="!addReview"
+                    (click)="addReview = !addReview"
+                  >
+                    <span> Add/ Edit Review </span>
+                  </button>
+                  <button
+                    mdbBtn
+                    color="primary"
+                    class="btn btn-sm"
+                    outline="yes"
+                    *ngIf="addReview"
+                    (click)="
+                      submitReview(
+                        selectedBooking.booking_id,
+                        selectedBooking.review
+                      )
+                    "
+                  >
+                    <span> Save Changes </span>
+                  </button>
+                  <button
+                    mdbBtn
+                    color="red"
+                    class="btn btn-sm"
+                    outline="yes"
+                    *ngIf="addReview"
+                    (click)="addReview = !addReview"
+                  >
+                    <span> Discard </span>
+                  </button>
+                </div>
+                <div class="col-md-3 pt-4 text-center">
+                  <button
+                    mdbBtn
+                    color="purple"
+                    text="white"
+                    class="btn btn-md text-center"
+                    (click)="rateReview = !rateReview"
+                  >
+                    <span>
+                      <mdb-icon fas icon="star"></mdb-icon> Rate this Service
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </form>
+            <hr />
+            <div class="row">
+              <div class="col-md-4 info-text-net">
+                State
+              </div>
+              <div class="col info-input-net">
+                <b
+                  ><input
+                    type="text"
+                    matInput
+                    disabled
+                    value=" {{ selectedBooking.state }}"
+                /></b>
+              </div>
+            </div>
+
+            <hr />
+
+            <div *ngIf="bookingType != 'cancelled'">
+              <div class="row">
+                <div class="col-md-4 info-text-net">
+                  Total Fee
+                </div>
+                <div class="col info-input-net">
+                  <input
+                    type="text"
+                    matInput
+                    disabled
+                    value=" Rs. {{ selectedBooking.amount }}"
+                  />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 info-text-net">
+                  Amount Paid
+                </div>
+                <div class="col info-input-net">
+                  <b
+                    ><input
+                      type="text"
+                      matInput
+                      disabled
+                      value=" Rs. {{ selectedBooking.amount_paid }}"
+                  /></b>
+                </div>
+              </div>
+
+              <div
+                class="row"
+                *ngIf="selectedBooking.amount - selectedBooking.amount_paid > 0"
+              >
+                <div class="col-md-4 info-text-net">
+                  To be Paid
+                </div>
+                <div
+                  class="col info-input-net"
+                  style="color: darkmagenta !important;"
+                >
+                  <b
+                    ><input
+                      type="text"
+                      matInput
+                      disabled
+                      value=" Rs. {{
+                        selectedBooking.amount - selectedBooking.amount_paid
+                      }}"
+                  /></b>
+                </div>
+              </div>
+              <hr />
+            </div>
+            <div class="info-top">
+              <button
+                mdbBtn
+                color="darkred"
+                text="white"
+                class="btn btn-md btn-danger text-center"
+                *ngIf="selectedBooking.state == 'pending'"
+                (click)="cancelBooking.show()"
+              >
+                <span>Send Cancel Request </span>
+              </button>
+            </div>
+          </section>
+
+          <div *ngIf="rateReview">
+            <app-rating-review
+              [type]="'service'"
+              [id]="selectedBooking.service_id"
+              [recievedService]="selectedBooking.service_name"
+            ></app-rating-review>
+            <hr />
+            <div class="info-top">
+              <button
+                mdbBtn
+                color="purple"
+                text="white"
+                class="btn btn-md text-center"
+                (click)="rateReview = !rateReview"
+              >
+                <span> Rate & Go Back </span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="modal-content" *ngIf = "!selectedBooking">
-        <app-not-found-page></app-not-found-page>
-       </div>
+
+      <div class="modal-footer">
+        <button
+          mdbBtn
+          color="link"
+          (click)="bookingOptions.hide()"
+          mdbWavesEffect
+        >
+          Close
+        </button>
+      </div>
+    </div>
+    <div class="modal-content" *ngIf="!selectedBooking">
+      <app-not-found-page></app-not-found-page>
     </div>
   </div>
-
-
+</div>
 
 <!--send cancel request Modal-->
 <div
@@ -348,15 +510,13 @@
   aria-labelledby="myBasicModalLabel"
   [config]="{ backdrop: false, ignoreBackdropClick: true }"
   aria-hidden="true"
-
-
 >
   <div
     class="modal-dialog modal-dialog-centered modal-lg"
     role="document"
-    style="overflow-y: initial !important"
+    style="overflow-y: initial !important;"
   >
-    <div class="modal-content"   *ngIf = "selectedBooking">
+    <div class="modal-content" *ngIf="selectedBooking">
       <div class="modal-header">
         <button
           type="button"
@@ -366,48 +526,80 @@
         >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
-          <mat-icon>service</mat-icon>Send cancel reuest for Booking: {{ selectedBooking.booking_id}}
+        <h4 class="modal-title w-100" id="myModalLabel">
+          <mat-icon>service</mat-icon>Send cancel reuest for Booking:
+          {{ selectedBooking.booking_id }}
         </h4>
       </div>
 
       <div class="modal-body" style="height: 450px; overflow-y: auto;">
         <div class="container">
-        <div class="inner-content pd-top-min-2 text-center">
-          <p><b> Note: Your request will be send to the relavant Service Provider. They will manually review and cancel your booking.
-            After cancellation you will be refunded with the paid amount.
-            <br>
-            Please mention a valid reason for your cancellation below.
-          </b></p>
-          <hr>
-        </div>
-        <div class="pd-top-min-2" id="content">
-          <h4><b>Cancellation Notice: </b> </h4>
-          <p> <b>{{ selectedBooking.user.name }} (User ID:{{selectedBooking.user.user_id}}) </b> requesting cancellation on
-           <br> <b> Booking (Id: {{selectedBooking.booking_id}})</b> placed for
-             <b>{{selectedBooking.service_name }}</b>  from <b>{{selectedBooking.from_date.slice(0,10)}}to
-              {{ selectedBooking.to_date.slice(0,10)}}</b>
+          <div class="inner-content pd-top-min-2 text-center">
+            <p>
+              <b>
+                Note: Your request will be send to the relavant Service
+                Provider. They will manually review and cancel your booking.
+                After cancellation you will be refunded with the paid amount.
+                <br />
+                Please mention a valid reason for your cancellation below.
+              </b>
             </p>
-          <br>
-          <h5>Reason for cancellation:</h5>
-         </div>
+            <hr />
+          </div>
+          <div class="pd-top-min-2" id="content">
+            <h4><b>Cancellation Notice: </b></h4>
+            <p>
+              <b
+                >{{ selectedBooking.user.name }} (User ID:{{
+                  selectedBooking.user.user_id
+                }})
+              </b>
+              requesting cancellation on <br />
+              <b> Booking (Id: {{ selectedBooking.booking_id }})</b> placed for
+              <b>{{ selectedBooking.service_name }}</b> from
+              <b
+                >{{ selectedBooking.from_date.slice(0, 10) }}to
+                {{ selectedBooking.to_date.slice(0, 10) }}</b
+              >
+            </p>
+            <br />
+            <h5>Reason for cancellation:</h5>
+          </div>
           <mat-form-field>
-            <textarea matInput rows="4"  [(ngModel)]="cancelMsg" placeholder="Please state your reason for cancellation.."></textarea>
+            <textarea
+              matInput
+              rows="4"
+              [(ngModel)]="cancelMsg"
+              placeholder="Please state your reason for cancellation.."
+            ></textarea>
           </mat-form-field>
 
-          <hr>
+          <hr />
           <div class="btns text-center">
-            <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" (click)="cancelDialog.show()" >
-            Send Request</button>
-            <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary"  outline="yes"
-            (click) ="cancelBooking.hide()" (click)="cancelMsg = null" id="discardBtn">
-              Discard</button>
+            <button
+              class="btn btn-md"
+              mdbBtn
+              mdbWavesEffect
+              color="secondary"
+              (click)="cancelDialog.show()"
+            >
+              Send Request
+            </button>
+            <button
+              class="btn btn-md"
+              mdbBtn
+              mdbWavesEffect
+              color="secondary"
+              outline="yes"
+              (click)="cancelBooking.hide()"
+              (click)="cancelMsg = null"
+              id="discardBtn"
+            >
+              Discard
+            </button>
           </div>
-
         </div>
-
       </div>
-
 
       <div class="modal-footer">
         <button
@@ -423,33 +615,51 @@
   </div>
 </div>
 
-
 <!-- cancel appointment confirmation-->
-<div mdbModal #cancelDialog="mdbModal"
-class="modal fade top"
-id="frameModalTop" tabindex="-1" role="dialog"
-[config]="{ backdrop: false, ignoreBackdropClick: true }"
-  aria-labelledby="myModalLabel" aria-hidden="true" >
-  <div class="modal-dialog modal-notify modal-danger  modal-dialog-centered" role="document">
+<div
+  mdbModal
+  #cancelDialog="mdbModal"
+  class="modal fade top"
+  id="frameModalTop"
+  tabindex="-1"
+  role="dialog"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-labelledby="myModalLabel"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-notify modal-danger modal-dialog-centered"
+    role="document"
+  >
     <!--Content-->
     <div class="modal-content">
       <!--Header-->
       <div class="modal-header">
         <p class="heading">Cancel Booking</p>
 
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelDialog.hide()">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="cancelDialog.hide()"
+        >
           <span aria-hidden="true" class="white-text">&times;</span>
         </button>
       </div>
 
       <!--Body-->
       <div class="modal-body">
-
         <div class="row">
           <div class="col-3">
             <p></p>
             <p class="text-center">
-              <mdb-icon fas icon="ban" size="3x" class="mb-3 animated rotateIn"></mdb-icon>
+              <mdb-icon
+                fas
+                icon="ban"
+                size="3x"
+                class="mb-3 animated rotateIn"
+              ></mdb-icon>
             </p>
           </div>
 
@@ -461,14 +671,30 @@ id="frameModalTop" tabindex="-1" role="dialog"
 
       <!--Footer-->
       <div class="modal-footer justify-content-center">
-        <a type="button" mdbBtn color="danger" class="waves-effect"  (click)="sendCancelRequest()"
-        (click)="cancelDialog.hide()" (click)="cancelBooking.hide()" (click)="bookingOptions.hide()"
-        mdbWavesEffect>Cancel Booking
+        <a
+          type="button"
+          mdbBtn
+          color="danger"
+          class="waves-effect"
+          (click)="sendCancelRequest()"
+          (click)="cancelDialog.hide()"
+          (click)="cancelBooking.hide()"
+          (click)="bookingOptions.hide()"
+          mdbWavesEffect
+          >Cancel Booking
           <mdb-btn far icon="ban" class="ml-1"></mdb-btn>
         </a>
-        <a type="button" mdbBtn color="danger" outline="true" class="waves-effect" mdbWavesEffect
-        (click)="cancelDialog.hide()"
-          data-dismiss="modal">No, thanks</a>
+        <a
+          type="button"
+          mdbBtn
+          color="danger"
+          outline="true"
+          class="waves-effect"
+          mdbWavesEffect
+          (click)="cancelDialog.hide()"
+          data-dismiss="modal"
+          >No, thanks</a
+        >
       </div>
     </div>
     <!--/.Content-->

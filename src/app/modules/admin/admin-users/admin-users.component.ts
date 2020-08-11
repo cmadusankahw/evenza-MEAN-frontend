@@ -15,7 +15,7 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class AdminUsersComponent implements OnInit, OnDestroy {
 
-  displayedColumns: string[] = ['user_id', 'user_type', 'name', 'email', 'business' , 'action'];
+  displayedColumns: string[] = ['user_id', 'user_type', 'name', 'email', 'business', 'action'];
   dataSource: MatTableDataSource<Merchant>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -37,21 +37,21 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   selectedMerchant: Merchant;
 
 
-  constructor( private authService: AuthService) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
-     // get admin for child comp use
-   this.authService.getMerchants();
-   this.merchantSub = this.authService.getMerchansUpdateListener().subscribe(
-     merchants => {
-       if (merchants) {
-         this.recievedMerchants = merchants;
-         console.log(this.recievedMerchants);
-         this.dataSource = new MatTableDataSource(this.addMerchants(this.recievedMerchants, this.userType));
-         this.dataSource.paginator = this.paginator;
-         this.dataSource.sort = this.sort;
-      }
-     });
+    // get admin for child comp use
+    this.authService.getMerchants();
+    this.merchantSub = this.authService.getMerchansUpdateListener().subscribe(
+      merchants => {
+        if (merchants) {
+          this.recievedMerchants = merchants;
+          console.log(this.recievedMerchants);
+          this.dataSource = new MatTableDataSource(this.addMerchants(this.recievedMerchants, this.userType));
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
+      });
   }
 
   ngOnDestroy() {

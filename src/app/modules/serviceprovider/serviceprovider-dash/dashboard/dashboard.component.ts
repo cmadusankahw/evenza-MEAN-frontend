@@ -15,17 +15,17 @@ import { ServiceService } from 'src/app/modules/service/service.service';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   showSubMenu = false;
-   // navigation
-   home = 'txt-white row';
-   bprofile = 'txt-white row';
-   bookings = 'txt-white row';
-   appoints = 'txt-white row';
-   calendar = 'txt-white row';
-   reports = 'txt-white row';
-   profile = 'txt-white row';
+  // navigation
+  home = 'txt-white row';
+  bprofile = 'txt-white row';
+  bookings = 'txt-white row';
+  appoints = 'txt-white row';
+  calendar = 'txt-white row';
+  reports = 'txt-white row';
+  profile = 'txt-white row';
 
 
-    // snack bars for notification display
+  // snack bars for notification display
   private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private headerSubs: Subscription;
 
   // recieved merchant
-  headerDetails: {userType: string, userName: string, profilePic: string};
+  headerDetails: { userType: string, userName: string, profilePic: string };
 
 
   // create new service
@@ -47,46 +47,46 @@ export class DashboardComponent implements OnInit, OnDestroy {
     );
 
   constructor(private breakpointObserver: BreakpointObserver,
-              private router: Router, private authService: AuthService,
-              private serviceService: ServiceService,
-              private _snackBar: MatSnackBar) {
+    private router: Router, private authService: AuthService,
+    private serviceService: ServiceService,
+    private _snackBar: MatSnackBar) {
 
-                // handeling booking created notification
-                this.serviceService.newBookingCreated()
-                .subscribe(data => {
-                  this._snackBar.open('New Booking on ' + data.service
-                + ' from ' + data.fromDate + ' to ' + data.toDate + '- Evenza', 'Dismiss', {
-                  duration: 5000,
-                  horizontalPosition: this.horizontalPosition,
-                  verticalPosition: this.verticalPosition,
-                  });
-                  this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-                  this.router.onSameUrlNavigation = 'reload';
-                  this.router.navigate(['/sp/dash']);
-                });
+    // handeling booking created notification
+    this.serviceService.newBookingCreated()
+      .subscribe(data => {
+        this._snackBar.open('New Booking on ' + data.service
+          + ' from ' + data.fromDate + ' to ' + data.toDate + '- Evenza', 'Dismiss', {
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/sp/dash']);
+      });
 
-                // handeling appointment created notification
-                this.serviceService.newApointCreated()
-                .subscribe(data => {
-                  this._snackBar.open('New Appointment on ' + data.service
-                + ' from ' + data.appointedDate + ' to ' + data.appointedTime + '- Evenza', 'Dismiss', {
-                  duration: 5000,
-                  horizontalPosition: this.horizontalPosition,
-                  verticalPosition: this.verticalPosition,
-                  });
-                  this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-                  this.router.onSameUrlNavigation = 'reload';
-                  this.router.navigate(['/sp/dash']);
-                });
+    // handeling appointment created notification
+    this.serviceService.newApointCreated()
+      .subscribe(data => {
+        this._snackBar.open('New Appointment on ' + data.service
+          + ' from ' + data.appointedDate + ' to ' + data.appointedTime + '- Evenza', 'Dismiss', {
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/sp/dash']);
+      });
 
-              }
+  }
 
   ngOnInit() {
     this.routerEvents();
     this.authService.getHeaderDetails();
-    this.headerSubs = this.authService.getHeaderDetailsListener().subscribe (
+    this.headerSubs = this.authService.getHeaderDetailsListener().subscribe(
       merchant => {
-          this.headerDetails = merchant;
+        this.headerDetails = merchant;
       });
   }
 
@@ -114,10 +114,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         } else if (e.url === '/sp/dash/reports') {
           this.navReports();
         } else if (e.url === '/sp/dash/profile') {
-        this.navProfile();
-    }
-    }
-  });
+          this.navProfile();
+        }
+      }
+    });
   }
 
   navHome() {

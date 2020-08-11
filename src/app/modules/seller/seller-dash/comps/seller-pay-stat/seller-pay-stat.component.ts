@@ -27,10 +27,10 @@ export class SellerPayStatComponent implements OnInit {
   public myPayments: MerchantPayments;
 
   // last month payments
-   public total_paid: number = 0;
-   public due_amount: number = 0;
-   public payPalAmount = 0;
-   public due_date: string = new Date().toISOString().slice(0, 10);
+  public total_paid = 0;
+  public due_amount = 0;
+  public payPalAmount = 0;
+  public due_date: string = new Date().toISOString().slice(0, 10);
 
   // for payments
   public pay_amount = 0;
@@ -47,16 +47,16 @@ export class SellerPayStatComponent implements OnInit {
     },
     commit: true,
     payment: (data, actions) => {
-      return actions.payment.create ( {
+      return actions.payment.create({
         payment: {
           transactions: [
-            {amount: { total: this.payPalAmount , currency: 'USD'}}
+            { amount: { total: this.payPalAmount, currency: 'USD' } }
           ]
         }
       });
     },
-    onAuthorize : (data, actions) => {
-      return actions.payment.execute().then ( payment => {
+    onAuthorize: (data, actions) => {
+      return actions.payment.execute().then(payment => {
         // make order if the payment is successed
         document.getElementById('placeOrder').click();
       });
@@ -71,15 +71,15 @@ export class SellerPayStatComponent implements OnInit {
   ngOnInit() {
     this.adminService.getMerchantPayment();
     this.adminService.getMerchantPaymentUpdateListener()
-    .subscribe ( (res: MerchantPayments) => {
-      console.log(res);
-      this.myPayments = res;
-      this.getLastMonthPayment();
-    });
+      .subscribe((res: MerchantPayments) => {
+        console.log(res);
+        this.myPayments = res;
+        this.getLastMonthPayment();
+      });
   }
 
   getLastMonthPayment() {
-    for ( const p of this.myPayments.pays) {
+    for (const p of this.myPayments.pays) {
       this.due_date = p.timestamp.year + '-' + p.timestamp.month + '-' + '228';
       this.total_paid += p.paid_amount;
       this.due_amount = p.due_amount;
@@ -88,21 +88,21 @@ export class SellerPayStatComponent implements OnInit {
 
 
   addPaypal() {
-    if(!this.addScript) {
-      this.addPaypalScript().then( () =>{
-        paypal.Button.render( this.paypalConfig, '#paybtn');
+    if (!this.addScript) {
+      this.addPaypalScript().then(() => {
+        paypal.Button.render(this.paypalConfig, '#paybtn');
       });
     }
   }
 
   addPaypalScript() {
     this.addScript = true;
-    return new Promise( ( resolve, reject) => {
-      let scriptTagelement = document.createElement('script');
+    return new Promise((resolve, reject) => {
+      const scriptTagelement = document.createElement('script');
       scriptTagelement.src = 'https://www.paypalobjects.com/api/checkout.js';
       scriptTagelement.onload = resolve;
       document.body.appendChild(scriptTagelement);
-    })
+    });
   }
 
 

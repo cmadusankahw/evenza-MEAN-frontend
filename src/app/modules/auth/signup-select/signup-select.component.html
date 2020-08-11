@@ -1,28 +1,47 @@
-
-
-  <div class="sign-up-content">
-
-    <section class="text-center px-md-5 mx-md-5 dark-grey-text">
-
-      <div class="row mb-5">
-        <div class="col-md-4 mx-auto">
-            <img src="./assets/images/vectors/sign-up-select.png" class="img-fluid" alt="Join Evenza Today">
-
-        </div>
+<div class="sign-up-content">
+  <section class="text-center px-md-5 mx-md-5 dark-grey-text">
+    <div class="row mb-5">
+      <div class="col-md-4 mx-auto">
+        <img
+          src="./assets/images/vectors/sign-up-select.png"
+          class="img-fluid"
+          alt="Join Evenza Today"
+        />
       </div>
+    </div>
 
-      <h2 class="font-weight-bold mb-4 pb-2">Join Evenza Today!</h2>
-      <h4 class="font-weight-bold mb-4 pb-2">How would you like to Join with us?</h4>
+    <h2 class="font-weight-bold mb-4 pb-2">Join Evenza Today!</h2>
+    <h4 class="font-weight-bold mb-4 pb-2">
+      How would you like to Join with us?
+    </h4>
 
-      <p class="text-center mx-auto mb-2 pb-2">
-        Sign up as an Event Organizer to organize and manage your event with the amazing tools and services provided!
-        <br>
-        Sign up as an Event Resourcer to grow your business with Evenza, find your right Customers, Earn & Enjoy!
-      </p>
+    <p class="text-center mx-auto mb-2 pb-2">
+      Sign up as an Event Organizer to organize and manage your event with the
+      amazing tools and services provided!
+      <br />
+      Sign up as an Event Resourcer to grow your business with Evenza, find your
+      right Customers, Earn & Enjoy!
+    </p>
+  </section>
 
-    </section>
-
-
-    <button mbdBtn mdbWavesEffect type="button" class="btn btn-secondary" (click)= "navigateUser()" routerLink="/register/common">I want to Plan</button>
-    <button mdbBtn mdbWavesEffect type="button" class="btn btn-outline-secondary" (click)= "navigateMerchant()" routerLink="/register/common">I want to Earn</button>
-  </div>
+  <button
+    mbdBtn
+    mdbWavesEffect
+    type="button"
+    class="btn btn-secondary"
+    (click)="navigateUser()"
+    routerLink="/register/common"
+  >
+    I want to Plan
+  </button>
+  <button
+    mdbBtn
+    mdbWavesEffect
+    type="button"
+    class="btn btn-outline-secondary"
+    (click)="navigateMerchant()"
+    routerLink="/register/common"
+  >
+    I want to Earn
+  </button>
+</div>

@@ -1,70 +1,100 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'over'"
-      [opened]="opened">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'over'"
+    [opened]="opened"
+  >
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-
       <!--filters-->
       <form (submit)="searchServices(filterForm)" #filterForm="ngForm">
-      <div mat-list-item class="filters">
-      <h4 style="padding-left:15px;">Other Filters..</h4>
-      <hr>
-      <!--price-->
-      <div class="filter-content pd-top-filter">
-        <h6> <mdb-icon fas icon="money-bill"></mdb-icon> By Service Rates</h6>
-        <span class="price-text"> Min Rate Rs. {{priceStart}}</span>
-        <br>
-        <mat-slider
-        class="cat-list"
-        invert="false"
-        [max]= "priceEndStatic"
-        min="0"
-        step="1"
-        thumbLabel="true"
-        [(ngModel)]="priceStart"
-        name="priceStart">
-        </mat-slider>
-        <br>
-        <span class="price-text"> Rate Rs. {{priceEnd}}</span>
-        <br>
-        <mat-slider
-        class="cat-list"
-        invert="false"
-        [max]="priceEnd"
-        [min]="priceStart"
-        step="1"
-        thumbLabel="true"
-        [(ngModel)]="priceEnd"
-        name="priceEnd">
-        </mat-slider>
-      </div>
-      <hr>
+        <div mat-list-item class="filters">
+          <h4 style="padding-left: 15px;">Other Filters..</h4>
+          <hr />
+          <!--price-->
+          <div class="filter-content pd-top-filter">
+            <h6>
+              <mdb-icon fas icon="money-bill"></mdb-icon> By Service Rates
+            </h6>
+            <span class="price-text"> Min Rate Rs. {{ priceStart }}</span>
+            <br />
+            <mat-slider
+              class="cat-list"
+              invert="false"
+              [max]="priceEndStatic"
+              min="0"
+              step="1"
+              thumbLabel="true"
+              [(ngModel)]="priceStart"
+              name="priceStart"
+            >
+            </mat-slider>
+            <br />
+            <span class="price-text"> Rate Rs. {{ priceEnd }}</span>
+            <br />
+            <mat-slider
+              class="cat-list"
+              invert="false"
+              [max]="priceEnd"
+              [min]="priceStart"
+              step="1"
+              thumbLabel="true"
+              [(ngModel)]="priceEnd"
+              name="priceEnd"
+            >
+            </mat-slider>
+          </div>
+          <hr />
 
-         <!--pay type-->
-         <div class="filter-content pd-top-filter">
-          <h6> <mdb-icon fas icon="credit-card"></mdb-icon> By Payment Method</h6>
-          <br>
+          <!--pay type-->
+          <div class="filter-content pd-top-filter">
+            <h6>
+              <mdb-icon fas icon="credit-card"></mdb-icon> By Payment Method
+            </h6>
+            <br />
             <div class="filter-check">
-              <mat-checkbox class="example-margin" ngModel name="visa"> Visa</mat-checkbox><br>
-              <mat-checkbox class="example-margin" ngModel name="payhere"> PayPal/ PayHere</mat-checkbox><br>
-              <mat-checkbox class="example-margin"  name="pay_on_meet"
-              [(ngModel)] = "payOnMeetQuery">Pay on Meet</mat-checkbox>
+              <mat-checkbox class="example-margin" ngModel name="visa">
+                Visa</mat-checkbox
+              ><br />
+              <mat-checkbox class="example-margin" ngModel name="payhere">
+                PayPal/ PayHere</mat-checkbox
+              ><br />
+              <mat-checkbox
+                class="example-margin"
+                name="pay_on_meet"
+                [(ngModel)]="payOnMeetQuery"
+                >Pay on Meet</mat-checkbox
+              >
             </div>
-        </div>
+          </div>
 
-        <hr>
-        <!--business-->
-        <div class="filter-content pd-top-filter">
-          <h6> <mdb-icon fas icon="building"></mdb-icon> By Business Location</h6>
-          <a class="btn btn-md" color="secondary" mdbBtn mdbWavesEffect (click) ="locationSearchModal.show()"
-          style="margin:0 auto;">
-            Search by Location
-          </a>
-          <mat-form-field class="cat-list">
-            <mat-label><span class="location-label">Start typing city or town</span></mat-label>
-            <input matInput
+          <hr />
+          <!--business-->
+          <div class="filter-content pd-top-filter">
+            <h6>
+              <mdb-icon fas icon="building"></mdb-icon> By Business Location
+            </h6>
+            <a
+              class="btn btn-md"
+              color="secondary"
+              mdbBtn
+              mdbWavesEffect
+              (click)="locationSearchModal.show()"
+              style="margin: 0 auto;"
+            >
+              Search by Location
+            </a>
+            <mat-form-field class="cat-list">
+              <mat-label
+                ><span class="location-label"
+                  >Start typing city or town</span
+                ></mat-label
+              >
+              <input
+                matInput
                 id="typeahead-focus"
                 type="text"
                 class="form-control"
@@ -75,62 +105,73 @@
                 #instance="ngbTypeahead"
                 name="location"
               />
-          </mat-form-field>
-        </div>
+            </mat-form-field>
+          </div>
 
-        <hr>
-       <!--ratings-->
-       <div class="filter-content pd-top-filter">
-        <h6> <mdb-icon fas icon="star"></mdb-icon> By User Ratings</h6>
-        <div class="rating">
-          <ngb-rating [(rate)]="ratings" max="5">
-            <ng-template let-fill="fill" let-index="index">
-              <span class="star" [class.filled]="fill === 100">&#9733;</span>
-            </ng-template>
-          </ngb-rating>
-          <br>
-          <span class="rating-txt">
-            Scale 1-5
-          </span>
+          <hr />
+          <!--ratings-->
+          <div class="filter-content pd-top-filter">
+            <h6><mdb-icon fas icon="star"></mdb-icon> By User Ratings</h6>
+            <div class="rating">
+              <ngb-rating [(rate)]="ratings" max="5">
+                <ng-template let-fill="fill" let-index="index">
+                  <span class="star" [class.filled]="fill === 100"
+                    >&#9733;</span
+                  >
+                </ng-template>
+              </ngb-rating>
+              <br />
+              <span class="rating-txt">
+                Scale 1-5
+              </span>
+            </div>
+          </div>
+          <hr />
+          <div class="filter-content pd-top-filter text-center">
+            <button
+              mdbBtn
+              color="secondary"
+              class="btn btn-md"
+              style="margin: 0 auto;"
+              text="white"
+              mdbWavesEffect
+              (click)="drawer.close()"
+              (click)="searchServices()"
+            >
+              Apply Filters
+            </button>
+            <hr />
+          </div>
         </div>
-      </div>
-      <hr>
-      <div class="filter-content pd-top-filter text-center">
-        <button mdbBtn color="secondary" class="btn btn-md"
-        style="margin:0 auto;" text="white" mdbWavesEffect (click)="drawer.close()" (click)="searchServices()">
-          Apply Filters
-        </button>
-        <hr>
-      </div>
-    </div>
-  </form>
+      </form>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-
-    <div class="filter-btn shadow pt-3" style="text-align:right;">
+    <div class="filter-btn shadow pt-3" style="text-align: right;">
       <button
-      type="button"
-      aria-label="Toggle sidenav"
-      mat-icon-button
-      (click)="drawer.open()"
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.open()"
       >
-      <mat-icon aria-label="Side nav toggle icon">subject</mat-icon>
-    </button>
-    <span class="filter-title">Filter Services</span>
+        <mat-icon aria-label="Side nav toggle icon">subject</mat-icon>
+      </button>
+      <span class="filter-title">Filter Services</span>
     </div>
-
-
 
     <!--search header-->
 
-        <!--description-->
-        <div class="description text-center container pd-top pd-side">
-          <p>Evenza provide you everything for your event. Please Select the <b>service category</b>, and the <b> period </b> you want to book. <br>
-            Yo can simply book a service or add a service to your
-            <b><a routerLink="/ep/dash"> Event Plan</a></b>. Trusted & Top Rated services available islandwide!
-          </p>
-         <!-- <div class="row container-fluid">
+    <!--description-->
+    <div class="description text-center container pd-top pd-side">
+      <p>
+        Evenza provide you everything for your event. Please Select the
+        <b>service category</b>, and the <b> period </b> you want to book.
+        <br />
+        Yo can simply book a service or add a service to your
+        <b><a routerLink="/ep/dash"> Event Plan</a></b
+        >. Trusted & Top Rated services available islandwide!
+      </p>
+      <!-- <div class="row container-fluid">
             <div class="col-md-3">
                 <div class="filter-content search-box-mid shadow">
                   <h5 class="top-heading"><b> I want to book.. </b></h5>
@@ -216,50 +257,62 @@
 
           </div>
           <hr>-->
+    </div>
+
+    <!--search results-->
+    <div class="search-results container" *ngIf="services.length">
+      <div class="text-md-left lead pt-2 pb-3">
+        <h3 class="product-cat-heading">{{ selectedCategory }}</h3>
+      </div>
+      <div
+        class="row search-result shadow container-fluid"
+        mdbWavesEffect
+        *ngFor="let service of services"
+      >
+        <div class="col-md-3">
+          <img [src]="service.image_01" style="width: 260px;" />
         </div>
-
-
-      <!--search results-->
-      <div class="search-results container" *ngIf="services.length">
-        <div class="text-md-left lead pt-2 pb-3">
-          <h3 class="product-cat-heading">{{selectedCategory}}</h3>
-       </div>
-        <div class="row search-result shadow container-fluid" mdbWavesEffect *ngFor="let service of services">
-          <div class="col-md-3">
-            <img [src]="service.image_01" style="width:260px" >
+        <div class="col-md-4 search-result-pd">
+          <span class="search-result-heading"> {{ service.service_name }}</span>
+          <br />
+          <span class="search-result-price">
+            Rs. {{ service.rate }} {{ service.rate_type }}
+          </span>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-4 search-result-btn-pd">
+          <div style="text-align: right;">
+            <a
+              role="button"
+              class="btn btn-md"
+              color="secondary"
+              text="white"
+              mdbBtn
+              mdbWavesEffect
+              (click)="sendService(service)"
+              (click)="serviceDetails.show()"
+            >
+              Book Now</a
+            >
           </div>
-            <div class="col-md-4 search-result-pd">
-              <span class="search-result-heading"> {{service.service_name}}</span>
-              <br>
-              <span class="search-result-price"> Rs. {{service.rate}} {{service.rate_type}} </span>
-            </div>
-          <div class="col-md-1">
+          <div class="rating-mini">
+            <ngb-rating readonly="true" [rate]="service.rating" max="5">
+              <ng-template let-fill="fill" let-index="index">
+                <span class="star-mini" [class.filled]="fill === 100"
+                  >&#9733;</span
+                >
+              </ng-template>
+            </ngb-rating>
           </div>
-          <div class="col-md-4 search-result-btn-pd">
-            <div style="text-align:right;">
-              <a role="button" class="btn btn-md" color="secondary" text="white" mdbBtn mdbWavesEffect
-              (click)= "sendService(service)"  (click)="serviceDetails.show()">
-              Book Now</a>
-            </div>
-             <div class="rating-mini">
-              <ngb-rating readonly="true" [rate]="service.rating" max="5">
-                <ng-template  let-fill="fill" let-index="index">
-                  <span class="star-mini" [class.filled]="fill === 100">&#9733;</span>
-                </ng-template>
-              </ngb-rating>
-            </div>
-          </div>
-
         </div>
       </div>
+    </div>
 
-      <div class="text-center pd-top-min" *ngIf="!services.length">
-        No Matching Services Found
-      </div>
+    <div class="text-center pd-top-min" *ngIf="!services.length">
+      No Matching Services Found
+    </div>
 
-
-         <hr>
-
+    <hr />
   </mat-sidenav-content>
 </mat-sidenav-container>
 
@@ -271,13 +324,12 @@
   role="dialog"
   aria-labelledby="myBasicModalLabel"
   [config]="{ backdrop: false, ignoreBackdropClick: true }"
-  style="z-index:1;"
-
+  style="z-index: 1;"
 >
   <div
     class="modal-dialog modal-dialog-centered modal-lg"
     role="document"
-    style="overflow-y: initial !important"
+    style="overflow-y: initial !important;"
   >
     <div class="modal-content">
       <div class="modal-header">
@@ -289,15 +341,22 @@
         >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
+        <h4 class="modal-title w-100" id="myModalLabel">
           <mat-icon>service</mat-icon>Book Service
         </h4>
       </div>
 
-      <div class="modal-body " style="height: 500px; overflow-y: auto;" *ngIf="eventId">
-
-        <app-service-details [editable]= "false" [isowner]="false" [islogged] = "islogged" [eventId] = "eventId"></app-service-details>
-
+      <div
+        class="modal-body"
+        style="height: 500px; overflow-y: auto;"
+        *ngIf="eventId"
+      >
+        <app-service-details
+          [editable]="false"
+          [isowner]="false"
+          [islogged]="islogged"
+          [eventId]="eventId"
+        ></app-service-details>
       </div>
 
       <div class="modal-footer">
@@ -313,8 +372,6 @@
     </div>
   </div>
 </div>
-
-
 
 <!--product details of a search result-->
 <div
@@ -326,12 +383,11 @@
   aria-labelledby="myBasicModalLabel"
   [config]="{ backdrop: false, ignoreBackdropClick: true }"
   aria-hidden="true"
-
 >
   <div
     class="modal-dialog modal-dialog-centered modal-lg"
     role="document"
-    style="overflow-y: initial !important"
+    style="overflow-y: initial !important;"
   >
     <div class="modal-content">
       <div class="modal-header">
@@ -343,13 +399,16 @@
         >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
+        <h4 class="modal-title w-100" id="myModalLabel">
           <mat-icon>service</mat-icon> Search Nearby Services
         </h4>
       </div>
 
-      <div class="modal-body " style="height: 500px; overflow-y: auto;">
-        <app-location-search [searchMode] = "true" [(recievedLocations)] = "recievedLocations"></app-location-search>
+      <div class="modal-body" style="height: 500px; overflow-y: auto;">
+        <app-location-search
+          [searchMode]="true"
+          [(recievedLocations)]="recievedLocations"
+        ></app-location-search>
       </div>
 
       <div class="modal-footer">
@@ -365,4 +424,3 @@
     </div>
   </div>
 </div>
-

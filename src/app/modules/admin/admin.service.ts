@@ -5,13 +5,12 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { SuccessComponent } from 'src/app/success/success.component';
 import { Admin } from '../auth/auth.model';
-import { BookingData, DashboardData, MerchantPayments, OrderData, PaymentData } from './admin.model';
-
+import { DashboardData, MerchantPayments, PaymentData } from './admin.model';
+import { getUrl } from 'src/assets/url';
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
-  private bookingDataUpdated = new Subject<BookingData>();
-  private orderDataUpdated = new Subject<OrderData>();
+  // Observer Pattern: Subjects
   private paymentsUpdated = new Subject<PaymentData[]>();
   private adminUpdated = new Subject<Admin>();
   private dashboardDataUpdated = new Subject<DashboardData>();
@@ -23,32 +22,31 @@ export class AdminService {
 
   // to get merchant/event planner once logged in
   private admin: Admin;
-
+  // recieved admin dashboard status
   private dashboardData: DashboardData;
-
+  // rcieved user payment details
   private paymentData: PaymentData[];
+  // api url
+  private url = getUrl();
 
-  url = 'http://localhost:3000/api/';
-
-
-  adminPayments: MerchantPayments[];
+  // payments dtails recieved
+  private adminPayments: MerchantPayments[];
 
   // recieved merchant's payment
-  merchantPayment: MerchantPayments;
+  private merchantPayment: MerchantPayments;
 
-
-
-  constructor(private http: HttpClient,
-              private router: Router,
-              public dialog: MatDialog) { }
-
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    public dialog: MatDialog
+  ) {}
 
   // get methods
 
-
   // get event planner after login
-  getAdmin() {
-    this.http.get<{ message: string, admin: Admin }>(this.url + 'admin/get/self')
+  public getAdmin() {
+    this.http
+      .get<{ message: string; admin: Admin }>(this.url + 'admin/get/self')
       .subscribe((recievedMerchant) => {
         this.admin = recievedMerchant.admin;
         this.adminUpdated.next(this.admin);
@@ -56,8 +54,11 @@ export class AdminService {
   }
 
   // get booking data
-  getDashBoardData() {
-    this.http.get<{ message: string, dashboardData: DashboardData }>(this.url + 'admin/get/dbdata')
+  public getDashBoardData() {
+    this.http
+      .get<{ message: string; dashboardData: DashboardData }>(
+        this.url + 'admin/get/dbdata'
+      )
       .subscribe((res) => {
         console.log(res);
         this.dashboardData = res.dashboardData;
@@ -66,16 +67,24 @@ export class AdminService {
   }
 
   // get payment data fbetween given 6 months period
-  getPaymentData(dat: { fromMonth: number, toMonth: number }) {
-    this.http.post<{ message: string, paymntData: PaymentData[] }>(this.url + 'admin/get/paydata', dat)
+  public getPaymentData(dat: { fromMonth: number; toMonth: number }) {
+    this.http
+      .post<{ message: string; paymntData: PaymentData[] }>(
+        this.url + 'admin/get/paydata',
+        dat
+      )
       .subscribe((res) => {
         this.paymentData = res.paymntData;
         this.paymentsUpdated.next(this.paymentData);
       });
   }
 
-  getAdminPayments() {
-    this.http.get<{ message: string, paymentDetails: MerchantPayments[] }>(this.url + 'admin/get/payments')
+  // get all users payment details
+  public getAdminPayments() {
+    this.http
+      .get<{ message: string; paymentDetails: MerchantPayments[] }>(
+        this.url + 'admin/get/payments'
+      )
       .subscribe((res) => {
         console.log(res);
         this.adminPayments = res.paymentDetails;
@@ -84,8 +93,11 @@ export class AdminService {
   }
 
   // get merchants' paymentss for merchant dashboards
-  getMerchantPayment() {
-    this.http.get<{ message: string, merchantPayment: MerchantPayments }>(this.url + 'admin/get/payment')
+  public getMerchantPayment() {
+    this.http
+      .get<{ message: string; merchantPayment: MerchantPayments }>(
+        this.url + 'admin/get/payment'
+      )
       .subscribe((res) => {
         console.log(res);
         this.merchantPayment = res.merchantPayment;
@@ -94,98 +106,105 @@ export class AdminService {
   }
 
   // get location data
-  getMerchantLocation() {
-    this.http.get<{ locations: any[] }>(this.url + 'admin/get/location/m')
+  public getMerchantLocation() {
+    this.http
+      .get<{ locations: any[] }>(this.url + 'admin/get/location/m')
       .subscribe((res) => {
         console.log(res);
         this.merchantLocationUpdated.next(res.locations);
       });
   }
 
-
   // get location data
-  getEventLocation() {
-    this.http.get<{ locations: any[] }>(this.url + 'admin/get/location/e')
+  public getEventLocation() {
+    this.http
+      .get<{ locations: any[] }>(this.url + 'admin/get/location/e')
       .subscribe((res) => {
         console.log(res);
         this.eventLocationUpdated.next(res.locations);
       });
   }
 
-
-
-  // listners for subjects
-
-  getAdminUpdateListener() {
-    return this.adminUpdated.asObservable();
-  }
-
-
-  getDashboardDataUpdateListener() {
-    return this.dashboardDataUpdated.asObservable();
-  }
-
-
-  getPaymentDataUpdateListener() {
-    return this.paymentsUpdated.asObservable();
-  }
-
-
-  getMerchantPaymentsUpdateListener() {
-    return this.adminPaymentsUpdated.asObservable();
-  }
-
-  getMerchantPaymentUpdateListener() {
-    return this.merchantPaymentUpdated.asObservable();
-  }
-
-  getMerchantLocationUpdateListener() {
-    return this.merchantLocationUpdated.asObservable();
-  }
-
-  getEventLocationUpdateListener() {
-    return this.eventLocationUpdated.asObservable();
-  }
-
-
+  // setters
 
   // create a new backup of database
-  createBackup() {
-    this.http.get<{ message: string }>(this.url + 'admin/backup/create')
+  public createBackup() {
+    this.http
+      .get<{ message: string }>(this.url + 'admin/backup/create')
       .subscribe((recievedData) => {
         console.log(recievedData.message);
-        this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
+        this.dialog.open(SuccessComponent, {
+          data: { message: recievedData.message },
+        });
       });
   }
 
   // restore from a created backup
-  restoreBackup(path: string) {
-    this.http.post<{ message: string }>(this.url + 'admin/backup/restore', { path })
+  public restoreBackup(path: string) {
+    this.http
+      .post<{ message: string }>(this.url + 'admin/backup/restore', { path })
       .subscribe((recievedData) => {
         console.log(recievedData.message);
-        this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
+        this.dialog.open(SuccessComponent, {
+          data: { message: recievedData.message },
+        });
       });
   }
 
   // collect service provider payment
-  makePayment(amount: number) {
-    this.http.post<{ message: string }>(this.url + 'admin/make/payment', { amount })
+  public makePayment(amount: number) {
+    this.http
+      .post<{ message: string }>(this.url + 'admin/make/payment', { amount })
       .subscribe((recievedData) => {
         console.log(recievedData.message);
-        this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
+        this.dialog.open(SuccessComponent, {
+          data: { message: recievedData.message },
+        });
       });
   }
 
   // email business reports
-  emailReport(attachment: string, title: string) {
-    this.http.post<{ message: string }>(this.url + 'admin/report/mail', { attachment, title })
+  public emailReport(attachment: string, title: string) {
+    this.http
+      .post<{ message: string }>(this.url + 'admin/report/mail', {
+        attachment,
+        title,
+      })
       .subscribe((recievedData) => {
         console.log(recievedData.message);
-        this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
+        this.dialog.open(SuccessComponent, {
+          data: { message: recievedData.message },
+        });
       });
   }
 
+  // observer pattern: listners for subjects
+
+  public getAdminUpdateListener() {
+    return this.adminUpdated.asObservable();
+  }
+
+  public getDashboardDataUpdateListener() {
+    return this.dashboardDataUpdated.asObservable();
+  }
+
+  public getPaymentDataUpdateListener() {
+    return this.paymentsUpdated.asObservable();
+  }
+
+  public getMerchantPaymentsUpdateListener() {
+    return this.adminPaymentsUpdated.asObservable();
+  }
+
+  public getMerchantPaymentUpdateListener() {
+    return this.merchantPaymentUpdated.asObservable();
+  }
+
+  public getMerchantLocationUpdateListener() {
+    return this.merchantLocationUpdated.asObservable();
+  }
+
+  public getEventLocationUpdateListener() {
+    return this.eventLocationUpdated.asObservable();
+  }
 }
-
-
-

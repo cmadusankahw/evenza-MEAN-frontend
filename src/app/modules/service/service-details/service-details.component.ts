@@ -21,9 +21,9 @@ declare let paypal: any;
 export class ServiceDetailsComponent implements OnInit, OnDestroy {
 
 
-// subscription
-  private serviceSub: Subscription ;
-  private categorySub: Subscription ;
+  // subscription
+  private serviceSub: Subscription;
+  private categorySub: Subscription;
 
   private today = new Date();
 
@@ -38,10 +38,11 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   // recieved event ID for event related booking
   @Input() public eventId: string;
   // booking default date and time
-  @Input() public bookingTime = {fromDate: this.today,
+  @Input() public bookingTime = {
+    fromDate: this.today,
     toDate: this.today,
-    fromTime: {hour: 8, minute: 0},
-    toTime: {hour: 18, minute: 0}
+    fromTime: { hour: 8, minute: 0 },
+    toTime: { hour: 18, minute: 0 }
   };
 
   // book now mode
@@ -51,18 +52,20 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   // edit mode by parent comp
   public editmode = false;
   // appointment default date and time
-  public appointment = {date: this.today, time: {hour: 8, minute: 0} };
+  public appointment = { date: this.today, time: { hour: 8, minute: 0 } };
   // recieved categories
   public categories: ServiceCategories[] = [];
   // recieved quantities
   public rates: ServiceRates[] = [];
   // recieved service (initial declaration)
-  public service: any ;
-   // created promotion
-   public promotion: Promotion = { from_date: '',
-                                    to_date: '',
-                                    title: 'New Promotion',
-                                    precentage: 0 };
+  public service: any;
+  // created promotion
+  public promotion: Promotion = {
+    from_date: '',
+    to_date: '',
+    title: 'New Promotion',
+    precentage: 0
+  };
 
   public tday = new Date();
   public totalAmount = 0.0;
@@ -91,16 +94,16 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
     },
     commit: true,
     payment: (data, actions) => {
-      return actions.payment.create ( {
+      return actions.payment.create({
         payment: {
           transactions: [
-            {amount: { total: this.payPalAmount , currency: 'USD'}}
+            { amount: { total: this.payPalAmount, currency: 'USD' } }
           ]
         }
       });
     },
-    onAuthorize : (data, actions) => {
-      return actions.payment.execute().then ( payment => {
+    onAuthorize: (data, actions) => {
+      return actions.payment.execute().then(payment => {
         // make order if the payment is successed
         document.getElementById('placeOrder').click();
       });
@@ -115,64 +118,64 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
               public dialog: MatDialog) { }
 
   ngOnInit() {
-      // get the service
-      this.serviceService.getService();
-      this.serviceSub = this.serviceService.getServiceUpdateListener()
-        .subscribe((recievedService: Service) => {
-          if (recievedService) {
-            this.service = recievedService;
-            console.log(this.service);
-            this.removed = false;
-            this.editmode = false;
-            this.calcPayment(this.service.rate_type, this.service.rate);
-          }
+    // get the service
+    this.serviceService.getService();
+    this.serviceSub = this.serviceService.getServiceUpdateListener()
+      .subscribe((recievedService: Service) => {
+        if (recievedService) {
+          this.service = recievedService;
+          console.log(this.service);
+          this.removed = false;
+          this.editmode = false;
+          this.calcPayment(this.service.rate_type, this.service.rate);
+        }
 
-    });
+      });
 
     // router scroll
-      this.router.events.subscribe((evt) => {
+    this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
-          return;
+        return;
       }
       window.scrollTo(0, 0);
-     });
+    });
 
-     // check for recieved eventId
-      if (this.eventId) {
-       console.log(this.eventId);
-      }
+    // check for recieved eventId
+    if (this.eventId) {
+      console.log(this.eventId);
+    }
 
-      if (this.editable === true) {
-    // import categories
+    if (this.editable === true) {
+      // import categories
       this.serviceService.getCategories();
       this.categorySub = this.serviceService.getCategoriesUpdateListener()
         .subscribe((recievedData: ServiceCategories[]) => {
-        this.categories = recievedData;
-        console.log(this.categories);
-    });
+          this.categories = recievedData;
+          console.log(this.categories);
+        });
 
-    // import rate types
+      // import rate types
       this.rates = this.serviceService.getRates();
     }
   }
 
 
   addPaypal() {
-    if(!this.addScript) {
-      this.addPaypalScript().then( () =>{
-        paypal.Button.render( this.paypalConfig, '#paybtn');
+    if (!this.addScript) {
+      this.addPaypalScript().then(() => {
+        paypal.Button.render(this.paypalConfig, '#paybtn');
       });
     }
   }
 
   addPaypalScript() {
     this.addScript = true;
-    return new Promise( ( resolve, reject) => {
-      let scriptTagelement = document.createElement('script');
+    return new Promise((resolve, reject) => {
+      const scriptTagelement = document.createElement('script');
       scriptTagelement.src = 'https://www.paypalobjects.com/api/checkout.js';
       scriptTagelement.onload = resolve;
       document.body.appendChild(scriptTagelement);
-    })
+    });
   }
 
   ngOnDestroy() {
@@ -198,7 +201,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
       const service: Service = {
         service_id: this.service.service_id,
         service_name: updateServiceForm.value.service_name,
-        business_name:  this.service.business_name,
+        business_name: this.service.business_name,
         description: updateServiceForm.value.description,
         service_category: updateServiceForm.value.category,
         available_booking: this.service.available_booking,
@@ -214,17 +217,17 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
         rate_type: updateServiceForm.value.rate_type,
         capacity: updateServiceForm.value.capacity,
         pay_on_meet: this.service.pay_on_meet,
-        image_01:  this.service.image_01,
-        image_02:  this.service.image_02,
-        image_03:  this.service.image_03
-        };
+        image_01: this.service.image_01,
+        image_02: this.service.image_02,
+        image_03: this.service.image_03
+      };
       this.serviceService.updateService(service, [this.image01, this.image02, this.image03]);
       this.serviceSub = this.serviceService.getServiceUpdateListener()
-      .subscribe((recievedService: Service) => {
-        console.log(recievedService);
-        this.service = recievedService;
-        this.clearImages();
-      });
+        .subscribe((recievedService: Service) => {
+          console.log(recievedService);
+          this.service = recievedService;
+          this.clearImages();
+        });
       console.log('Service updated successfully!');
       this.editmode = false;
     }
@@ -248,16 +251,16 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
     if (rateType === '/Hr') {
       this.duration = Math.abs(this.bookingTime.fromTime.hour - this.bookingTime.toTime.hour) * diffDays;
       newRate = rate * this.duration;
-    }  else if (rateType === '/Day') {
+    } else if (rateType === '/Day') {
       newRate = rate * diffDays;
       this.duration = diffDays;
-    } else  {
+    } else {
       this.duration = diffDays;
     }
     if (this.service.promotions.length) {
-        for (const p of this.service.promotions) {
-          promotion += (newRate * p.precentage) / 100;
-        }
+      for (const p of this.service.promotions) {
+        promotion += (newRate * p.precentage) / 100;
+      }
     }
     this.totalAmount = newRate - promotion;
     this.totalPromotion = promotion;
@@ -266,97 +269,97 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   }
 
   // create a booking
-    createBooking(bookingForm: NgForm ) {
-      if (bookingForm.invalid) {
-        console.log('Form Invalid');
+  createBooking(bookingForm: NgForm) {
+    if (bookingForm.invalid) {
+      console.log('Form Invalid');
+    } else {
+      // calculating the payments
+      this.calcPayment(this.service.rate_type, this.service.rate);
+
+      // create the booking object
+      const booking: Booking = {
+        booking_id: 'B0',
+        service_id: this.service.service_id,
+        event_id: 'none',
+        service_name: this.service.service_name,
+        service_category: this.service.service_category,
+        event_name: 'Not Assigned',
+        business_name: this.service.business_name,
+        rate_type: this.service.rate_type,
+        created_date: new Date().toISOString(),
+        state: 'pending',
+        review: 'not reviewed yet',
+        from_date: refactorDate(this.bookingTime.fromDate, this.bookingTime.fromTime),
+        to_date: refactorDate(this.bookingTime.toDate, this.bookingTime.toTime),
+        duration: this.duration, //
+        comment: bookingForm.value.comment,
+        amount: this.totalAmount,
+        commission_due: this.totalAmount / 10,
+        amount_paid: bookingForm.value.amount_paid
+      };
+
+      // creating the booking
+      if (this.eventId) {
+        booking.event_id = this.eventId;
+        this.serviceService.createEventBooking(booking);
       } else {
-        // calculating the payments
-        this.calcPayment(this.service.rate_type, this.service.rate);
-
-          // create the booking object
-        const booking: Booking = {
-          booking_id: 'B0',
-          service_id: this.service.service_id,
-          event_id: 'none',
-          service_name: this.service.service_name,
-          service_category: this.service.service_category,
-          event_name: 'Not Assigned',
-          business_name: this.service.business_name,
-          rate_type: this.service.rate_type,
-          created_date: new Date().toISOString(),
-          state: 'pending',
-          review: 'not reviewed yet',
-          from_date: refactorDate(this.bookingTime.fromDate, this.bookingTime.fromTime),
-          to_date: refactorDate(this.bookingTime.toDate, this.bookingTime.toTime),
-          duration: this.duration, //
-          comment: bookingForm.value.comment,
-          amount: this.totalAmount,
-          commission_due: this.totalAmount / 10,
-          amount_paid: bookingForm.value.amount_paid
-          };
-
-        // creating the booking
-        if (this.eventId) {
-          booking.event_id = this.eventId;
-          this.serviceService.createEventBooking(booking);
-        } else {
-          this.serviceService.createBooking(booking);
-        }
-        this.bookUser = !this.bookUser;
-        this.appoint = false;
+        this.serviceService.createBooking(booking);
       }
+      this.bookUser = !this.bookUser;
+      this.appoint = false;
     }
+  }
 
-    // create an appointment
-    createAppointment( appointForm: NgForm ) {
-      if (appointForm.invalid) {
-        console.log('Form Invalid');
+  // create an appointment
+  createAppointment(appointForm: NgForm) {
+    if (appointForm.invalid) {
+      console.log('Form Invalid');
+    } else {
+
+      // creating appointment object
+      const appointment: Appointment = {
+        appoint_id: 'A0',
+        service_id: this.service.service_id,
+        event_id: 'Not Assigned',
+        service_name: this.service.service_name,
+        service_category: this.service.service_category,
+        event_name: 'Not Assigned',
+        business_name: this.service.business_name,
+        created_date: new Date().toISOString(),
+        state: 'pending',
+        appointed_date: refactorDate(this.appointment.date, this.appointment.time),
+        comment: appointForm.value.comment,
+      };
+
+      // creating the appointment
+      if (this.eventId) {
+        appointment.event_id = this.eventId;
+        this.serviceService.createEventAppointment(appointment);
       } else {
-
-        // creating appointment object
-        const appointment: Appointment = {
-          appoint_id: 'A0',
-          service_id: this.service.service_id,
-          event_id: 'Not Assigned',
-          service_name: this.service.service_name,
-          service_category: this.service.service_category,
-          event_name: 'Not Assigned',
-          business_name: this.service.business_name,
-          created_date: new Date().toISOString(),
-          state: 'pending',
-          appointed_date: refactorDate(this.appointment.date, this.appointment.time),
-          comment: appointForm.value.comment,
-          };
-
-        // creating the appointment
-        if (this.eventId) {
-          appointment.event_id = this.eventId;
-          this.serviceService.createEventAppointment(appointment);
-        } else {
-          this.serviceService.createAppointment(appointment);
-        }
-        this.appoint = false;
+        this.serviceService.createAppointment(appointment);
       }
+      this.appoint = false;
     }
+  }
 
 
-    // check booking availability
-    checkAvailability() {
-      this.serviceService.checkAvailability(
-        refactorDate(this.bookingTime.fromDate, this.bookingTime.fromTime),
-        refactorDate(this.bookingTime.toDate, this.bookingTime.toTime),
-        this.service.service_id)
+  // check booking availability
+  checkAvailability() {
+    this.serviceService.checkAvailability(
+      refactorDate(this.bookingTime.fromDate, this.bookingTime.fromTime),
+      refactorDate(this.bookingTime.toDate, this.bookingTime.toTime),
+      this.service.service_id)
       .subscribe((recievedData) => {
         console.log(recievedData.message);
-        if ( recievedData.availability) {
+        if (recievedData.availability) {
           this.dialog.open(SuccessComponent,
-            {data: {message: 'Service is available on selected dates!'}});
+            { data: { message: 'Service is available on selected dates!' } });
         } else {
           this.dialog.open(ErrorComponent,
-            {data: {message: 'Sorry! The Service not available on selected Dates'}});
+            { data: { message: 'Sorry! The Service not available on selected Dates' } });
         }
       });
-    }
+  }
 
 
   // clear image cache
@@ -371,7 +374,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
 
   // to be modified later (optional function)
   showBprofile() {
-   // this.router.navigate(['/sp/bprofile']);
+    // this.router.navigate(['/sp/bprofile']);
   }
 
 
@@ -401,20 +404,20 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
 
   // image 02 uploading
   onImage02Uploaded(event: Event) {
-      const file = (event.target as HTMLInputElement).files[0];
-      const mimeType = file.type;
-      if (mimeType.match(/image\/*/) == null) {
-        return;
-      }
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.image02 = file;
-        this.image02Url = reader.result;
-      };
+    const file = (event.target as HTMLInputElement).files[0];
+    const mimeType = file.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
+    }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.image02 = file;
+      this.image02Url = reader.result;
+    };
   }
 
-   // image 03 uploading
+  // image 03 uploading
   onImage03Uploaded(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
     const mimeType = file.type;

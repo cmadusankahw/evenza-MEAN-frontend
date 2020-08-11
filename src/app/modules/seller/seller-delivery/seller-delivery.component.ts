@@ -29,7 +29,7 @@ export class SellerDeliveryComponent implements OnInit, OnDestroy {
   // add new delivery service
   addnew = false;
 
- // to be edited
+  // to be edited
   deliveryServices: DeliveryService[] = [];
 
   deliveryService: DeliveryService;
@@ -40,7 +40,7 @@ export class SellerDeliveryComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.productService.getDeliveryServices();
     this.deliverySub = this.productService.getdeliveryServicesUpdateListener()
-      .subscribe ((res: DeliveryService[]) => {
+      .subscribe((res: DeliveryService[]) => {
         if (res) {
           this.deliveryServices = res;
           console.log(this.deliveryServices);
@@ -68,8 +68,8 @@ export class SellerDeliveryComponent implements OnInit, OnDestroy {
     }
   }
 
-   // get selected product details
-   showDeliveryDetails(diliveryId: string) {
+  // get selected product details
+  showDeliveryDetails(diliveryId: string) {
     for (const app of this.deliveryServices) {
       if (app.delivery_service === diliveryId) {
         this.deliveryService = app;

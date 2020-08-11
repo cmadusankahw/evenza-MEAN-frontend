@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Inquery } from '../eventplanner.model';
 import { EventPlannerService } from '../eventplanner.service';
-import {  Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-inquery-forum',
@@ -29,14 +29,14 @@ export class InqueryForumComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.eventPlannerService.getInqueries();
     this.inquerySub = this.eventPlannerService.getInqueriesUpdatedListener()
-    .subscribe( (res: Inquery[] ) => {
-      this.recievedInquries = res;
-      console.log(this.recievedInquries);
-    });
+      .subscribe((res: Inquery[]) => {
+        this.recievedInquries = res;
+        console.log(this.recievedInquries);
+      });
   }
 
   ngOnDestroy() {
-    if(this.inquerySub) {
+    if (this.inquerySub) {
       this.inquerySub.unsubscribe();
     }
   }

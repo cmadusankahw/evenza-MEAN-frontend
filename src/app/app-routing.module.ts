@@ -39,9 +39,6 @@ import { EventPlanComponent } from './modules/event/event-plan/event-plan.compon
 import { EventScheduleComponent } from './modules/event/event-schedule/event-schedule.component';
 import { EventParticipantsComponent } from './modules/event/event-participants/event-participants.component';
 import { EventSelectComponent } from './modules/event/event-select/event-select.component';
-import { EventAgendaComponent } from './modules/event/docs/event-agenda/event-agenda.component';
-import { ParticipantListComponent } from './modules/event/docs/participant-list/participant-list.component';
-import { EventInvitationComponent } from './modules/event/docs/event-invitation/event-invitation.component';
 import { AddEventComponent } from './modules/event/add-event/add-event.component';
 import { ServiceDetailsComponent } from './modules/service/service-details/service-details.component';
 import { ProductDetailsComponent } from './modules/product/product-details/product-details.component';
@@ -60,7 +57,6 @@ import { EventBudgetReportComponent } from './modules/event/event-budget-report/
 import { PlannerChatComponent } from './modules/eventplanner/planner-chat/planner-chat.component';
 import { PlannerEventDetailsReportComponent } from './modules/eventplanner/reports/planner-event-details-report/planner-event-details-report.component';
 
-
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: SignupSelectComponent },
@@ -71,14 +67,11 @@ const routes: Routes = [
   { path: 'contactus', component: ContactUsComponent },
   { path: 'services', component: SearchServicesComponent },
   { path: 'products', component: SearchProductsComponent },
-  { path: 'terms', component: TeramsConditionsComponent},
+  { path: 'terms', component: TeramsConditionsComponent },
   { path: 'inquery', component: PlannerChatComponent },
   { path: 'print/booking/:id', component: BookingNoteComponent },
   { path: 'print/appoint/:id', component: BookingNoteComponent },
   { path: 'print/order/:id', component: BookingNoteComponent },
-  { path: 'print/agenda/:id', component: EventAgendaComponent },
-  { path: 'print/plist/:id', component: ParticipantListComponent },
-  { path: 'print/invitation/:id', component: EventInvitationComponent },
   {
     path: 'sp/dash',
     component: DashboardComponent,
@@ -91,7 +84,8 @@ const routes: Routes = [
       { path: 'reports', component: DashReportsComponent },
       { path: 'profile', component: DashProfileComponent },
       { path: '**', component: NotFoundPageComponent },
-    ], canActivate: [AuthGuard]
+    ],
+    canActivate: [AuthGuard],
   },
   {
     path: 'sel/dash',
@@ -104,7 +98,8 @@ const routes: Routes = [
       { path: 'reports', component: SellerDashReportsComponent },
       { path: 'profile', component: SellerDashProfileComponent },
       { path: '**', component: NotFoundPageComponent },
-    ], canActivate: [AuthGuard]
+    ],
+    canActivate: [AuthGuard],
   },
   {
     path: 'planner',
@@ -113,7 +108,10 @@ const routes: Routes = [
       { path: '', component: EventplannerDashHomeComponent },
       { path: 'event/details/:id', component: EventDetailsComponent },
       { path: 'event/plan/:id', component: EventPlanComponent },
-      { path: 'event/reports/budget/:id', component: EventBudgetReportComponent },
+      {
+        path: 'event/reports/budget/:id',
+        component: EventBudgetReportComponent,
+      },
       { path: 'event/schedule/:id', component: EventScheduleComponent },
       { path: 'event/participants/:id', component: EventParticipantsComponent },
       { path: 'event/select', component: EventSelectComponent },
@@ -130,7 +128,8 @@ const routes: Routes = [
       { path: 'reports', component: PlannerEventDetailsReportComponent },
       { path: 'profile', component: EventplannerDashProfileComponent },
       { path: '**', component: NotFoundPageComponent },
-    ] , canActivate: [AuthGuard]
+    ],
+    canActivate: [AuthGuard],
   },
   {
     path: 'admin',
@@ -144,15 +143,16 @@ const routes: Routes = [
       { path: 'reports', component: AdminDashReportsComponent },
       { path: 'profile', component: AdminDashProfileComponent },
       { path: '**', component: NotFoundPageComponent },
-    ], canActivate: [AuthGuard]
+    ],
+    canActivate: [AuthGuard],
   },
   { path: '', component: HomeComponent },
-  { path: '**', component: NotFoundPageComponent }
+  { path: '**', component: NotFoundPageComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [AuthGuard]
+  providers: [AuthGuard],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

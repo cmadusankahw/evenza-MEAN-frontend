@@ -16,11 +16,11 @@ export class LocationSearchComponent implements OnInit {
   public searchElementRef: ElementRef;
 
   // recieved location
-  @Input() recievedLocation: BusinessLocation  = {
+  @Input() recievedLocation: BusinessLocation = {
     lat: 0,
     lang: 0,
-    homeTown : ''
-  }
+    homeTown: ''
+  };
 
   // set location mode
   @Input() setLocation = false;
@@ -47,9 +47,9 @@ export class LocationSearchComponent implements OnInit {
 
   private geoCoder;
 
-  constructor( private mapsAPILoader: MapsAPILoader,
-               private ngZone: NgZone,
-               public dialog: MatDialog) { }
+  constructor(private mapsAPILoader: MapsAPILoader,
+              private ngZone: NgZone,
+              public dialog: MatDialog) { }
 
   ngOnInit() {
     // load Places Autocomplete
@@ -61,7 +61,7 @@ export class LocationSearchComponent implements OnInit {
       autocomplete.addListener('place_changed', () => {
         this.ngZone.run(() => {
           // get the place result
-          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
           // verify result
           if (place.geometry === undefined || place.geometry === null) {
@@ -78,7 +78,7 @@ export class LocationSearchComponent implements OnInit {
 
   }
 
- // set current location
+  // set current location
   private setCurrentLocation() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -110,17 +110,17 @@ export class LocationSearchComponent implements OnInit {
           this.address = results[0].formatted_address;
           this.recievedLocation.homeTown = this.address.split(',')[1];
         } else {
-          this.dialog.open(ErrorComponent, {data: {message: 'No Results Found! Please change marker..'}});
+          this.dialog.open(ErrorComponent, { data: { message: 'No Results Found! Please change marker..' } });
         }
       } else {
-        this.dialog.open(ErrorComponent, {data: {message: 'Geocoder failed due to: ' + status}});
+        this.dialog.open(ErrorComponent, { data: { message: 'Geocoder failed due to: ' + status } });
       }
 
     });
   }
 
-   // send modal data back to parent component
-   updateLocation() {
+  // send modal data back to parent component
+  updateLocation() {
     this.buusinessLocationEmit.emit(this.recievedLocation);
     console.log(this.recievedLocation);
   }

@@ -22,18 +22,18 @@ export class EventNotificationComponent implements OnInit, OnDestroy {
   constructor(private eventService: EventService) { }
 
   // filter recieving alerts
-  public filterAlerts(alert: any ){
+  public filterAlerts(alert: any) {
     this.alerts = this.alerts.filter(obj => obj !== alert);
   }
 
   ngOnInit() {
-    if(this.eventId) {
+    if (this.eventId) {
       this.eventService.getAlerts(this.eventId);
       this.alertSub = this.eventService.getalertsUpdatedListener()
         .subscribe((alerts: ScheduleAlert[]) => {
           console.log(alerts);
           this.alerts = alerts;
-      });
+        });
     }
   }
 

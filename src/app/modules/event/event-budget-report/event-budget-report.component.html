@@ -1,64 +1,103 @@
-
 <!--- Budget Report content-->
-<div id="content" class="pt-5 pb-3 container shadow" *ngIf="event" >
+<div id="content" class="pt-5 pb-3 container shadow" *ngIf="event">
   <div class="title text-center">
-    <h2 style="font-weight:bold; color: darkmagenta;" class="strong"> Evenza - Budget Spend & Estimation</h2>
-    <br>
-    <h3><b> <mdb-icon fas icon="calendar-check"> </mdb-icon> Budget Report : {{event.event_title}} </b></h3>
+    <h2 style="font-weight: bold; color: darkmagenta;" class="strong">
+      Evenza - Budget Spend & Estimation
+    </h2>
+    <br />
+    <h3>
+      <b>
+        <mdb-icon fas icon="calendar-check"> </mdb-icon> Budget Report :
+        {{ event.event_title }}
+      </b>
+    </h3>
   </div>
-  <hr>
-  <h5><b> From : {{event.created_date.slice(0,10) + " " + event.created_date.slice(11,16) }}  To : {{today.slice(0,10) + " " + today.slice(11,16)}}</b></h5>
-  <br>
-  <h5><b> Organizer : {{event.host.name + " | " + event.host.email }}</b></h5>
-  <hr>
-  <p> This report contains budget alllocations history of the event</p>
+  <hr />
+  <h5>
+    <b>
+      From :
+      {{
+        event.created_date.slice(0, 10) + " " + event.created_date.slice(11, 16)
+      }}
+      To : {{ today.slice(0, 10) + " " + today.slice(11, 16) }}</b
+    >
+  </h5>
+  <br />
+  <h5>
+    <b> Organizer : {{ event.host.name + " | " + event.host.email }}</b>
+  </h5>
+  <hr />
+  <p>This report contains budget alllocations history of the event</p>
   <div class="text-center">
     <div class="summary-graph row">
       <!-- busget details chart-->
       <div class="col-md-6 text-center">
         <h4><b> Overall Budget Allocation</b></h4>
-        <div style="display: block" >
-          <canvas mdbChart
-              [chartType]="'pie'"
-              [datasets]="[{ data: [event.total_spent_budget, event.total_budget], label: 'budget' }]"
-              [labels]="['Spent Budget', 'Remaining Budget']"
-              [colors]="[{ backgroundColor: ['#F7464A', '#46BFBD'], borderWidth: 2}]"
-              [legend]="true">
+        <div style="display: block;">
+          <canvas
+            mdbChart
+            [chartType]="'pie'"
+            [datasets]="[
+              {
+                data: [event.total_spent_budget, event.total_budget],
+                label: 'budget'
+              }
+            ]"
+            [labels]="['Spent Budget', 'Remaining Budget']"
+            [colors]="[
+              { backgroundColor: ['#F7464A', '#46BFBD'], borderWidth: 2 }
+            ]"
+            [legend]="true"
+          >
           </canvas>
         </div>
       </div>
       <!-- service product chart-->
       <div class="col-md-6 text-center">
         <h4><b> Reservations by Categories</b></h4>
-        <div style="display: block" >
-          <canvas mdbChart
-              [chartType]="'doughnut'"
-              [datasets]="[{ data: [products.length, services.length, 0], label: 'reservations' }]"
-              [labels]="['Orders', 'Bookings', 'Appointments']"
-              [colors]="[{ backgroundColor: ['#F7464A', '#46BFBD', '#FDB45C'], borderWidth: 2}]"
-              [legend]="true">
+        <div style="display: block;">
+          <canvas
+            mdbChart
+            [chartType]="'doughnut'"
+            [datasets]="[
+              {
+                data: [products.length, services.length, 0],
+                label: 'reservations'
+              }
+            ]"
+            [labels]="['Orders', 'Bookings', 'Appointments']"
+            [colors]="[
+              {
+                backgroundColor: ['#F7464A', '#46BFBD', '#FDB45C'],
+                borderWidth: 2
+              }
+            ]"
+            [legend]="true"
+          >
           </canvas>
         </div>
       </div>
     </div>
-    <hr>
-    <div style="text-align:left;" class="pt-2">
-      <h5><b><mdb-icon fas icon="bookmark"> </mdb-icon> Booked Services : </b></h5>
+    <hr />
+    <div style="text-align: left;" class="pt-2">
+      <h5>
+        <b><mdb-icon fas icon="bookmark"> </mdb-icon> Booked Services : </b>
+      </h5>
     </div>
-    <div class="text-center" *ngIf="!services.length"> No Service Bookings </div>
-    <table class="table-striped" *ngIf="services.length" style="width:100%">
+    <div class="text-center" *ngIf="!services.length">No Service Bookings</div>
+    <table class="table-striped" *ngIf="services.length" style="width: 100%;">
       <thead>
         <tr>
-          <th >
+          <th>
             Service ID
           </th>
-          <th >
+          <th>
             Description
           </th>
           <th>
             Date
           </th>
-          <th >
+          <th>
             Amount (Rs.)
           </th>
           <th>
@@ -66,46 +105,51 @@
           </th>
         </tr>
       </thead>
-        <tbody>
-          <tr style="padding-bottom:10px;" *ngFor="let s of services">
-            <td>
-              {{s.service_id}}
-            </td>
-            <td>
-              {{ s.service_name}}
-              <br>
-            </td>
-            <td>
-                {{ s.booking_from_date ? s.booking_from_date.slice(0,10): s.appointed_date.slice(0,10)}}
-            </td>
-            <td style="text-align:right;">
-               {{s.spent_budget}}
-            </td>
-            <td>
-              {{ event.total_budget - s.spent_budget}}
-            </td>
-          </tr>
-
-        </tbody>
+      <tbody>
+        <tr style="padding-bottom: 10px;" *ngFor="let s of services">
+          <td>
+            {{ s.service_id }}
+          </td>
+          <td>
+            {{ s.service_name }}
+            <br />
+          </td>
+          <td>
+            {{
+              s.booking_from_date
+                ? s.booking_from_date.slice(0, 10)
+                : s.appointed_date.slice(0, 10)
+            }}
+          </td>
+          <td style="text-align: right;">
+            {{ s.spent_budget }}
+          </td>
+          <td>
+            {{ event.total_budget - s.spent_budget }}
+          </td>
+        </tr>
+      </tbody>
     </table>
-    <hr>
-    <div style="text-align:left;" class="pt-2">
-      <h5><b><mdb-icon fas icon="bookmark"> </mdb-icon> Ordered Products : </b></h5>
+    <hr />
+    <div style="text-align: left;" class="pt-2">
+      <h5>
+        <b><mdb-icon fas icon="bookmark"> </mdb-icon> Ordered Products : </b>
+      </h5>
     </div>
-    <div class="text-center" *ngIf="!products.length"> No ordered Products </div>
-    <table class="table-striped" *ngIf="products.length" style="width:100%">
+    <div class="text-center" *ngIf="!products.length">No ordered Products</div>
+    <table class="table-striped" *ngIf="products.length" style="width: 100%;">
       <thead>
         <tr>
-          <th >
+          <th>
             Product ID
           </th>
-          <th >
+          <th>
             Description
           </th>
           <th>
             Date
           </th>
-          <th >
+          <th>
             Amount (Rs.)
           </th>
           <th>
@@ -113,58 +157,78 @@
           </th>
         </tr>
       </thead>
-        <tbody>
-          <tr style="padding-bottom:10px;" *ngFor="let p of products">
-            <td>
-              {{p.product_id}}
-            </td>
-            <td>
-              {{ p.product}}
-              <br>
-            </td>
-            <td>
-                {{p.ordered_date.slice(0,10)}}
-            </td>
-            <td style="text-align:right;">
-               {{p.spent_budget}}
-            </td>
-            <td>
-              {{ event.total_budget - p.spent_budget}}
-            </td>
-          </tr>
-
-        </tbody>
+      <tbody>
+        <tr style="padding-bottom: 10px;" *ngFor="let p of products">
+          <td>
+            {{ p.product_id }}
+          </td>
+          <td>
+            {{ p.product }}
+            <br />
+          </td>
+          <td>
+            {{ p.ordered_date.slice(0, 10) }}
+          </td>
+          <td style="text-align: right;">
+            {{ p.spent_budget }}
+          </td>
+          <td>
+            {{ event.total_budget - p.spent_budget }}
+          </td>
+        </tr>
+      </tbody>
     </table>
-    <hr>
+    <hr />
     <div class="row">
-      <div class="col-md-9" style="text-align:right;">
+      <div class="col-md-9" style="text-align: right;">
         <h5><b> Total Budget: </b></h5>
-        <h5 style="color:darkred;"><b> Spent Budget: </b></h5>
-        <h5 style="color:darkgreen;"><b> Remaining Budget: </b></h5>
+        <h5 style="color: darkred;"><b> Spent Budget: </b></h5>
+        <h5 style="color: darkgreen;"><b> Remaining Budget: </b></h5>
       </div>
-      <div class="col-md-3" style="text-align:right;">
-        <h5><b> {{event.total_budget}}</b></h5>
-        <h5><b> {{event.total_spent_budget}}</b></h5>
-        <h5><b> {{showRemainingBudget(event.total_budget, event.total_spent_budget)}}</b></h5>
+      <div class="col-md-3" style="text-align: right;">
+        <h5>
+          <b> {{ event.total_budget }}</b>
+        </h5>
+        <h5>
+          <b> {{ event.total_spent_budget }}</b>
+        </h5>
+        <h5>
+          <b>
+            {{
+              showRemainingBudget(event.total_budget, event.total_spent_budget)
+            }}</b
+          >
+        </h5>
       </div>
     </div>
-    <hr>
+    <hr />
     <div class="text-center">
       Report is generated and approved by Evenza Systems. No Signature required.
-      <br>
+      <br />
       <b> Evenza 2020</b>
     </div>
   </div>
 </div>
 
-<hr>
+<hr />
 
-<div class="container btns text-center" >
-  <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" (click)="backClicked()">
+<div class="container btns text-center">
+  <button
+    class="btn btn-md"
+    mdbBtn
+    mdbWavesEffect
+    color="secondary"
+    (click)="backClicked()"
+  >
     Go Back
   </button>
-  <button class="btn btn-md" mdbBtn mdbWavesEffect color="primary"
-    (click)="printEventBudget('content', 'Budget_Report')">
+  <button
+    class="btn btn-md"
+    mdbBtn
+    mdbWavesEffect
+    color="primary"
+    (click)="printEventBudget('content', 'Budget_Report')"
+  >
     Print Again
   </button>
-  </div>
+</div>

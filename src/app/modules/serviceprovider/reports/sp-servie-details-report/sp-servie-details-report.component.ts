@@ -25,7 +25,7 @@ export class SpServieDetailsReportComponent implements OnInit {
 
 
   constructor(private serviceProviderService: ServiceProviderService,
-              public sanitizer: DomSanitizer) { }
+    public sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.url1 = this.sproviderUserFilter(this.url1);

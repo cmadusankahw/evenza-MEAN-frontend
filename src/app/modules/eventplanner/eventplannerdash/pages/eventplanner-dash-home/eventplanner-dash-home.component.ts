@@ -8,16 +8,16 @@ import { Component, OnInit } from '@angular/core';
 export class EventplannerDashHomeComponent implements OnInit {
 
   // recieved event details
-  resEvents: {eventId: string, eventName: string};
+  resEvents: { eventId: string, eventName: string };
 
   // quick Links list
   quickLinks = [
-    {icon: 'calendar', caption: 'View My Events', routerLink: '/planner/events'},
-    {icon: 'bookmark', caption: 'View My Bookings', routerLink: '/planner/bookings'},
-    {icon: 'list', caption: 'View My Appointments', routerLink: '/planner/appoints'},
-    {icon: 'clipboard-list', caption: 'View My Orders', routerLink: '/planner/orders'},
-    {icon: 'box-open', caption: 'Search a Product', routerLink: '/products'},
-    {icon: 'concierge-bell', caption: 'Search a Service', routerLink: '/services'}
+    { icon: 'calendar', caption: 'View My Events', routerLink: '/planner/events' },
+    { icon: 'bookmark', caption: 'View My Bookings', routerLink: '/planner/bookings' },
+    { icon: 'list', caption: 'View My Appointments', routerLink: '/planner/appoints' },
+    { icon: 'clipboard-list', caption: 'View My Orders', routerLink: '/planner/orders' },
+    { icon: 'box-open', caption: 'Search a Product', routerLink: '/products' },
+    { icon: 'concierge-bell', caption: 'Search a Service', routerLink: '/services' }
   ];
 
   constructor() { }
@@ -25,7 +25,7 @@ export class EventplannerDashHomeComponent implements OnInit {
   ngOnInit() {
   }
 
-  getEvents(event: any){
+  getEvents(event: any) {
     this.resEvents = event;
   }
 

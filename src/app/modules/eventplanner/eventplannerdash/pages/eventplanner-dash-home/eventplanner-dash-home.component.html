@@ -1,9 +1,15 @@
 <!--upper row text-->
-<div class="container text-center pd-top " style="position:relative;">
+<div class="container text-center pd-top" style="position: relative;">
   <h3 class="text-top">Quickly access your favourite links..</h3>
   <div class="create-event">
-    <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" text="white"
-    routerLink="/planner/event/select">
+    <button
+      class="btn btn-md"
+      mdbBtn
+      mdbWavesEffect
+      color="secondary"
+      text="white"
+      routerLink="/planner/event/select"
+    >
       <mdb-icon fas icon="plus"> </mdb-icon> Create New Event
     </button>
   </div>
@@ -12,17 +18,27 @@
 <!-- upper row quick links-->
 <div class="container">
   <div class="row container-fluid quick-links pd-top">
-    <div class="col-md-2 link-box shadow text-center" *ngFor="let quickLink of quickLinks"  mdbWavesEffect  [routerLink]="quickLink.routerLink" >
-      <a>  <div class="link-icon"> <mdb-icon fas [icon]="quickLink.icon"></mdb-icon> </div>
-        <p> <b>{{quickLink.caption}}</b></p> </a>
-  </div>
+    <div
+      class="col-md-2 link-box shadow text-center"
+      *ngFor="let quickLink of quickLinks"
+      mdbWavesEffect
+      [routerLink]="quickLink.routerLink"
+    >
+      <a>
+        <div class="link-icon">
+          <mdb-icon fas [icon]="quickLink.icon"></mdb-icon>
+        </div>
+        <p>
+          <b>{{ quickLink.caption }}</b>
+        </p>
+      </a>
+    </div>
   </div>
 </div>
-
 
 <!-- lower row comps-->
 <div class="container">
   <div class="row container-fluid">
     <app-event-card></app-event-card>
-</div>
+  </div>
 </div>

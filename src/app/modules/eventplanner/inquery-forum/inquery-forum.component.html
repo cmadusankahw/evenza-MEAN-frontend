@@ -1,53 +1,74 @@
 <div class="pt-3 container-fluid">
   <h5><b> Post a New Inquery...</b></h5>
-  <br>
+  <br />
   <div class="inq-create">
-  <div class="row">
-    <div class="col-md-6">
-      <mat-form-field  style="width:100%;">
-        <mat-label>
-          <mat-icon>search</mat-icon>
-          Inquery Subject</mat-label>
-        <input matInput name="title" [(ngModel)] = "inquery.heading">
-      </mat-form-field>
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field style="width: 100%;">
+          <mat-label>
+            <mat-icon>search</mat-icon>
+            Inquery Subject</mat-label
+          >
+          <input matInput name="title" [(ngModel)]="inquery.heading" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field style="width: 100%;">
+          <mat-label>
+            <mat-icon>search</mat-icon>
+            Inquery Category</mat-label
+          >
+          <input matInput name="category" [(ngModel)]="inquery.category" />
+        </mat-form-field>
+      </div>
     </div>
-    <div class="col-md-6">
-      <mat-form-field  style="width:100%;">
-        <mat-label>
-          <mat-icon>search</mat-icon>
-         Inquery Category</mat-label>
-        <input matInput name="category" [(ngModel)] = "inquery.category">
-      </mat-form-field>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-9">
-      <mat-form-field style="width:100%;">
-        <mat-label>
-          <mat-icon>search</mat-icon>
-          Your Inquery Message...</mat-label>
-        <textarea matInput name="message" [(ngModel)] = "inquery.message" rows="4"> </textarea>
-      </mat-form-field>
-    </div>
-    <div class="col-md-3 pt-4">
-        <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" (click) = "createInquery()">
+    <div class="row">
+      <div class="col-md-9">
+        <mat-form-field style="width: 100%;">
+          <mat-label>
+            <mat-icon>search</mat-icon>
+            Your Inquery Message...</mat-label
+          >
+          <textarea
+            matInput
+            name="message"
+            [(ngModel)]="inquery.message"
+            rows="4"
+          >
+          </textarea>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 pt-4">
+        <button
+          class="btn btn-md"
+          mdbBtn
+          mdbWavesEffect
+          color="secondary"
+          (click)="createInquery()"
+        >
           Create New
         </button>
+      </div>
     </div>
   </div>
-  </div>
-  <hr>
+  <hr />
   <div class="pt-3 inquery-list" *ngIf="recievedInquries.length">
     <h5><b> Inquery List</b></h5>
-    <br>
+    <br />
 
-    <div class="inq shadow" *ngFor = "let inq of recievedInquries" style="text-align:left;">
-        <h5 style="font-weight: bold; color: darkmagenta;">
-          <mdb-icon fas icon="user-friends" > </mdb-icon> {{inq.heading}}
-        </h5>
-        <p style="margin-left:12px;"><b> Category: {{inq.category}}</b></p>
-        <hr>
-        <p style="margin-left:12px;"> {{inq.message}}</p>
-      </div>
+    <div
+      class="inq shadow"
+      *ngFor="let inq of recievedInquries"
+      style="text-align: left;"
+    >
+      <h5 style="font-weight: bold; color: darkmagenta;">
+        <mdb-icon fas icon="user-friends"> </mdb-icon> {{ inq.heading }}
+      </h5>
+      <p style="margin-left: 12px;">
+        <b> Category: {{ inq.category }}</b>
+      </p>
+      <hr />
+      <p style="margin-left: 12px;">{{ inq.message }}</p>
+    </div>
   </div>
 </div>

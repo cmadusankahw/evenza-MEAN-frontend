@@ -32,14 +32,14 @@ export interface Admin {
   gender: string;
   card_details: CardDetails;
   payment_details: {
-      user_id: string;
-      user_type: string;
-      pays: {
-        timestamp: {year: string, month: string };
-        paid_date: string;
-        paid_amount: number;
-        due_amount: number;
-      }[];
+    user_id: string;
+    user_type: string;
+    pays: {
+      timestamp: { year: string, month: string };
+      paid_date: string;
+      paid_amount: number;
+      due_amount: number;
+    }[];
   }[];
 }
 

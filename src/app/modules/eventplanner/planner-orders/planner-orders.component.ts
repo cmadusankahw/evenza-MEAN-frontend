@@ -1,20 +1,26 @@
-import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-
+import { Subscription } from 'rxjs';
 import { Order } from '../eventplanner.model';
 import { EventPlannerService } from '../eventplanner.service';
-import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-planner-orders',
   templateUrl: './planner-orders.component.html',
-  styleUrls: ['./planner-orders.component.scss']
+  styleUrls: ['./planner-orders.component.scss'],
 })
 export class PlannerOrdersComponent implements OnInit, OnDestroy {
-
-  displayedColumns: string[] = ['id', 'product', 'date_ordered', 'quantity', 'amount_paid', 'action'];
+  displayedColumns: string[] = [
+    'id',
+    'product',
+    'date_ordered',
+    'quantity',
+    'amount_paid',
+    'action',
+  ];
   dataSource: MatTableDataSource<Order>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -24,7 +30,7 @@ export class PlannerOrdersComponent implements OnInit, OnDestroy {
   private orderSub: Subscription;
 
   // order types
-   @Input() orderType = 'pending';
+  @Input() orderType = 'pending';
 
   // Create sample bookings
   orders: Order[];
@@ -41,19 +47,22 @@ export class PlannerOrdersComponent implements OnInit, OnDestroy {
   // add review mode
   addReview = false;
 
-  constructor(private eventPlannerService: EventPlannerService) { }
+  constructor(private eventPlannerService: EventPlannerService) {}
 
   ngOnInit() {
     this.eventPlannerService.getOrders();
-    this.orderSub = this.eventPlannerService.getOrdersUpdateListener()
-          .subscribe((recievedOrders: Order[]) => {
-              this.orders = recievedOrders;
-              console.log(this.orders);
-              if (this.orders) {
-              this.dataSource = new MatTableDataSource(this.addOrders(this.orders, this.orderType));
-              this.dataSource.paginator = this.paginator;
-              this.dataSource.sort = this.sort;
-           }
+    this.orderSub = this.eventPlannerService
+      .getOrdersUpdateListener()
+      .subscribe((recievedOrders: Order[]) => {
+        this.orders = recievedOrders;
+        console.log(this.orders);
+        if (this.orders) {
+          this.dataSource = new MatTableDataSource(
+            this.addOrders(this.orders, this.orderType)
+          );
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
       });
   }
 
@@ -72,7 +81,7 @@ export class PlannerOrdersComponent implements OnInit, OnDestroy {
     }
   }
 
- // classify orders into their categories
+  // classify orders into their categories
   addOrders(orders: Order[], state: string) {
     const pendingOrders = [];
     for (const val of orders) {
@@ -97,5 +106,4 @@ export class PlannerOrdersComponent implements OnInit, OnDestroy {
   submitReview(bookingId: string, review: string) {
     this.eventPlannerService.submitReview(bookingId, review, 'order');
   }
-
 }

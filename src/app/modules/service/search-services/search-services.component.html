@@ -1,70 +1,100 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'over'"
-      [opened]="opened">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'over'"
+    [opened]="opened"
+  >
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-
       <!--filters-->
       <form (submit)="searchServices(filterForm)" #filterForm="ngForm">
-      <div mat-list-item class="filters">
-      <h4 style="padding-left:15px;">Other Filters..</h4>
-      <hr>
-      <!--price-->
-      <div class="filter-content pd-top-filter">
-        <h6> <mdb-icon fas icon="money-bill"></mdb-icon> By Service Rates</h6>
-        <span class="price-text"> Min Rate Rs. {{priceStart}}</span>
-        <br>
-        <mat-slider
-        class="cat-list"
-        invert="false"
-        [max]= "priceEnd"
-        min="0"
-        step="1"
-        thumbLabel="true"
-        [(ngModel)]="priceStart"
-        name="priceStart">
-        </mat-slider>
-        <br>
-        <span class="price-text"> Max Rate Rs. {{priceEnd}}</span>
-        <br>
-        <mat-slider
-        class="cat-list"
-        invert="false"
-        max="49999"
-        [min]="priceStart"
-        step="1"
-        thumbLabel="true"
-        [(ngModel)]="priceEnd"
-        name="priceEnd">
-        </mat-slider>
-      </div>
-      <hr>
+        <div mat-list-item class="filters">
+          <h4 style="padding-left: 15px;">Other Filters..</h4>
+          <hr />
+          <!--price-->
+          <div class="filter-content pd-top-filter">
+            <h6>
+              <mdb-icon fas icon="money-bill"></mdb-icon> By Service Rates
+            </h6>
+            <span class="price-text"> Min Rate Rs. {{ priceStart }}</span>
+            <br />
+            <mat-slider
+              class="cat-list"
+              invert="false"
+              [max]="priceEnd"
+              min="0"
+              step="1"
+              thumbLabel="true"
+              [(ngModel)]="priceStart"
+              name="priceStart"
+            >
+            </mat-slider>
+            <br />
+            <span class="price-text"> Max Rate Rs. {{ priceEnd }}</span>
+            <br />
+            <mat-slider
+              class="cat-list"
+              invert="false"
+              max="49999"
+              [min]="priceStart"
+              step="1"
+              thumbLabel="true"
+              [(ngModel)]="priceEnd"
+              name="priceEnd"
+            >
+            </mat-slider>
+          </div>
+          <hr />
 
-         <!--pay type-->
-         <div class="filter-content pd-top-filter">
-          <h6> <mdb-icon fas icon="credit-card"></mdb-icon> By Payment Method</h6>
-          <br>
+          <!--pay type-->
+          <div class="filter-content pd-top-filter">
+            <h6>
+              <mdb-icon fas icon="credit-card"></mdb-icon> By Payment Method
+            </h6>
+            <br />
             <div class="filter-check">
-              <mat-checkbox class="example-margin" ngModel name="visa"> Visa</mat-checkbox><br>
-              <mat-checkbox class="example-margin" ngModel name="payhere"> PayHere</mat-checkbox><br>
-              <mat-checkbox class="example-margin"  name="pay_on_meet"
-              [(ngModel)] = "payOnMeetQuery">Pay on Meet</mat-checkbox>
+              <mat-checkbox class="example-margin" ngModel name="visa">
+                Visa</mat-checkbox
+              ><br />
+              <mat-checkbox class="example-margin" ngModel name="payhere">
+                PayHere</mat-checkbox
+              ><br />
+              <mat-checkbox
+                class="example-margin"
+                name="pay_on_meet"
+                [(ngModel)]="payOnMeetQuery"
+                >Pay on Meet</mat-checkbox
+              >
             </div>
-        </div>
+          </div>
 
-        <hr>
-        <!--business-->
-        <div class="filter-content pd-top-filter">
-          <h6> <mdb-icon fas icon="building"></mdb-icon> By Business Location</h6>
-          <a class="btn btn-md" color="secondary" mdbBtn mdbWavesEffect (click) ="locationSearchModal.show()"
-          style="margin:0 auto;">
-            Search by Location
-          </a>
-          <mat-form-field class="cat-list">
-            <mat-label><span class="location-label">Start typing city or town</span></mat-label>
-            <input matInput
+          <hr />
+          <!--business-->
+          <div class="filter-content pd-top-filter">
+            <h6>
+              <mdb-icon fas icon="building"></mdb-icon> By Business Location
+            </h6>
+            <a
+              class="btn btn-md"
+              color="secondary"
+              mdbBtn
+              mdbWavesEffect
+              (click)="locationSearchModal.show()"
+              style="margin: 0 auto;"
+            >
+              Search by Location
+            </a>
+            <mat-form-field class="cat-list">
+              <mat-label
+                ><span class="location-label"
+                  >Start typing city or town</span
+                ></mat-label
+              >
+              <input
+                matInput
                 id="typeahead-focus"
                 type="text"
                 class="form-control"
@@ -75,238 +105,295 @@
                 #instance="ngbTypeahead"
                 name="location"
               />
-          </mat-form-field>
-        </div>
+            </mat-form-field>
+          </div>
 
-        <hr>
-       <!--ratings-->
-       <div class="filter-content pd-top-filter">
-        <h6> <mdb-icon fas icon="star"></mdb-icon> By User Ratings</h6>
-        <div class="rating">
-          <ngb-rating [(rate)]="ratings" max="5">
-            <ng-template let-fill="fill" let-index="index">
-              <span class="star" [class.filled]="fill === 100">&#9733;</span>
-            </ng-template>
-          </ngb-rating>
-          <br>
-          <span class="rating-txt">
-            Scale 1-5
-          </span>
+          <hr />
+          <!--ratings-->
+          <div class="filter-content pd-top-filter">
+            <h6><mdb-icon fas icon="star"></mdb-icon> By User Ratings</h6>
+            <div class="rating">
+              <ngb-rating [(rate)]="ratings" max="5">
+                <ng-template let-fill="fill" let-index="index">
+                  <span class="star" [class.filled]="fill === 100"
+                    >&#9733;</span
+                  >
+                </ng-template>
+              </ngb-rating>
+              <br />
+              <span class="rating-txt">
+                Scale 1-5
+              </span>
+            </div>
+          </div>
+          <hr />
+          <div class="filter-content pd-top-filter text-center">
+            <button
+              mdbBtn
+              color="secondary"
+              class="btn btn-md"
+              style="margin: 0 auto;"
+              text="white"
+              mdbWavesEffect
+              (click)="drawer.close()"
+              (click)="searchServices()"
+            >
+              Apply Filters
+            </button>
+            <hr />
+          </div>
         </div>
-      </div>
-      <hr>
-      <div class="filter-content pd-top-filter text-center">
-        <button mdbBtn color="secondary" class="btn btn-md"
-        style="margin:0 auto;" text="white" mdbWavesEffect (click)="drawer.close()" (click)="searchServices()">
-          Apply Filters
-        </button>
-        <hr>
-      </div>
-    </div>
-  </form>
+      </form>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-
     <div class="filter-btn shadow">
       <button
-      type="button"
-      aria-label="Toggle sidenav"
-      mat-icon-button
-      (click)="drawer.open()"
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.open()"
       >
-      <mat-icon aria-label="Side nav toggle icon">subject</mat-icon>
-    </button>
-    <span class="filter-title">Filter Services</span>
+        <mat-icon aria-label="Side nav toggle icon">subject</mat-icon>
+      </button>
+      <span class="filter-title">Filter Services</span>
     </div>
 
-
-
     <!--search header-->
-        <div class="header text-center text-white" style="position:relative;">
-          <img src="./assets/images/back/search.jpg" class="back-img">
-          <div class="text-center" style="position: absolute; top:20%; bottom:0; left:0; right:0;">
-              <h2><b>Best Services at Best Rates!</b></h2>
-              <p>evenza provide every service require for your event..</p>
-              <br>
-                <div class="text-center search-box shadow">
-                  <mat-form-field class="search-input">
-                    <mat-label>
-                      <mat-icon>search</mat-icon>
-                      Search Services</mat-label>
-                    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia">
-                  </mat-form-field>
-                </div>
-                <br>
+    <div class="header text-center text-white" style="position: relative;">
+      <img src="./assets/images/back/search.jpg" class="back-img" />
+      <div
+        class="text-center"
+        style="position: absolute; top: 20%; bottom: 0; left: 0; right: 0;"
+      >
+        <h2><b>Best Services at Best Rates!</b></h2>
+        <p>evenza provide every service require for your event..</p>
+        <br />
+        <div class="text-center search-box shadow">
+          <mat-form-field class="search-input">
+            <mat-label>
+              <mat-icon>search</mat-icon>
+              Search Services</mat-label
+            >
+            <input
+              matInput
+              (keyup)="applyFilter($event)"
+              placeholder="Ex. Mia"
+            />
+          </mat-form-field>
+        </div>
+        <br />
+      </div>
+    </div>
 
+    <!--description-->
+    <div class="description text-center container pd-top pd-side">
+      <p>
+        Evenza provide you everything for your event. Please Select the
+        <b>service category</b>, and the <b> period </b> you want to book.
+        <br />
+        Yo can simply book a service or add a service to your
+        <b><a routerLink="/ep/dash"> Event Plan</a></b
+        >. Trusted & Top Rated services available islandwide!
+      </p>
+      <div class="row container-fluid">
+        <div class="col-md-3">
+          <div class="filter-content search-box-mid shadow">
+            <h5 class="top-heading"><b> I want to book.. </b></h5>
+            <mat-form-field class="top-filter">
+              <select
+                matNativeControl
+                required
+                [(ngModel)]="selectedCategory"
+                name="category"
+                (change)="searchServices()"
+              >
+                <option [value]="cat.val" *ngFor="let cat of categories">
+                  {{ cat.val }}</option
+                >
+              </select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col">
+          <div class="filter-content search-box-mid shadow">
+            <h5 class="top-heading"><b> From.. </b></h5>
+            <mat-form-field class="top-filter">
+              <input
+                matInput
+                [min]="today"
+                [matDatepicker]="picker1"
+                required
+                name="from_date"
+                #fromDate="ngModel"
+                [(ngModel)]="bookingTime.fromDate"
+                (dateChange)="searchServices()"
+                (dateChange)="bookingTime.toDate = bookingTime.fromDate"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker1"
+              ></mat-datepicker-toggle>
+              <mat-datepicker
+                #picker1
+                [startAt]="bookingTime.fromDate"
+              ></mat-datepicker>
+              <mat-error *ngIf="fromDate.invalid"
+                >Please Select a Date</mat-error
+              >
+            </mat-form-field>
           </div>
         </div>
 
-        <!--description-->
-        <div class="description text-center container pd-top pd-side">
-          <p>Evenza provide you everything for your event. Please Select the <b>service category</b>, and the <b> period </b> you want to book. <br>
-            Yo can simply book a service or add a service to your
-            <b><a routerLink="/ep/dash"> Event Plan</a></b>. Trusted & Top Rated services available islandwide!
-          </p>
-          <div class="row container-fluid">
-            <div class="col-md-3">
-                <div class="filter-content search-box-mid shadow">
-                  <h5 class="top-heading"><b> I want to book.. </b></h5>
-                    <mat-form-field class="top-filter">
-                      <select matNativeControl required [(ngModel)]="selectedCategory" name="category"
-                      (change) = "searchServices()" >
-                      <option  [value]="cat.val" *ngFor="let cat of categories">
-                          {{cat.val}}</option>
-                      </select>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="col">
-
-                <div class="filter-content search-box-mid shadow">
-                      <h5  class="top-heading"><b> From.. </b></h5>
-                      <mat-form-field class="top-filter">
-                        <input matInput [min] = "today"
-                        [matDatepicker]="picker1"
-                        required
-                        name="from_date"
-                        #fromDate="ngModel"
-                        [(ngModel)]="bookingTime.fromDate"
-                        (dateChange) = "searchServices()"
-                        (dateChange) = "bookingTime.toDate = bookingTime.fromDate"
-                        />
-                        <mat-datepicker-toggle
-                          matSuffix
-                          [for]="picker1"
-                        ></mat-datepicker-toggle>
-                        <mat-datepicker #picker1 [startAt]="bookingTime.fromDate"></mat-datepicker>
-                        <mat-error *ngIf="fromDate.invalid">Please Select a Date</mat-error>
-                      </mat-form-field>
-                    </div>
+        <div class="col">
+          <div class="filter-content search-box-mid shadow">
+            <h5 class="top-heading"><b> To..</b></h5>
+            <mat-form-field class="top-filter">
+              <input
+                matInput
+                [min]="today"
+                [matDatepicker]="picker2"
+                required
+                name="to_date"
+                #toDate="ngModel"
+                [(ngModel)]="bookingTime.toDate"
+                (dateChange)="searchServices()"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker2"
+              ></mat-datepicker-toggle>
+              <mat-datepicker
+                #picker2
+                [startAt]="bookingTime.toDate"
+              ></mat-datepicker>
+              <mat-error *ngIf="toDate.invalid">Please Select a Date</mat-error>
+            </mat-form-field>
           </div>
+        </div>
 
-          <div class="col">
-            <div class="filter-content search-box-mid shadow">
-                  <h5  class="top-heading"><b> To..</b></h5>
-                  <mat-form-field class="top-filter">
-                    <input matInput [min] = "today"
-                    [matDatepicker]="picker2"
-                    required
-                    name="to_date"
-                    #toDate="ngModel"
-                    [(ngModel)]="bookingTime.toDate"
-                    (dateChange) = "searchServices()"
-                    />
-                    <mat-datepicker-toggle
-                      matSuffix
-                      [for]="picker2"
-                    ></mat-datepicker-toggle>
-                    <mat-datepicker #picker2 [startAt]="bookingTime.toDate"></mat-datepicker>
-                    <mat-error *ngIf="toDate.invalid">Please Select a Date</mat-error>
-                  </mat-form-field>
-              </div>
-          </div>
-
-          <div class="col">
-            <div class="filter-content search-box-mid shadow">
-              <h5  class="top-heading"><b> Time..</b></h5>
+        <div class="col">
+          <div class="filter-content search-box-mid shadow">
+            <h5 class="top-heading"><b> Time..</b></h5>
             <mat-form-field class="top-filter">
               <mat-label>Select Times</mat-label>
               <mat-select multiple disableRipple>
-                <mat-option style="height:200px !important;">
+                <mat-option style="height: 200px !important;">
                   <div class="row">
                     <div class="col-md-6 sm-12 text-center">
                       <span><b>From Time </b> </span>
-                      <ngb-timepicker [(ngModel)]="bookingTime.toTime"
-                      name="to_time" ></ngb-timepicker>
+                      <ngb-timepicker
+                        [(ngModel)]="bookingTime.toTime"
+                        name="to_time"
+                      ></ngb-timepicker>
                     </div>
                     <div class="col-md-6 sm-12 text-center">
                       <span><b> To Time </b></span>
-                      <ngb-timepicker [(ngModel)]="bookingTime.fromTime"
-                      name="from_time" ></ngb-timepicker>
+                      <ngb-timepicker
+                        [(ngModel)]="bookingTime.fromTime"
+                        name="from_time"
+                      ></ngb-timepicker>
                     </div>
                   </div>
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            </div>
           </div>
-
-          </div>
-          <hr>
         </div>
+      </div>
+      <hr />
+    </div>
 
-
-      <!--search results-->
-      <div class="search-results container" *ngIf="services.length">
-        <div class="text-md-left lead pt-2 pb-3">
-          <h3 class="product-cat-heading">{{selectedCategory}}</h3>
-       </div>
-        <div class="row search-result shadow container-fluid" mdbWavesEffect *ngFor="let service of services">
-          <div class="col-md-3">
-            <img [src]="service.image_01" style="width:260px" alt="product.product" title="product.product" >
-          </div>
-            <div class="col-md-4 search-result-pd">
-              <span class="search-result-heading"> {{service.service_name}}</span>
-              <br>
-              <span class="search-result-price"> Rs. {{service.rate}} {{service.rate_type}} </span>
-            </div>
-          <div class="col-md-1">
-          </div>
-          <div class="col-md-4 search-result-btn-pd" >
-            <div style="text-align:right;">
-
-              <div class="row">
-                <div class="col-md-3">
+    <!--search results-->
+    <div class="search-results container" *ngIf="services.length">
+      <div class="text-md-left lead pt-2 pb-3">
+        <h3 class="product-cat-heading">{{ selectedCategory }}</h3>
+      </div>
+      <div
+        class="row search-result shadow container-fluid"
+        mdbWavesEffect
+        *ngFor="let service of services"
+      >
+        <div class="col-md-3">
+          <img
+            [src]="service.image_01"
+            style="width: 260px;"
+            alt="product.product"
+            title="product.product"
+          />
+        </div>
+        <div class="col-md-4 search-result-pd">
+          <span class="search-result-heading"> {{ service.service_name }}</span>
+          <br />
+          <span class="search-result-price">
+            Rs. {{ service.rate }} {{ service.rate_type }}
+          </span>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-4 search-result-btn-pd">
+          <div style="text-align: right;">
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-3">
+                <div class="promo" *ngIf="service.promotions.length">
+                  <span style="color: darkmagenta;"
+                    >{{ service.promotions[0].precentage }} %</span
+                  >
                 </div>
-                <div class="col-md-3">
-                  <div class="promo" *ngIf="service.promotions.length">
-                    <span style="color:darkmagenta;">{{service.promotions[0].precentage }} %</span>
-                </div>
-                </div>
+              </div>
               <div class="col-md-6">
-                <div style="text-align:right;">
-                  <a role="button" class="btn btn-md" color="secondary" text="white" mdbBtn mdbWavesEffect
-                  (click)= "sendService(service)"  (click)="serviceDetails.show()">
-                  Book Now</a>
+                <div style="text-align: right;">
+                  <a
+                    role="button"
+                    class="btn btn-md"
+                    color="secondary"
+                    text="white"
+                    mdbBtn
+                    mdbWavesEffect
+                    (click)="sendService(service)"
+                    (click)="serviceDetails.show()"
+                  >
+                    Book Now</a
+                  >
                 </div>
                 <div class="rating-mini">
                   <ngb-rating readonly="true" [rate]="service.rating" max="5">
-                    <ng-template  let-fill="fill" let-index="index">
-                      <span class="star-mini" [class.filled]="fill === 100">&#9733;</span>
+                    <ng-template let-fill="fill" let-index="index">
+                      <span class="star-mini" [class.filled]="fill === 100"
+                        >&#9733;</span
+                      >
                     </ng-template>
                   </ngb-rating>
                 </div>
-
               </div>
             </div>
-
-
-
-            </div>
-
           </div>
-
         </div>
       </div>
+    </div>
 
-      <div class="text-center pd-top-min" *ngIf="!services.length">
-        No Services Found
-      </div>
+    <div class="text-center pd-top-min" *ngIf="!services.length">
+      No Services Found
+    </div>
 
+    <hr />
 
-         <hr>
-
-         <div class="text-center">
-           <h5><b>    Couldn't find what you'r looking for?  </b></h5>
-          <br>
-          Place your Inquery or Join  the Realtime Chat
-          <button class="btn btn-md" mdbBtn mdbWavesEffect color="primary" style="margin-left:25px;" routerLink="/inquery"
-          (click) = "emitUser()"          >
-            Visit Forum
-          </button>
-         </div>
-
+    <div class="text-center">
+      <h5><b> Couldn't find what you'r looking for? </b></h5>
+      <br />
+      Place your Inquery or Join the Realtime Chat
+      <button
+        class="btn btn-md"
+        mdbBtn
+        mdbWavesEffect
+        color="primary"
+        style="margin-left: 25px;"
+        routerLink="/inquery"
+        (click)="emitUser()"
+      >
+        Visit Forum
+      </button>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
 
@@ -318,13 +405,12 @@
   role="dialog"
   aria-labelledby="myBasicModalLabel"
   [config]="{ backdrop: false, ignoreBackdropClick: true }"
-  style="z-index:1;"
-
+  style="z-index: 1;"
 >
   <div
     class="modal-dialog modal-dialog-centered modal-lg"
     role="document"
-    style="overflow-y: initial !important"
+    style="overflow-y: initial !important;"
   >
     <div class="modal-content">
       <div class="modal-header">
@@ -336,15 +422,18 @@
         >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
+        <h4 class="modal-title w-100" id="myModalLabel">
           <mat-icon>service</mat-icon>Book Service
         </h4>
       </div>
 
-      <div class="modal-body " style="height: 500px; overflow-y: auto;">
-
-        <app-service-details [editable]= "false" [isowner]="false" [bookingTime]= "bookingTime" [islogged] = "islogged"></app-service-details>
-
+      <div class="modal-body" style="height: 500px; overflow-y: auto;">
+        <app-service-details
+          [editable]="false"
+          [isowner]="false"
+          [bookingTime]="bookingTime"
+          [islogged]="islogged"
+        ></app-service-details>
       </div>
 
       <div class="modal-footer">
@@ -360,8 +449,6 @@
     </div>
   </div>
 </div>
-
-
 
 <!--product details of a search result-->
 <div
@@ -373,12 +460,11 @@
   aria-labelledby="myBasicModalLabel"
   [config]="{ backdrop: false, ignoreBackdropClick: true }"
   aria-hidden="true"
-
 >
   <div
     class="modal-dialog modal-dialog-centered modal-lg"
     role="document"
-    style="overflow-y: initial !important"
+    style="overflow-y: initial !important;"
   >
     <div class="modal-content">
       <div class="modal-header">
@@ -390,13 +476,16 @@
         >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
+        <h4 class="modal-title w-100" id="myModalLabel">
           <mat-icon>service</mat-icon> Search Nearby Services
         </h4>
       </div>
 
-      <div class="modal-body " style="height: 500px; overflow-y: auto;">
-        <app-location-search [searchMode] = "true" [(recievedLocations)] = "recievedLocations"></app-location-search>
+      <div class="modal-body" style="height: 500px; overflow-y: auto;">
+        <app-location-search
+          [searchMode]="true"
+          [(recievedLocations)]="recievedLocations"
+        ></app-location-search>
       </div>
 
       <div class="modal-footer">
@@ -412,4 +501,3 @@
     </div>
   </div>
 </div>
-

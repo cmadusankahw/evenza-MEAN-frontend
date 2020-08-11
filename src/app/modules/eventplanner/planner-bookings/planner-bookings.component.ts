@@ -24,7 +24,7 @@ export class PlannerBookingsComponent implements OnInit, OnDestroy {
   private bookingSub: Subscription;
 
   // Create sample bookings
-  bookings: Booking[] ;
+  bookings: Booking[];
 
   // booking-states
   @Input() bookingType = 'pending';
@@ -50,14 +50,14 @@ export class PlannerBookingsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.eventPlannerService.getBookings();
     this.bookingSub = this.eventPlannerService.getBookingsUpdateListener()
-          .subscribe((recievedBookings: Booking[]) => {
-              this.bookings = recievedBookings;
-              console.log(this.bookings);
-              if (this.bookings) {
-              this.dataSource = new MatTableDataSource(this.addBookings(this.bookings, this.bookingType));
-              this.dataSource.paginator = this.paginator;
-              this.dataSource.sort = this.sort;
-           }
+      .subscribe((recievedBookings: Booking[]) => {
+        this.bookings = recievedBookings;
+        console.log(this.bookings);
+        if (this.bookings) {
+          this.dataSource = new MatTableDataSource(this.addBookings(this.bookings, this.bookingType));
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
       });
   }
 

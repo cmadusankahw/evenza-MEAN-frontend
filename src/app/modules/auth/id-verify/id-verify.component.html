@@ -1,52 +1,67 @@
 <div class="container-fluid text-center justify-content-center">
-  <p>Upload clear images of the <b>Front Side</b> and the <b>Back Side</b> seperate, of your <b>National Identity Card(NIC)</b> or
-    <b>Valid Driving License(DL)</b> or <b>Passport</b></p>
-    <hr>
-    <form #rForm ngForm="rForm" (submit)="verifyID(rForm)">
+  <p>
+    Upload clear images of the <b>Front Side</b> and the
+    <b>Back Side</b> seperate, of your <b>National Identity Card(NIC)</b> or
+    <b>Valid Driving License(DL)</b> or <b>Passport</b>
+  </p>
+  <hr />
+  <form #rForm ngForm="rForm" (submit)="verifyID(rForm)">
     <div class="row">
       <mat-form-field class="mfield">
-        <mat-label >Select Idntity Card Type</mat-label>
+        <mat-label>Select Idntity Card Type</mat-label>
         <select matNativeControl required [(ngModel)]="issuer" name="issuer">
-          <option  value="National Identity Card(NIC)">
-
+          <option value="National Identity Card(NIC)">
             National Identity Card(NIC)</option
           >
-          <option  value="Driving License(DL)">
-
-            Driving License(DL)</option
-          >
-          <option   value="Passport">
-
-            Passport</option
-          >
+          <option value="Driving License(DL)"> Driving License(DL)</option>
+          <option value="Passport"> Passport</option>
         </select>
       </mat-form-field>
     </div>
-   <br>
+    <br />
     <div class="row">
       <div class="col-md-1"></div>
       <div class="col">
         <a role="button" mdbWavesEffect (click)="sidea.click()">
-          <img src={{sideAUrl}} alt="front side" class="img-cls">
+          <img src="{{ sideAUrl }}" alt="front side" class="img-cls" />
         </a>
-        <input type="file" hidden="true" id="sidea" #sidea (change)="onSideAUploaded($event)">
+        <input
+          type="file"
+          hidden="true"
+          id="sidea"
+          #sidea
+          (change)="onSideAUploaded($event)"
+        />
         <p><b>Side A</b></p>
       </div>
       <div class="col-md-1"></div>
       <div class="col">
         <a role="button" mdbWavesEffect (click)="sideb.click()">
-          <img src={{sideBUrl}} alt="front side"  class="img-cls">
+          <img src="{{ sideBUrl }}" alt="front side" class="img-cls" />
         </a>
-        <input type="file" hidden="true" id="sideb" #sideb (change)="onSideBUploaded($event)">
+        <input
+          type="file"
+          hidden="true"
+          id="sideb"
+          #sideb
+          (change)="onSideBUploaded($event)"
+        />
         <p><b>Side B</b></p>
       </div>
       <div class="col-md-1"></div>
     </div>
- <br>
+    <br />
     <div class="row">
-      <button class="btn btn-md bt-center" mdbBtn role="button" color="secondary" mdbWavesEffect type="submit">
+      <button
+        class="btn btn-md bt-center"
+        mdbBtn
+        role="button"
+        color="secondary"
+        mdbWavesEffect
+        type="submit"
+      >
         Submit for Verification
       </button>
     </div>
-</form>
+  </form>
 </div>

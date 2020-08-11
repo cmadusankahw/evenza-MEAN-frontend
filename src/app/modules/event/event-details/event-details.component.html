@@ -1,399 +1,610 @@
 <div class="container pt-5 shadow pb-5" *ngIf="!editmode && event">
-
   <div class="row f-image ml-3 mr-3">
-    <img class="d-block w-100" [src]="event.feature_img ? event.feature_img : './assets/images/merchant/nopic.png'"
-    alt="Feature image" class="feature-img">
+    <img
+      class="d-block w-100"
+      [src]="
+        event.feature_img
+          ? event.feature_img
+          : './assets/images/merchant/nopic.png'
+      "
+      alt="Feature image"
+      class="feature-img"
+    />
   </div>
 
-      <div class="row ml-3 mr-3">
-        <div class=" col-md-8 content-text pt-2">
-          <div class="top-stat">
-            <div class="content-title">
-              {{event.event_title}}
-            </div>
-            <div class="open-stat pt-3" >
-              <a mdbWavesEffect role="button" (click)= "locationModal.show()">
-              <span><mdb-icon fas icon="map-marker-alt"> </mdb-icon> At {{ event.location.homeTown}}</span>
-              </a>
-            </div>
-
-            <div class="open-stat pt-2" *ngIf="event.from_date.slice(0,10) != event.to_date.slice(0,10)" >
-              <span class="date-stat"><mdb-icon far icon="calendar-alt"> </mdb-icon> From
-                {{event.from_date.slice(0,10)}} to {{event.to_date.slice(0,10)}}</span>
-            </div>
-
-            <div class="open-stat pt-2" *ngIf="event.from_date.slice(0,10) == event.to_date.slice(0,10)" >
-              <span class="date-stat"><mdb-icon far icon="clock"> </mdb-icon> On
-                {{event.from_date.slice(0,10)}} </span>
-                <br>
-                <span class="date-stat"><mdb-icon far icon="clock"> </mdb-icon> From
-                  {{ event.from_date.slice(11,16)}} to  {{ event.to_date.slice(11,16)}}</span>
-            </div>
+  <div class="row ml-3 mr-3">
+    <div class="col-md-8 content-text pt-2">
+      <div class="top-stat">
+        <div class="content-title">
+          {{ event.event_title }}
         </div>
-          <hr>
+        <div class="open-stat pt-3">
+          <a mdbWavesEffect role="button" (click)="locationModal.show()">
+            <span
+              ><mdb-icon fas icon="map-marker-alt"> </mdb-icon> At
+              {{ event.location.homeTown }}</span
+            >
+          </a>
+        </div>
 
-          {{event.description}}
-          <div class="category">
-            <mdb-icon far icon="calendar-alt"></mdb-icon> Categry: {{ event.event_category}}
-          </div>
-          <hr>
-           <div class="notify" style="color:darkblue;" *ngIf="!published">
-            <mdb-icon far icon="money-bill-alt"></mdb-icon> <b> Budget: Rs. {{ event.total_budget}} </b>
-          </div>
-          <br>
-          <div class="notify" *ngIf="isowner">
-            <mdb-icon fas icon="user-friends"> </mdb-icon> No of Participants (Expected): {{event.no_of_participants}}
-            <br> <br> <span style="font-weight:300;"> <mdb-icon fas icon="users"> </mdb-icon> View all participants:
-               <a routerLink="/planner/event/participants/{{event.event_id}}"> Event Participants</a> </span>
-          </div>
-          <hr>
-          <div classs="item-box" *ngIf="isowner && !published">
-            <h4 class="pt-5">
-              <mat-icon>check_circle</mat-icon>
-             <b> Allocated Services</b>
-            </h4>
-              <!-- service table-->
-                <div class="container-fluid ">
-                  <div class="mat-elevation-z8" *ngIf="services.length">
-                    <table class="table-responsive" mat-table [dataSource]="serviceDataSource">
+        <div
+          class="open-stat pt-2"
+          *ngIf="event.from_date.slice(0, 10) != event.to_date.slice(0, 10)"
+        >
+          <span class="date-stat"
+            ><mdb-icon far icon="calendar-alt"> </mdb-icon> From
+            {{ event.from_date.slice(0, 10) }} to
+            {{ event.to_date.slice(0, 10) }}</span
+          >
+        </div>
 
-                      <!-- ID Column -->
-                      <ng-container matColumnDef="service_name">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header > Service  </th>
-                        <td mat-cell *matCellDef="let row"> {{row.service_name}} </td>
-                      </ng-container>
+        <div
+          class="open-stat pt-2"
+          *ngIf="event.from_date.slice(0, 10) == event.to_date.slice(0, 10)"
+        >
+          <span class="date-stat"
+            ><mdb-icon far icon="clock"> </mdb-icon> On
+            {{ event.from_date.slice(0, 10) }}
+          </span>
+          <br />
+          <span class="date-stat"
+            ><mdb-icon far icon="clock"> </mdb-icon> From
+            {{ event.from_date.slice(11, 16) }} to
+            {{ event.to_date.slice(11, 16) }}</span
+          >
+        </div>
+      </div>
+      <hr />
 
-                      <!-- Progress Column -->
-                      <ng-container matColumnDef="category">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header > Category </th>
-                        <td mat-cell *matCellDef="let row"> {{row.service_category}} </td>
-                      </ng-container>
+      {{ event.description }}
+      <div class="category">
+        <mdb-icon far icon="calendar-alt"></mdb-icon> Categry:
+        {{ event.event_category }}
+      </div>
+      <hr />
+      <div class="notify" style="color: darkblue;" *ngIf="!published">
+        <mdb-icon far icon="money-bill-alt"></mdb-icon>
+        <b> Budget: Rs. {{ event.total_budget }} </b>
+      </div>
+      <br />
+      <div class="notify" *ngIf="isowner">
+        <mdb-icon fas icon="user-friends"> </mdb-icon> No of Participants
+        (Expected): {{ event.no_of_participants }} <br />
+        <br />
+        <span style="font-weight: 300;">
+          <mdb-icon fas icon="users"> </mdb-icon> View all participants:
+          <a routerLink="/planner/event/participants/{{ event.event_id }}">
+            Event Participants</a
+          >
+        </span>
+      </div>
+      <hr />
+      <div classs="item-box" *ngIf="isowner && !published">
+        <h4 class="pt-5">
+          <mat-icon>check_circle</mat-icon>
+          <b> Allocated Services</b>
+        </h4>
+        <!-- service table-->
+        <div class="container-fluid">
+          <div class="mat-elevation-z8" *ngIf="services.length">
+            <table
+              class="table-responsive"
+              mat-table
+              [dataSource]="serviceDataSource"
+            >
+              <!-- ID Column -->
+              <ng-container matColumnDef="service_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Service
+                </th>
+                <td mat-cell *matCellDef="let row">{{ row.service_name }}</td>
+              </ng-container>
 
-                      <!-- Color Column -->
-                      <ng-container matColumnDef="state">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header > State </th>
-                        <td mat-cell *matCellDef="let row" >
-                          {{row.state}}
-                        </td>
-                      </ng-container>
+              <!-- Progress Column -->
+              <ng-container matColumnDef="category">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Category
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  {{ row.service_category }}
+                </td>
+              </ng-container>
 
-                       <!-- Action Column -->
-                       <ng-container matColumnDef="action">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> Details </th>
-                        <td mat-cell *matCellDef="let row">
-                          <button mdbBtn color="primary" text="white" class="btn btn-sm text-center"
-                          routerLink= "/planner/event/plan/{{event.event_id}}">
-                            MORE DETAILS
-                          </button>
-                         </td>
-                      </ng-container>
+              <!-- Color Column -->
+              <ng-container matColumnDef="state">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>State</th>
+                <td mat-cell *matCellDef="let row">
+                  {{ row.state }}
+                </td>
+              </ng-container>
 
-                      <tr mat-header-row *matHeaderRowDef="serviceDisplayedColumns"></tr>
-                      <tr mat-row *matRowDef="let row; columns: serviceDisplayedColumns;">
-                      </tr>
-                    </table>
-                </div>
-                </div>
-              <hr>
-              <h4 class="pt-5">
-                <mat-icon>check_circle</mat-icon>
-               <b> Orderd Products</b>
-              </h4>
-                <!-- products table-->
-                      <div class="container-fluid ">
-                        <div class="mat-elevation-z8" *ngIf="products.length">
-                          <table class="table-responsive" mat-table [dataSource]="productDataSource">
+              <!-- Action Column -->
+              <ng-container matColumnDef="action">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  style="text-align: center;"
+                >
+                  Details
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <button
+                    mdbBtn
+                    color="primary"
+                    text="white"
+                    class="btn btn-sm text-center"
+                    routerLink="/planner/event/plan/{{ event.event_id }}"
+                  >
+                    MORE DETAILS
+                  </button>
+                </td>
+              </ng-container>
 
-                            <!-- ID Column -->
-                            <ng-container matColumnDef="product">
-                              <th mat-header-cell *matHeaderCellDef mat-sort-header > Product  </th>
-                              <td mat-cell *matCellDef="let row2"> {{row2.product}} </td>
-                            </ng-container>
-
-                            <!-- Progress Column -->
-                            <ng-container matColumnDef="category">
-                              <th mat-header-cell *matHeaderCellDef mat-sort-header > Category </th>
-                              <td mat-cell *matCellDef="let row2"> {{row2.product_category}} </td>
-                            </ng-container>
-
-                            <!-- Color Column -->
-                            <ng-container matColumnDef="state">
-                              <th mat-header-cell *matHeaderCellDef mat-sort-header > State </th>
-                              <td mat-cell *matCellDef="let row2" >
-                                {{row2.state}}
-                              </td>
-                            </ng-container>
-
-                             <!-- Action Column -->
-                             <ng-container matColumnDef="action" >
-                              <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> Details </th>
-                              <td mat-cell *matCellDef="let row2">
-                                <button mdbBtn color="primary" text="white" class="btn btn-sm text-center"
-                                routerLink= "/planner/event/plan/{{event.event_id}}">
-                                  MORE DETAILS
-                                </button>
-                               </td>
-                            </ng-container>
-
-                            <tr mat-header-row *matHeaderRowDef="productDisplayedColumns"></tr>
-                            <tr mat-row *matRowDef="let row2; columns: productDisplayedColumns;">
-                            </tr>
-                          </table>
-                      </div>
-
+              <tr
+                mat-header-row
+                *matHeaderRowDef="serviceDisplayedColumns"
+              ></tr>
+              <tr
+                mat-row
+                *matRowDef="let row; columns: serviceDisplayedColumns"
+              ></tr>
+            </table>
           </div>
         </div>
+        <hr />
+        <h4 class="pt-5">
+          <mat-icon>check_circle</mat-icon>
+          <b> Orderd Products</b>
+        </h4>
+        <!-- products table-->
+        <div class="container-fluid">
+          <div class="mat-elevation-z8" *ngIf="products.length">
+            <table
+              class="table-responsive"
+              mat-table
+              [dataSource]="productDataSource"
+            >
+              <!-- ID Column -->
+              <ng-container matColumnDef="product">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Product
+                </th>
+                <td mat-cell *matCellDef="let row2">{{ row2.product }}</td>
+              </ng-container>
+
+              <!-- Progress Column -->
+              <ng-container matColumnDef="category">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Category
+                </th>
+                <td mat-cell *matCellDef="let row2">
+                  {{ row2.product_category }}
+                </td>
+              </ng-container>
+
+              <!-- Color Column -->
+              <ng-container matColumnDef="state">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>State</th>
+                <td mat-cell *matCellDef="let row2">
+                  {{ row2.state }}
+                </td>
+              </ng-container>
+
+              <!-- Action Column -->
+              <ng-container matColumnDef="action">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  style="text-align: center;"
+                >
+                  Details
+                </th>
+                <td mat-cell *matCellDef="let row2">
+                  <button
+                    mdbBtn
+                    color="primary"
+                    text="white"
+                    class="btn btn-sm text-center"
+                    routerLink="/planner/event/plan/{{ event.event_id }}"
+                  >
+                    MORE DETAILS
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr
+                mat-header-row
+                *matHeaderRowDef="productDisplayedColumns"
+              ></tr>
+              <tr
+                mat-row
+                *matRowDef="let row2; columns: productDisplayedColumns"
+              ></tr>
+            </table>
+          </div>
         </div>
-        <hr>
-
-
-        <!--action buttons-->
-        <div class="col-md-4 text-center">
-         <div class="button-box container-fluid" *ngIf="!published">
-           <h4 class="button-box-heading"><b>
-            <mat-icon>assignment</mat-icon> Action Pane
-           </b></h4>
-           <hr>
-           <div class="pb-1" *ngIf="event.state != 'published'">
-             <p><b> Event has not Published Yet!</b></p>
-            <button mdbBtn color="primary" text="white" class="btn btn-md text-center"
-            (click) = "publishModal.show()">
-              PUBLISH EVENT NOW!
-            </button>
-           </div>
-
-           <div class="pb-1" *ngIf="event.state == 'published'">
-            <h5 style="color:darkgreen;"><b> Event is Published!</b></h5>
-            <p> <a routerLink="/events/{{event.event_id}}"> View Event </a></p>
-          </div>
-           <hr>
-
-           <div class="pb-1" >
-            <p class="button-box-sub"><mdb-icon far icon="list-alt"> </mdb-icon> Edit Event Details: </p>
-           <button mdbBtn color="secondary" text="white" class="btn btn-md text-center"
-           routerLink = "/planner/event/edit/{{event.event_id}}">
-             EDIT EVENT DETAILS
-           </button>
-          </div>
-          <hr>
-          <div class="pb-1" >
-            <p class="button-box-sub"><mdb-icon fas icon="clipboard-list"> </mdb-icon> Event Plan: </p>
-           <button mdbBtn color="secondary" text="white" class="btn btn-md text-center"
-           routerLink = "/planner/event/plan/{{event.event_id}}">
-            VIEW EVENT PLAN
-           </button>
-          </div>
-          <hr>
-          <div class="pb-1" >
-            <p class="button-box-sub"><mdb-icon fas icon="tasks"> </mdb-icon> Event Schedule: </p>
-           <button mdbBtn color="secondary" text="white" class="btn btn-md text-center"
-           routerLink = "/planner/event/schedule/{{event.event_id}}">
-            VIEW EVENT SCHEDULE
-           </button>
-          </div>
-          <hr>
-          <div class="pb-2" >
-            <p class="button-box-sub"><mdb-icon fas icon="users"> </mdb-icon> Manage Participants:</p>
-           <button mdbBtn color="secondary" text="white" class="btn btn-md text-center"
-           routerLink = "/planner/event/participants/{{event.event_id}}">
-             MANAGE PARTICIPANTS
-           </button>
-          </div>
-          <hr>
-          <div class="danger-zone"  >
-            <div class="pb-2" >
-              <p class="button-box-sub"><mdb-icon fas icon="users"> </mdb-icon> Cancel Event:</p>
-             <button mdbBtn color="danger" text="white" class="btn btn-md text-center"
-             (click) = "cancelDialog.show()" [disabled] ="event.state != 'published'">
-               CANCEL EVENT
-             </button>
-            </div>
-          </div>
-         </div>
-
-         <div class="button-box container-fluid" >
-          <h4 class="button-box-heading"><b>
-           <mat-icon>assignment</mat-icon> Social Share
-          </b></h4>
-          <p> View event on Social Media</p>
-          <hr>
-          <div class="row container-fluid">
-            <div class="col-md-4">
-              <a mdbBtn style="border-radius:50%; padding-top:19px; padding-bottom:19px;" color="primary" class="btn btn-md" [href]="event.social_links.fb" >
-                <mat-icon>facebook</mat-icon>
-              </a>
-            </div>
-            <div class="col-md-4">
-              <a mdbBtn style="border-radius:50%; padding-top:19px; padding-bottom:19px;" color="secondary" class="btn btn-md" [href]="event.social_links.instagram" >
-                <mat-icon>linked_camera</mat-icon>
-              </a>
-            </div>
-            <div class="col-md-4">
-              <a mdbBtn style="border-radius:50%; padding-top:19px; padding-bottom:19px;" color="green" class="btn btn-md" [href]="event.social_links.other" >
-                <mat-icon>language</mat-icon>
-              </a>
-            </div>
-          </div>
-          </div>
-
       </div>
     </div>
+    <hr />
 
-    </div>
+    <!--action buttons-->
+    <div class="col-md-4 text-center">
+      <div class="button-box container-fluid" *ngIf="!published">
+        <h4 class="button-box-heading">
+          <b> <mat-icon>assignment</mat-icon> Action Pane </b>
+        </h4>
+        <hr />
+        <div class="pb-1" *ngIf="event.state != 'published'">
+          <p><b> Event has not Published Yet!</b></p>
+          <button
+            mdbBtn
+            color="primary"
+            text="white"
+            class="btn btn-md text-center"
+            (click)="publishModal.show()"
+          >
+            PUBLISH EVENT NOW!
+          </button>
+        </div>
 
-    <!--View Location Modal-->
-    <div
-      mdbModal
-      #locationModal="mdbModal"
-      class="modal fade"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="myBasicModalLabel"
-      [config]="{ backdrop: false, ignoreBackdropClick: true }"
-      aria-hidden="true"
+        <div class="pb-1" *ngIf="event.state == 'published'">
+          <h5 style="color: darkgreen;"><b> Event is Published!</b></h5>
+          <p><a routerLink="/events/{{ event.event_id }}"> View Event </a></p>
+        </div>
+        <hr />
 
-    >
-      <div
-        class="modal-dialog modal-dialog-centered modal-md"
-        role="document"
-        style="overflow-y: initial !important"
-      >
-        <div class="modal-content">
-          <div class="modal-header">
-            <button
-              type="button"
-              class="close pull-right"
-              aria-label="Close"
-              (click)="success=false"
-              (click)="locationModal.hide()"
-            >
-              <span aria-hidden="true">×</span>
-            </button>
-            <h4 class="modal-title w-100" id="myModalLabel" >
-              <mat-icon>service</mat-icon>View event Location
-            </h4>
-          </div>
-
-          <div class="modal-body " style="height: 400px; overflow-y: auto;">
-
-            <app-location-search [showLoc] = "true"  [recievedLocation] = "event ? event.location : {lat:0, lang:0, homeTown: ''}"></app-location-search>
-
-          </div>
-
-          <div class="modal-footer">
+        <div class="pb-1">
+          <p class="button-box-sub">
+            <mdb-icon far icon="list-alt"> </mdb-icon> Edit Event Details:
+          </p>
+          <button
+            mdbBtn
+            color="secondary"
+            text="white"
+            class="btn btn-md text-center"
+            routerLink="/planner/event/edit/{{ event.event_id }}"
+          >
+            EDIT EVENT DETAILS
+          </button>
+        </div>
+        <hr />
+        <div class="pb-1">
+          <p class="button-box-sub">
+            <mdb-icon fas icon="clipboard-list"> </mdb-icon> Event Plan:
+          </p>
+          <button
+            mdbBtn
+            color="secondary"
+            text="white"
+            class="btn btn-md text-center"
+            routerLink="/planner/event/plan/{{ event.event_id }}"
+          >
+            VIEW EVENT PLAN
+          </button>
+        </div>
+        <hr />
+        <div class="pb-1">
+          <p class="button-box-sub">
+            <mdb-icon fas icon="tasks"> </mdb-icon> Event Schedule:
+          </p>
+          <button
+            mdbBtn
+            color="secondary"
+            text="white"
+            class="btn btn-md text-center"
+            routerLink="/planner/event/schedule/{{ event.event_id }}"
+          >
+            VIEW EVENT SCHEDULE
+          </button>
+        </div>
+        <hr />
+        <div class="pb-2">
+          <p class="button-box-sub">
+            <mdb-icon fas icon="users"> </mdb-icon> Manage Participants:
+          </p>
+          <button
+            mdbBtn
+            color="secondary"
+            text="white"
+            class="btn btn-md text-center"
+            routerLink="/planner/event/participants/{{ event.event_id }}"
+          >
+            MANAGE PARTICIPANTS
+          </button>
+        </div>
+        <hr />
+        <div class="danger-zone">
+          <div class="pb-2">
+            <p class="button-box-sub">
+              <mdb-icon fas icon="users"> </mdb-icon> Cancel Event:
+            </p>
             <button
               mdbBtn
-              color="link"
-              (click)="success=false"
-              (click)="locationModal.hide()"
-              mdbWavesEffect
+              color="danger"
+              text="white"
+              class="btn btn-md text-center"
+              (click)="cancelDialog.show()"
+              [disabled]="event.state != 'published'"
             >
-              Close
+              CANCEL EVENT
             </button>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- cancel event confirmation-->
-<div mdbModal #cancelDialog="mdbModal"
-class="modal fade top"
-id="frameModalTop" tabindex="-1" role="dialog"
-[config]="{ backdrop: false, ignoreBackdropClick: true }"
-  aria-labelledby="myModalLabel" aria-hidden="true" >
-  <div class="modal-dialog modal-notify modal-danger  modal-dialog-centered" role="document">
+      <div class="button-box container-fluid">
+        <h4 class="button-box-heading">
+          <b> <mat-icon>assignment</mat-icon> Social Share </b>
+        </h4>
+        <p>View event on Social Media</p>
+        <hr />
+        <div class="row container-fluid">
+          <div class="col-md-4">
+            <a
+              mdbBtn
+              style="
+                border-radius: 50%;
+                padding-top: 19px;
+                padding-bottom: 19px;
+              "
+              color="primary"
+              class="btn btn-md"
+              [href]="event.social_links.fb"
+            >
+              <mat-icon>facebook</mat-icon>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a
+              mdbBtn
+              style="
+                border-radius: 50%;
+                padding-top: 19px;
+                padding-bottom: 19px;
+              "
+              color="secondary"
+              class="btn btn-md"
+              [href]="event.social_links.instagram"
+            >
+              <mat-icon>linked_camera</mat-icon>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a
+              mdbBtn
+              style="
+                border-radius: 50%;
+                padding-top: 19px;
+                padding-bottom: 19px;
+              "
+              color="green"
+              class="btn btn-md"
+              [href]="event.social_links.other"
+            >
+              <mat-icon>language</mat-icon>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--View Location Modal-->
+<div
+  mdbModal
+  #locationModal="mdbModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-md"
+    role="document"
+    style="overflow-y: initial !important;"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="success = false"
+          (click)="locationModal.hide()"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel">
+          <mat-icon>service</mat-icon>View event Location
+        </h4>
+      </div>
+
+      <div class="modal-body" style="height: 400px; overflow-y: auto;">
+        <app-location-search
+          [showLoc]="true"
+          [recievedLocation]="
+            event ? event.location : { lat: 0, lang: 0, homeTown: '' }
+          "
+        ></app-location-search>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          mdbBtn
+          color="link"
+          (click)="success = false"
+          (click)="locationModal.hide()"
+          mdbWavesEffect
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- cancel event confirmation-->
+<div
+  mdbModal
+  #cancelDialog="mdbModal"
+  class="modal fade top"
+  id="frameModalTop"
+  tabindex="-1"
+  role="dialog"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-labelledby="myModalLabel"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-notify modal-danger modal-dialog-centered"
+    role="document"
+  >
     <!--Content-->
     <div class="modal-content">
       <!--Header-->
       <div class="modal-header">
         <p class="heading">Cancel Event</p>
 
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelDialog.hide()">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="cancelDialog.hide()"
+        >
           <span aria-hidden="true" class="white-text">&times;</span>
         </button>
       </div>
 
       <!--Body-->
       <div class="modal-body">
-
         <div class="row">
           <div class="col-3">
             <p></p>
             <p class="text-center">
-              <mdb-icon fas icon="ban" size="3x" class="mb-3 animated rotateIn"></mdb-icon>
+              <mdb-icon
+                fas
+                icon="ban"
+                size="3x"
+                class="mb-3 animated rotateIn"
+              ></mdb-icon>
             </p>
           </div>
 
           <div class="col-9">
             <h5>Are you sure want to cancel this Event?</h5>
-            <p><b> Please Note: Please perform this action If necessarily
-              required. You may have to send calncellation requests to all pending bookings, appointments and orders. Consumed or completed purchases will not be refunded.
-              All participants will be acknowledged through a cancellation notice!
-            </b></p>
+            <p>
+              <b>
+                Please Note: Please perform this action If necessarily required.
+                You may have to send calncellation requests to all pending
+                bookings, appointments and orders. Consumed or completed
+                purchases will not be refunded. All participants will be
+                acknowledged through a cancellation notice!
+              </b>
+            </p>
           </div>
         </div>
       </div>
 
       <!--Footer-->
       <div class="modal-footer justify-content-center">
-        <a type="button" mdbBtn color="danger" class="waves-effect"
-        (click)="cancelDialog.hide()" (click)="cancelEvent()"
-        mdbWavesEffect>Cancel Event
+        <a
+          type="button"
+          mdbBtn
+          color="danger"
+          class="waves-effect"
+          (click)="cancelDialog.hide()"
+          (click)="cancelEvent()"
+          mdbWavesEffect
+          >Cancel Event
           <mdb-btn far icon="ban" class="ml-1"></mdb-btn>
         </a>
-        <a type="button" mdbBtn color="danger" outline="true" class="waves-effect" mdbWavesEffect
-        (click)="cancelDialog.hide()"
-          data-dismiss="modal">No, thanks</a>
+        <a
+          type="button"
+          mdbBtn
+          color="danger"
+          outline="true"
+          class="waves-effect"
+          mdbWavesEffect
+          (click)="cancelDialog.hide()"
+          data-dismiss="modal"
+          >No, thanks</a
+        >
       </div>
     </div>
     <!--/.Content-->
   </div>
 </div>
 
+<!-- publish event confirmation-->
+<div
+  mdbModal
+  #publishModal="mdbModal"
+  class="modal fade top"
+  id="frameModalTop"
+  tabindex="-1"
+  role="dialog"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-labelledby="myModalLabel"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-notify modal-info modal-dialog-centered"
+    role="document"
+  >
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <p class="heading">Publish Event</p>
 
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="publishModal.hide()"
+        >
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
 
-    <!-- publish event confirmation-->
-    <div mdbModal #publishModal="mdbModal"
-    class="modal fade top"
-    id="frameModalTop" tabindex="-1" role="dialog"
-    [config]="{ backdrop: false, ignoreBackdropClick: true }"
-      aria-labelledby="myModalLabel" aria-hidden="true" >
-      <div class="modal-dialog modal-notify modal-info modal-dialog-centered" role="document">
-        <!--Content-->
-        <div class="modal-content">
-          <!--Header-->
-          <div class="modal-header">
-            <p class="heading">Publish Event</p>
+      <!--Body-->
+      <div class="modal-body">
+        <img src="./assets/images/info/publish.jpg" style="width: 100%;" />
+      </div>
 
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="publishModal.hide()">
-              <span aria-hidden="true" class="white-text">&times;</span>
-            </button>
-          </div>
-
-          <!--Body-->
-          <div class="modal-body">
-              <img src="./assets/images/info/publish.jpg" style="width:100%">
-          </div>
-
-          <!--Footer-->
-          <div class="modal-footer justify-content-center">
-            <a type="button" mdbBtn color="info" class="waves-effect" (click)="publishEvent(eventId)"
-            (click)="publishModal.hide()"
-            mdbWavesEffect>Proceed Publish
-              <mdb-btn far icon="ban" class="ml-1"></mdb-btn>
-            </a>
-            <a type="button" mdbBtn color="info" outline="true" class="waves-effect" mdbWavesEffect
-            (click)="publishModal.hide()"
-              data-dismiss="modal">Not Now</a>
-          </div>
-        </div>
-        <!--/.Content-->
+      <!--Footer-->
+      <div class="modal-footer justify-content-center">
+        <a
+          type="button"
+          mdbBtn
+          color="info"
+          class="waves-effect"
+          (click)="publishEvent(eventId)"
+          (click)="publishModal.hide()"
+          mdbWavesEffect
+          >Proceed Publish
+          <mdb-btn far icon="ban" class="ml-1"></mdb-btn>
+        </a>
+        <a
+          type="button"
+          mdbBtn
+          color="info"
+          outline="true"
+          class="waves-effect"
+          mdbWavesEffect
+          (click)="publishModal.hide()"
+          data-dismiss="modal"
+          >Not Now</a
+        >
       </div>
     </div>
-
-
-
-
-
-
-
+    <!--/.Content-->
+  </div>
+</div>

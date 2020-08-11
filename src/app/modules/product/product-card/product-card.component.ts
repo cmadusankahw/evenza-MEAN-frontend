@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { Product} from '../product.model';
+import { Product } from '../product.model';
 import { ProductService } from '../product.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { ProductService } from '../product.service';
 export class ProductCardComponent implements OnInit, OnDestroy {
 
   // subscription
-  private productSub: Subscription ;
+  private productSub: Subscription;
 
   // service card ownership
   @Input() isowner = false;
@@ -37,23 +37,23 @@ export class ProductCardComponent implements OnInit, OnDestroy {
               public productService: ProductService) { }
 
   ngOnInit() {
-     // get the product
-     if (this.isowner) {
-     this.productService.getSellerProducts();
-     this.productSub = this.productService.getSellerProductUpdateListener()
-       .subscribe((recievedProducts: Product[]) => {
-           this.products = recievedProducts;
-           console.log(this.products);
+    // get the product
+    if (this.isowner) {
+      this.productService.getSellerProducts();
+      this.productSub = this.productService.getSellerProductUpdateListener()
+        .subscribe((recievedProducts: Product[]) => {
+          this.products = recievedProducts;
+          console.log(this.products);
         });
-      } else {
-        this.productService.getProducts();
-        this.productSub = this.productService.getProductsUpdateListener()
-          .subscribe((recievedProducts: Product[]) => {
-              this.products = recievedProducts;
-              console.log(this.products);
-      });
-      }
+    } else {
+      this.productService.getProducts();
+      this.productSub = this.productService.getProductsUpdateListener()
+        .subscribe((recievedProducts: Product[]) => {
+          this.products = recievedProducts;
+          console.log(this.products);
+        });
     }
+  }
 
   ngOnDestroy() {
     if (this.productSub) {
@@ -63,7 +63,7 @@ export class ProductCardComponent implements OnInit, OnDestroy {
 
 
   sendProduct(product: Product) {
-   this.success = this.productService.setProduct(product);
+    this.success = this.productService.setProduct(product);
   }
 
   hasData() {

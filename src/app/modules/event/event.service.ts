@@ -1,4 +1,4 @@
-import {  OnDestroy, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
@@ -7,19 +7,21 @@ import { HttpClient } from '@angular/common/http';
 
 import { TheEvent, EventCategory, EventCard, Task, Participant, Alert, ScheduleAlert, Filteration } from './event.model';
 import { SuccessComponent } from 'src/app/success/success.component';
+import { getUrl } from 'src/assets/url';
 
 
 @Injectable({ providedIn: 'root' })
 export class EventService {
 
+  // observer pattern - subjects
   private eventsUpdated = new Subject<EventCard[]>();
   private eventUpdated = new Subject<TheEvent>();
   private eventCategoryUpdated = new Subject<EventCategory>();
   private eventCategoriesUpdated = new Subject<EventCategory[]>();
   private alertsUpdated = new Subject<ScheduleAlert[]>();
 
-  // api url (to be centralized)
-  url = 'http://localhost:3000/api/';
+  // api url
+  public url = getUrl();
 
   private event: TheEvent;
 
@@ -37,279 +39,286 @@ export class EventService {
   // passing selected filterations for service/ product search
   private filter: Filteration;
 
-    constructor(private router: Router,
-                public dialog: MatDialog,
-                private http: HttpClient) {}
+  constructor(private router: Router,
+              public dialog: MatDialog,
+              private http: HttpClient) { }
 
 
   // setters
-  setSelectedEvent(eventId: string) {
+  public setSelectedEvent(eventId: string) {
     this.eventId = eventId;
   }
 
-  setSelectedFilteration(filter: Filteration) {
+  public setSelectedFilteration(filter: Filteration) {
     this.filter = filter;
   }
 
   // getters
 
-  getSelectedEvent() {
+  // get selected event
+  public getSelectedEvent() {
     return this.eventId;
   }
 
-  getSelectedFilteration() {
+  // get selected filteration to filter services or products
+  public getSelectedFilteration() {
     return this.filter;
   }
 
-
-    getEvents() {
-      this.http.get<{ message: string, events: EventCard[] }>(this.url + 'event/get' )
+  // get a list of events created by a planner
+  public getEvents() {
+    this.http.get<{ message: string, events: EventCard[] }>(this.url + 'event/get')
       .subscribe((recievedData) => {
         console.log(recievedData.events);
         this.events = recievedData.events;
         this.eventsUpdated.next([...this.events]);
-     });
-    }
+      });
+  }
 
-    getEvent(eventId: string) {
-      this.http.get<{ message: string, event: TheEvent }>(this.url + 'event/get/' + eventId)
+  // get a specific event details using ID
+  public getEvent(eventId: string) {
+    this.http.get<{ message: string, event: TheEvent }>(this.url + 'event/get/' + eventId)
       .subscribe((recievedData) => {
         console.log(recievedData.event);
         this.event = recievedData.event;
         this.eventUpdated.next(this.event);
-     });
-    }
+      });
+  }
 
-    getEventCategories() {
-      this.http.get<{ message: string, categories: EventCategory[] }>(this.url + 'event/cat' )
+  // get event categories list
+  public getEventCategories() {
+    this.http.get<{ message: string, categories: EventCategory[] }>(this.url + 'event/cat')
       .subscribe((recievedData) => {
         console.log(recievedData.categories);
         this.eventCategories = recievedData.categories;
         this.eventCategoriesUpdated.next([...this.eventCategories]);
-     });
-    }
+      });
+  }
 
-    getEventCategory(catId: string) {
-      this.http.get<{ message: string, category: EventCategory }>(this.url + 'event/cat/' + catId )
+  // get a specific event category
+  public getEventCategory(catId: string) {
+    this.http.get<{ message: string, category: EventCategory }>(this.url + 'event/cat/' + catId)
       .subscribe((recievedData) => {
         console.log(recievedData.category);
         this.eventCategory = recievedData.category;
         this.eventCategoryUpdated.next(this.eventCategory);
-     });
-    }
+      });
+  }
 
-    getAlerts(id: string) {
-      this.http.get<{ message: string, alerts: ScheduleAlert[] }>(this.url + 'event/get/alerts/' + id )
+  // get a list of scheduled task alerts
+  public getAlerts(id: string) {
+    this.http.get<{ message: string, alerts: ScheduleAlert[] }>(this.url + 'event/get/alerts/' + id)
       .subscribe((recievedData) => {
         console.log(recievedData.message);
         this.recievedAlerts = recievedData.alerts;
         this.alertsUpdated.next([...this.recievedAlerts]);
-     });
-    }
+      });
+  }
 
-    // creating an evnt category
-    createCategory(eventCategory: EventCategory, categoryImage: File) {
-      if (categoryImage){
-        const catImage = new FormData();
-        catImage.append('images[]', categoryImage, categoryImage.name);
-        console.log(catImage);
-        this.http.post<{imagePath: string}>(this.url + 'event/cat/img', catImage )
-          .subscribe ((recievedImage) => {
-            if (recievedImage){
-              eventCategory.img = recievedImage.imagePath;
-            }
-            this.http.post<{ message: string}>(this.url + 'event/cat/create',  eventCategory )
+
+  // creating an evnt category
+  public createCategory(eventCategory: EventCategory, categoryImage: File) {
+    if (categoryImage) {
+      const catImage = new FormData();
+      catImage.append('images[]', categoryImage, categoryImage.name);
+      console.log(catImage);
+      this.http.post<{ imagePath: string }>(this.url + 'event/cat/img', catImage)
+        .subscribe((recievedImage) => {
+          if (recievedImage) {
+            eventCategory.img = recievedImage.imagePath;
+          }
+          this.http.post<{ message: string }>(this.url + 'event/cat/create', eventCategory)
             .subscribe((recievedData) => {
               this.router.routeReuseStrategy.shouldReuseRoute = () => false;
               this.router.onSameUrlNavigation = 'reload';
               this.router.navigate(['/admin/categories']);
-              this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
-           });
-          });
-      } else {
-        this.http.post<{ message: string}>(this.url + 'event/cat/create',  eventCategory )
+              this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
+            });
+        });
+    } else {
+      this.http.post<{ message: string }>(this.url + 'event/cat/create', eventCategory)
         .subscribe((recievedData) => {
           this.router.routeReuseStrategy.shouldReuseRoute = () => false;
           this.router.onSameUrlNavigation = 'reload';
           this.router.navigate(['/admin/categories']);
-          this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
-       });
-      }
+          this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
+        });
     }
+  }
 
-    // removing an event category
-    removeCategory(id: string) {
-      this.http.post<{ message: string }>(this.url + 'event/cat/remove',  id )
+  // removing an event category
+  public removeCategory(id: string) {
+    this.http.post<{ message: string }>(this.url + 'event/cat/remove', id)
       .subscribe((recievedData) => {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
         this.router.navigate(['/admin/categories']);
-        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
-     });
-    }
+        this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
+      });
+  }
 
+  // creating a new event
+  public createEvent(event: TheEvent, image: File) {
+    if (image) {
+      console.log('image uploading');
+      const newImages = new FormData();
+      newImages.append('images[]', image, image.name);
 
-
-    // creating a new event
-    createEvent(event: TheEvent, image: File) {
-      if (image) {
-        console.log('image uploading');
-        const newImages = new FormData();
-        newImages.append('images[]', image, image.name);
-
-        this.http.post<{imageUrl: string}>(this.url + 'event/add/img', newImages )
-        .subscribe ((recievedImages) => {
+      this.http.post<{ imageUrl: string }>(this.url + 'event/add/img', newImages)
+        .subscribe((recievedImages) => {
           event.feature_img = recievedImages.imageUrl;
-          this.http.post<{ message: string }>(this.url + 'event/add',  event )
-           .subscribe((recievedData) => {
-          this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+          this.http.post<{ message: string }>(this.url + 'event/add', event)
+            .subscribe((recievedData) => {
+              this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
+              this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+              this.router.onSameUrlNavigation = 'reload';
+              this.router.navigate(['/planner']);
+            });
+        });
+    } else {
+      this.http.post<{ message: string }>(this.url + 'event/add', event)
+        .subscribe((recievedData) => {
+          this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
           this.router.routeReuseStrategy.shouldReuseRoute = () => false;
           this.router.onSameUrlNavigation = 'reload';
           this.router.navigate(['/planner']);
-       });
-    });
-      } else {
-        this.http.post<{ message: string }>(this.url + 'event/add',  event )
-        .subscribe((recievedData) => {
-          this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
-          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-          this.router.onSameUrlNavigation = 'reload';
-          this.router.navigate(['/planner']);
-       });
-      }
+        });
     }
+  }
 
-    // updating the event basic settings
-    updateEvent(event: TheEvent, image: File) {
-      // if budget changed in event plan event segments should be updated
-      if (image) {
-        const newImages = new FormData();
-        newImages.append('images[]', image, image.name);
+  // updating the event basic details (not it's services or product categories)
+  public updateEvent(event: TheEvent, image: File) {
+    // if budget changed in event plan event segments should be updated
+    if (image) {
+      const newImages = new FormData();
+      newImages.append('images[]', image, image.name);
 
-        this.http.post<{imageUrl: string}>(this.url + 'event/edit/img', newImages )
-        .subscribe ((recievedImages) => {
-        if (recievedImages.imageUrl) {
-          event.feature_img = recievedImages.imageUrl;
-        }
-        this.http.post<{ message: string }>(this.url + 'event/edit',  event )
+      this.http.post<{ imageUrl: string }>(this.url + 'event/edit/img', newImages)
+        .subscribe((recievedImages) => {
+          if (recievedImages.imageUrl) {
+            event.feature_img = recievedImages.imageUrl;
+          }
+          this.http.post<{ message: string }>(this.url + 'event/edit', event)
+            .subscribe((recievedData) => {
+              this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
+              this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+              this.router.onSameUrlNavigation = 'reload';
+              this.router.navigate(['/planner/events']);
+            });
+        });
+    } else {
+      this.http.post<{ message: string }>(this.url + 'event/edit', event)
         .subscribe((recievedData) => {
-          this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+          this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
           this.router.routeReuseStrategy.shouldReuseRoute = () => false;
           this.router.onSameUrlNavigation = 'reload';
           this.router.navigate(['/planner/events']);
-       });
-    });
-      }  else {
-        this.http.post<{ message: string }>(this.url + 'event/edit',  event )
-        .subscribe((recievedData) => {
-          this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
-          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-          this.router.onSameUrlNavigation = 'reload';
-          this.router.navigate(['/planner/events']);
-       });
-      }
+        });
     }
+  }
 
-    // cancel an event
-    cancelEvent(eventId: string) {
-      // event state will be changed to cancelled
-      // all pending servies and prodcuts will be sent with cancell requests
-      // all participants will be sent a cancellation notice
-      this.http.post<{ message: string }>(this.url + 'event/remove',  eventId )
+  // cancel an event
+  // PROTOCOL
+  // event state will be changed to cancelled
+  // all pending servies and prodcuts will be sent with cancell requests
+  // all participants will be sent a cancellation notice
+  public cancelEvent(eventId: string) {
+    this.http.post<{ message: string }>(this.url + 'event/remove', eventId)
       .subscribe((recievedData) => {
-        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+        this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
         this.router.navigate(['/planner']);
-     });
-    }
+      });
+  }
 
 
-    // create new alert
-    createAlert() {
-     // this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
-    }
+  // create new alert
+  public createAlert() {
+    // this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+  }
 
 
-    // add new task as an event segment
-    createTask(newTask: Task, eventId: string) {
-      this.http.post<{ message: string }>(this.url + 'event/tasks/add',  {task: newTask, eventId} )
+  // add new scheduled task as an event segment
+  public createTask(newTask: Task, eventId: string) {
+    this.http.post<{ message: string }>(this.url + 'event/tasks/add', { task: newTask, eventId })
       .subscribe((recievedData) => {
-        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+        this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
         this.router.navigate(['/planner/event/plan/' + eventId]);
-     });
-    }
+      });
+  }
 
-    // update selected task
-    updateTask(newTask: Task, eventId: string) {
-      this.http.post<{ message: string }>(this.url + 'event/tasks/edit', {task: newTask, eventId}  )
+  // update a selected task
+  public updateTask(newTask: Task, eventId: string) {
+    this.http.post<{ message: string }>(this.url + 'event/tasks/edit', { task: newTask, eventId })
       .subscribe((recievedData) => {
-        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+        this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
         this.router.navigate(['/planner/event/plan/' + eventId]);
-     });
-    }
+      });
+  }
 
-    // updating all tasks, service, product changes on ngOnDestroy of event_plan
-    updateTasks(tasks: Task[], eventId: string) {
-        this.http.post<{ message: string }>(this.url + 'event/plan/update', {tasks, eventId}  )
-        .subscribe((recievedData) => {
-          console.log(recievedData.message);
-          this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
-          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-          this.router.onSameUrlNavigation = 'reload';
-          this.router.navigate(['/planner/event/plan/' + eventId]);
-       });
-      }
-
-      // update all invitation, participant changess on OnDestroy of event_participants
-    updateParticipantChanges(participants: Participant[], invitation: Alert, eventId: string) {
-      this.http.post<{ message: string }>(this.url + 'event/participants/update', {participants, invitation, eventId} )
+  // updating all tasks, service, product changes on ngOnDestroy of event_plan
+  public updateTasks(tasks: Task[], eventId: string) {
+    this.http.post<{ message: string }>(this.url + 'event/plan/update', { tasks, eventId })
       .subscribe((recievedData) => {
         console.log(recievedData.message);
-        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
-       // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-       // this.router.onSameUrlNavigation = 'reload';
-       // this.router.navigate(['/planner/event/plan/' + eventId]);
-     });
-    }
+        this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/planner/event/plan/' + eventId]);
+      });
+  }
 
-    // publish event
-    publishEvent(eventId: string) {
-      this.http.post<{ message: string }>(this.url + 'event/publish', {eventId} )
+  // update all invitation, participant changess on OnDestroy of event_participants
+  public updateParticipantChanges(participants: Participant[], invitation: Alert, eventId: string) {
+    this.http.post<{ message: string }>(this.url + 'event/participants/update', { participants, invitation, eventId })
       .subscribe((recievedData) => {
         console.log(recievedData.message);
-        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
+        this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
+      });
+  }
+
+  // publish event
+  // PROTOCOL
+  // Event state changed to 'published'
+  // All participants are sent the last modified invitation
+  // proceed all stated service, product requests
+  public publishEvent(eventId: string) {
+    this.http.post<{ message: string }>(this.url + 'event/publish', { eventId })
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
         this.router.navigate(['/planner/event/details/' + eventId]);
-     });
-    }
+      });
+  }
 
 
-    // listeners
-    getEventsUpdatedListener() {
-      return this.eventsUpdated.asObservable();
-    }
+  // obsrver pattern : listeners
+  public getEventsUpdatedListener() {
+    return this.eventsUpdated.asObservable();
+  }
 
-    getEventUpdatedListener() {
-      return this.eventUpdated.asObservable();
-    }
+  public getEventUpdatedListener() {
+    return this.eventUpdated.asObservable();
+  }
 
 
-    getEventCategoryUpdatedListener() {
-      return this.eventCategoryUpdated.asObservable();
-    }
+  public getEventCategoryUpdatedListener() {
+    return this.eventCategoryUpdated.asObservable();
+  }
 
-    getEventCategoriesUpdatedListener() {
-      return this.eventCategoriesUpdated.asObservable();
-    }
+  public getEventCategoriesUpdatedListener() {
+    return this.eventCategoriesUpdated.asObservable();
+  }
 
-    getalertsUpdatedListener() {
-      return this.alertsUpdated.asObservable();
-    }
+  public getalertsUpdatedListener() {
+    return this.alertsUpdated.asObservable();
+  }
 
 }

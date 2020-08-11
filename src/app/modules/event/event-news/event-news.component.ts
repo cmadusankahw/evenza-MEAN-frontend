@@ -21,7 +21,7 @@ export interface Event {
 })
 export class EventNewsComponent implements OnInit {
 
-  events: Event [] = [
+  events: Event[] = [
     {
       event_id: 'E-01', event_title: 'Saman Wedding', type: 'closed', description: 'Saman & Kamala Wedding Ceremony',
       organizer: ' Saman Kumara', date: '04/07/2020', no_of_days: 1, start_time: '09:00', end_time: '16:00',

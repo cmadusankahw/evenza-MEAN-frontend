@@ -19,8 +19,8 @@ export class SellerDashReportsComponent implements OnInit, OnDestroy {
   public spnames: any[] = [];
 
   // common queries
-  public fromDate =  new Date();
-  public toDate =  new Date();
+  public fromDate = new Date();
+  public toDate = new Date();
 
   // serviceprovider ID
   public spId: string;
@@ -40,12 +40,12 @@ export class SellerDashReportsComponent implements OnInit, OnDestroy {
     product_id: null,
     rating: 0,
     amount: 0,
-    sort:  null,
-    group:  null
-  }
+    sort: null,
+    group: null
+  };
 
 
-     // payments and earnings report
+  // payments and earnings report
   public paymentEarning: PaymentHistoryRequest = {
     from_date: new Date(),
     to_date: new Date(),
@@ -53,32 +53,32 @@ export class SellerDashReportsComponent implements OnInit, OnDestroy {
     payment: 0,
     earning: 0,
     due: 0,
-    sort:  null,
-    group:  null
-  }
+    sort: null,
+    group: null
+  };
 
-    // product details report
+  // product details report
   public productDetails: ProductDetailsRequest = {
     product_id: null,
     rating: 0,
     earning: 0,
-    sort:  null,
-    group:  null
-  }
+    sort: null,
+    group: null
+  };
 
   constructor(private sellerService: SellerService, private router: Router) { }
 
   ngOnInit() {
     this.sellerService.getSellerNames();
     this.spSub = this.sellerService.getSelNamesupdatedListener()
-    .subscribe( (data: any) => {
-      this.spnames = data;
-    });
+      .subscribe((data: any) => {
+        this.spnames = data;
+      });
 
     // getting service provider user id
     this.sellerService.getSelId();
     this.sellerService.getSelIdUpdatedListener()
-      .subscribe( (data: string) => {
+      .subscribe((data: string) => {
         this.spId = data;
         console.log(this.spId);
       });

@@ -1,4 +1,4 @@
-import { Component, OnInit,  OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -39,30 +39,30 @@ export class SignupComponent implements OnInit, OnDestroy {
       contactno: new FormControl(null, [Validators.required, Validators.minLength(10), Validators.maxLength(10)])
     });
 
-      // get user type
+    // get user type
     this.userType = this.authService.getUserType();
     console.log(this.userType);
 
-     // get last user id
+    // get last user id
     this.authService.getLastUserId();
     this.lastIdSub = this.authService.getLastIdUpdateListener()
-     .subscribe((lastId: string) => {
-       this.lastid = lastId;
-       console.log(this.lastid);
-     });
+      .subscribe((lastId: string) => {
+        this.lastid = lastId;
+        console.log(this.lastid);
+      });
 
-      // router scroll
+    // router scroll
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
-          return;
+        return;
       }
       window.scrollTo(0, 0);
-  });
+    });
 
   }
 
   ngOnDestroy() {
-    if (this.lastIdSub){
+    if (this.lastIdSub) {
       this.lastIdSub.unsubscribe();
     }
   }
@@ -121,7 +121,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   convertDate() {
     const date = new Date();
-    return this.datepipe.transform( date, 'dd/MM/yyyy').toString();
+    return this.datepipe.transform(date, 'dd/MM/yyyy').toString();
   }
 
 }

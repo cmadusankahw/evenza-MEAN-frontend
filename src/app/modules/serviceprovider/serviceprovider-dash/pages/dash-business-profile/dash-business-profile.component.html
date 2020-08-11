@@ -1,22 +1,17 @@
-
 <!--component row-->
 <div class="row">
-
   <!--left component-->
   <div class="col-md-9">
-    <app-bprofile [isowner]= isowner></app-bprofile>
+    <app-bprofile [isowner]="isowner"></app-bprofile>
   </div>
 
   <!--right component-->
   <div class="col-md-3">
+    <app-business-stat></app-business-stat>
 
-   <app-business-stat></app-business-stat>
+    <br />
 
-  <br>
-
-  <app-pay-stat></app-pay-stat>
-
+    <app-pay-stat></app-pay-stat>
   </div>
-
 </div>
 <!--end component row-->

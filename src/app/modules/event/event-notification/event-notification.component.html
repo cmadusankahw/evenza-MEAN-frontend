@@ -1,24 +1,38 @@
 <div class="heading" style="padding-bottom: 30px;">
   <h4>
     <mat-icon>list </mat-icon>
-   <b> What's Next? </b> {{eventName ? ' : ' + eventName : ''}}
+    <b> What's Next? </b> {{ eventName ? " : " + eventName : "" }}
   </h4>
-  </div>
-
-
-<!-- notification list-->
-<div  class="alert alert-{{al.state}} alert-dismissible fade show" role="alert" *ngFor="let al of alerts" >
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)= "filterAlerts(al)">
-    <span aria-hidden="true">&times;</span>
-    </button>
-    <h5><b> {{al.heading}} </b></h5>
-    {{al.message.slice(0,25) + '..'}}<br>
-    <span *ngIf="al.state == 'secondary'"> <b>Within 3 Days..</b></span>
-    <span style="color:darkred;" *ngIf="al.state == 'info'"> <b>Less than a Day!</b></span>
-    <span style="color:red;" *ngIf="al.state == 'danger'"> <b>Within 3 hours!</b></span>
-    <div class="text-right">
-        <mdb-icon fas icon="bell"></mdb-icon> {{al.date.slice(0,10) + ' ' + al.date.slice(11,16)}}
-
-    </div>
 </div>
 
+<!-- notification list-->
+<div
+  class="alert alert-{{ al.state }} alert-dismissible fade show"
+  role="alert"
+  *ngFor="let al of alerts"
+>
+  <button
+    type="button"
+    class="close"
+    data-dismiss="alert"
+    aria-label="Close"
+    (click)="filterAlerts(al)"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <h5>
+    <b> {{ al.heading }} </b>
+  </h5>
+  {{ al.message.slice(0, 25) + ".." }}<br />
+  <span *ngIf="al.state == 'secondary'"> <b>Within 3 Days..</b></span>
+  <span style="color: darkred;" *ngIf="al.state == 'info'">
+    <b>Less than a Day!</b></span
+  >
+  <span style="color: red;" *ngIf="al.state == 'danger'">
+    <b>Within 3 hours!</b></span
+  >
+  <div class="text-right">
+    <mdb-icon fas icon="bell"></mdb-icon>
+    {{ al.date.slice(0, 10) + " " + al.date.slice(11, 16) }}
+  </div>
+</div>

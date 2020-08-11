@@ -33,8 +33,8 @@ export interface Order {
   commission_due: number;
   amount_paid: number;
   delivery_service: DeliveryService; // retrived from product.delivery_service
-  seller: {seller_id: string, email: string, name: string};
-  user: { user_id: string, email: string, name: string};
+  seller: { seller_id: string, email: string, name: string };
+  user: { user_id: string, email: string, name: string };
 }
 
 
@@ -62,14 +62,14 @@ export interface Booking {
   from_date: string;
   to_date: string;
   duration: number;
-  from_time: {hour: number, minute: number, second: number};
-  to_time: {hour: number, minute: number, second: number};
+  from_time: { hour: number, minute: number, second: number };
+  to_time: { hour: number, minute: number, second: number };
   comment: string;
   amount: number;
   commission_due: number;
   amount_paid: number;
-  serviceProvider: {serviceProvider_id: string, email: string, name: string};
-  user: { user_id: string, email: string, name: string};
+  serviceProvider: { serviceProvider_id: string, email: string, name: string };
+  user: { user_id: string, email: string, name: string };
 }
 
 export interface Appointment {
@@ -82,10 +82,10 @@ export interface Appointment {
   created_date: string;
   state: string;
   appointed_date: string;
-  appointed_time: {hour: number, minute: number, second: number};
+  appointed_time: { hour: number, minute: number, second: number };
   comment: string;
-  serviceProvider: {serviceProvider_id: string, email: string, name: string};
-  user: { user_id: string, email: string, name: string};
+  serviceProvider: { serviceProvider_id: string, email: string, name: string };
+  user: { user_id: string, email: string, name: string };
 }
 
 export interface Alert {
@@ -110,7 +110,7 @@ export interface Inquery {
 }
 
 
- // print the document
+// print the document
 export function printData(htmlContent: string, type: string) {
   const data = document.getElementById(htmlContent);
   html2canvas(data).then(canvas => {

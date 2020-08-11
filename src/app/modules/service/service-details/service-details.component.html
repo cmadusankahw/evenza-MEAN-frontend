@@ -1,660 +1,1142 @@
-<div class="container-fluid" *ngIf="!editmode && !removed && !bookUser && service">
-
+<div
+  class="container-fluid"
+  *ngIf="!editmode && !removed && !bookUser && service"
+>
   <div class="row f-image">
-
     <mdb-carousel class="carousel slide carousel-fade" [animation]="'fade'">
       <mdb-carousel-item>
-        <div class="view w-100" >
-          <img class="d-block w-100" [src]="service.image_01 ? service.image_01 : './assets/images/merchant/nopic.png'" alt="Feature Image 2" class="feature-img">
+        <div class="view w-100">
+          <img
+            class="d-block w-100"
+            [src]="
+              service.image_01
+                ? service.image_01
+                : './assets/images/merchant/nopic.png'
+            "
+            alt="Feature Image 2"
+            class="feature-img"
+          />
           <div class="mask rgba-black-strong waves-light" mdbWavesEffect></div>
         </div>
       </mdb-carousel-item>
       <mdb-carousel-item>
-        <div class="view w-100" >
-          <img class="d-block w-100" [src]="service.image_02 ? service.image_02 : './assets/images/merchant/nopic.png'" alt="Feature Image 3" class="feature-img">
+        <div class="view w-100">
+          <img
+            class="d-block w-100"
+            [src]="
+              service.image_02
+                ? service.image_02
+                : './assets/images/merchant/nopic.png'
+            "
+            alt="Feature Image 3"
+            class="feature-img"
+          />
           <div class="mask rgba-black-slight waves-light" mdbWavesEffect></div>
         </div>
       </mdb-carousel-item>
       <mdb-carousel-item>
-        <div class="view w-100" >
-          <img class="d-block w-100" [src]="service.image_03 ? service.image_03 : './assets/images/merchant/nopic.png'" alt="Feature Image 4" class="feature-img">
+        <div class="view w-100">
+          <img
+            class="d-block w-100"
+            [src]="
+              service.image_03
+                ? service.image_03
+                : './assets/images/merchant/nopic.png'
+            "
+            alt="Feature Image 4"
+            class="feature-img"
+          />
           <div class="mask rgba-black-slight waves-light" mdbWavesEffect></div>
         </div>
       </mdb-carousel-item>
     </mdb-carousel>
-
-
-
   </div>
-    <div class="row">
-      <div class="col-md-7">
-        <div class="content-title">
-          {{service.service_name}}
-        </div>
-        <div class="open-stat" *ngIf="service.available_booking">
-          <span><mdb-icon far icon="clock"> </mdb-icon> {{'Available for Booking'}}</span>
-        </div>
-        <div class="open-stat" *ngIf="service.available_booking && service.available_appoints">
-          <span><mdb-icon far icon="clock"> </mdb-icon> {{'Available for Appointments'}}</span>
-        </div>
-
-        <div class="open-stat" *ngIf="!service.available_booking">
-          <a mdbWavesEffect role="button" disabled >
-          <span style="color:darkred;"><mdb-icon far icon="clock"> </mdb-icon> {{'Service not Available'}}</span>
-          </a>
-        </div>
-
+  <div class="row">
+    <div class="col-md-7">
+      <div class="content-title">
+        {{ service.service_name }}
+      </div>
+      <div class="open-stat" *ngIf="service.available_booking">
+        <span
+          ><mdb-icon far icon="clock"> </mdb-icon>
+          {{ "Available for Booking" }}</span
+        >
+      </div>
+      <div
+        class="open-stat"
+        *ngIf="service.available_booking && service.available_appoints"
+      >
+        <span
+          ><mdb-icon far icon="clock"> </mdb-icon>
+          {{ "Available for Appointments" }}</span
+        >
       </div>
 
-      <!--if editb=able by merchant-->
-      <div class="col-md-5 edit-cls" *ngIf="isowner">
-          <a mdbBtn color="secondary" class="btn btn-md edit-btn" mdbWavesEffect
-          (click)="editmode = !editmode">Edit Details</a>
-          <a mdbBtn color="secondary" class="btn btn-md edit-btn" outline="yes" style="border-radius:25px; margin-top:10px;" mdbWavesEffect
-          (click)="promotionModal.show()">Add Promotions</a>
+      <div class="open-stat" *ngIf="!service.available_booking">
+        <a mdbWavesEffect role="button" disabled>
+          <span style="color: darkred;"
+            ><mdb-icon far icon="clock"> </mdb-icon>
+            {{ "Service not Available" }}</span
+          >
+        </a>
       </div>
-
-      <!--if only shown to users-->
-      <div class="col-md-5 edit-cls" *ngIf="!isowner">
-        <a mdbBtn color="secondary" outline="yes" class="btn btn-lg book-btn" mdbWavesEffect [disabled] = "!service.available_booking"
-        (click) = "bookUser = !bookUser"  (click) = "addPaypal()" >Book Now</a>
-      </div>
-
     </div>
 
+    <!--if editb=able by merchant-->
+    <div class="col-md-5 edit-cls" *ngIf="isowner">
+      <a
+        mdbBtn
+        color="secondary"
+        class="btn btn-md edit-btn"
+        mdbWavesEffect
+        (click)="editmode = !editmode"
+        >Edit Details</a
+      >
+      <a
+        mdbBtn
+        color="secondary"
+        class="btn btn-md edit-btn"
+        outline="yes"
+        style="border-radius: 25px; margin-top: 10px;"
+        mdbWavesEffect
+        (click)="promotionModal.show()"
+        >Add Promotions</a
+      >
+    </div>
 
-      <hr>
-      <div class="row" *ngIf="service">
-        <div class=" col-md-7 content-text">
-          {{service ? service.description: 'Loading...'}}
-          <br>
-          <div class="category">
-            <mdb-icon far icon="calendar-alt"></mdb-icon> Categry: {{service ? service.service_category : 'Loading...'}}
-          </div>
-          <div class="notify" >
-            <mdb-icon far icon="calendar-check"> </mdb-icon> {{(service.pay_on_meet) ? 'Pay on Meet Available' : 'Pay Online'}}
-          </div>
-          <br>
-          <div class="notify" *ngIf="isowner">
-            <mdb-icon fas icon="bookmark"> </mdb-icon> {{service ? service.no_of_bookings : 'Loading...'}} Active Bookings
-            <br>
-            <mdb-icon far icon="calendar-check"> </mdb-icon> {{service ? service.no_of_appoints : 'Loading...'}} Active Appointments
-          </div>
-          <hr>
-          <div *ngIf="service.promotions.length">
-              <div class="row container-fluid">
-                  <div class="promotion shadow text-center" *ngFor="let promo of service.promotions">
-                    <p style="font-weight:bold; color:darkslategray;"> {{promo.title}} </p>
-                    <h3 style="font-weight:bold; color:darkmagenta;"> {{promo.precentage }} %</h3>
-                    <span style="color:darkslategray;"> Valid Till: {{promo.to_date.slice(0,10)}}</span>
-                  </div>
-              </div>
-          </div>
-        </div>
+    <!--if only shown to users-->
+    <div class="col-md-5 edit-cls" *ngIf="!isowner">
+      <a
+        mdbBtn
+        color="secondary"
+        outline="yes"
+        class="btn btn-lg book-btn"
+        mdbWavesEffect
+        [disabled]="!service.available_booking"
+        (click)="bookUser = !bookUser"
+        (click)="addPaypal()"
+        >Book Now</a
+      >
+    </div>
+  </div>
 
-        <!--hourly rate-->
-        <div class="col-md-5">
-          <div class="hr-rate">
-            <span class="hr-price"> Rs. {{service ? service.rate : '...'}}</span>
-            <span class="hr-text"> {{service ? service.rate_type : '...'}}</span>
+  <hr />
+  <div class="row" *ngIf="service">
+    <div class="col-md-7 content-text">
+      {{ service ? service.description : "Loading..." }}
+      <br />
+      <div class="category">
+        <mdb-icon far icon="calendar-alt"></mdb-icon> Categry:
+        {{ service ? service.service_category : "Loading..." }}
+      </div>
+      <div class="notify">
+        <mdb-icon far icon="calendar-check"> </mdb-icon>
+        {{ service.pay_on_meet ? "Pay on Meet Available" : "Pay Online" }}
+      </div>
+      <br />
+      <div class="notify" *ngIf="isowner">
+        <mdb-icon fas icon="bookmark"> </mdb-icon>
+        {{ service ? service.no_of_bookings : "Loading..." }} Active Bookings
+        <br />
+        <mdb-icon far icon="calendar-check"> </mdb-icon>
+        {{ service ? service.no_of_appoints : "Loading..." }} Active
+        Appointments
+      </div>
+      <hr />
+      <div *ngIf="service.promotions.length">
+        <div class="row container-fluid">
+          <div
+            class="promotion shadow text-center"
+            *ngFor="let promo of service.promotions"
+          >
+            <p style="font-weight: bold; color: darkslategray;">
+              {{ promo.title }}
+            </p>
+            <h3 style="font-weight: bold; color: darkmagenta;">
+              {{ promo.precentage }} %
+            </h3>
+            <span style="color: darkslategray;">
+              Valid Till: {{ promo.to_date.slice(0, 10) }}</span
+            >
           </div>
-          <hr>
-
-          <!--service ratings-->
-            <div class="rating">
-              <ngb-rating [rate]="service.rating" max="5">
-                <ng-template let-fill="fill" let-index="index">
-                  <span class="star" [class.filled]="fill === 100">&#9733;</span>
-                </ng-template>
-              </ngb-rating>
-              <br>
-              <span class="rating-txt">
-                {{service ? service.no_of_ratings : '...'}} Recommended
-              </span>
-            </div>
-          <hr>
-          <div class="owner text-center" >
-            <span>Owned by {{service ? service.business_name : 'Loading...'}}</span>
-            <br>
-            <a mdbBtn color="secondary" class="btn btn-md" outline="yes" mdbWavesEffect *ngIf="!isowner"
-              routerLink="/bprofile/{{service.user_id}}" >View Business</a>
-          </div>
-
         </div>
       </div>
+    </div>
 
-      <hr>
-      <span class="notify"><b>  <mdb-icon fas icon="bookmark"> </mdb-icon>  What others tell about {{ service.service_name}}...</b></span>
-      <br>
-      <div class="rating-reviews container-fluid" *ngIf="service.reviews.length">
-        <div class="review shadow" *ngFor ="let s of service.reviews">
-          <div class="row">
-            <div class="col-md-9">
-              <p style="font-weight:bold; font-size:22px;"> <span style="color:darkmagenta;"><mdb-icon fas icon="grin-alt"> </mdb-icon></span> <b> {{ s.user}}</b></p>
-            </div>
-            <div class="col-md-3" style="text-align:right;">
-              <ngb-rating [rate]="s.rating" max="5" >
-                <ng-template let-fill="fill" let-index="index">
-                  <span class="star2" [class.filled]="fill === 100">&#9733;</span>
-                </ng-template>
-              </ngb-rating>
-            </div>
-          </div>
-          <p  style="padding-left:15px;">{{s.review}}</p>
+    <!--hourly rate-->
+    <div class="col-md-5">
+      <div class="hr-rate">
+        <span class="hr-price"> Rs. {{ service ? service.rate : "..." }}</span>
+        <span class="hr-text"> {{ service ? service.rate_type : "..." }}</span>
+      </div>
+      <hr />
+
+      <!--service ratings-->
+      <div class="rating">
+        <ngb-rating [rate]="service.rating" max="5">
+          <ng-template let-fill="fill" let-index="index">
+            <span class="star" [class.filled]="fill === 100">&#9733;</span>
+          </ng-template>
+        </ngb-rating>
+        <br />
+        <span class="rating-txt">
+          {{ service ? service.no_of_ratings : "..." }} Recommended
+        </span>
+      </div>
+      <hr />
+      <div class="owner text-center">
+        <span
+          >Owned by {{ service ? service.business_name : "Loading..." }}</span
+        >
+        <br />
+        <a
+          mdbBtn
+          color="secondary"
+          class="btn btn-md"
+          outline="yes"
+          mdbWavesEffect
+          *ngIf="!isowner"
+          routerLink="/bprofile/{{ service.user_id }}"
+          >View Business</a
+        >
+      </div>
+    </div>
+  </div>
+
+  <hr />
+  <span class="notify"
+    ><b>
+      <mdb-icon fas icon="bookmark"> </mdb-icon> What others tell about
+      {{ service.service_name }}...</b
+    ></span
+  >
+  <br />
+  <div class="rating-reviews container-fluid" *ngIf="service.reviews.length">
+    <div class="review shadow" *ngFor="let s of service.reviews">
+      <div class="row">
+        <div class="col-md-9">
+          <p style="font-weight: bold; font-size: 22px;">
+            <span style="color: darkmagenta;"
+              ><mdb-icon fas icon="grin-alt"> </mdb-icon
+            ></span>
+            <b> {{ s.user }}</b>
+          </p>
+        </div>
+        <div class="col-md-3" style="text-align: right;">
+          <ngb-rating [rate]="s.rating" max="5">
+            <ng-template let-fill="fill" let-index="index">
+              <span class="star2" [class.filled]="fill === 100">&#9733;</span>
+            </ng-template>
+          </ngb-rating>
         </div>
       </div>
-
+      <p style="padding-left: 15px;">{{ s.review }}</p>
+    </div>
+  </div>
 </div>
 
-
-
-
 <!--editnew service-->
-<div class="container-fluid text-center" *ngIf="editmode && !removed && !bookUser && service">
+<div
+  class="container-fluid text-center"
+  *ngIf="editmode && !removed && !bookUser && service"
+>
   <div class="center-txt">
     <div class="row">
       <div class="col-md-8">
-        <p style="line-height:35px;"> You can change the details of <b>{{service.service_name}}</b> below.</p>
+        <p style="line-height: 35px;">
+          You can change the details of <b>{{ service.service_name }}</b> below.
+        </p>
       </div>
       <div class="col-md-4">
-        <a role="button" mdbBtn class="btn btn-sm" color="red" text="white" (click)="removeService(service.service_id)"> Remove Service</a>
+        <a
+          role="button"
+          mdbBtn
+          class="btn btn-sm"
+          color="red"
+          text="white"
+          (click)="removeService(service.service_id)"
+        >
+          Remove Service</a
+        >
       </div>
     </div>
   </div>
-  <br>
-    <form class="service-form" (submit)="updateService(editServiceForm)" #editServiceForm ="ngForm">
-      <mat-form-field class="service-full-width">
-        <mat-label>Service Title</mat-label>
-        <input matInput placeholder="Service Title here"  required
-        [ngModel]="service.service_name" name="service_name" #serviceName = ngModel >
-        <mat-error *ngIf="serviceName.invalid">Please enter service title</mat-error>
-      </mat-form-field>
-      <br>
-       <div class="row">
-         <div class="col">
-          <mat-form-field class="service-full-width-sm">
-            <mat-label >Select Service Category</mat-label>
-            <select matNativeControl required
-            [ngModel]="service.service_category" name="category">
-              <option  [value]="cat.val" *ngFor="let cat of categories">
-                {{cat ? cat.val: '...'}}</option>
-            </select>
-          </mat-form-field>
-         </div>
-         <div class="col">
-          <mat-form-field class="service-full-width-sm">
-            <mat-label> Capacity per Day</mat-label>
-            <input matInput placeholder="Service capacity here" required type="number"
-            [ngModel]="service.capacity" name="capacity" #capacity="ngModel">
-            <mat-error *ngIf="capacity.invalid">Please enter a capacity </mat-error>
-          </mat-form-field>
-         </div>
-       </div>
-
-      <br>
-        <div class="check-cls">
-          <mat-label class="check-label">Service Availability</mat-label>
-          <mat-checkbox class="check-margin" [ngModel]="service.available_booking"
-          name="available_booking">Available for Booking</mat-checkbox>
-          <mat-checkbox class="check-margin" [ngModel]="service.available_appoints"
-          name="available_appoints">Available for Appointments</mat-checkbox>
-        </div>
-      <br>
-      <mat-form-field class="service-full-width">
-        <mat-label class="check-label">Service Description</mat-label>
-        <textarea matInput rows="5" placeholder="Service Description"
-        [ngModel]="service.description" name="description" ></textarea>
-      </mat-form-field>
-      <br>
-
-      <div class="row">
-
-        <div class="col">
-          <mat-form-field class="service-full-width-sm">
-            <mat-label >Service Rate Type</mat-label>
-            <select matNativeControl required
-            [ngModel]="service.rate_type" name="rate_type">
-             <option  [value]="rate.val" *ngFor="let rate of rates">
-                {{rate ? rate.val : '...'}}</option>
-            </select>
-          </mat-form-field>
-        </div>
-
-        <div class="col">
-          <mat-form-field class="service-full-width-sm">
-            <mat-label>Service Rate(Rs.)</mat-label>
-            <input matInput placeholder="Unit Price here" required
-            [ngModel]="service.rate" name="rate" #price="ngModel">
-            <mat-error *ngIf="price.invalid">Please enter price </mat-error>
-          </mat-form-field>
-        </div>
+  <br />
+  <form
+    class="service-form"
+    (submit)="updateService(editServiceForm)"
+    #editServiceForm="ngForm"
+  >
+    <mat-form-field class="service-full-width">
+      <mat-label>Service Title</mat-label>
+      <input
+        matInput
+        placeholder="Service Title here"
+        required
+        [ngModel]="service.service_name"
+        name="service_name"
+        #serviceName="ngModel"
+      />
+      <mat-error *ngIf="serviceName.invalid"
+        >Please enter service title</mat-error
+      >
+    </mat-form-field>
+    <br />
+    <div class="row">
+      <div class="col">
+        <mat-form-field class="service-full-width-sm">
+          <mat-label>Select Service Category</mat-label>
+          <select
+            matNativeControl
+            required
+            [ngModel]="service.service_category"
+            name="category"
+          >
+            <option [value]="cat.val" *ngFor="let cat of categories">
+              {{ cat ? cat.val : "..." }}</option
+            >
+          </select>
+        </mat-form-field>
       </div>
-
-      <div class="text-center">
-        <mat-checkbox class="check-margin"
-        [ngModel]="service.pay_on_meet" name="pay_on_meet">Pay on Meet</mat-checkbox>
-        <br>
-        <p class="pay-on-meet"> Note: If <b>Pay on Meet</b> is enabled, <b>no payment</b> will be charged on booking. Payment need to be collected manullay. However, <b>system will charge the due commission form you.</b></p>
+      <div class="col">
+        <mat-form-field class="service-full-width-sm">
+          <mat-label> Capacity per Day</mat-label>
+          <input
+            matInput
+            placeholder="Service capacity here"
+            required
+            type="number"
+            [ngModel]="service.capacity"
+            name="capacity"
+            #capacity="ngModel"
+          />
+          <mat-error *ngIf="capacity.invalid"
+            >Please enter a capacity
+          </mat-error>
+        </mat-form-field>
       </div>
-
-      <hr>
-      <div class="enter-txt">
-        <p> Upload images of the product (up to 3 images *5MB Max)</p>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <a role="button" mdbWavesEffect (click)="img1.click()">
-            <img [src]="image01 ? image01Url : service.image_01" alt="front side" class="img-cls">
-          </a>
-          <input type="file" hidden="true" id="img1" #img1
-          ngModel name="image_01"  accept="image/*"  (change)="onImage01Uploaded($event)">
-          <p><b>Image 01</b></p>
-        </div>
-
-        <div class="col-md-4">
-          <a role="button" mdbWavesEffect (click)="img2.click()">
-            <img [src]="image02 ? image02Url : service.image_02" alt="front side" class="img-cls">
-          </a>
-          <input type="file" hidden="true" id="img2" #img2
-          ngMode name="image_02"  accept="image/*"  (change)="onImage02Uploaded($event)">
-          <p><b>Image 02</b></p>
-        </div>
-
-        <div class="col-md-4">
-          <a role="button" mdbWavesEffect (click)="img3.click()">
-            <img [src]="image03 ? image03Url : service.image_03" alt="front side" class="img-cls">
-          </a>
-          <input type="file" hidden="true" id="img3" #img3
-          name="image_03"  accept="image/*"  (change)="onImage03Uploaded($event)">
-          <p><b>Image 03</b></p>
-        </div>
-      </div>
-
-      <hr>
-      <!--back button only if !addnew-->
-      <div class="btns">
-        <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
-         type="submit">Save Changes</button>
-      <button mdbBtn color="secondary" class="btn btn-md edtbt" outline="yes" mdbWavesEffect
-      (click)="editmode = !editmode && editServiceForm.resetForm()"  type="button">Discard</button>
-      </div>
-    </form>
     </div>
 
+    <br />
+    <div class="check-cls">
+      <mat-label class="check-label">Service Availability</mat-label>
+      <mat-checkbox
+        class="check-margin"
+        [ngModel]="service.available_booking"
+        name="available_booking"
+        >Available for Booking</mat-checkbox
+      >
+      <mat-checkbox
+        class="check-margin"
+        [ngModel]="service.available_appoints"
+        name="available_appoints"
+        >Available for Appointments</mat-checkbox
+      >
+    </div>
+    <br />
+    <mat-form-field class="service-full-width">
+      <mat-label class="check-label">Service Description</mat-label>
+      <textarea
+        matInput
+        rows="5"
+        placeholder="Service Description"
+        [ngModel]="service.description"
+        name="description"
+      ></textarea>
+    </mat-form-field>
+    <br />
 
-    <!--book service-->
-    <div class="container-fluid" *ngIf="!editmode && !removed && bookUser && islogged && service">
-
-                <!-- Appointment-->
-                <div class="appointment" *ngIf="appoint">
-
-                  <!-- create a booking-->
-                <div class="row appointment-top" *ngIf="service.available_booking">
-                  <div class="col-md-8">
-                     <p>  Try Booking instead? Create a Booking Now & Get the <b>Bonanza Discount!!!</b></p>
-                  </div>
-                  <div class="col-md-4">
-                    <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" (click) = "appoint = !appoint">
-                      Book Now
-                    </button>
-                  </div>
-                </div>
-
-                <div class="text-center pd-top-min">
-                    <h4> <b> Create an Appointment Request for {{service ? service.service_name : '...'}} </b></h4>
-                    <p> Please check the below service details are correct, and provide required information.
-                      <hr>
-                  </div>
-
-                  <form class="service-form" (submit)="createAppointment(appointForm)" #appointForm ="ngForm" >
-                    <h5> Service Details : </h5>
-                    <br>
-                    <div class="row container-fluid">
-                      <div class="col-md-6">
-                        <mat-form-field class="service-full-width">
-                          <mat-label>Service Title</mat-label>
-                          <input matInput disabled
-                          [ngModel]="service.service_name" name="service_name" >
-                        </mat-form-field>
-                      </div>
-
-                    <div class="col-md-6">
-                      <mat-form-field class="service-full-width">
-                        <mat-label>Service Categoy : </mat-label>
-                        <input matInput disabled
-                        [ngModel]="service.service_category" name="service_category" >
-                      </mat-form-field>
-                    </div>
-                  </div>
-
-                  <div class="row container-fluid">
-
-                    <div class="col-md-6">
-                      <mat-form-field class="service-full-width">
-                        <mat-label>Service Provider : </mat-label>
-                        <input matInput disabled
-                        [ngModel]="service.business_name" name="business_name" >
-                      </mat-form-field>
-                    </div>
-
-                    <div class="col-md-6">
-                      <mat-form-field class="service-full-width">
-                        <mat-label>State : </mat-label>
-                        <input matInput disabled style="font-weight:bold;"
-                        [ngModel]="service.available_booking ? 'Available' : 'Not Available'" name="service_available" >
-                      </mat-form-field>
-                    </div>
-
-                </div>
-                  <hr>
-                  <h5> Appointment Details : </h5>
-
-                  <div class="row container-fluid">
-                    <div class="col-md-6">
-                      <p> Appointment Date: </p>
-                      <mat-form-field class="service-full-width">
-                        <input matInput [matDatepicker]="pickera" required [min]="tday"
-                        name="appointed_date" [(ngModel)]="appointment.date" #aDate="ngModel" />
-                        <mat-datepicker-toggle
-                          matSuffix
-                          [for]="pickera"
-                        ></mat-datepicker-toggle>
-                        <mat-datepicker #pickera [startAt]="appointment.date"></mat-datepicker>
-                        <mat-error *ngIf="aDate.invalid">Please select a date</mat-error>
-                      </mat-form-field>
-                    </div>
-
-
-                    <div class="col-md-6">
-                      <p style="margin:0px;"> Appointment Time: </p>
-                      <ngb-timepicker [(ngModel)]="appointment.time"  name="appointed_time"></ngb-timepicker>
-                    </div>
-                </div>
-
-                <hr>
-                <div class="comment-cls pd-top-min">
-                  <h5> Add a comment...</h5>
-                  <mat-form-field class="service-full-width">
-                    <textarea type="text" matInput ngModel name="appointed_comment" placeholder="I want this service in high quality, on-time, please"></textarea>
-                  </mat-form-field>
-                </div>
-                <hr>
-                    <div class="btns">
-                      <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
-                       type="submit" > Request Appointment</button>
-                    <button mdbBtn color="secondary" class="btn btn-md edtbt" outline="yes" mdbWavesEffect
-                    (click)="bookUser = !bookUser && appoint = false && appointForm.resetForm()"  type="button">Cancel</button>
-                    </div>
-                  </form>
-                </div>
-
-
-                <!-- Booking-->
-                <div class="booking" *ngIf="!appoint">
-
-                      <!-- create an appointment-->
-                      <div class="row appointment-top" *ngIf="service.available_appoints">
-                        <div class="col-md-8">
-                           <p>  This ServiceProvider letting you to have an Appointment before booking. Want to check it out?</p>
-                        </div>
-                        <div class="col-md-4">
-                          <button class="btn btn-md" mdbBtn mdbWavesEffect color="primary" (click) = "appoint = !appoint">
-                            Make Appointment
-                          </button>
-                        </div>
-                      </div>
-
-
-                  <div class="text-center pd-top-min">
-                    <h4> <b> Create a Booking for {{service.service_name}} </b></h4>
-                    <p> Please check the below service details are correct, and provide required information.
-                      <hr>
-                  </div>
-
-                  <form class="service-form" (submit)="createBooking(bookingForm)" #bookingForm ="ngForm" >
-                    <h5> Service Details : </h5>
-                    <br>
-                    <div class="row container-fluid">
-                      <div class="col-md-6">
-                        <mat-form-field class="service-full-width">
-                          <mat-label>Service Title</mat-label>
-                          <input matInput disabled
-                          [ngModel]="service.service_name" name="service_name" >
-                        </mat-form-field>
-                      </div>
-
-                    <div class="col-md-6">
-                      <mat-form-field class="service-full-width">
-                        <mat-label>Service Categoy : </mat-label>
-                        <input matInput disabled
-                        [ngModel]="service.service_category" name="service_category" >
-                      </mat-form-field>
-                    </div>
-                  </div>
-
-                  <div class="row container-fluid">
-
-                    <div class="col-md-6">
-                      <mat-form-field class="service-full-width">
-                        <mat-label>Service Provider : </mat-label>
-                        <input matInput disabled
-                        [ngModel]="service.business_name" name="business_name" >
-                      </mat-form-field>
-                    </div>
-
-                    <div class="col-md-6">
-                      <mat-form-field class="service-full-width">
-                        <mat-label>State : </mat-label>
-                        <input matInput disabled style="font-weight:bold;"
-                        [ngModel]="service.available_booking ? 'Available' : 'Not Available'" name="service_available" >
-                      </mat-form-field>
-                    </div>
-
-                </div>
-                  <hr>
-                  <h5> Booking Details : </h5>
-                  <div class="row container-fluid text-center">
-                    <p> Service may not available if the dates are modified. Please re-check Availability!</p>
-                  </div>
-                  <div class="row container-fluid">
-                    <div class="col-md-5">
-                      <mat-form-field class="service-full-width">
-                        <mat-label> From Date : </mat-label>
-                        <input matInput [matDatepicker]="picker1" required [min]="tday"
-                        name="from_date" [(ngModel)]="bookingTime.fromDate" #fDate="ngModel"
-                        (dateChange) = "bookingTime.toDate = bookingTime.fromDate"  (dateChange)="calcPayment(service.rate_type, service.rate)"/>
-                        <mat-datepicker-toggle
-                          matSuffix
-                          [for]="picker1"
-                        ></mat-datepicker-toggle>
-                        <mat-datepicker #picker1 [startAt]="bookingTime.fromDate"></mat-datepicker>
-                        <mat-error *ngIf="fDate.invalid">Please select a date</mat-error>
-                      </mat-form-field>
-                    </div>
-
-                    <div class="col-md-5">
-                      <mat-form-field class="service-full-width">
-                        <mat-label> To Date : </mat-label>
-                        <input matInput [matDatepicker]="picker2" required [min]="tday"
-                        name="to_date" [(ngModel)]="bookingTime.toDate" #tDate="ngModel" (dateChange)="calcPayment(service.rate_type, service.rate)"/>
-                        <mat-datepicker-toggle
-                          matSuffix
-                          [for]="picker2"
-                        ></mat-datepicker-toggle>
-                        <mat-datepicker #picker2 [startAt]="bookingTime.toDate"></mat-datepicker>
-                        <mat-error *ngIf="tDate.invalid">Please selet a date</mat-error>
-                      </mat-form-field>
-                    </div>
-
-                    <div class="col-md-2">
-                      <a class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary" (click) = "checkAvailability()">
-                        Check Availability
-                      </a>
-                    </div>
-                </div>
-
-                <hr>
-                <div class="row" *ngIf="service.rate_type == '/Hr'">
-                  <div class="col-md-4">
-                    <p style="margin:0px;"> From Time: </p>
-                    <ngb-timepicker [(ngModel)]="bookingTime.fromTime"
-                    name="from_time" (click)="calcPayment(service.rate_type, service.rate)"></ngb-timepicker>
-                  </div>
-
-                  <div class="col-md-4">
-                    <p style="margin:0px;"> To Time: </p>
-                    <ngb-timepicker [(ngModel)]="bookingTime.toTime"
-                    name="to_time" (click)="calcPayment(service.rate_type, service.rate)"></ngb-timepicker>
-                  </div>
-
-                  <div class="col-md-4">
-                    <div class="pd-top-min" style="text-align:right;">
-                      <p style="margin:0px;">Duration</p>
-                      <span class="duration-cls">{{bookingTime.toTime.hour >= bookingTime.fromTime.hour ?
-                        bookingTime.toTime.hour - bookingTime.fromTime.hour + ' Hours' : 'Invalid Time'}} </span>
-                    </div>
-
-                    <div class="pd-top-min" style="text-align:right;">
-                      <p style="margin:0px;">Service Rate</p>
-                      <span class="duration-cls">Rs. {{service.rate + service.rate_type}} </span>
-                    </div>
-
-
-                    </div>
-              </div>
-
-              <div class="row container-fluid text-center" *ngIf="service.rate_type != '/Hr'">
-                <div class="pd-top-min" style="text-align:right;">
-                  <p style="margin:0px;">Service Rate</p>
-                  <span class="duration-cls">Rs. {{service.rate + service.rate_type}} </span>
-                </div>
-              </div>
-
-                <hr>
-                <div class="payment-section">
-
-                <div class="row">
-                  <!-- payment input-->
-                  <div class="col-md-8">
-                    <h5>Payment Details: </h5>
-                    <p *ngIf="service.pay_on_meet"> Note: Minimum of 10% of the Total amount should be paid on booking. Rest can be paid on meet. </p>
-                    <p *ngIf="!service.pay_on_meet"> Note: Full payment should be paid on booking. </p>
-
-                    <!-- card details-->
-                    <div class="row">
-                      <div class="col-md-7">
-                        <mdb-icon fas icon="list"> </mdb-icon> Card: {{' ...XXXX-XXXX-4419'}} <!--to be modified-->
-                      </div>
-                      <div class="col-md-5">
-                        <a class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary" (click)="cardDetails.show()">
-                          Card Details
-                        </a>
-                      </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="amount-pay">
-                      <!-- full payment-->
-                      <div *ngIf="!service.pay_on_meet">
-                      <mat-form-field class="service-full-width" *>
-                        <mat-label>Amount (Rs.): </mat-label>
-                        <input matInput readonly  type="number" min="totalAmount" max="totalAmount" class="amount-input"
-                        [(ngModel)]="totalAmount" name="amount_paid">
-                      </mat-form-field>
-                    </div>
-
-                      <!-- Partial payment-->
-                      <div *ngIf="service.pay_on_meet">
-                      <mat-form-field class="service-full-width" >
-                        <mat-label>Amount (Rs.): </mat-label>
-                        <input matInput required #payInput2="ngModel" type="number" [min]="totalAmount / 10" [max]="totalAmount" class="amount-input"
-                        [(ngModel)]="payAmount" name="amount_paid" (change) ="payPalAmount = (payAmount/190).toFixed(2)" >
-                      </mat-form-field>
-                      <mat-error *ngIf="payInput2.invalid"> Please Enter a valid amount ( Min: Rs.{{totalAmount/10}} Max: Rs.{{totalAmount}} ) </mat-error>
-                    </div>
-                    </div>
-                    <hr>
-                  </div>
-
-                  <!-- payment display-->
-                  <div class="col-md-4">
-                      <div class="pay-dispaly pd-top-min" style="text-align:right;">
-                        <p style="margin:0px;"> Total Amount:</p>
-                        <span class="payment-cls"> <b> Rs. {{totalAmount}}</b></span>
-                      </div>
-
-                      <div class="pay-dispaly pd-top-min" style="text-align:right;" *ngIf="service.promotions.length">
-                        <p style="margin:0px;"> Discounts:</p>
-                        <span class="payment-cls-promo"> <b> Rs. -{{totalPromotion}}</b></span>
-                      </div>
-
-
-                      <div class="pay-dispaly pd-top-min" style="text-align:right;" *ngIf="!service.pay_on_meet">
-                        <p style="margin:0px;"> Now Paying:</p>
-                        <span class="payment-cls"> <b> Rs. {{totalAmount}}</b></span>
-                      </div>
-
-                      <div class="pay-dispaly pd-top-min" style="text-align:right;" *ngIf="service.pay_on_meet">
-                        <p style="margin:0px;"> Now Paying:</p>
-                        <span class="payment-cls-min"> <b> Rs. {{totalAmount >= payAmount ? payAmount: totalAmount}}</b></span>
-                      </div>
-
-                      <div class="pay-dispaly pd-top-min" style="text-align:right;" *ngIf="service.pay_on_meet">
-                        <p style="margin:0px;"> To be Paid:</p>
-                        <span class="payment-cls-min"> <b> Rs. {{totalAmount - payAmount > 0 ? totalAmount- payAmount : 0}}</b></span>
-                      </div>
-
-                  </div>
-
-                </div>
-
-                    <hr>
-                    <div class="comment-cls pd-top-min">
-                      <h5> Add a comment...</h5>
-                      <mat-form-field class="service-full-width">
-                        <textarea type="text" matInput ngModel name="appointed_comment" placeholder="I want this service in high quality, on-time, please"></textarea>
-                      </mat-form-field>
-                    </div>
-                    <hr>
-
-                    <div class="btns row container-fluid text-center" >
-                      <button mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect id="placeOrder"
-                       type="submit" > Pay with Card</button>
-                    <button mdbBtn color="secondary" class="btn btn-md edtbt" outline="yes" mdbWavesEffect
-                    (click)="bookUser = !bookUser && appoint = false && bookingForm.resetForm()" >Cancel</button>
-                    <div style="margin-left:15px; margin-right:15px;" id="paybtn"
-                        > Paypal Checkout</div>
-                    </div>
-                  </div>
-
-                  </form>
-                </div>
-
+    <div class="row">
+      <div class="col">
+        <mat-form-field class="service-full-width-sm">
+          <mat-label>Service Rate Type</mat-label>
+          <select
+            matNativeControl
+            required
+            [ngModel]="service.rate_type"
+            name="rate_type"
+          >
+            <option [value]="rate.val" *ngFor="let rate of rates">
+              {{ rate ? rate.val : "..." }}</option
+            >
+          </select>
+        </mat-form-field>
       </div>
 
-      <!-- iF NOT LOGGED IN FOR BOOKING-->
-      <div class="container-fluid text-center" *ngIf="!editmode && !removed && bookUser && !islogged">
-        <div class="container text-center">
-              <img src="./assets/images/vectors/error.png" alt="Not Logged In" style="width:100%; margin-top:30px; margin-bottom:20px;">
-              <h2><b> You are not Logged in!</b></h2>
-              <p> You need to <a routerLink="/login">Sign In</a> or <a routerLink="/register"> Create an Account </a> to book a service. <br>
-              Please <b> Sign In</b> or <b> Sign up</b> to continue.</p>
-              <button mdbBtn mdbWavesEffect color="secondary" class="btn btn-md" routerLink="/login"> Sign In & Continue</button>
-              <button mdbBtn mdbWavesEffect color="red" class="btnn btn-md" (click)="bookUser = !bookUser"> GO Back</button>
+      <div class="col">
+        <mat-form-field class="service-full-width-sm">
+          <mat-label>Service Rate(Rs.)</mat-label>
+          <input
+            matInput
+            placeholder="Unit Price here"
+            required
+            [ngModel]="service.rate"
+            name="rate"
+            #price="ngModel"
+          />
+          <mat-error *ngIf="price.invalid">Please enter price </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <mat-checkbox
+        class="check-margin"
+        [ngModel]="service.pay_on_meet"
+        name="pay_on_meet"
+        >Pay on Meet</mat-checkbox
+      >
+      <br />
+      <p class="pay-on-meet">
+        Note: If <b>Pay on Meet</b> is enabled, <b>no payment</b> will be
+        charged on booking. Payment need to be collected manullay. However,
+        <b>system will charge the due commission form you.</b>
+      </p>
+    </div>
+
+    <hr />
+    <div class="enter-txt">
+      <p>Upload images of the product (up to 3 images *5MB Max)</p>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <a role="button" mdbWavesEffect (click)="img1.click()">
+          <img
+            [src]="image01 ? image01Url : service.image_01"
+            alt="front side"
+            class="img-cls"
+          />
+        </a>
+        <input
+          type="file"
+          hidden="true"
+          id="img1"
+          #img1
+          ngModel
+          name="image_01"
+          accept="image/*"
+          (change)="onImage01Uploaded($event)"
+        />
+        <p><b>Image 01</b></p>
+      </div>
+
+      <div class="col-md-4">
+        <a role="button" mdbWavesEffect (click)="img2.click()">
+          <img
+            [src]="image02 ? image02Url : service.image_02"
+            alt="front side"
+            class="img-cls"
+          />
+        </a>
+        <input
+          type="file"
+          hidden="true"
+          id="img2"
+          #img2
+          ngMode
+          name="image_02"
+          accept="image/*"
+          (change)="onImage02Uploaded($event)"
+        />
+        <p><b>Image 02</b></p>
+      </div>
+
+      <div class="col-md-4">
+        <a role="button" mdbWavesEffect (click)="img3.click()">
+          <img
+            [src]="image03 ? image03Url : service.image_03"
+            alt="front side"
+            class="img-cls"
+          />
+        </a>
+        <input
+          type="file"
+          hidden="true"
+          id="img3"
+          #img3
+          name="image_03"
+          accept="image/*"
+          (change)="onImage03Uploaded($event)"
+        />
+        <p><b>Image 03</b></p>
+      </div>
+    </div>
+
+    <hr />
+    <!--back button only if !addnew-->
+    <div class="btns">
+      <button
+        mdbBtn
+        color="secondary"
+        class="btn btn-md edtbt"
+        mdbWavesEffect
+        type="submit"
+      >
+        Save Changes
+      </button>
+      <button
+        mdbBtn
+        color="secondary"
+        class="btn btn-md edtbt"
+        outline="yes"
+        mdbWavesEffect
+        (click)="editmode = !editmode && editServiceForm.resetForm()"
+        type="button"
+      >
+        Discard
+      </button>
+    </div>
+  </form>
+</div>
+
+<!--book service-->
+<div
+  class="container-fluid"
+  *ngIf="!editmode && !removed && bookUser && islogged && service"
+>
+  <!-- Appointment-->
+  <div class="appointment" *ngIf="appoint">
+    <!-- create a booking-->
+    <div class="row appointment-top" *ngIf="service.available_booking">
+      <div class="col-md-8">
+        <p>
+          Try Booking instead? Create a Booking Now & Get the
+          <b>Bonanza Discount!!!</b>
+        </p>
+      </div>
+      <div class="col-md-4">
+        <button
+          class="btn btn-md"
+          mdbBtn
+          mdbWavesEffect
+          color="secondary"
+          (click)="appoint = !appoint"
+        >
+          Book Now
+        </button>
+      </div>
+    </div>
+
+    <div class="text-center pd-top-min">
+      <h4>
+        <b>
+          Create an Appointment Request for
+          {{ service ? service.service_name : "..." }}
+        </b>
+      </h4>
+      <p>
+        Please check the below service details are correct, and provide required
+        information.
+      </p>
+      <hr />
+    </div>
+
+    <form
+      class="service-form"
+      (submit)="createAppointment(appointForm)"
+      #appointForm="ngForm"
+    >
+      <h5>Service Details :</h5>
+      <br />
+      <div class="row container-fluid">
+        <div class="col-md-6">
+          <mat-form-field class="service-full-width">
+            <mat-label>Service Title</mat-label>
+            <input
+              matInput
+              disabled
+              [ngModel]="service.service_name"
+              name="service_name"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+          <mat-form-field class="service-full-width">
+            <mat-label>Service Categoy : </mat-label>
+            <input
+              matInput
+              disabled
+              [ngModel]="service.service_category"
+              name="service_category"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row container-fluid">
+        <div class="col-md-6">
+          <mat-form-field class="service-full-width">
+            <mat-label>Service Provider : </mat-label>
+            <input
+              matInput
+              disabled
+              [ngModel]="service.business_name"
+              name="business_name"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+          <mat-form-field class="service-full-width">
+            <mat-label>State : </mat-label>
+            <input
+              matInput
+              disabled
+              style="font-weight: bold;"
+              [ngModel]="
+                service.available_booking ? 'Available' : 'Not Available'
+              "
+              name="service_available"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <hr />
+      <h5>Appointment Details :</h5>
+
+      <div class="row container-fluid">
+        <div class="col-md-6">
+          <p>Appointment Date:</p>
+          <mat-form-field class="service-full-width">
+            <input
+              matInput
+              [matDatepicker]="pickera"
+              required
+              [min]="tday"
+              name="appointed_date"
+              [(ngModel)]="appointment.date"
+              #aDate="ngModel"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="pickera"
+            ></mat-datepicker-toggle>
+            <mat-datepicker
+              #pickera
+              [startAt]="appointment.date"
+            ></mat-datepicker>
+            <mat-error *ngIf="aDate.invalid">Please select a date</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+          <p style="margin: 0px;">Appointment Time:</p>
+          <ngb-timepicker
+            [(ngModel)]="appointment.time"
+            name="appointed_time"
+          ></ngb-timepicker>
+        </div>
+      </div>
+
+      <hr />
+      <div class="comment-cls pd-top-min">
+        <h5>Add a comment...</h5>
+        <mat-form-field class="service-full-width">
+          <textarea
+            type="text"
+            matInput
+            ngModel
+            name="appointed_comment"
+            placeholder="I want this service in high quality, on-time, please"
+          ></textarea>
+        </mat-form-field>
+      </div>
+      <hr />
+      <div class="btns">
+        <button
+          mdbBtn
+          color="secondary"
+          class="btn btn-md edtbt"
+          mdbWavesEffect
+          type="submit"
+        >
+          Request Appointment
+        </button>
+        <button
+          mdbBtn
+          color="secondary"
+          class="btn btn-md edtbt"
+          outline="yes"
+          mdbWavesEffect
+          (click)="
+            bookUser = !bookUser && (appoint = false && appointForm.resetForm())
+          "
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Booking-->
+  <div class="booking" *ngIf="!appoint">
+    <!-- create an appointment-->
+    <div class="row appointment-top" *ngIf="service.available_appoints">
+      <div class="col-md-8">
+        <p>
+          This ServiceProvider letting you to have an Appointment before
+          booking. Want to check it out?
+        </p>
+      </div>
+      <div class="col-md-4">
+        <button
+          class="btn btn-md"
+          mdbBtn
+          mdbWavesEffect
+          color="primary"
+          (click)="appoint = !appoint"
+        >
+          Make Appointment
+        </button>
+      </div>
+    </div>
+
+    <div class="text-center pd-top-min">
+      <h4>
+        <b> Create a Booking for {{ service.service_name }} </b>
+      </h4>
+      <p>
+        Please check the below service details are correct, and provide required
+        information.
+      </p>
+      <hr />
+    </div>
+
+    <form
+      class="service-form"
+      (submit)="createBooking(bookingForm)"
+      #bookingForm="ngForm"
+    >
+      <h5>Service Details :</h5>
+      <br />
+      <div class="row container-fluid">
+        <div class="col-md-6">
+          <mat-form-field class="service-full-width">
+            <mat-label>Service Title</mat-label>
+            <input
+              matInput
+              disabled
+              [ngModel]="service.service_name"
+              name="service_name"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+          <mat-form-field class="service-full-width">
+            <mat-label>Service Categoy : </mat-label>
+            <input
+              matInput
+              disabled
+              [ngModel]="service.service_category"
+              name="service_category"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row container-fluid">
+        <div class="col-md-6">
+          <mat-form-field class="service-full-width">
+            <mat-label>Service Provider : </mat-label>
+            <input
+              matInput
+              disabled
+              [ngModel]="service.business_name"
+              name="business_name"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+          <mat-form-field class="service-full-width">
+            <mat-label>State : </mat-label>
+            <input
+              matInput
+              disabled
+              style="font-weight: bold;"
+              [ngModel]="
+                service.available_booking ? 'Available' : 'Not Available'
+              "
+              name="service_available"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <hr />
+      <h5>Booking Details :</h5>
+      <div class="row container-fluid text-center">
+        <p>
+          Service may not available if the dates are modified. Please re-check
+          Availability!
+        </p>
+      </div>
+      <div class="row container-fluid">
+        <div class="col-md-5">
+          <mat-form-field class="service-full-width">
+            <mat-label> From Date : </mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker1"
+              required
+              [min]="tday"
+              name="from_date"
+              [(ngModel)]="bookingTime.fromDate"
+              #fDate="ngModel"
+              (dateChange)="bookingTime.toDate = bookingTime.fromDate"
+              (dateChange)="calcPayment(service.rate_type, service.rate)"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker1"
+            ></mat-datepicker-toggle>
+            <mat-datepicker
+              #picker1
+              [startAt]="bookingTime.fromDate"
+            ></mat-datepicker>
+            <mat-error *ngIf="fDate.invalid">Please select a date</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-5">
+          <mat-form-field class="service-full-width">
+            <mat-label> To Date : </mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker2"
+              required
+              [min]="tday"
+              name="to_date"
+              [(ngModel)]="bookingTime.toDate"
+              #tDate="ngModel"
+              (dateChange)="calcPayment(service.rate_type, service.rate)"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker2"
+            ></mat-datepicker-toggle>
+            <mat-datepicker
+              #picker2
+              [startAt]="bookingTime.toDate"
+            ></mat-datepicker>
+            <mat-error *ngIf="tDate.invalid">Please selet a date</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-2">
+          <a
+            class="btn btn-sm"
+            mdbBtn
+            mdbWavesEffect
+            color="secondary"
+            (click)="checkAvailability()"
+          >
+            Check Availability
+          </a>
+        </div>
+      </div>
+
+      <hr />
+      <div class="row" *ngIf="service.rate_type == '/Hr'">
+        <div class="col-md-4">
+          <p style="margin: 0px;">From Time:</p>
+          <ngb-timepicker
+            [(ngModel)]="bookingTime.fromTime"
+            name="from_time"
+            (click)="calcPayment(service.rate_type, service.rate)"
+          ></ngb-timepicker>
+        </div>
+
+        <div class="col-md-4">
+          <p style="margin: 0px;">To Time:</p>
+          <ngb-timepicker
+            [(ngModel)]="bookingTime.toTime"
+            name="to_time"
+            (click)="calcPayment(service.rate_type, service.rate)"
+          ></ngb-timepicker>
+        </div>
+
+        <div class="col-md-4">
+          <div class="pd-top-min" style="text-align: right;">
+            <p style="margin: 0px;">Duration</p>
+            <span class="duration-cls"
+              >{{
+                bookingTime.toTime.hour >= bookingTime.fromTime.hour
+                  ? bookingTime.toTime.hour -
+                    bookingTime.fromTime.hour +
+                    " Hours"
+                  : "Invalid Time"
+              }}
+            </span>
+          </div>
+
+          <div class="pd-top-min" style="text-align: right;">
+            <p style="margin: 0px;">Service Rate</p>
+            <span class="duration-cls"
+              >Rs. {{ service.rate + service.rate_type }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="row container-fluid text-center"
+        *ngIf="service.rate_type != '/Hr'"
+      >
+        <div class="pd-top-min" style="text-align: right;">
+          <p style="margin: 0px;">Service Rate</p>
+          <span class="duration-cls"
+            >Rs. {{ service.rate + service.rate_type }}
+          </span>
+        </div>
+      </div>
+
+      <hr />
+      <div class="payment-section">
+        <div class="row">
+          <!-- payment input-->
+          <div class="col-md-8">
+            <h5>Payment Details:</h5>
+            <p *ngIf="service.pay_on_meet">
+              Note: Minimum of 10% of the Total amount should be paid on
+              booking. Rest can be paid on meet.
+            </p>
+            <p *ngIf="!service.pay_on_meet">
+              Note: Full payment should be paid on booking.
+            </p>
+
+            <!-- card details-->
+            <div class="row">
+              <div class="col-md-7">
+                <mdb-icon fas icon="list"> </mdb-icon> Card:
+                {{ " ...XXXX-XXXX-4419" }}
+                <!--to be modified-->
+              </div>
+              <div class="col-md-5">
+                <a
+                  class="btn btn-sm"
+                  mdbBtn
+                  mdbWavesEffect
+                  color="secondary"
+                  (click)="cardDetails.show()"
+                >
+                  Card Details
+                </a>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="amount-pay">
+              <!-- full payment-->
+              <div *ngIf="!service.pay_on_meet">
+                <mat-form-field class="service-full-width" *>
+                  <mat-label>Amount (Rs.): </mat-label>
+                  <input
+                    matInput
+                    readonly
+                    type="number"
+                    min="totalAmount"
+                    max="totalAmount"
+                    class="amount-input"
+                    [(ngModel)]="totalAmount"
+                    name="amount_paid"
+                  />
+                </mat-form-field>
+              </div>
+
+              <!-- Partial payment-->
+              <div *ngIf="service.pay_on_meet">
+                <mat-form-field class="service-full-width">
+                  <mat-label>Amount (Rs.): </mat-label>
+                  <input
+                    matInput
+                    required
+                    #payInput2="ngModel"
+                    type="number"
+                    [min]="totalAmount / 10"
+                    [max]="totalAmount"
+                    class="amount-input"
+                    [(ngModel)]="payAmount"
+                    name="amount_paid"
+                    (change)="payPalAmount = (payAmount / 190).toFixed(2)"
+                  />
+                </mat-form-field>
+                <mat-error *ngIf="payInput2.invalid">
+                  Please Enter a valid amount ( Min: Rs.{{
+                    totalAmount / 10
+                  }}
+                  Max: Rs.{{ totalAmount }} )
+                </mat-error>
+              </div>
+            </div>
+            <hr />
+          </div>
+
+          <!-- payment display-->
+          <div class="col-md-4">
+            <div class="pay-dispaly pd-top-min" style="text-align: right;">
+              <p style="margin: 0px;">Total Amount:</p>
+              <span class="payment-cls">
+                <b> Rs. {{ totalAmount }}</b></span
+              >
+            </div>
+
+            <div
+              class="pay-dispaly pd-top-min"
+              style="text-align: right;"
+              *ngIf="service.promotions.length"
+            >
+              <p style="margin: 0px;">Discounts:</p>
+              <span class="payment-cls-promo">
+                <b> Rs. -{{ totalPromotion }}</b></span
+              >
+            </div>
+
+            <div
+              class="pay-dispaly pd-top-min"
+              style="text-align: right;"
+              *ngIf="!service.pay_on_meet"
+            >
+              <p style="margin: 0px;">Now Paying:</p>
+              <span class="payment-cls">
+                <b> Rs. {{ totalAmount }}</b></span
+              >
+            </div>
+
+            <div
+              class="pay-dispaly pd-top-min"
+              style="text-align: right;"
+              *ngIf="service.pay_on_meet"
+            >
+              <p style="margin: 0px;">Now Paying:</p>
+              <span class="payment-cls-min">
+                <b>
+                  Rs.
+                  {{ totalAmount >= payAmount ? payAmount : totalAmount }}</b
+                ></span
+              >
+            </div>
+
+            <div
+              class="pay-dispaly pd-top-min"
+              style="text-align: right;"
+              *ngIf="service.pay_on_meet"
+            >
+              <p style="margin: 0px;">To be Paid:</p>
+              <span class="payment-cls-min">
+                <b>
+                  Rs.
+                  {{
+                    totalAmount - payAmount > 0 ? totalAmount - payAmount : 0
+                  }}</b
+                ></span
+              >
+            </div>
           </div>
         </div>
 
+        <hr />
+        <div class="comment-cls pd-top-min">
+          <h5>Add a comment...</h5>
+          <mat-form-field class="service-full-width">
+            <textarea
+              type="text"
+              matInput
+              ngModel
+              name="appointed_comment"
+              placeholder="I want this service in high quality, on-time, please"
+            ></textarea>
+          </mat-form-field>
+        </div>
+        <hr />
 
-<!-- once the service is removed-->
-<div class="container-fluid" *ngIf= "removed">
-  <div class="text-center" style="padding-top:20%">
-    <img src="./assets/images/other/tick.png" style="width:220px" alt="Delete Successful">
-    <br>
-    <h4><b>Service Removed!</b></h4>
+        <div class="btns row container-fluid text-center">
+          <button
+            mdbBtn
+            color="secondary"
+            class="btn btn-md"
+            mdbWavesEffect
+            id="placeOrder"
+            type="submit"
+          >
+            Pay with Card
+          </button>
+          <button
+            mdbBtn
+            color="secondary"
+            class="btn btn-md edtbt"
+            outline="yes"
+            mdbWavesEffect
+            (click)="
+              bookUser =
+                !bookUser && (appoint = false && bookingForm.resetForm())
+            "
+          >
+            Cancel
+          </button>
+          <div style="margin-left: 15px; margin-right: 15px;" id="paybtn">
+            Paypal Checkout
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 </div>
 
+<!-- iF NOT LOGGED IN FOR BOOKING-->
+<div
+  class="container-fluid text-center"
+  *ngIf="!editmode && !removed && bookUser && !islogged"
+>
+  <div class="container text-center">
+    <img
+      src="./assets/images/vectors/error.png"
+      alt="Not Logged In"
+      style="width: 100%; margin-top: 30px; margin-bottom: 20px;"
+    />
+    <h2><b> You are not Logged in!</b></h2>
+    <p>
+      You need to <a routerLink="/login">Sign In</a> or
+      <a routerLink="/register"> Create an Account </a> to book a service.
+      <br />
+      Please <b> Sign In</b> or <b> Sign up</b> to continue.
+    </p>
+    <button
+      mdbBtn
+      mdbWavesEffect
+      color="secondary"
+      class="btn btn-md"
+      routerLink="/login"
+    >
+      Sign In & Continue
+    </button>
+    <button
+      mdbBtn
+      mdbWavesEffect
+      color="red"
+      class="btnn btn-md"
+      (click)="bookUser = !bookUser"
+    >
+      GO Back
+    </button>
+  </div>
+</div>
+
+<!-- once the service is removed-->
+<div class="container-fluid" *ngIf="removed">
+  <div class="text-center" style="padding-top: 20%;">
+    <img
+      src="./assets/images/other/tick.png"
+      style="width: 220px;"
+      alt="Delete Successful"
+    />
+    <br />
+    <h4><b>Service Removed!</b></h4>
+  </div>
+</div>
 
 <!--card details-->
 
@@ -668,12 +1150,11 @@
   aria-labelledby="myBasicModalLabel"
   [config]="{ backdrop: false, ignoreBackdropClick: true }"
   aria-hidden="true"
-
 >
   <div
     class="modal-dialog modal-dialog-centered modal-md"
     role="document"
-    style="overflow-y: initial !important"
+    style="overflow-y: initial !important;"
   >
     <div class="modal-content">
       <div class="modal-header">
@@ -681,27 +1162,25 @@
           type="button"
           class="close pull-right"
           aria-label="Close"
-          (click)="success=false"
+          (click)="success = false"
           (click)="cardDetails.hide()"
         >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
+        <h4 class="modal-title w-100" id="myModalLabel">
           <mat-icon>service</mat-icon>Card Details
         </h4>
       </div>
 
-      <div class="modal-body " style="height: 400px; overflow-y: auto;">
-
+      <div class="modal-body" style="height: 400px; overflow-y: auto;">
         <app-card-details></app-card-details>
-
       </div>
 
       <div class="modal-footer">
         <button
           mdbBtn
           color="link"
-          (click)="success=false"
+          (click)="success = false"
           (click)="cardDetails.hide()"
           mdbWavesEffect
         >
@@ -711,8 +1190,6 @@
     </div>
   </div>
 </div>
-
-
 
 <!--Add Promotion Modal-->
 <div
@@ -724,12 +1201,11 @@
   aria-labelledby="myBasicModalLabel"
   [config]="{ backdrop: false, ignoreBackdropClick: true }"
   aria-hidden="true"
-
 >
   <div
     class="modal-dialog modal-dialog-centered modal-md"
     role="document"
-    style="overflow-y: initial !important"
+    style="overflow-y: initial !important;"
   >
     <div class="modal-content">
       <div class="modal-header">
@@ -737,109 +1213,152 @@
           type="button"
           class="close pull-right"
           aria-label="Close"
-          (click)="success=false"
+          (click)="success = false"
           (click)="promotionModal.hide()"
         >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
+        <h4 class="modal-title w-100" id="myModalLabel">
           <mat-icon>service</mat-icon>Add Promotion
         </h4>
       </div>
 
-      <div class="modal-body " style="height: 400px; overflow-y: auto;">
-
+      <div class="modal-body" style="height: 400px; overflow-y: auto;">
         <div class="pt-1">
           <form #addPromotionForm="ngForm">
             <div class="text-center">
               <p><b> Provide required details to create a promotion </b></p>
             </div>
-            <hr>
-                <div class="row">
-                  <div class="col-md-4">
-                    <mdb-icon fas icon="clock"></mdb-icon> <span> Promotion Title</span>
-                  </div>
-                  <div class="col-md-8">
-                    <mat-form-field class="service-full-width">
-                      <mat-label>  Enter Promotion title </mat-label>
-                      <input matInput
-                      required
-                      [(ngModel)]="promotion.title"
-                      name="promo_title"
-                      #taskTitle="ngModel">
-                      <mat-error *ngIf="taskTitle.invalid">A promotion should given a title </mat-error>
-                    </mat-form-field>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <mdb-icon fas icon="clock"></mdb-icon> <span> Precentage (On Price) </span>
-                  </div>
-                  <div class="col-md-8">
-                    <mat-form-field class="service-full-width">
-                      <mat-label>  Enter Promotion precentage </mat-label>
-                      <input matInput type="number"
-                      required
-                      [(ngModel)]="promotion.precentage"
-                      name="promo_precentage"
-                      #PromoPrecent="ngModel">
-                      <mat-error *ngIf="PromoPrecent.invalid">Promotion precentage is required </mat-error>
-                    </mat-form-field>
-                  </div>
-                </div>
-            <hr>
+            <hr />
+            <div class="row">
+              <div class="col-md-4">
+                <mdb-icon fas icon="clock"></mdb-icon>
+                <span> Promotion Title</span>
+              </div>
+              <div class="col-md-8">
+                <mat-form-field class="service-full-width">
+                  <mat-label> Enter Promotion title </mat-label>
+                  <input
+                    matInput
+                    required
+                    [(ngModel)]="promotion.title"
+                    name="promo_title"
+                    #taskTitle="ngModel"
+                  />
+                  <mat-error *ngIf="taskTitle.invalid"
+                    >A promotion should given a title
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <mdb-icon fas icon="clock"></mdb-icon>
+                <span> Precentage (On Price) </span>
+              </div>
+              <div class="col-md-8">
+                <mat-form-field class="service-full-width">
+                  <mat-label> Enter Promotion precentage </mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    required
+                    [(ngModel)]="promotion.precentage"
+                    name="promo_precentage"
+                    #PromoPrecent="ngModel"
+                  />
+                  <mat-error *ngIf="PromoPrecent.invalid"
+                    >Promotion precentage is required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <hr />
             <div class="row">
               <div class="col-md-6">
-                <mdb-icon fas icon="calendar-alt"></mdb-icon> <span> <b> Starting Date  </b></span> <br>
-                <mat-form-field class="pt-1" >
-                  <mat-label > From Date : </mat-label>
-                  <input matInput [matDatepicker]="picker1" required [min]="today"
-                  name="from_date" [(ngModel)]="start" #fDate="ngModel"
-                  (dateChange) = "end = start "/>
+                <mdb-icon fas icon="calendar-alt"></mdb-icon>
+                <span> <b> Starting Date </b></span> <br />
+                <mat-form-field class="pt-1">
+                  <mat-label> From Date : </mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="picker1"
+                    required
+                    [min]="today"
+                    name="from_date"
+                    [(ngModel)]="start"
+                    #fDate="ngModel"
+                    (dateChange)="end = start"
+                  />
                   <mat-datepicker-toggle
                     matSuffix
                     [for]="picker1"
                   ></mat-datepicker-toggle>
                   <mat-datepicker #picker1 [startAt]="start"></mat-datepicker>
-                  <mat-error *ngIf="fDate.invalid">Please select a date</mat-error>
+                  <mat-error *ngIf="fDate.invalid"
+                    >Please select a date</mat-error
+                  >
                 </mat-form-field>
               </div>
               <div class="col-md-6">
-                <mdb-icon fas icon="calendar-alt"></mdb-icon> <span><b> To Date </b></span> <br>
-                <mat-form-field class="pt-1" >
-                  <mat-label > To Date : </mat-label>
-                  <input matInput [matDatepicker]="picker2" required [min]="today"
-                  name="to_date" [(ngModel)]="end" #tDate="ngModel"
+                <mdb-icon fas icon="calendar-alt"></mdb-icon>
+                <span><b> To Date </b></span> <br />
+                <mat-form-field class="pt-1">
+                  <mat-label> To Date : </mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="picker2"
+                    required
+                    [min]="today"
+                    name="to_date"
+                    [(ngModel)]="end"
+                    #tDate="ngModel"
                   />
                   <mat-datepicker-toggle
                     matSuffix
                     [for]="picker2"
                   ></mat-datepicker-toggle>
                   <mat-datepicker #picker2 [startAt]="end"></mat-datepicker>
-                  <mat-error *ngIf="tDate.invalid">Please select a date</mat-error>
+                  <mat-error *ngIf="tDate.invalid"
+                    >Please select a date</mat-error
+                  >
                 </mat-form-field>
               </div>
             </div>
-            <hr>
-            <div class="text-center" >
-              <button  mdbBtn mdbWavesEffect color="secondary" text="white" class="btn btn-md"
-              (click)="addPromotion()" (click) = "addPromotionForm.resetForm()" (click) = "promotionModal.hide()">
+            <hr />
+            <div class="text-center">
+              <button
+                mdbBtn
+                mdbWavesEffect
+                color="secondary"
+                text="white"
+                class="btn btn-md"
+                (click)="addPromotion()"
+                (click)="addPromotionForm.resetForm()"
+                (click)="promotionModal.hide()"
+              >
                 Create Promotion
               </button>
-              <button  mdbBtn mdbWavesEffect color="red" text="white" class="btn btn-md"
-              (click)="promotionModal.hide()" >
+              <button
+                mdbBtn
+                mdbWavesEffect
+                color="red"
+                text="white"
+                class="btn btn-md"
+                (click)="promotionModal.hide()"
+              >
                 Discard
               </button>
             </div>
           </form>
-          </div>
+        </div>
       </div>
 
       <div class="modal-footer">
         <button
           mdbBtn
           color="link"
-          (click)="success=false"
+          (click)="success = false"
           (click)="promotionModal.hide()"
           mdbWavesEffect
         >

@@ -23,15 +23,15 @@ export class PlannerProfileComponent implements OnInit, OnDestroy {
   // enabling ctomization only if it is the owner
   @Input() isowner: boolean;
 
-   // image to upload
-   image: File;
-   imageUrl: any = './assets/images/merchant/nopic.png';
+  // image to upload
+  image: File;
+  imageUrl: any = './assets/images/merchant/nopic.png';
 
-   // edit profile mode
-   editmode = false;
+  // edit profile mode
+  editmode = false;
 
-   // recieved event planner
-   eventPlanner: EventPlanner;
+  // recieved event planner
+  eventPlanner: EventPlanner;
 
   constructor(private authService: AuthService,
               public dialog: MatDialog,
@@ -41,9 +41,9 @@ export class PlannerProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.authService.getEventPlanner();
-    this.eventPlannerSub = this.authService.getEventPlannerUpdateListener().subscribe (
+    this.eventPlannerSub = this.authService.getEventPlannerUpdateListener().subscribe(
       planner => {
-          this.eventPlanner = planner;
+        this.eventPlanner = planner;
       });
 
   }
@@ -60,10 +60,10 @@ export class PlannerProfileComponent implements OnInit, OnDestroy {
     if (pwordForm.invalid) {
       console.log('Form invalid');
     }
-    if ( pwordForm.value.new_password1 !== pwordForm.value.new_password2) {
-      this.dialog.open(ErrorComponent, {data: {message: 'Passwords do not match! Please try again!'}});
+    if (pwordForm.value.new_password1 !== pwordForm.value.new_password2) {
+      this.dialog.open(ErrorComponent, { data: { message: 'Passwords do not match! Please try again!' } });
     }
-   // this.serviceProviderService.changeUserPassword(currentPword, newPword);
+    // this.serviceProviderService.changeUserPassword(currentPword, newPword);
   }
 
   // edit user
@@ -84,14 +84,14 @@ export class PlannerProfileComponent implements OnInit, OnDestroy {
         gender: editForm.value.gender,
         date_of_birth: editForm.value.date_of_birth,
         reg_date: this.eventPlanner.reg_date,
-        };
+      };
       console.log(planner);
       this.authService.updateEventPlanner(planner, this.image);
       this.eventPlannerSub = this.authService.getEventPlannerUpdateListener()
-      .subscribe((recievedPlanner: EventPlanner) => {
-        console.log(recievedPlanner);
-        this.eventPlanner = recievedPlanner;
-      });
+        .subscribe((recievedPlanner: EventPlanner) => {
+          console.log(recievedPlanner);
+          this.eventPlanner = recievedPlanner;
+        });
       console.log('Event Planner updated successfully!');
       editForm.resetForm();
       this.editmode = false;
@@ -101,19 +101,19 @@ export class PlannerProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-    // profile pic uploading
-    onImageUploaded(event: Event) {
-      const file = (event.target as HTMLInputElement).files[0];
-      const mimeType = file.type;
-      if (mimeType.match(/image\/*/) == null) {
-        return;
-      }
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.image = file;
-        this.imageUrl = reader.result;
-      };
+  // profile pic uploading
+  onImageUploaded(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    const mimeType = file.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
     }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.image = file;
+      this.imageUrl = reader.result;
+    };
+  }
 
 }

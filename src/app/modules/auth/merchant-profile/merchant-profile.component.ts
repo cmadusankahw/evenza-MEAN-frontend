@@ -29,9 +29,9 @@ export class MerchantProfileComponent implements OnInit, OnDestroy {
   // bprofile data binding
   serviceProvider: Merchant;
 
-   // image to upload
-   image: File;
-   imageUrl: any = './assets/images/merchant/nopic.png';
+  // image to upload
+  image: File;
+  imageUrl: any = './assets/images/merchant/nopic.png';
 
 
   constructor(private authService: AuthService,
@@ -41,9 +41,9 @@ export class MerchantProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.authService.getMerchant();
-    this.merchantSubs = this.authService.getMerchantUpdateListener().subscribe (
+    this.merchantSubs = this.authService.getMerchantUpdateListener().subscribe(
       merchant => {
-          this.serviceProvider = merchant;
+        this.serviceProvider = merchant;
       });
   }
 
@@ -59,10 +59,10 @@ export class MerchantProfileComponent implements OnInit, OnDestroy {
     if (pwordForm.invalid) {
       console.log('Form invalid');
     }
-    if ( pwordForm.value.new_password1 !== pwordForm.value.new_password2) {
-      this.dialog.open(ErrorComponent, {data: {message: 'Passwords do not match! Please try again!'}});
+    if (pwordForm.value.new_password1 !== pwordForm.value.new_password2) {
+      this.dialog.open(ErrorComponent, { data: { message: 'Passwords do not match! Please try again!' } });
     }
-   // this.serviceProviderService.changeUserPassword(currentPword, newPword);
+    // this.serviceProviderService.changeUserPassword(currentPword, newPword);
   }
 
   // edit user
@@ -87,42 +87,42 @@ export class MerchantProfileComponent implements OnInit, OnDestroy {
         reg_date: this.serviceProvider.reg_date,
         id_verification: this.serviceProvider.id_verification,
         business: this.serviceProvider.business
-        };
+      };
       this.authService.updateMerchant(merchant, this.image);
       this.merchantSubs = this.authService.getMerchantUpdateListener()
-      .subscribe((recievedMerchant: Merchant) => {
-        console.log(recievedMerchant);
-        this.serviceProvider = recievedMerchant;
-      });
+        .subscribe((recievedMerchant: Merchant) => {
+          console.log(recievedMerchant);
+          this.serviceProvider = recievedMerchant;
+        });
       console.log('Merchant updated successfully!');
       editForm.resetForm();
       this.editmode = false;
       setTimeout(() => {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
-        if (this.serviceProvider.user_type === 'serviceProvider'){
+        if (this.serviceProvider.user_type === 'serviceProvider') {
           this.router.navigate(['/sp/dash/profile']);
         }
-        if (this.serviceProvider.user_type === 'seller'){
+        if (this.serviceProvider.user_type === 'seller') {
           this.router.navigate(['/sel/dash/profile']);
         }
       }, 1200);
     }
   }
 
-    // profile pic uploading
-    onImageUploaded(event: Event) {
-      const file = (event.target as HTMLInputElement).files[0];
-      const mimeType = file.type;
-      if (mimeType.match(/image\/*/) == null) {
-        return;
-      }
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.image = file;
-        this.imageUrl = reader.result;
-      };
+  // profile pic uploading
+  onImageUploaded(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    const mimeType = file.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
     }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.image = file;
+      this.imageUrl = reader.result;
+    };
+  }
 
 }

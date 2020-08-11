@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 
 
 
-import {Service, ServiceCategories, EventServiceQuery, Booking } from '../../service/service.model';
+import { Service, ServiceCategories, EventServiceQuery, Booking } from '../../service/service.model';
 import { ServiceService } from '../../service/service.service';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { BusinessLocation } from '../../auth/auth.model';
@@ -22,8 +22,8 @@ export class EventServiceSearchComponent implements OnInit, OnDestroy {
 
 
   // subscription
-  private serviceSub: Subscription ;
-  private categorySub: Subscription ;
+  private serviceSub: Subscription;
+  private categorySub: Subscription;
   private searchedServiceSub: Subscription;
   private bookingSub: Subscription;
   private locationSub: Subscription;
@@ -33,7 +33,7 @@ export class EventServiceSearchComponent implements OnInit, OnDestroy {
   public categories: ServiceCategories[] = [];
   // retrived from emitting
   public eventId: string;
-  public filter: Filteration ;
+  public filter: Filteration;
   // filter-drawe-state
   public opened = false;
   // enable searching mode
@@ -44,12 +44,14 @@ export class EventServiceSearchComponent implements OnInit, OnDestroy {
   public today = new Date();
   public islogged = true; // must be updated with backend call
   // recieved locations !!!!!!!!!!! edit
-  public recievedLocations: {location: BusinessLocation, business: string}[]  = [];
+  public recievedLocations: { location: BusinessLocation, business: string }[] = [];
   // search query
-  public bookingTime = { fromDate: this.today,
-            toDate: this.today,
-            fromTime: {hour: 8, minute: 0},
-            toTime: {hour: 18, minute: 0}};
+  public bookingTime = {
+    fromDate: this.today,
+    toDate: this.today,
+    fromTime: { hour: 8, minute: 0 },
+    toTime: { hour: 18, minute: 0 }
+  };
 
   // temp variables for serching purposes
   ratings = 0;
@@ -70,10 +72,10 @@ export class EventServiceSearchComponent implements OnInit, OnDestroy {
   model: any;
 
   constructor(private breakpointObserver: BreakpointObserver,
-              public serviceService: ServiceService, private eventService: EventService) {}
+              public serviceService: ServiceService, private eventService: EventService) { }
 
 
-  @ViewChild('instance', {static: true}) instance: NgbTypeahead;
+  @ViewChild('instance', { static: true }) instance: NgbTypeahead;
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 
@@ -87,22 +89,22 @@ export class EventServiceSearchComponent implements OnInit, OnDestroy {
     // get serviceproviders' locations
     this.serviceService.getLocations();
     this.locationSub = this.serviceService.getLocationsUpdateListener()
-      .subscribe((recievedData: {location: BusinessLocation, business: string}[]) => {
-      this.recievedLocations = recievedData;
-      console.log(this.recievedLocations);
-    });
+      .subscribe((recievedData: { location: BusinessLocation, business: string }[]) => {
+        this.recievedLocations = recievedData;
+        console.log(this.recievedLocations);
+      });
 
     // search and list filtered services
     if (this.filter) {
-    // setting filters
-    this.eventId = this.filter.eventId; // for a specific filtered search
-    this.selectedCategory = this.filter.category;
-    this.priceEnd = this.filter.allocated_budget;
-    this.priceEndStatic = this.filter.allocated_budget;
-    setTimeout( () => {
-      this.searchServices();
-    }, 700);
-   }
+      // setting filters
+      this.eventId = this.filter.eventId; // for a specific filtered search
+      this.selectedCategory = this.filter.category;
+      this.priceEnd = this.filter.allocated_budget;
+      this.priceEndStatic = this.filter.allocated_budget;
+      setTimeout(() => {
+        this.searchServices();
+      }, 700);
+    }
   }
 
   ngOnDestroy() {
@@ -152,20 +154,20 @@ export class EventServiceSearchComponent implements OnInit, OnDestroy {
     console.log(searchQuery);
     this.serviceService.searchEventServices(searchQuery);
     this.searchedServiceSub = this.serviceService.getSearchedEventServiceUpdatedListener()
-    .subscribe((recievedData: Service[]) => {
-    this.services = recievedData;
-    console.log(this.services);
-   });
+      .subscribe((recievedData: Service[]) => {
+        this.services = recievedData;
+        console.log(this.services);
+      });
   }
 
 
   // set service to view details
   sendService(service: Service) {
     this.success = this.serviceService.setService(service);
-   }
+  }
 
 
-   // get available list of services
+  // get available list of services
   changeSettings(fromDate: string, toDate: string) {
     const tDate = new Date(toDate);
     const fDate = new Date(fromDate);
@@ -174,24 +176,24 @@ export class EventServiceSearchComponent implements OnInit, OnDestroy {
 
     this.serviceService.getBookings();
     this.bookingSub = this.serviceService.getBookingsUpdateListener()
-    .subscribe((recievedData: Booking[]) => {
-      console.log(recievedData);
-      for (const book of recievedData) {
-        const bookfDate = new Date(book.from_date);
-        const booktDate = new Date(book.to_date);
-        console.log(tDate, fDate, bookfDate, booktDate);
-        if (bookfDate >= fDate && booktDate <= tDate) {
-          if (!serviceIds.includes(book.service_id)) {
-            serviceIds.push(book.service_id);
+      .subscribe((recievedData: Booking[]) => {
+        console.log(recievedData);
+        for (const book of recievedData) {
+          const bookfDate = new Date(book.from_date);
+          const booktDate = new Date(book.to_date);
+          console.log(tDate, fDate, bookfDate, booktDate);
+          if (bookfDate >= fDate && booktDate <= tDate) {
+            if (!serviceIds.includes(book.service_id)) {
+              serviceIds.push(book.service_id);
+            }
           }
         }
-      }
-      console.log(serviceIds);
-      for (const sid of serviceIds) {
-        this.services.filter(s => s.service_id === sid);
-      }
-      console.log('final', this.services);
-   });
+        console.log(serviceIds);
+        for (const sid of serviceIds) {
+          this.services.filter(s => s.service_id === sid);
+        }
+        console.log('final', this.services);
+      });
   }
 
 }

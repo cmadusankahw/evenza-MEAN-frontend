@@ -23,7 +23,7 @@ export class EventParticipantsComponent implements OnInit, OnDestroy {
   eventId: string;
 
   // invitation message temp
-  message: string = 'Start editing your invitation';
+  message = 'Start editing your invitation';
 
   // modified invitation
   invitation: Alert;
@@ -35,7 +35,7 @@ export class EventParticipantsComponent implements OnInit, OnDestroy {
   participants: Participant[] = [];
 
   constructor(private eventService: EventService, private route: ActivatedRoute, private router: Router) {
-    this.eventId =  route.snapshot.params.id;
+    this.eventId = route.snapshot.params.id;
   }
 
   ngOnInit() {
@@ -43,17 +43,17 @@ export class EventParticipantsComponent implements OnInit, OnDestroy {
     this.eventService.getEvent(this.eventId);
     this.eventSub = this.eventService.getEventUpdatedListener()
       .subscribe((recievedData: TheEvent) => {
-      this.event = recievedData;
-      this.participants = recievedData.participants.participants;
-      if (recievedData.alerts[0]) {
-        this.invitation = recievedData.alerts[0];
-        this.message = recievedData.alerts[0].message;
-      }
-    });
+        this.event = recievedData;
+        this.participants = recievedData.participants.participants;
+        if (recievedData.alerts[0]) {
+          this.invitation = recievedData.alerts[0];
+          this.message = recievedData.alerts[0].message;
+        }
+      });
   }
 
-  ngOnDestroy(){
-    if (this.eventSub){
+  ngOnDestroy() {
+    if (this.eventSub) {
       this.eventSub.unsubscribe();
     }
     // this.updateAll(this.participants, this.invitation, this.eventId);
@@ -61,11 +61,11 @@ export class EventParticipantsComponent implements OnInit, OnDestroy {
 
   // add a participant only to local memory
   addParticipant(pForm: NgForm) {
-    if (pForm.invalid){
+    if (pForm.invalid) {
       console.log(' Invalid Participant details');
     }
     const participant: Participant = {
-      participant_id: pForm.value.first_name.trim().replace('_','') + (Math.floor(Math.random() * 100) + 1).toString(),
+      participant_id: pForm.value.first_name.trim().replace('_', '') + (Math.floor(Math.random() * 100) + 1).toString(),
       first_name: pForm.value.first_name,
       last_name: pForm.value.last_name,
       email: pForm.value.email,
@@ -81,7 +81,7 @@ export class EventParticipantsComponent implements OnInit, OnDestroy {
     this.participants = updatedParticipants;
   }
 
-  updateInvitation(){
+  updateInvitation() {
     this.invitation.message = this.message;
     this.invitationEditMode = false;
   }
@@ -92,7 +92,7 @@ export class EventParticipantsComponent implements OnInit, OnDestroy {
   }
 
   // print guest list
-  printGuestList(content: string, type: string){
+  printGuestList(content: string, type: string) {
     printData(content, type);
   }
 

@@ -1,16 +1,25 @@
-<div class="pd-top-min" *ngIf="isowner" >
-  <button mdbBtn mdbWavesEffect color="secondary" class="btn btn-md" (click)= "addNewService.show()" style="margin-bottom:20px; margin-left:0px;">
+<div class="pd-top-min" *ngIf="isowner">
+  <button
+    mdbBtn
+    mdbWavesEffect
+    color="secondary"
+    class="btn btn-md"
+    (click)="addNewService.show()"
+    style="margin-bottom: 20px; margin-left: 0px;"
+  >
     + Add New Service
   </button>
 </div>
-<div class="card-deck " *ngIf="services.length">
+<div class="card-deck" *ngIf="services.length">
   <!-- Card -->
 
   <mdb-card *ngFor="let service of services">
-
     <div class="view overlay waves-light" mdbWavesEffect>
       <!-- Card img -->
-      <mdb-card-img [src]="service.image_01" [alt]="service.service_name"></mdb-card-img>
+      <mdb-card-img
+        [src]="service.image_01"
+        [alt]="service.service_name"
+      ></mdb-card-img>
       <a>
         <div class="mask rgba-white-slight"></div>
       </a>
@@ -19,47 +28,49 @@
     <mdb-card-body>
       <!--Title-->
       <mdb-card-title>
-        <h4>{{service.service_name}}</h4>
+        <h4>{{ service.service_name }}</h4>
       </mdb-card-title>
 
       <!--Text-->
-      <mdb-card-text> {{service.description.slice(0,14)+ '...'}}
-        <hr>
-
+      <mdb-card-text>
+        {{ service.description.slice(0, 14) + "..." }}
+        <hr />
       </mdb-card-text>
 
       <div>
         <div class="left-notify" *ngIf="!isowner">
-          <span style="font-size:20px; font-weight:bold;">
-            Rs. {{service.rate}} {{service.rate_type}}
+          <span style="font-size: 20px; font-weight: bold;">
+            Rs. {{ service.rate }} {{ service.rate_type }}
           </span>
-
         </div>
 
         <div class="left-btn">
-          <a mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect
-          (click)= "sendService(service)" (click)="serviceDetailsShow.show()" >
+          <a
+            mdbBtn
+            color="secondary"
+            class="btn btn-md"
+            mdbWavesEffect
+            (click)="sendService(service)"
+            (click)="serviceDetailsShow.show()"
+          >
             <span *ngIf="isowner"> More Details </span>
-            <span *ngIf="!isowner"> Book Now </span></a>
+            <span *ngIf="!isowner"> Book Now </span></a
+          >
         </div>
         <div class="right-notify" *ngIf="isowner">
-          <mdb-icon fas icon="bookmark"> </mdb-icon>{{service.no_of_bookings}}
-          <mdb-icon far icon="calendar-check"> </mdb-icon>{{service.no_of_appoints}}
+          <mdb-icon fas icon="bookmark"> </mdb-icon
+          >{{ service.no_of_bookings }}
+          <mdb-icon far icon="calendar-check"> </mdb-icon
+          >{{ service.no_of_appoints }}
         </div>
-
-
-
       </div>
-
     </mdb-card-body>
   </mdb-card>
-  </div>
+</div>
 
-  <div class="container-fluid text-center" *ngIf="!services.length">
-    <p>No Services Found</p>
-  </div>
-
-
+<div class="container-fluid text-center" *ngIf="!services.length">
+  <p>No Services Found</p>
+</div>
 
 <!--View Service Modal-->
 <div
@@ -69,14 +80,13 @@
   tabindex="-1"
   role="dialog"
   aria-labelledby="myBasicModalLabel"
-  [config]="{ backdrop: false, ignoreBackdropClick: true, show:success }"
+  [config]="{ backdrop: false, ignoreBackdropClick: true, show: success }"
   aria-hidden="true"
-
 >
   <div
     class="modal-dialog modal-dialog-centered modal-lg"
     role="document"
-    style="overflow-y: initial !important"
+    style="overflow-y: initial !important;"
   >
     <div class="modal-content">
       <div class="modal-header">
@@ -84,27 +94,29 @@
           type="button"
           class="close pull-right"
           aria-label="Close"
-          (click)="success=false"
+          (click)="success = false"
           (click)="serviceDetailsShow.hide()"
         >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
+        <h4 class="modal-title w-100" id="myModalLabel">
           <mat-icon>service</mat-icon>Service Details
         </h4>
       </div>
 
-      <div class="modal-body " style="height: 500px; overflow-y: auto;">
-
-        <app-service-details  [isowner]="isowner" [islogged] = "islogged" [removed] = "false"></app-service-details>
-
+      <div class="modal-body" style="height: 500px; overflow-y: auto;">
+        <app-service-details
+          [isowner]="isowner"
+          [islogged]="islogged"
+          [removed]="false"
+        ></app-service-details>
       </div>
 
       <div class="modal-footer">
         <button
           mdbBtn
           color="link"
-          (click)="success=false"
+          (click)="success = false"
           (click)="serviceDetailsShow.hide()"
           mdbWavesEffect
         >
@@ -114,7 +126,6 @@
     </div>
   </div>
 </div>
-
 
 <!--View Service Modal-->
 <div
@@ -126,12 +137,11 @@
   aria-labelledby="myBasicModalLabel"
   [config]="{ backdrop: false, ignoreBackdropClick: true }"
   aria-hidden="true"
-
 >
   <div
     class="modal-dialog modal-dialog-centered modal-lg"
     role="document"
-    style="overflow-y: initial !important"
+    style="overflow-y: initial !important;"
   >
     <div class="modal-content">
       <div class="modal-header">
@@ -143,15 +153,13 @@
         >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
+        <h4 class="modal-title w-100" id="myModalLabel">
           <mat-icon>add</mat-icon> Create New Service
         </h4>
       </div>
 
-      <div class="modal-body " style="height: 450px; overflow-y: auto;">
-
-        <app-addnew-service [businessName] = "businessName"></app-addnew-service>
-
+      <div class="modal-body" style="height: 450px; overflow-y: auto;">
+        <app-addnew-service [businessName]="businessName"></app-addnew-service>
       </div>
 
       <div class="modal-footer">

@@ -1,133 +1,220 @@
-
 <div *ngIf="recievedMerchant">
-<div *ngIf="recievedMerchant.business">
-<!--Business Profile View-->
-<div class="container-fluid" *ngIf="!editmode">
-  <section class="px-md-5 mx-md-5 dark-grey-text">
-
-    <!--customize profile section-->
-      <div class="row cust-row" *ngIf="isowner">
-              <div class="col-md-8">
-                <p>Need to change something? Customize your Business Profile. </p>
-              </div>
-              <div class="col-md-4">
-                <a type="button" mdbBtn color="secondary" class="waves-light btn btn-md  cust-btn"
-                (click)="editmode = !editmode" mdbWavesEffect>Customize Profile
-                </a>
-              </div>
-      </div>
-
-
-    <!--profile header-->
-    <div class="container-fluid header-cls">
-      <div class="row f-image">
-        <img [src]="recievedMerchant.business.feature_img ? recievedMerchant.business.feature_img : './assets/images/back/bprofile.jpg'" alt="Merchant Cover" class="feature-img" >
-      </div>
-      <div class="row logo-cls">
-        <div class="col-md-2">
-            <img [src]="recievedMerchant.business.logo ? recievedMerchant.business.logo : './assets/images/merchant/business.jpg'" alt="Merchant Pic" class="img-thumbnail logo-img">
+  <div *ngIf="recievedMerchant.business">
+    <!--Business Profile View-->
+    <div class="container-fluid" *ngIf="!editmode">
+      <section class="px-md-5 mx-md-5 dark-grey-text">
+        <!--customize profile section-->
+        <div class="row cust-row" *ngIf="isowner">
+          <div class="col-md-8">
+            <p>Need to change something? Customize your Business Profile.</p>
+          </div>
+          <div class="col-md-4">
+            <a
+              type="button"
+              mdbBtn
+              color="secondary"
+              class="waves-light btn btn-md cust-btn"
+              (click)="editmode = !editmode"
+              mdbWavesEffect
+              >Customize Profile
+            </a>
+          </div>
         </div>
-        <div class="col-md-10">
-          <h2 class="txt-title"> {{recievedMerchant.business.title}} </h2>
-        </div>
-      </div>
 
-      <!-- profile content-->
-      <div class="page-content">
-        <div class="row">
-
-          <!--left content-->
-          <div class="col-md-8 container-fluid ">
-            <div class="state-text">
-              <mdb-icon fas icon="building"> </mdb-icon> at {{recievedMerchant.business.location.homeTown}}
-              <br>
-             <a mdbWavesEffect role="button"  (click)="opendays.show()"> <span class="open-state" style="color:darkgreen;" *ngIf="isOpened(recievedMerchant.business.open_days)">
-                <mdb-icon far icon="clock"> </mdb-icon> Open Now</span> </a>
-
-            <a mdbWavesEffect role="button"  (click)="opendays.show()"> <span class="open-state" *ngIf="!isOpened(recievedMerchant.business.open_days)">
-              <mdb-icon far icon="clock"> </mdb-icon> Closed Now </span> </a>
+        <!--profile header-->
+        <div class="container-fluid header-cls">
+          <div class="row f-image">
+            <img
+              [src]="
+                recievedMerchant.business.feature_img
+                  ? recievedMerchant.business.feature_img
+                  : './assets/images/back/bprofile.jpg'
+              "
+              alt="Merchant Cover"
+              class="feature-img"
+            />
+          </div>
+          <div class="row logo-cls">
+            <div class="col-md-2">
+              <img
+                [src]="
+                  recievedMerchant.business.logo
+                    ? recievedMerchant.business.logo
+                    : './assets/images/merchant/business.jpg'
+                "
+                alt="Merchant Pic"
+                class="img-thumbnail logo-img"
+              />
             </div>
-
-            <br>
-            <div class="content-title">
-              Business Description
-              </div>
-              <hr>
-              <div class="content-text">
-                {{recievedMerchant.business.description}}
-              </div>
-
-              <div class="verify-stat pd-top-min" *ngIf= "recievedMerchant.business.payment_verified" style="text-align:left;">
-                <mdb-icon far icon="check-circle"> </mdb-icon> Payment Method Added
+            <div class="col-md-10">
+              <h2 class="txt-title">{{ recievedMerchant.business.title }}</h2>
             </div>
+          </div>
 
-            <div class="verify-stat" *ngIf= "!recievedMerchant.business.payment_verified" style="color:darkred; text-align:left; ">
-              <mdb-icon far icon="check-circle"> </mdb-icon> Payment Method not Added
-           </div>
+          <!-- profile content-->
+          <div class="page-content">
+            <div class="row">
+              <!--left content-->
+              <div class="col-md-8 container-fluid">
+                <div class="state-text">
+                  <mdb-icon fas icon="building"> </mdb-icon> at
+                  {{ recievedMerchant.business.location.homeTown }}
+                  <br />
+                  <a mdbWavesEffect role="button" (click)="opendays.show()">
+                    <span
+                      class="open-state"
+                      style="color: darkgreen;"
+                      *ngIf="isOpened(recievedMerchant.business.open_days)"
+                    >
+                      <mdb-icon far icon="clock"> </mdb-icon> Open Now</span
+                    >
+                  </a>
 
+                  <a mdbWavesEffect role="button" (click)="opendays.show()">
+                    <span
+                      class="open-state"
+                      *ngIf="!isOpened(recievedMerchant.business.open_days)"
+                    >
+                      <mdb-icon far icon="clock"> </mdb-icon> Closed Now
+                    </span>
+                  </a>
+                </div>
 
-              <br>
-              <div class="serv" *ngIf="recievedMerchant.user_type == 'serviceProvider'">
-                 <!--service cards-->
-              <div class="content-title page-content">
-                  <span>Services</span>
+                <br />
+                <div class="content-title">
+                  Business Description
+                </div>
+                <hr />
+                <div class="content-text">
+                  {{ recievedMerchant.business.description }}
+                </div>
 
+                <div
+                  class="verify-stat pd-top-min"
+                  *ngIf="recievedMerchant.business.payment_verified"
+                  style="text-align: left;"
+                >
+                  <mdb-icon far icon="check-circle"> </mdb-icon> Payment Method
+                  Added
+                </div>
+
+                <div
+                  class="verify-stat"
+                  *ngIf="!recievedMerchant.business.payment_verified"
+                  style="color: darkred; text-align: left;"
+                >
+                  <mdb-icon far icon="check-circle"> </mdb-icon> Payment Method
+                  not Added
+                </div>
+
+                <br />
+                <div
+                  class="serv"
+                  *ngIf="recievedMerchant.user_type == 'serviceProvider'"
+                >
+                  <!--service cards-->
+                  <div class="content-title page-content">
+                    <span>Services</span>
                   </div>
-                  <hr>
+                  <hr />
                   <!--service & product comps-->
-                  <app-service-card *ngIf="isowner" [isowner] = "true" [businessName] = "recievedMerchant.business.title">  </app-service-card>
+                  <app-service-card
+                    *ngIf="isowner"
+                    [isowner]="true"
+                    [businessName]="recievedMerchant.business.title"
+                  >
+                  </app-service-card>
                 </div>
 
                 <div class="sel" *ngIf="recievedMerchant.user_type == 'seller'">
                   <!--product cards-->
-               <div class="content-title page-content">
-                   <span>Products</span>
-
-                   </div>
-                   <hr>
-                   <!--service & product comps-->
-                   <app-product-card [isowner] = "true" [businessName] = "recievedMerchant.business.title">  </app-product-card>
-                 </div>
-          </div>
-
-          <!--right content-->
-          <div class="col-md-4">
-            <div class="verify-stat" *ngIf= "recievedMerchant.business.business_verification.business_isverified">
-                <mdb-icon far icon="check-circle"> </mdb-icon> Business Verified
-            </div>
-
-            <div class="verify-stat" *ngIf= "!recievedMerchant.business.business_verification.business_isverified" style="color:darkred; ">
-              <mdb-icon far icon="check-circle"> </mdb-icon> Business Not Verified
-          </div>
-
-            <hr>
-
-             <!--map to modify-->
-              <div id=" row map-container-google-1" class="map-container page-content">
-                <agm-map
-                [latitude]="recievedMerchant.business.location ? recievedMerchant.business.location.lat : location.lat"
-                [longitude]="recievedMerchant.business.location ? recievedMerchant.business.location.lang : location.lang "
-                [zoom]=10 >
-                  <agm-marker
-                  [latitude]="recievedMerchant.business.location ? recievedMerchant.business.location.lat : location.lat"
-                  [longitude]="recievedMerchant.business.location ? recievedMerchant.business.location.lang : location.lang"
-                  ></agm-marker>
-                </agm-map>
+                  <div class="content-title page-content">
+                    <span>Products</span>
+                  </div>
+                  <hr />
+                  <!--service & product comps-->
+                  <app-product-card
+                    [isowner]="true"
+                    [businessName]="recievedMerchant.business.title"
+                  >
+                  </app-product-card>
+                </div>
               </div>
 
+              <!--right content-->
+              <div class="col-md-4">
+                <div
+                  class="verify-stat"
+                  *ngIf="
+                    recievedMerchant.business.business_verification
+                      .business_isverified
+                  "
+                >
+                  <mdb-icon far icon="check-circle"> </mdb-icon> Business
+                  Verified
+                </div>
 
+                <div
+                  class="verify-stat"
+                  *ngIf="
+                    !recievedMerchant.business.business_verification
+                      .business_isverified
+                  "
+                  style="color: darkred;"
+                >
+                  <mdb-icon far icon="check-circle"> </mdb-icon> Business Not
+                  Verified
+                </div>
 
-            <hr>
+                <hr />
 
-            <div class="content-title page-content">
-              Contact Details
-              </div>
-              <hr>
+                <!--map to modify-->
+                <div
+                  id=" row map-container-google-1"
+                  class="map-container page-content"
+                >
+                  <agm-map
+                    [latitude]="
+                      recievedMerchant.business.location
+                        ? recievedMerchant.business.location.lat
+                        : location.lat
+                    "
+                    [longitude]="
+                      recievedMerchant.business.location
+                        ? recievedMerchant.business.location.lang
+                        : location.lang
+                    "
+                    [zoom]="10"
+                  >
+                    <agm-marker
+                      [latitude]="
+                        recievedMerchant.business.location
+                          ? recievedMerchant.business.location.lat
+                          : location.lat
+                      "
+                      [longitude]="
+                        recievedMerchant.business.location
+                          ? recievedMerchant.business.location.lang
+                          : location.lang
+                      "
+                    ></agm-marker>
+                  </agm-map>
+                </div>
+
+                <hr />
+
+                <div class="content-title page-content">
+                  Contact Details
+                </div>
+                <hr />
 
                 <div>
                   <!--contact No-->
                   <mdb-card class="card-cls">
-                    <div class="row rgba-white-slight waves-light" mdbWavesEffect>
+                    <div
+                      class="row rgba-white-slight waves-light"
+                      mdbWavesEffect
+                    >
                       <!-- Card no -->
                       <div class="col-md-2 stat-num">
                         <span class="stat-no">
@@ -137,15 +224,18 @@
 
                       <div class="col-md-10 stat-text">
                         <span class="stat-title">
-                          {{recievedMerchant.business.contact_no}}
+                          {{ recievedMerchant.business.contact_no }}
                         </span>
                       </div>
                     </div>
                   </mdb-card>
 
-                   <!--addresss-->
-                   <mdb-card class="card-cls">
-                    <div class="row rgba-white-slight waves-light" mdbWavesEffect>
+                  <!--addresss-->
+                  <mdb-card class="card-cls">
+                    <div
+                      class="row rgba-white-slight waves-light"
+                      mdbWavesEffect
+                    >
                       <!-- Card no -->
                       <div class="col-md-2 stat-num">
                         <span class="stat-no">
@@ -155,15 +245,20 @@
 
                       <div class="col-md-10 stat-text">
                         <span class="stat-title">
-                          {{recievedMerchant.business.address_line1}}, {{recievedMerchant.business.address_line2}}, {{recievedMerchant.business.postal_code}}
+                          {{ recievedMerchant.business.address_line1 }},
+                          {{ recievedMerchant.business.address_line2 }},
+                          {{ recievedMerchant.business.postal_code }}
                         </span>
                       </div>
                     </div>
                   </mdb-card>
 
-                   <!--email-->
-                   <mdb-card class="card-cls">
-                    <div class="row rgba-white-slight waves-light" mdbWavesEffect>
+                  <!--email-->
+                  <mdb-card class="card-cls">
+                    <div
+                      class="row rgba-white-slight waves-light"
+                      mdbWavesEffect
+                    >
                       <!-- Card no -->
                       <div class="col-md-2 stat-num">
                         <span class="stat-no">
@@ -173,619 +268,874 @@
 
                       <div class="col-md-10 stat-text">
                         <span class="stat-title">
-                          {{recievedMerchant.business.email}}
+                          {{ recievedMerchant.business.email }}
                         </span>
                       </div>
                     </div>
                   </mdb-card>
                 </div>
-
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-
+      </section>
     </div>
 
- </section>
-</div>
-
-
     <!--customize profile section-->
-<div class="container-fluid" *ngIf="editmode">
-  <section class="px-md-5 mx-md-5 dark-grey-text">
-    <form class="service-form pd-top-min" #editBprofileForm = "ngForm" (submit)="updateBusinessProfile(editBprofileForm)">
-    <!--profile header-->
-      <div class="row f-image-edit">
-        <img [src]="featureImageFile ? featureImage : recievedMerchant.business.feature_img" alt="Merchant Cover" class="feature-img" style="width:100%" >
-        <input type="file" hidden="true" id="featureInput" #featureInput
-        (change)="onFeatureImageUploaded($event)">
-      </div>
-      <div class="cust-div">
-        <a type="button" mdbBtn color="white"
-        class="btn btn-sm  cust-btn-circle" mdbWavesEffect outline="yes" (click)="featureInput.click()">
-        <mdb-icon fas icon="pen"></mdb-icon> Change Cover
-        </a>
-      </div>
-
-      <!--edit content-->
-      <div class="edit-content text-center">
-
-        <div class="content-title">
-          Edit Business Profile
+    <div class="container-fluid" *ngIf="editmode">
+      <section class="px-md-5 mx-md-5 dark-grey-text">
+        <form
+          class="service-form pd-top-min"
+          #editBprofileForm="ngForm"
+          (submit)="updateBusinessProfile(editBprofileForm)"
+        >
+          <!--profile header-->
+          <div class="row f-image-edit">
+            <img
+              [src]="
+                featureImageFile
+                  ? featureImage
+                  : recievedMerchant.business.feature_img
+              "
+              alt="Merchant Cover"
+              class="feature-img"
+              style="width: 100%;"
+            />
+            <input
+              type="file"
+              hidden="true"
+              id="featureInput"
+              #featureInput
+              (change)="onFeatureImageUploaded($event)"
+            />
           </div>
-
-        <hr>
-        <p> <b>Edit the business profile content below</b></p>
-
-        <!--row1-->
-        <div class="row">
-
-          <div class="col-md-3 inst-text">
-            <mdb-icon fas icon="award"></mdb-icon> <span> Change Logo:</span>
-          </div>
-
-
-
-          <div class="col-md-2 text-center">
-            <a role="button" mdbWavesEffect (click)="logoInput.click()">
-              <img [src]="logoImageFile ? logoImage : recievedMerchant.business.logo" alt="Business Logo" class="img-thumbnail logo-img-edit">
+          <div class="cust-div">
+            <a
+              type="button"
+              mdbBtn
+              color="white"
+              class="btn btn-sm cust-btn-circle"
+              mdbWavesEffect
+              outline="yes"
+              (click)="featureInput.click()"
+            >
+              <mdb-icon fas icon="pen"></mdb-icon> Change Cover
             </a>
-            <input type="file" hidden="true" id="logoInput" #logoInput
-            (change)="onLogoUploaded($event)">
-            <p><b>Click to Upload</b></p>
           </div>
 
-          <div class="col-md-3 inst-text">
-            <mdb-icon fas icon="file-signature"></mdb-icon> <span> Business title:</span>
-        </div>
-
-        <div class="col-md-4 text-center">
-            <mat-form-field class="service-full-width">
-              <mat-label>Business Title</mat-label>
-              <input matInput
-              placeholder="Business Title here"
-              [ngModel]="recievedMerchant.business.title"
-              required
-              name="business_title"
-              #businessTitle>
-              <mat-error *ngIf="businessTitle.invalid">Please enter business title</mat-error>
-            </mat-form-field>
-          </div>
-        </div>
-
-         <!--row2-->
-         <div class="row">
-
-          <div class="col-md-3 inst-text">
-            <mdb-icon fas icon="swatchbook"></mdb-icon> <span> Describe Your Business:</span>
-          </div>
-
-          <div class="col-md-7 text-center">
-            <mat-form-field class="service-full-width">
-              <textarea matInput rows="5"
-                        placeholder="Business Description"
-                        [ngModel]="recievedMerchant.business.description"
-                        name="business_description"></textarea>
-            </mat-form-field>
-          </div>
-         </div>
-
-          <!--row3-->
-          <div class="row page-content">
-
-            <div class="col-md-3 inst-text">
-              <mdb-icon fas icon="door-open"></mdb-icon> <span> Opened days:</span>
+          <!--edit content-->
+          <div class="edit-content text-center">
+            <div class="content-title">
+              Edit Business Profile
             </div>
 
-            <div class="col-md-7 text-center">
-              <a type="button" mdbBtn color="secondary"
-              class="waves-light btn btn-md btn-edt" mdbWavesEffect
-              outline="yes"
-              (click)="opendaysEditable = true"
-              (click)="opendays.show()" >Set open Days</a>
-            </div>
-           </div>
+            <hr />
+            <p><b>Edit the business profile content below</b></p>
 
-             <!--row4-->
-         <div class="row  page-content">
-
-          <div class="col-md-3 inst-text">
-            <mdb-icon fas icon="map-marker-alt"></mdb-icon> <span> Business Location:</span>
-          </div>
-
-          <div class="col-md-7 text-center">
-            <a type="button" mdbBtn color="secondary"
-            class="waves-light btn btn-md btn-edt" mdbWavesEffect
-            outline="yes "
-            (click) = "bLocationModal.show()">Change Business Location</a>
-
-           <!--map to modified-->
-            <div id=" row map-container-google-1" class="map-container page-content">
-              <agm-map
-              [latitude]="recievedMerchant.business.location.lat"
-                [longitude]="recievedMerchant.business.location.lang"
-              [zoom]=10 >
-                <agm-marker
-                [latitude]="recievedMerchant.business.location.lat"
-                [longitude]="recievedMerchant.business.location.lang"
-                ></agm-marker>
-              </agm-map>
-            </div>
-
-          </div>
-         </div>
-
-           <!--row 4-->
-           <div class="row  page-content page-content" >
-
-            <div class="col-md-3 inst-text">
-              <mdb-icon fas icon="check-circle"></mdb-icon> <span> Verification Status:</span>
-              <br>
-              <p class="infotxt"> You can add Business Regristration to verify your business.</p>
-            </div>
-
-            <div class="col-md-7 text-center">
-              <div class="verify-stat text-center" *ngIf="recievedMerchant.business.business_verification.business_isverified">
-                <mdb-icon far icon="check-circle"> </mdb-icon> Business Verified
+            <!--row1-->
+            <div class="row">
+              <div class="col-md-3 inst-text">
+                <mdb-icon fas icon="award"></mdb-icon>
+                <span> Change Logo:</span>
               </div>
-              <div class="verify-stat text-center" *ngIf="!recievedMerchant.business.business_verification.business_isverified" style="color:darkred; ">
-                <mdb-icon far icon="times-circle"></mdb-icon> Business Not Verified
-                <br>
-              <a type="button" mdbBtn color="secondary"
-              class="waves-light btn btn-md btn-edt" mdbWavesEffect
-              outline="yes"
-              (click)="businessverify.show()">
-              Verify Business</a>
-            </div>
-            </div>
-           </div>
 
-            <hr>
-
-               <!--row 4-->
-           <div class="row  page-content page-content" >
-
-            <div class="col-md-3 inst-text">
-              <mdb-icon fas icon="check-circle"></mdb-icon> <span> Payment Methods:</span>
-              <br>
-              <p class="infotxt"><img src="./assets/images/other/pay.png" alt="pament methods" style="width:100%;"></p>
-
-            </div>
-
-
-            <div class="col-md-7 text-center">
-              <div class="verify-stat text-center" *ngIf="recievedMerchant.business.payment_verified">
-                <mdb-icon far icon="check-circle"> </mdb-icon> Payment Method Added : Visa/Master
-                <a type="button" mdbBtn color="secondary"
-              class="waves-light btn btn-md btn-edt" mdbWavesEffect outline="yes" (click)="paymentVerify.show()">
-              Edit Card Details</a>
+              <div class="col-md-2 text-center">
+                <a role="button" mdbWavesEffect (click)="logoInput.click()">
+                  <img
+                    [src]="
+                      logoImageFile ? logoImage : recievedMerchant.business.logo
+                    "
+                    alt="Business Logo"
+                    class="img-thumbnail logo-img-edit"
+                  />
+                </a>
+                <input
+                  type="file"
+                  hidden="true"
+                  id="logoInput"
+                  #logoInput
+                  (change)="onLogoUploaded($event)"
+                />
+                <p><b>Click to Upload</b></p>
               </div>
-              <div class="verify-stat text-center" *ngIf="!recievedMerchant.business.payment_verified" style="color:darkred; ">
-                <mdb-icon far icon="times-circle"></mdb-icon> Payment Method Not Added
-                <br>
-              <a type="button" mdbBtn color="secondary"
-              class="waves-light btn btn-md btn-edt" mdbWavesEffect outline="yes" (click)="paymentVerify.show()">
-              Add Payment Methhod</a>
-            </div>
-            </div>
-           </div>
-
-            <hr>
-
-             <!--row 5-->
-             <div class="row  page-content">
 
               <div class="col-md-3 inst-text">
-                <mdb-icon fas icon="envelope"></mdb-icon> <span> Business Email:</span>
+                <mdb-icon fas icon="file-signature"></mdb-icon>
+                <span> Business title:</span>
+              </div>
+
+              <div class="col-md-4 text-center">
+                <mat-form-field class="service-full-width">
+                  <mat-label>Business Title</mat-label>
+                  <input
+                    matInput
+                    placeholder="Business Title here"
+                    [ngModel]="recievedMerchant.business.title"
+                    required
+                    name="business_title"
+                    #businessTitle
+                  />
+                  <mat-error *ngIf="businessTitle.invalid"
+                    >Please enter business title</mat-error
+                  >
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!--row2-->
+            <div class="row">
+              <div class="col-md-3 inst-text">
+                <mdb-icon fas icon="swatchbook"></mdb-icon>
+                <span> Describe Your Business:</span>
+              </div>
+
+              <div class="col-md-7 text-center">
+                <mat-form-field class="service-full-width">
+                  <textarea
+                    matInput
+                    rows="5"
+                    placeholder="Business Description"
+                    [ngModel]="recievedMerchant.business.description"
+                    name="business_description"
+                  ></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!--row3-->
+            <div class="row page-content">
+              <div class="col-md-3 inst-text">
+                <mdb-icon fas icon="door-open"></mdb-icon>
+                <span> Opened days:</span>
+              </div>
+
+              <div class="col-md-7 text-center">
+                <a
+                  type="button"
+                  mdbBtn
+                  color="secondary"
+                  class="waves-light btn btn-md btn-edt"
+                  mdbWavesEffect
+                  outline="yes"
+                  (click)="opendaysEditable = true"
+                  (click)="opendays.show()"
+                  >Set open Days</a
+                >
+              </div>
+            </div>
+
+            <!--row4-->
+            <div class="row page-content">
+              <div class="col-md-3 inst-text">
+                <mdb-icon fas icon="map-marker-alt"></mdb-icon>
+                <span> Business Location:</span>
+              </div>
+
+              <div class="col-md-7 text-center">
+                <a
+                  type="button"
+                  mdbBtn
+                  color="secondary"
+                  class="waves-light btn btn-md btn-edt"
+                  mdbWavesEffect
+                  outline="yes "
+                  (click)="bLocationModal.show()"
+                  >Change Business Location</a
+                >
+
+                <!--map to modified-->
+                <div
+                  id=" row map-container-google-1"
+                  class="map-container page-content"
+                >
+                  <agm-map
+                    [latitude]="recievedMerchant.business.location.lat"
+                    [longitude]="recievedMerchant.business.location.lang"
+                    [zoom]="10"
+                  >
+                    <agm-marker
+                      [latitude]="recievedMerchant.business.location.lat"
+                      [longitude]="recievedMerchant.business.location.lang"
+                    ></agm-marker>
+                  </agm-map>
+                </div>
+              </div>
+            </div>
+
+            <!--row 4-->
+            <div class="row page-content page-content">
+              <div class="col-md-3 inst-text">
+                <mdb-icon fas icon="check-circle"></mdb-icon>
+                <span> Verification Status:</span>
+                <br />
+                <p class="infotxt">
+                  You can add Business Regristration to verify your business.
+                </p>
+              </div>
+
+              <div class="col-md-7 text-center">
+                <div
+                  class="verify-stat text-center"
+                  *ngIf="
+                    recievedMerchant.business.business_verification
+                      .business_isverified
+                  "
+                >
+                  <mdb-icon far icon="check-circle"> </mdb-icon> Business
+                  Verified
+                </div>
+                <div
+                  class="verify-stat text-center"
+                  *ngIf="
+                    !recievedMerchant.business.business_verification
+                      .business_isverified
+                  "
+                  style="color: darkred;"
+                >
+                  <mdb-icon far icon="times-circle"></mdb-icon> Business Not
+                  Verified
+                  <br />
+                  <a
+                    type="button"
+                    mdbBtn
+                    color="secondary"
+                    class="waves-light btn btn-md btn-edt"
+                    mdbWavesEffect
+                    outline="yes"
+                    (click)="businessverify.show()"
+                  >
+                    Verify Business</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <hr />
+
+            <!--row 4-->
+            <div class="row page-content page-content">
+              <div class="col-md-3 inst-text">
+                <mdb-icon fas icon="check-circle"></mdb-icon>
+                <span> Payment Methods:</span>
+                <br />
+                <p class="infotxt">
+                  <img
+                    src="./assets/images/other/pay.png"
+                    alt="pament methods"
+                    style="width: 100%;"
+                  />
+                </p>
+              </div>
+
+              <div class="col-md-7 text-center">
+                <div
+                  class="verify-stat text-center"
+                  *ngIf="recievedMerchant.business.payment_verified"
+                >
+                  <mdb-icon far icon="check-circle"> </mdb-icon> Payment Method
+                  Added : Visa/Master
+                  <a
+                    type="button"
+                    mdbBtn
+                    color="secondary"
+                    class="waves-light btn btn-md btn-edt"
+                    mdbWavesEffect
+                    outline="yes"
+                    (click)="paymentVerify.show()"
+                  >
+                    Edit Card Details</a
+                  >
+                </div>
+                <div
+                  class="verify-stat text-center"
+                  *ngIf="!recievedMerchant.business.payment_verified"
+                  style="color: darkred;"
+                >
+                  <mdb-icon far icon="times-circle"></mdb-icon> Payment Method
+                  Not Added
+                  <br />
+                  <a
+                    type="button"
+                    mdbBtn
+                    color="secondary"
+                    class="waves-light btn btn-md btn-edt"
+                    mdbWavesEffect
+                    outline="yes"
+                    (click)="paymentVerify.show()"
+                  >
+                    Add Payment Methhod</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <hr />
+
+            <!--row 5-->
+            <div class="row page-content">
+              <div class="col-md-3 inst-text">
+                <mdb-icon fas icon="envelope"></mdb-icon>
+                <span> Business Email:</span>
               </div>
 
               <div class="col-md-7 text-center">
                 <mat-form-field class="service-full-width">
                   <mat-label>Email address</mat-label>
-                  <input matInput placeholder="ex: youremail@abc.com " type="email"
-                  [ngModel]="recievedMerchant.business.email"
-                  name="business_email"
-                  required #businessEmail>
-                  <mat-error *ngIf="businessEmail.invalid">Please enter a valid email</mat-error>
+                  <input
+                    matInput
+                    placeholder="ex: youremail@abc.com "
+                    type="email"
+                    [ngModel]="recievedMerchant.business.email"
+                    name="business_email"
+                    required
+                    #businessEmail
+                  />
+                  <mat-error *ngIf="businessEmail.invalid"
+                    >Please enter a valid email</mat-error
+                  >
                 </mat-form-field>
               </div>
-             </div>
+            </div>
 
-              <!--row 6-->
-              <div class="row  page-content">
+            <!--row 6-->
+            <div class="row page-content">
+              <div class="col-md-3 inst-text">
+                <mdb-icon fas icon="envelope"></mdb-icon>
+                <span> Business Contact No:</span>
+              </div>
 
-                <div class="col-md-3 inst-text">
-                  <mdb-icon fas icon="envelope"></mdb-icon> <span> Business Contact No:</span>
-                </div>
-
-                <div class="col-md-7 text-center">
-                  <mat-form-field class="service-full-width">
-                    <mat-label>Contact Number(s) </mat-label>
-                    <input matInput
+              <div class="col-md-7 text-center">
+                <mat-form-field class="service-full-width">
+                  <mat-label>Contact Number(s) </mat-label>
+                  <input
+                    matInput
                     placeholder="ex: 7xxxxxxxx"
                     [ngModel]="recievedMerchant.business.contact_no"
                     required
                     name="business_contact"
                     minlength="10"
                     maxlength="10"
-                    #businessContact>
-                    <mat-error *ngIf="businessContact.invalid">Contact Number must contain 10 digits</mat-error>
-                  </mat-form-field>
-                </div>
-               </div>
+                    #businessContact
+                  />
+                  <mat-error *ngIf="businessContact.invalid"
+                    >Contact Number must contain 10 digits</mat-error
+                  >
+                </mat-form-field>
+              </div>
+            </div>
 
-                 <!--row 6-->
-              <div class="row  page-content">
+            <!--row 6-->
+            <div class="row page-content">
+              <div class="col-md-3 inst-text">
+                <mdb-icon fas icon="envelope"></mdb-icon>
+                <span> Permanant Address:</span>
+                <p class="infotxt">
+                  Note: This address will be used for postal communication
+                </p>
+              </div>
 
-                <div class="col-md-3 inst-text">
-                  <mdb-icon fas icon="envelope"></mdb-icon> <span> Permanant Address:</span>
-                  <p class="infotxt">Note: This address will be used for postal communication </p>
-                </div>
-
-                <div class="col-md-7 text-center">
-                  <mat-form-field class="service-full-width">
-                    <mat-label>Address Line 1 </mat-label>
-                    <input matInput [ngModel]="recievedMerchant.business.address_line1" required
-                    name="business_address_line1" #businessAdressLine1>
-                    <mat-error *ngIf="businessAdressLine1.invalid">Please endter business address</mat-error>
-                  </mat-form-field>
-                  <mat-form-field class="service-full-width">
-                    <mat-label>Address Line 2 </mat-label>
-                    <input matInput [ngModel]="recievedMerchant.business.address_line2"
-                    name="business_address_line2">
-                  </mat-form-field >
-                 <mat-form-field class="service-full-width">
+              <div class="col-md-7 text-center">
+                <mat-form-field class="service-full-width">
+                  <mat-label>Address Line 1 </mat-label>
+                  <input
+                    matInput
+                    [ngModel]="recievedMerchant.business.address_line1"
+                    required
+                    name="business_address_line1"
+                    #businessAdressLine1
+                  />
+                  <mat-error *ngIf="businessAdressLine1.invalid"
+                    >Please endter business address</mat-error
+                  >
+                </mat-form-field>
+                <mat-form-field class="service-full-width">
+                  <mat-label>Address Line 2 </mat-label>
+                  <input
+                    matInput
+                    [ngModel]="recievedMerchant.business.address_line2"
+                    name="business_address_line2"
+                  />
+                </mat-form-field>
+                <mat-form-field class="service-full-width">
                   <mat-label>Postal Code</mat-label>
-                  <input matInput [ngModel]="recievedMerchant.business.postal_code" required
-                  name="business_postal_code" #businessPostalCode >
-                  <mat-error *ngIf="businessPostalCode.invalid">Please enter postal code</mat-error>
-                  </mat-form-field>
-                </div>
-               </div>
-         </div>
-        <!--save buttons-->
-    <div class="text-center">
-      <button  mdbBtn color="secondary"
-      class="waves-light btn btn-md  cust-btn btn-tab" mdbWavesEffect
-      type="submit">Save Changes</button>
-      <button mdbBtn color="secondary"
-      class="waves-light btn btn-md  cust-btn btn-tab" mdbWavesEffect outline="yes"
-      (click)="editmode = !editmode" (click)="editBprofileForm.resetForm()">Discard</button>
-      </div>
-  </form>
-  </section>
+                  <input
+                    matInput
+                    [ngModel]="recievedMerchant.business.postal_code"
+                    required
+                    name="business_postal_code"
+                    #businessPostalCode
+                  />
+                  <mat-error *ngIf="businessPostalCode.invalid"
+                    >Please enter postal code</mat-error
+                  >
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <!--save buttons-->
+          <div class="text-center">
+            <button
+              mdbBtn
+              color="secondary"
+              class="waves-light btn btn-md cust-btn btn-tab"
+              mdbWavesEffect
+              type="submit"
+            >
+              Save Changes
+            </button>
+            <button
+              mdbBtn
+              color="secondary"
+              class="waves-light btn btn-md cust-btn btn-tab"
+              mdbWavesEffect
+              outline="yes"
+              (click)="editmode = !editmode"
+              (click)="editBprofileForm.resetForm()"
+            >
+              Discard
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
   </div>
 
-</div>
+  <div *ngIf="!recievedMerchant.business">
+    <!-- add new business profile -->
+    <div
+      class="container-fluid"
+      *ngIf="recievedMerchant.id_verification.isverified && addnew"
+    >
+      <section class="px-md-5 mx-md-5 dark-grey-text">
+        <form
+          class="service-form pd-top-min"
+          #addBprofileForm="ngForm"
+          (submit)="updateBusinessProfile(addBprofileForm)"
+        >
+          <!--profile header-->
+          <div class="row f-image-edit">
+            <img
+              [src]="featureImage"
+              alt="Merchant Cover"
+              class="feature-img"
+              style="width: 100%;"
+            />
+            <input
+              type="file"
+              hidden="true"
+              id="featureImage"
+              #AddfeatureImg
+              (change)="onFeatureImageUploaded($event)"
+            />
+          </div>
+          <div class="cust-div">
+            <a
+              type="button"
+              mdbBtn
+              color="white"
+              class="btn btn-sm cust-btn-circle"
+              mdbWavesEffect
+              outline="yes"
+              (click)="AddfeatureImg.click()"
+            >
+              <mdb-icon fas icon="pen"></mdb-icon> Change Cover
+            </a>
+          </div>
 
-<div *ngIf="!recievedMerchant.business">
-
-  <!-- add new business profile -->
-  <div class="container-fluid" *ngIf="recievedMerchant.id_verification.isverified  && addnew">
-    <section class="px-md-5 mx-md-5 dark-grey-text">
-      <form class="service-form pd-top-min" #addBprofileForm = "ngForm" (submit)="updateBusinessProfile(addBprofileForm)">
-      <!--profile header-->
-        <div class="row f-image-edit">
-          <img [src]="featureImage" alt="Merchant Cover" class="feature-img"  style="width:100%" >
-          <input type="file" hidden="true" id="featureImage" #AddfeatureImg
-          (change)="onFeatureImageUploaded($event)">
-        </div>
-        <div class="cust-div">
-          <a type="button" mdbBtn color="white"
-          class="btn btn-sm  cust-btn-circle" mdbWavesEffect outline="yes"
-          (click) = "AddfeatureImg.click()" >
-          <mdb-icon fas icon="pen"></mdb-icon> Change Cover
-          </a>
-        </div>
-
-        <!--edit content-->
-        <div class="edit-content text-center">
+          <!--edit content-->
+          <div class="edit-content text-center">
             <div class="content-title">
               Create Your Business Profile
+            </div>
+            <hr />
+            <p><b>Add the business profile content below</b></p>
+
+            <!--row1-->
+            <div class="row">
+              <div class="col-md-3 inst-text">
+                <mdb-icon fas icon="award"></mdb-icon>
+                <span> Busiess Logo:</span>
               </div>
-          <hr>
-          <p> <b>Add the business profile content below</b></p>
 
-          <!--row1-->
-          <div class="row">
+              <div class="col-md-2 text-center">
+                <a role="button" mdbWavesEffect (click)="AddlogoImage.click()">
+                  <img
+                    [src]="logoImage"
+                    alt="Business Logo"
+                    class="img-thumbnail logo-img-edit"
+                  />
+                </a>
+                <input
+                  type="file"
+                  hidden="true"
+                  id="logoImageAdd"
+                  #AddlogoImage
+                  (change)="onLogoUploaded($event)"
+                />
+                <p><b>Click to Upload</b></p>
+              </div>
 
-            <div class="col-md-3 inst-text">
-              <mdb-icon fas icon="award"></mdb-icon> <span> Busiess Logo:</span>
-          </div>
+              <div class="col-md-3 inst-text">
+                <mdb-icon fas icon="file-signature"></mdb-icon>
+                <span> Business title:</span>
+              </div>
 
-            <div class="col-md-2 text-center">
-              <a role="button" mdbWavesEffect (click)="AddlogoImage.click()">
-                <img [src]="logoImage" alt="Business Logo" class="img-thumbnail logo-img-edit">
-              </a>
-              <input type="file" hidden="true" id="logoImageAdd" #AddlogoImage
-              (change)="onLogoUploaded($event)">
-              <p><b>Click to Upload</b></p>
+              <div class="col-md-4 text-center">
+                <mat-form-field class="service-full-width">
+                  <mat-label>Business Title here</mat-label>
+                  <input
+                    matInput
+                    placeholder="Business Title here"
+                    required
+                    ngModel
+                    name="business_title"
+                    #addBusinessTitle
+                  />
+                  <mat-error *ngIf="addBusinessTitle.invalid"
+                    >Please enter a business title</mat-error
+                  >
+                </mat-form-field>
+              </div>
             </div>
 
-            <div class="col-md-3 inst-text">
-              <mdb-icon fas icon="file-signature"></mdb-icon> <span> Business title:</span>
-          </div>
+            <!--row2-->
+            <div class="row">
+              <div class="col-md-3 inst-text">
+                <mdb-icon fas icon="swatchbook"></mdb-icon>
+                <span> Describe Business:</span>
+              </div>
 
-          <div class="col-md-4 text-center">
-              <mat-form-field class="service-full-width">
-                <mat-label>Business Title here</mat-label>
-                <input matInput placeholder="Business Title here"
-                required
-                ngModel
-                name="business_title"
-                #addBusinessTitle
-                >
-                <mat-error *ngIf="addBusinessTitle.invalid">Please enter a business title</mat-error>
-              </mat-form-field>
+              <div class="col-md-7 text-center">
+                <mat-form-field class="service-full-width">
+                  <textarea
+                    matInput
+                    rows="5"
+                    placeholder="Business Description"
+                    ngModel
+                    name="business_description"
+                  ></textarea>
+                </mat-form-field>
+              </div>
             </div>
-          </div>
-
-           <!--row2-->
-           <div class="row">
-
-            <div class="col-md-3 inst-text">
-              <mdb-icon fas icon="swatchbook"></mdb-icon> <span> Describe Business:</span>
-            </div>
-
-            <div class="col-md-7 text-center">
-              <mat-form-field class="service-full-width">
-                <textarea matInput
-                rows="5"
-                placeholder="Business Description"
-                ngModel
-                name="business_description"></textarea>
-              </mat-form-field>
-            </div>
-           </div>
 
             <!--row3-->
             <div class="row page-content">
-
               <div class="col-md-3 inst-text">
-                <mdb-icon fas icon="door-open"></mdb-icon> <span> Opened days:</span>
+                <mdb-icon fas icon="door-open"></mdb-icon>
+                <span> Opened days:</span>
               </div>
 
               <div class="col-md-7 text-center">
-                <a type="button" mdbBtn color="secondary"
-                class="waves-light btn btn-md btn-edt" mdbWavesEffect outline="yes"
-                (click)="opendaysEditable = true"
-                (click)="opendays.show()" >Set up open Days</a>
+                <a
+                  type="button"
+                  mdbBtn
+                  color="secondary"
+                  class="waves-light btn btn-md btn-edt"
+                  mdbWavesEffect
+                  outline="yes"
+                  (click)="opendaysEditable = true"
+                  (click)="opendays.show()"
+                  >Set up open Days</a
+                >
               </div>
-             </div>
-
-               <!--row4-->
-           <div class="row  page-content">
-
-            <div class="col-md-3 inst-text">
-              <mdb-icon fas icon="map-marker-alt"></mdb-icon> <span> Business Location:</span>
             </div>
 
-            <div class="col-md-7 text-center">
-              <a type="button" mdbBtn color="secondary"
-              class="waves-light btn btn-md btn-edt" mdbWavesEffect
-              outline="yes "
-              (click) = "bLocationModal.show()">Update Business Location</a>
-
-             <!--map to modified-->
-              <div id=" row map-container-google-1" class="map-container page-content">
-                <agm-map
-                [latitude]="location.lat"
-                [longitude]="location.lang"
-                [zoom]=10 >
-                  <agm-marker
-                  [latitude]="location.lat"
-                  [longitude]="location.lang"
-                  ></agm-marker>
-                </agm-map>
+            <!--row4-->
+            <div class="row page-content">
+              <div class="col-md-3 inst-text">
+                <mdb-icon fas icon="map-marker-alt"></mdb-icon>
+                <span> Business Location:</span>
               </div>
 
+              <div class="col-md-7 text-center">
+                <a
+                  type="button"
+                  mdbBtn
+                  color="secondary"
+                  class="waves-light btn btn-md btn-edt"
+                  mdbWavesEffect
+                  outline="yes "
+                  (click)="bLocationModal.show()"
+                  >Update Business Location</a
+                >
+
+                <!--map to modified-->
+                <div
+                  id=" row map-container-google-1"
+                  class="map-container page-content"
+                >
+                  <agm-map
+                    [latitude]="location.lat"
+                    [longitude]="location.lang"
+                    [zoom]="10"
+                  >
+                    <agm-marker
+                      [latitude]="location.lat"
+                      [longitude]="location.lang"
+                    ></agm-marker>
+                  </agm-map>
+                </div>
+              </div>
             </div>
-           </div>
 
-
-
-             <!--add new business only-->
-             <div class="row  page-content">
+            <!--add new business only-->
+            <div class="row page-content">
               <div class="col-md-3 inst-text">
-                <mdb-icon fas icon="thumbs-up"></mdb-icon> <span> Verify your Business</span>
-                <br>
-                <p class="infotxt"> Add Business Registration to verify your busines</p>
+                <mdb-icon fas icon="thumbs-up"></mdb-icon>
+                <span> Verify your Business</span>
+                <br />
+                <p class="infotxt">
+                  Add Business Registration to verify your busines
+                </p>
               </div>
 
               <div class="col-md-7 text-center">
-                <a type="button" mdbBtn color="secondary"
-                class="waves-light btn btn-md btn-edt" mdbWavesEffect outline="yes" (click)="businessverify.show()">
-                Verify Business</a>
-               </div>
+                <a
+                  type="button"
+                  mdbBtn
+                  color="secondary"
+                  class="waves-light btn btn-md btn-edt"
+                  mdbWavesEffect
+                  outline="yes"
+                  (click)="businessverify.show()"
+                >
+                  Verify Business</a
+                >
               </div>
+            </div>
 
-              <hr>
+            <hr />
 
-
-
-             <!--add new business only-->
-             <div class="row  page-content">
+            <!--add new business only-->
+            <div class="row page-content">
               <div class="col-md-3 inst-text">
-                <mdb-icon fas icon="thumbs-up"></mdb-icon> <span> Add Payment Method </span>
-                <br>
-                <p class="infotxt"><img src="./assets/images/other/pay.png" alt="pament methods" style="width:100%;"></p>
+                <mdb-icon fas icon="thumbs-up"></mdb-icon>
+                <span> Add Payment Method </span>
+                <br />
+                <p class="infotxt">
+                  <img
+                    src="./assets/images/other/pay.png"
+                    alt="pament methods"
+                    style="width: 100%;"
+                  />
+                </p>
               </div>
 
               <div class="col-md-7 text-center">
-                <a type="button" mdbBtn color="secondary"
-                class="waves-light btn btn-md btn-edt" mdbWavesEffect outline="yes" (click)="paymentVerify.show()">
-               Add a Method </a>
-               </div>
+                <a
+                  type="button"
+                  mdbBtn
+                  color="secondary"
+                  class="waves-light btn btn-md btn-edt"
+                  mdbWavesEffect
+                  outline="yes"
+                  (click)="paymentVerify.show()"
+                >
+                  Add a Method
+                </a>
+              </div>
+            </div>
+
+            <hr />
+
+            <!--row 5-->
+            <div class="row page-content">
+              <div class="col-md-3 inst-text">
+                <mdb-icon fas icon="envelope"></mdb-icon>
+                <span> Business Email:</span>
               </div>
 
+              <div class="col-md-7 text-center">
+                <mat-form-field class="service-full-width">
+                  <mat-label>Email address</mat-label>
+                  <input
+                    matInput
+                    type="email"
+                    placeholder="ex: youremail@abc.com "
+                    name="business_email"
+                    ngModel
+                    required
+                    #addBusinessEmail
+                  />
+                  <mat-error *ngIf="addBusinessEmail.invalid"
+                    >Please enter a valid email address</mat-error
+                  >
+                </mat-form-field>
+              </div>
+            </div>
 
+            <!--row 6-->
+            <div class="row page-content">
+              <div class="col-md-3 inst-text">
+                <mdb-icon fas icon="envelope"></mdb-icon>
+                <span> Business Contact No:</span>
+              </div>
 
-              <hr>
+              <div class="col-md-7 text-center">
+                <mat-form-field class="service-full-width">
+                  <mat-label>Contact Number(s) </mat-label>
+                  <input
+                    matInput
+                    placeholder="ex: 7xxxxxxxx"
+                    minlength="10"
+                    maxlength="10"
+                    required
+                    ngModel
+                    name="business_contact"
+                    #addBusinessContact
+                  />
+                  <mat-error *ngIf="addBusinessContact.invalid"
+                    >Contact number must contain 10 digits</mat-error
+                  >
+                </mat-form-field>
+              </div>
+            </div>
 
-               <!--row 5-->
-               <div class="row  page-content">
+            <!--row 6-->
+            <div class="row page-content">
+              <div class="col-md-3 inst-text">
+                <mdb-icon fas icon="envelope"></mdb-icon>
+                <span> Permanant Address:</span>
+                <p class="infotxt">
+                  Note: This address will be used for postal communication
+                </p>
+              </div>
 
-                <div class="col-md-3 inst-text">
-                  <mdb-icon fas icon="envelope"></mdb-icon> <span> Business Email:</span>
-                </div>
-
-                <div class="col-md-7 text-center">
-                  <mat-form-field class="service-full-width">
-                    <mat-label>Email address</mat-label>
-                    <input matInput type="email"
-                    placeholder="ex: youremail@abc.com " name="business_email"
-                    ngModel required #addBusinessEmail>
-                    <mat-error *ngIf="addBusinessEmail.invalid">Please enter a valid email address</mat-error>
-                  </mat-form-field>
-                </div>
-               </div>
-
-                <!--row 6-->
-                <div class="row  page-content">
-
-                  <div class="col-md-3 inst-text">
-                    <mdb-icon fas icon="envelope"></mdb-icon> <span> Business Contact No:</span>
-                  </div>
-
-                  <div class="col-md-7 text-center">
-                    <mat-form-field class="service-full-width">
-                      <mat-label>Contact Number(s) </mat-label>
-                      <input matInput
-                      placeholder="ex: 7xxxxxxxx"
-                      minlength = "10"
-                      maxlength = "10"
-                      required
-                      ngModel
-                      name="business_contact"
-                      #addBusinessContact>
-                      <mat-error *ngIf="addBusinessContact.invalid">Contact number must contain 10 digits</mat-error>
-                    </mat-form-field>
-                  </div>
-                 </div>
-
-                   <!--row 6-->
-                <div class="row  page-content">
-
-                  <div class="col-md-3 inst-text">
-                    <mdb-icon fas icon="envelope"></mdb-icon> <span> Permanant Address:</span>
-                    <p class="infotxt">Note: This address will be used for postal communication </p>
-                  </div>
-
-                  <div class="col-md-7 text-center">
-                    <mat-form-field class="service-full-width">
-                      <mat-label>Address Line 1 </mat-label>
-                      <input matInput
-                      ngModel
-                      name="business_address_line1"
-                      #addBusinessLine1
-                      required>
-                      <mat-error *ngIf="addBusinessLine1.invalid">Please enter the business address</mat-error>
-                    </mat-form-field>
-                    <mat-form-field class="service-full-width">
-                      <mat-label>Address Line 2 </mat-label>
-                      <input matInput
-                      ngModel
-                      name="business_address_line2">
-                    </mat-form-field >
-                   <mat-form-field class="service-full-width">
-                    <mat-label>Postal Code</mat-label>
-                    <input matInput
+              <div class="col-md-7 text-center">
+                <mat-form-field class="service-full-width">
+                  <mat-label>Address Line 1 </mat-label>
+                  <input
+                    matInput
+                    ngModel
+                    name="business_address_line1"
+                    #addBusinessLine1
+                    required
+                  />
+                  <mat-error *ngIf="addBusinessLine1.invalid"
+                    >Please enter the business address</mat-error
+                  >
+                </mat-form-field>
+                <mat-form-field class="service-full-width">
+                  <mat-label>Address Line 2 </mat-label>
+                  <input matInput ngModel name="business_address_line2" />
+                </mat-form-field>
+                <mat-form-field class="service-full-width">
+                  <mat-label>Postal Code</mat-label>
+                  <input
+                    matInput
                     ngModel
                     name="business_postal_code"
                     #addBusinessPostalCode
-                    required>
-                    <mat-error *ngIf="addBusinessPostalCode.invalid">Please enter the postal code</mat-error>
-                    </mat-form-field>
-                  </div>
-                 </div>
+                    required
+                  />
+                  <mat-error *ngIf="addBusinessPostalCode.invalid"
+                    >Please enter the postal code</mat-error
+                  >
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <!--save buttons-->
+          <div class="text-center">
+            <button
+              mdbBtn
+              color="secondary"
+              class="waves-light btn btn-md cust-btn btn-tab"
+              mdbWavesEffect
+              type="submit"
+            >
+              Save Changes
+            </button>
+            <button
+              mdbBtn
+              color="secondary"
+              class="waves-light btn btn-md cust-btn btn-tab"
+              mdbWavesEffect
+              outline="yes"
+              (click)="editmode = !editmode"
+              (click)="addBprofileForm.resetForm()"
+            >
+              Discard
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
 
-      </div>
-    <!--save buttons-->
-    <div class="text-center">
-      <button mdbBtn color="secondary"
-      class="waves-light btn btn-md  cust-btn btn-tab"
-       mdbWavesEffect
-       type="submit"
-      >Save Changes</button>
-      <button  mdbBtn color="secondary"
-      class="waves-light btn btn-md  cust-btn btn-tab"
-      mdbWavesEffect outline="yes"
-      (click)="editmode = !editmode"
-      (click) = "addBprofileForm.resetForm()">Discard</button>
-      </div>
-    </form>
-    </section>
+    <!--no business profile content-->
+    <div
+      class="sign-up-content"
+      *ngIf="recievedMerchant.id_verification.isverified && !addnew"
+    >
+      <section class="text-center px-md-5 mx-md-5 dark-grey-text">
+        <div class="row mb-5">
+          <div class="col-md-4 mx-auto">
+            <img
+              src="./assets/images/vectors/business-profile.jpg"
+              class="img-fluid"
+              alt="Creat Business Profile"
+            />
+          </div>
+        </div>
 
+        <h3 class="font-weight-bold mb-4 pb-2">
+          You Don't have a Business Profile Yet!
+        </h3>
+
+        <p class="text-center mx-auto mb-2 pb-2">
+          Create a Business Profile Now and start your business with Evenza! All
+          we need is a few more clicks!
+        </p>
+      </section>
+
+      <button
+        mbdBtn
+        mdbWavesEffect
+        type="button"
+        class="btn btn-secondary btn-lg"
+        (click)="addnew = !addnew"
+      >
+        get started
+      </button>
+    </div>
+
+    <!--no id verified content-->
+    <div
+      class="sign-up-content"
+      *ngIf="!recievedMerchant.id_verification.isverified && !addnew"
+    >
+      <section class="text-center px-md-5 mx-md-5 dark-grey-text">
+        <div class="row mb-5">
+          <div class="col-md-4 mx-auto">
+            <img
+              src="./assets/images/vectors/call.png"
+              class="img-fluid"
+              alt="ID Not Verified"
+            />
+          </div>
+        </div>
+
+        <h3 class="font-weight-bold mb-4 pb-2">
+          You have not verified yourself Yet!
+        </h3>
+
+        <p class="text-center mx-auto mb-2 pb-2">
+          Unless you verify your Identity, you are not eligible to create a
+          Business Profile and start your Business. Verify Your Identity Now..
+        </p>
+      </section>
+
+      <button
+        mbdBtn
+        mdbWavesEffect
+        type="button"
+        class="btn btn-danger btn-lg"
+        (click)="createBprofile.show()"
+      >
+        Verify Identity
+      </button>
+    </div>
   </div>
-
-
-<!--no business profile content-->
-<div class="sign-up-content" *ngIf="recievedMerchant.id_verification.isverified  && !addnew">
-  <section class="text-center px-md-5 mx-md-5 dark-grey-text">
-    <div class="row mb-5">
-      <div class="col-md-4 mx-auto">
-        <img
-          src="./assets/images/vectors/business-profile.jpg"
-          class="img-fluid"
-          alt="Creat Business Profile"
-        />
-      </div>
-    </div>
-
-    <h3 class="font-weight-bold mb-4 pb-2">
-      You Don't have a Business Profile Yet!
-    </h3>
-
-    <p class="text-center mx-auto mb-2 pb-2">
-      Create a Business Profile Now and start your business with Evenza! All we need is a few more clicks!
-    </p>
-  </section>
-
-  <button
-    mbdBtn
-    mdbWavesEffect
-    type="button"
-    class="btn btn-secondary btn-lg"
-    (click) = "addnew = !addnew"
-  >
-    get started
-  </button>
-</div>
-
-<!--no id verified content-->
-<div class="sign-up-content" *ngIf="!recievedMerchant.id_verification.isverified && !addnew">
-  <section class="text-center px-md-5 mx-md-5 dark-grey-text">
-    <div class="row mb-5">
-      <div class="col-md-4 mx-auto">
-        <img
-          src="./assets/images/vectors/call.png"
-          class="img-fluid"
-          alt="ID Not Verified"
-        />
-      </div>
-    </div>
-
-    <h3 class="font-weight-bold mb-4 pb-2">
-      You have not verified yourself Yet!
-    </h3>
-
-    <p class="text-center mx-auto mb-2 pb-2">
-      Unless you verify your Identity, you are not eligible to create a Business Profile and start your Business. Verify Your Identity Now..
-    </p>
-  </section>
-
-  <button
-    mbdBtn
-    mdbWavesEffect
-    type="button"
-    class="btn btn-danger btn-lg"
-    (click)="createBprofile.show()"
-  >
-    Verify Identity
-  </button>
-</div>
-</div>
-
 </div>
 
 <div *ngIf="!recievedMerchant">
@@ -806,7 +1156,7 @@
   <div
     class="modal-dialog modal-dialog-centered"
     role="document"
-    style="overflow-y: initial !important"
+    style="overflow-y: initial !important;"
   >
     <div class="modal-content">
       <div class="modal-header">
@@ -818,16 +1168,13 @@
         >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
+        <h4 class="modal-title w-100" id="myModalLabel">
           Verify Identity
         </h4>
       </div>
-      <div class="modal-body " style="height: 500px; overflow-y: auto;">
-
-         <app-id-verify></app-id-verify>
-
+      <div class="modal-body" style="height: 500px; overflow-y: auto;">
+        <app-id-verify></app-id-verify>
       </div>
-
 
       <div class="modal-footer">
         <button
@@ -842,7 +1189,6 @@
     </div>
   </div>
 </div>
-
 
 <!--open days Modal-->
 <div
@@ -858,7 +1204,7 @@
   <div
     class="modal-dialog modal-dialog-centered"
     role="document"
-    style="overflow-y: initial !important"
+    style="overflow-y: initial !important;"
   >
     <div class="modal-content">
       <div class="modal-header">
@@ -871,32 +1217,44 @@
         >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
+        <h4 class="modal-title w-100" id="myModalLabel">
           Available Times
         </h4>
       </div>
-      <div class="modal-body " style="height: 400px; overflow-y: auto;" >
-         <app-business-open-days *ngIf="!addnew && editmode" [editmode]= "opendaysEditable" (availableDaysEmitter)="setOpenDays($event)" [openDays]="recievedMerchant.business.open_days"></app-business-open-days>
-         <app-business-open-days *ngIf="addnew && !editmode" [editmode]= "opendaysEditable" [openDays]="openDays" (availableDaysEmitter)="setOpenDays($event)"></app-business-open-days>
+      <div class="modal-body" style="height: 400px; overflow-y: auto;">
+        <app-business-open-days
+          *ngIf="!addnew && editmode"
+          [editmode]="opendaysEditable"
+          (availableDaysEmitter)="setOpenDays($event)"
+          [openDays]="recievedMerchant.business.open_days"
+        ></app-business-open-days>
+        <app-business-open-days
+          *ngIf="addnew && !editmode"
+          [editmode]="opendaysEditable"
+          [openDays]="openDays"
+          (availableDaysEmitter)="setOpenDays($event)"
+        ></app-business-open-days>
 
-         <app-business-open-days *ngIf="!addnew && !editmode && recievedMerchant && recievedMerchant.business != null" [editmode]= "false"  [openDays]="recievedMerchant.business.open_days"></app-business-open-days>
-        </div>
+        <app-business-open-days
+          *ngIf="
+            !addnew &&
+            !editmode &&
+            recievedMerchant &&
+            recievedMerchant.business != null
+          "
+          [editmode]="false"
+          [openDays]="recievedMerchant.business.open_days"
+        ></app-business-open-days>
+      </div>
 
       <div class="modal-footer">
-        <button
-          mdbBtn
-          color="link"
-          (click)="opendays.hide()"
-          mdbWavesEffect
-        >
+        <button mdbBtn color="link" (click)="opendays.hide()" mdbWavesEffect>
           Close
         </button>
       </div>
     </div>
   </div>
 </div>
-
-
 
 <!--verify business Modal-->
 <div
@@ -912,7 +1270,7 @@
   <div
     class="modal-dialog modal-dialog-centered"
     role="document"
-    style="overflow-y: initial !important"
+    style="overflow-y: initial !important;"
   >
     <div class="modal-content">
       <div class="modal-header">
@@ -925,13 +1283,13 @@
         >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
+        <h4 class="modal-title w-100" id="myModalLabel">
           Verify Business
         </h4>
       </div>
-      <div class="modal-body " style="height: 500px; overflow-y: auto;" >
-         <app-business-verify *ngIf="addnew || editmode"></app-business-verify>
-        </div>
+      <div class="modal-body" style="height: 500px; overflow-y: auto;">
+        <app-business-verify *ngIf="addnew || editmode"></app-business-verify>
+      </div>
 
       <div class="modal-footer">
         <button
@@ -946,9 +1304,6 @@
     </div>
   </div>
 </div>
-
-
-
 
 <!--change business location-->
 <div
@@ -964,7 +1319,7 @@
   <div
     class="modal-dialog modal-dialog-centered modal-lg"
     role="document"
-    style="overflow-y: initial !important"
+    style="overflow-y: initial !important;"
   >
     <div class="modal-content">
       <div class="modal-header">
@@ -977,14 +1332,26 @@
         >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
+        <h4 class="modal-title w-100" id="myModalLabel">
           Business Location
         </h4>
       </div>
-      <div class="modal-body " style="height: 500px; overflow-y: auto;" >
-         <app-location-search *ngIf="addnew && !editmode" [setLocation]="true" [recievedLocation]="location" (buusinessLocationEmit)="setLocation($event)"> </app-location-search>
-         <app-location-search *ngIf="!addnew && editmode" [setLocation]="true" [recievedLocation]="recievedMerchant.business.location" (buusinessLocationEmit)="setLocation($event)"> </app-location-search>
-        </div>
+      <div class="modal-body" style="height: 500px; overflow-y: auto;">
+        <app-location-search
+          *ngIf="addnew && !editmode"
+          [setLocation]="true"
+          [recievedLocation]="location"
+          (buusinessLocationEmit)="setLocation($event)"
+        >
+        </app-location-search>
+        <app-location-search
+          *ngIf="!addnew && editmode"
+          [setLocation]="true"
+          [recievedLocation]="recievedMerchant.business.location"
+          (buusinessLocationEmit)="setLocation($event)"
+        >
+        </app-location-search>
+      </div>
 
       <div class="modal-footer">
         <button
@@ -1000,9 +1367,6 @@
   </div>
 </div>
 
-
-
-
 <!--add  payment method Modal-->
 <div
   mdbModal
@@ -1017,7 +1381,7 @@
   <div
     class="modal-dialog modal-dialog-centered"
     role="document"
-    style="overflow-y: initial !important"
+    style="overflow-y: initial !important;"
   >
     <div class="modal-content">
       <div class="modal-header">
@@ -1030,13 +1394,21 @@
         >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
+        <h4 class="modal-title w-100" id="myModalLabel">
           Payment Method: Card details
         </h4>
       </div>
-      <div class="modal-body " style="height: 400px; overflow-y: auto;" >
-         <app-card-details  *ngIf="addnew && !editmode" [carddetails] ="cardDetails" (cardDetailsEmit) = "setCardDetails($event)"></app-card-details>
-         <app-card-details  *ngIf="!addnew && editmode" [carddetails] ="recievedMerchant.business.card_details" (cardDetailsEmit) = "setCardDetails($event)"></app-card-details>
+      <div class="modal-body" style="height: 400px; overflow-y: auto;">
+        <app-card-details
+          *ngIf="addnew && !editmode"
+          [carddetails]="cardDetails"
+          (cardDetailsEmit)="setCardDetails($event)"
+        ></app-card-details>
+        <app-card-details
+          *ngIf="!addnew && editmode"
+          [carddetails]="recievedMerchant.business.card_details"
+          (cardDetailsEmit)="setCardDetails($event)"
+        ></app-card-details>
       </div>
 
       <div class="modal-footer">

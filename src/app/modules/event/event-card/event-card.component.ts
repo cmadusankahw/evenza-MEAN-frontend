@@ -13,23 +13,23 @@ import { EventCard } from '../event.model';
 export class EventCardComponent implements OnInit {
 
 
-  @Output() eventEmiit = new EventEmitter<{eventId: string, eventName: string}>();
+  @Output() eventEmiit = new EventEmitter<{ eventId: string, eventName: string }>();
 
-   // subscription
-   private eventSub: Subscription ;
+  // subscription
+  private eventSub: Subscription;
 
-   // recieved events
-   events: EventCard[] = [];
+  // recieved events
+  events: EventCard[] = [];
 
-   // event successfully sent
-   success = false;
+  // event successfully sent
+  success = false;
 
-   // emitting event details
-   eventDetails: {eventId: string, eventName: string};
+  // emitting event details
+  eventDetails: { eventId: string, eventName: string };
 
 
   constructor(private router: Router,
-              private eventService: EventService) { }
+    private eventService: EventService) { }
 
   ngOnInit() {
     this.eventService.getEvents();
@@ -37,16 +37,16 @@ export class EventCardComponent implements OnInit {
       .subscribe((recievedEvents: EventCard[]) => {
         if (recievedEvents) {
           this.events = recievedEvents;
-          this.eventDetails = { eventId: recievedEvents[0].event_id, eventName: recievedEvents[0].event_title};
+          this.eventDetails = { eventId: recievedEvents[0].event_id, eventName: recievedEvents[0].event_title };
           console.log(this.events);
         }
-  });
- }
+      });
+  }
 
- emittEvents(){
-  this.eventEmiit.emit(this.eventDetails);
-  console.log(this.eventDetails);
- }
+  emittEvents() {
+    this.eventEmiit.emit(this.eventDetails);
+    console.log(this.eventDetails);
+  }
 
 
 }

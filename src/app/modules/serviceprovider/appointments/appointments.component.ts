@@ -16,7 +16,7 @@ import { Email } from '../../eventplanner/eventplanner.model';
 })
 export class AppointmentsComponent implements OnInit, OnDestroy {
 
-  displayedColumns: string[] = ['id', 'service_name',  'appointed_date', 'duration', 'customer_name', 'action'];
+  displayedColumns: string[] = ['id', 'service_name', 'appointed_date', 'duration', 'customer_name', 'action'];
   dataSource: MatTableDataSource<Appointment>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -49,14 +49,14 @@ export class AppointmentsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.serviceProviderService.getAppointments();
     this.appointSub = this.serviceProviderService.getAppointmentsUpdateListener()
-          .subscribe((recievedAppoints: Appointment[]) => {
-              this.appointments = recievedAppoints;
-              console.log(this.appointments);
-              if (this.appointments) {
-              this.dataSource = new MatTableDataSource(this.addAppointments(this.appointments, this.appointmentType));
-              this.dataSource.paginator = this.paginator;
-              this.dataSource.sort = this.sort;
-           }
+      .subscribe((recievedAppoints: Appointment[]) => {
+        this.appointments = recievedAppoints;
+        console.log(this.appointments);
+        if (this.appointments) {
+          this.dataSource = new MatTableDataSource(this.addAppointments(this.appointments, this.appointmentType));
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
       });
   }
 
@@ -77,7 +77,7 @@ export class AppointmentsComponent implements OnInit, OnDestroy {
   }
 
 
- // classify appointments into diiferent categories
+  // classify appointments into diiferent categories
   addAppointments(appoints: Appointment[], state: string) {
     const pedingAppoints = [];
     for (const val of appoints) {
@@ -90,47 +90,47 @@ export class AppointmentsComponent implements OnInit, OnDestroy {
   }
 
 
-   // get selected booking details
-   showAppointmentDetails(appointId: string) {
+  // get selected booking details
+  showAppointmentDetails(appointId: string) {
     for (const app of this.appointments) {
-      if (app.appoint_id   === appointId) {
+      if (app.appoint_id === appointId) {
         this.selectedAppointment = app;
       }
     }
   }
 
 
-   // cancel a booking
-   sendCancelMail() {
+  // cancel a booking
+  sendCancelMail() {
     const cancelledMessage = document.getElementById('content').innerHTML;
     console.log(cancelledMessage);
     const mail: Email = {
       email: this.selectedAppointment.user.email,
       subject: 'Your Appointment: (ID:' + this.selectedAppointment.appoint_id + ') on '
-      + this.selectedAppointment.service_name + ' is Cancelled',
-      html:  '<u><b>Notice:</b></u> ' + cancelledMessage + '<p>' +
-      this.cancelMsg +
-      '</p> <br> <p> For more details, Please <a href="evenza.biz//login">Log In</a></p>'
+        + this.selectedAppointment.service_name + ' is Cancelled',
+      html: '<u><b>Notice:</b></u> ' + cancelledMessage + '<p>' +
+        this.cancelMsg +
+        '</p> <br> <p> For more details, Please <a href="evenza.biz//login">Log In</a></p>'
     };
     this.serviceProviderService.sendEmail(mail);
     document.getElementById('discardBtn').click();
   }
 
-   // cancel a booking
-   sendConfirmMail() {
+  // cancel a booking
+  sendConfirmMail() {
     const mail: Email = {
       email: this.selectedAppointment.user.email,
       subject: 'Your Appointment: (ID:' + this.selectedAppointment.appoint_id + ') on '
-      + this.selectedAppointment.service_name + ' is Approved',
-      html:  'Your Appointment: (ID:' + this.selectedAppointment.appoint_id + ') on '
-             + this.selectedAppointment.service_name + ' is Approved <br> ' + ' <h5><b> Appointment on   :</b> '
-             + this.selectedAppointment.service_name + '</h5>' +
-             ' <h5><b> Appointment Date :</b> ' + this.selectedAppointment.appointed_date.slice(0, 10) + '</h5>' +
-             ' <h5><b> Appointment Time :</b> ' + (this.selectedAppointment.appointed_time.hour > 9 ? ''
-             + this.selectedAppointment.appointed_time.hour : '0' +this.selectedAppointment.appointed_time.hour)
-             + (this.selectedAppointment.appointed_time.minute > 9 ? '' + this.selectedAppointment.appointed_time.minute : '0' +
-             this.selectedAppointment.appointed_time.minute) + '</h5>' +
-      ' <br> <p> For more details, Please <a href="evenza.biz//login">Log In</a></p>'
+        + this.selectedAppointment.service_name + ' is Approved',
+      html: 'Your Appointment: (ID:' + this.selectedAppointment.appoint_id + ') on '
+        + this.selectedAppointment.service_name + ' is Approved <br> ' + ' <h5><b> Appointment on   :</b> '
+        + this.selectedAppointment.service_name + '</h5>' +
+        ' <h5><b> Appointment Date :</b> ' + this.selectedAppointment.appointed_date.slice(0, 10) + '</h5>' +
+        ' <h5><b> Appointment Time :</b> ' + (this.selectedAppointment.appointed_time.hour > 9 ? ''
+          + this.selectedAppointment.appointed_time.hour : '0' + this.selectedAppointment.appointed_time.hour)
+        + (this.selectedAppointment.appointed_time.minute > 9 ? '' + this.selectedAppointment.appointed_time.minute : '0' +
+          this.selectedAppointment.appointed_time.minute) + '</h5>' +
+        ' <br> <p> For more details, Please <a href="evenza.biz//login">Log In</a></p>'
     };
     this.serviceProviderService.sendEmail(mail);
     document.getElementById('discardBtn').click();
@@ -154,7 +154,7 @@ export class AppointmentsComponent implements OnInit, OnDestroy {
       this.router.onSameUrlNavigation = 'reload';
       this.router.navigate(['/sp/dash/appoints']);
     }, 1000);
-   }
+  }
 
 
 }

@@ -1,60 +1,73 @@
 <div class="heading">
   <h4>
     <mat-icon>list</mat-icon>
-   <b> My Events </b>
+    <b> My Events </b>
   </h4>
-  </div>
+</div>
 
-
-<div class="card-deck pd-top-min" *ngIf="events.length" >
+<div class="card-deck pd-top-min" *ngIf="events.length">
   <!-- Card -->
 
-                <mdb-card *ngFor="let event of events">
+  <mdb-card *ngFor="let event of events">
+    <div class="view overlay waves-light" mdbWavesEffect>
+      <!-- Card img -->
+      <mdb-card-img
+        src="{{ event.feature_img }}"
+        [alt]="event.event_title"
+      ></mdb-card-img>
+      <a>
+        <div class="mask rgba-white-slight"></div>
+      </a>
+    </div>
+    <!--Card content-->
+    <mdb-card-body>
+      <!--Title-->
+      <mdb-card-title>
+        <h4>{{ event.event_title }}</h4>
+      </mdb-card-title>
+      <hr />
 
-                  <div class="view overlay waves-light" mdbWavesEffect>
-                    <!-- Card img -->
-                    <mdb-card-img src={{event.feature_img}} [alt]="event.event_title"></mdb-card-img>
-                    <a>
-                      <div class="mask rgba-white-slight"></div>
-                    </a>
-                  </div>
-                  <!--Card content-->
-                  <mdb-card-body>
-                    <!--Title-->
-                    <mdb-card-title>
-                    <h4> {{event.event_title}}</h4>
-                    </mdb-card-title>
-                      <hr>
+      <div>
+        <div class="left-notify">
+          <span style="font-size: 17px; font-weight: bold;">
+            <mdb-icon fas icon="calendar"></mdb-icon
+            >{{ event.from_date.slice(0, 10) }}</span
+          >
+        </div>
+        <div class="left-btn">
+          <a
+            mdbBtn
+            color="secondary"
+            class="btn btn-md"
+            mdbWavesEffect
+            *ngIf="event.state != 'cancelled'"
+            routerLink="/planner/event/details/{{ event.event_id }}"
+          >
+            View Details
+          </a>
+        </div>
 
-                    <div>
-                      <div class="left-notify" >
-                        <span style="font-size:17px; font-weight:bold;"> <mdb-icon fas icon="calendar"></mdb-icon>{{event.from_date.slice(0,10)}}</span>
-                      </div>
-                      <div class="left-btn">
-                        <a mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect *ngIf="event.state != 'cancelled'"
-                       routerLink="/planner/event/details/{{event.event_id}}">
-                          View Details
-                        </a>
-                      </div>
+        <div class="right-notify">
+          <span style="color: darkgray;"
+            ><mdb-icon fas icon="clock"></mdb-icon>{{ event.state }}
+          </span>
+          <mdb-icon fas icon="user"> </mdb-icon>{{ event.no_of_participants }}
+        </div>
+      </div>
+    </mdb-card-body>
+  </mdb-card>
+</div>
 
-                      <div class="right-notify" >
-                        <span style="color:darkgray"><mdb-icon fas icon="clock"></mdb-icon>{{event.state}} </span>
-                        <mdb-icon fas icon="user"> </mdb-icon>{{event.no_of_participants}}
-                      </div>
-
-
-                    </div>
-
-                  </mdb-card-body>
-                </mdb-card>
-
-  </div>
-
-  <div class="container-fluid text-center pt-4" *ngIf="!events.length">
-    <p>You have not created an Event Yet</p>
-    <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" text="white" routerLink="/planner/events/add">
-      Get Started
-    </button>
-  </div>
-
-
+<div class="container-fluid text-center pt-4" *ngIf="!events.length">
+  <p>You have not created an Event Yet</p>
+  <button
+    class="btn btn-md"
+    mdbBtn
+    mdbWavesEffect
+    color="secondary"
+    text="white"
+    routerLink="/planner/events/add"
+  >
+    Get Started
+  </button>
+</div>

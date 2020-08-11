@@ -46,16 +46,16 @@ export class PayStatComponent implements OnInit {
     },
     commit: true,
     payment: (data, actions) => {
-      return actions.payment.create ( {
+      return actions.payment.create({
         payment: {
           transactions: [
-            {amount: { total: this.payPalAmount , currency: 'USD'}}
+            { amount: { total: this.payPalAmount, currency: 'USD' } }
           ]
         }
       });
     },
-    onAuthorize : (data, actions) => {
-      return actions.payment.execute().then ( payment => {
+    onAuthorize: (data, actions) => {
+      return actions.payment.execute().then(payment => {
         // make order if the payment is successed
         document.getElementById('placeOrder').click();
       });
@@ -70,19 +70,19 @@ export class PayStatComponent implements OnInit {
   ngOnInit() {
     this.adminService.getMerchantPayment();
     this.adminService.getMerchantPaymentUpdateListener()
-    .subscribe ( (res: MerchantPayments) => {
-      console.log(res);
-      this.myPayments = res;
-      this.dataSource = new MatTableDataSource(this.myPayments.pays);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.getLastMonthPayment();
-    });
+      .subscribe((res: MerchantPayments) => {
+        console.log(res);
+        this.myPayments = res;
+        this.dataSource = new MatTableDataSource(this.myPayments.pays);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.getLastMonthPayment();
+      });
   }
 
   // calculae total pay & due amount
   getLastMonthPayment() {
-    for ( const p of this.myPayments.pays) {
+    for (const p of this.myPayments.pays) {
       this.due_date = p.timestamp.year + '-' + p.timestamp.month + '-' + '28';
       this.total_paid += p.paid_amount;
       this.due_amount += p.due_amount;
@@ -93,15 +93,15 @@ export class PayStatComponent implements OnInit {
 
   addPaypal() {
     if (!this.addScript) {
-      this.addPaypalScript().then( () => {
-        paypal.Button.render( this.paypalConfig, '#paybtn');
+      this.addPaypalScript().then(() => {
+        paypal.Button.render(this.paypalConfig, '#paybtn');
       });
     }
   }
 
   addPaypalScript() {
     this.addScript = true;
-    return new Promise( ( resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const scriptTagelement = document.createElement('script');
       scriptTagelement.src = 'https://www.paypalobjects.com/api/checkout.js';
       scriptTagelement.onload = resolve;

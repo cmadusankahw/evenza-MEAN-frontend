@@ -67,7 +67,7 @@ export class PlannerAppointsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.appointmentsSub){
+    if (this.appointmentsSub) {
       this.appointmentsSub.unsubscribe();
     }
   }

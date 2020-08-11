@@ -1,517 +1,880 @@
-<div class="container-fluid" *ngIf="!editmode && !removed && !orderUser && product">
-
+<div
+  class="container-fluid"
+  *ngIf="!editmode && !removed && !orderUser && product"
+>
   <div class="row f-image">
-
     <mdb-carousel class="carousel slide carousel-fade" [animation]="'fade'">
       <mdb-carousel-item>
-        <div class="view w-100" >
-          <img class="d-block w-100" [src]="product.image_01 ? product.image_01 : './assets/images/merchant/nopic.png'" alt="Feature Image 2" class="feature-img">
+        <div class="view w-100">
+          <img
+            class="d-block w-100"
+            [src]="
+              product.image_01
+                ? product.image_01
+                : './assets/images/merchant/nopic.png'
+            "
+            alt="Feature Image 2"
+            class="feature-img"
+          />
           <div class="mask rgba-black-strong waves-light" mdbWavesEffect></div>
         </div>
       </mdb-carousel-item>
       <mdb-carousel-item>
         <div class="view w-100">
-          <img class="d-block w-100" [src]="product.image_02 ? product.image_02 : './assets/images/merchant/nopic.png'"  alt="Feature Image 3" class="feature-img">
+          <img
+            class="d-block w-100"
+            [src]="
+              product.image_02
+                ? product.image_02
+                : './assets/images/merchant/nopic.png'
+            "
+            alt="Feature Image 3"
+            class="feature-img"
+          />
           <div class="mask rgba-black-slight waves-light" mdbWavesEffect></div>
         </div>
       </mdb-carousel-item>
       <mdb-carousel-item>
-        <div class="view w-100" >
-          <img class="d-block w-100" [src]="product.image_03 ? product.image_03 : './assets/images/merchant/nopic.png'"  alt="Feature Image 4" class="feature-img">
+        <div class="view w-100">
+          <img
+            class="d-block w-100"
+            [src]="
+              product.image_03
+                ? product.image_03
+                : './assets/images/merchant/nopic.png'
+            "
+            alt="Feature Image 4"
+            class="feature-img"
+          />
           <div class="mask rgba-black-slight waves-light" mdbWavesEffect></div>
         </div>
       </mdb-carousel-item>
     </mdb-carousel>
-
-
-
   </div>
-    <div class="row">
-      <div class="col-md-7">
-        <div class="content-title">
-          {{product ? product.product: '...'}}
-        </div>
-        <div class="open-stat" *ngIf="product.availability">
-          <a mdbWavesEffect role="button" >
-          <span><mdb-icon far icon="clock"> </mdb-icon> {{'Available for purchase'}}</span>
-          </a>
-        </div>
-
-        <div class="open-stat" *ngIf="!product.availability">
-          <a mdbWavesEffect role="button" disabled >
-          <span style="color:darkred;"><mdb-icon far icon="clock"> </mdb-icon> {{'Not Available Now'}}</span>
-          </a>
-        </div>
-
+  <div class="row">
+    <div class="col-md-7">
+      <div class="content-title">
+        {{ product ? product.product : "..." }}
+      </div>
+      <div class="open-stat" *ngIf="product.availability">
+        <a mdbWavesEffect role="button">
+          <span
+            ><mdb-icon far icon="clock"> </mdb-icon>
+            {{ "Available for purchase" }}</span
+          >
+        </a>
       </div>
 
-      <!--if editb=able by merchant-->
-      <div class="col-md-5 edit-cls" *ngIf="isowner">
-          <a mdbBtn color="secondary" class="btn btn-md edit-btn" mdbWavesEffect
-          (click)="editmode = !editmode">Edit Details</a>
-          <a mdbBtn color="secondary" class="btn btn-md edit-btn" outline="yes" style="border-radius:25px; margin-top:10px;" mdbWavesEffect
-          (click)="promotionModal.show()">Add Promotions</a>
-      </div>
-
-      <!--if only shown to users-->
-      <div class="col-md-5 edit-cls" *ngIf="!isowner">
-        <a mdbBtn color="secondary" outline="yes" class="btn btn-lg book-btn" mdbWavesEffect
-        [disabled] = "!product.availability && (product.inventory == 0)" (click) = "orderUser = !orderUser"
-        (click) = "calcPayment(product.price, qty)" (click) = "addPaypal()">Order Now</a>
-      </div>
-
-    </div>
-
-
-      <hr>
-      <div class="row" *ngIf="product">
-        <div class=" col-md-7 content-text">
-          {{product ? product.description: '...'}}
-          <br>
-          <div class="category">
-            <mdb-icon far icon="calendar-alt"></mdb-icon> Categry: {{product ? product.product_category : '...'}}
-          </div>
-
-          <div class="category">
-            <mdb-icon far icon="calendar-alt"></mdb-icon> Delivery Service: {{delService ? delService.title : '...'}}
-          </div>
-
-          <div class="notify" >
-            <mdb-icon far icon="calendar-check"> </mdb-icon> {{(product.pay_on_delivery) ? 'Pay on Delivery Available' : 'Pay Online'}}
-          </div>
-          <br>
-          <div class="notify" *ngIf="isowner">
-            <mdb-icon fas icon="bookmark"> </mdb-icon> {{product ? product.no_of_orders: '...'}} Orderes
-          </div>
-          <hr>
-          <div *ngIf="product.promotions.length">
-              <div class="row container-fluid">
-                  <div class="promotion shadow text-center" *ngFor="let promo of product.promotions">
-                    <p style="font-weight:bold; color:darkslategray;"> {{promo.title}} </p>
-                    <h3 style="font-weight:bold; color:darkmagenta;"> {{promo.precentage }} %</h3>
-                    <span style="color:darkslategray;"> Valid Till: {{promo.to_date.slice(0,10)}}</span>
-                  </div>
-              </div>
-          </div>
-        </div>
-
-        <!--price-->
-        <div class="col-md-5">
-          <div class="hr-rate">
-            <span class="hr-price"> Rs. {{product.price}}</span>
-          </div>
-          <hr>
-
-          <!--product ratings-->
-            <div class="rating">
-              <ngb-rating [(rate)]="product.rating" max="5">
-                <ng-template let-fill="fill" let-index="index">
-                  <span class="star" [class.filled]="fill === 100">&#9733;</span>
-                </ng-template>
-              </ngb-rating>
-              <br>
-              <span class="rating-txt">
-                {{product ? product.no_of_ratings : '...'}} Recommended
-              </span>
-            </div>
-          <hr>
-          <div class="owner text-center" >
-            <span>Owned by {{product ? product.business_name : '...'}}</span>
-            <br>
-            <a mdbBtn color="secondary" class="btn btn-md" outline="yes" mdbWavesEffect *ngIf="!isowner"
-              routerLink="/bprofile/{{product.user_id}}" >View Business</a>
-          </div>
-
-        </div>
-      </div>
-
-      <hr>
-      <div class="rating-reviews container-fluid" *ngIf="product.reviews.length">
-        <hspan class="notify"><b>  <mdb-icon fas icon="bookmark"> </mdb-icon>  What others tell about {{ product.product}}...</b></hspan>
-        <br>
-        <div class="review" *ngFor ="let s of product.reviews">
-          <div class="row">
-            <div class="col-md-9">
-              <p style="font-weight:bold;"> <span style="color:darkmagenta;"><mdb-icon fas icon="grin-alt"> </mdb-icon></span> <b> {{ s.user}}</b></p>
-            </div>
-            <div class="col-md-3" style="text-align:right;">
-              <ngb-rating [rate]="s.rating" max="5" >
-                <ng-template let-fill="fill" let-index="index">
-                  <span class="star2" [class.filled]="fill === 100">&#9733;</span>
-                </ng-template>
-              </ngb-rating>
-            </div>
-          </div>
-          <p style="padding-left:15px;">{{s.review}}</p>
-        </div>
-      </div>
-
-</div>
-
-
-
-
-
-<!--edit product-->
-<div class="container-fluid text-center" *ngIf="editmode && !removed && !orderUser && product">
-  <div class="center-txt">
-    <div class="row">
-      <div class="col-md-8">
-        <p style="line-height:35px;"> You can change the details of <b>{{product.product}}</b> below.</p>
-      </div>
-      <div class="col-md-4">
-        <a role="button" mdbBtn class="btn btn-sm" color="red" text="white" (click)="removeProduct(product.product_id)"> Remove Product</a>
-      </div>
-    </div>
-   </div>
-  <br>
-    <form class="service-form" (submit)="updateProduct(editProductForm)" #editProductForm ="ngForm">
-      <mat-form-field class="service-full-width">
-        <mat-label>Product name</mat-label>
-        <input matInput placeholder="Product name here"  required
-        [ngModel]="product.product" name="product" #productName="ngModel">
-        <mat-error *ngIf="productName.invalid">Please enter product name</mat-error>
-      </mat-form-field>
-      <br>
-
-      <mat-form-field class="service-full-width">
-        <mat-label >Select Product Category</mat-label>
-        <select matNativeControl required
-        [ngModel]="product.product_category" name="category" >
-          <option [value]="cat.val" *ngFor="let cat of categories" >
-            {{cat.val}}</option>
-        </select>
-      </mat-form-field>
-      <br>
-
-      <mat-form-field class="service-full-width">
-        <mat-label class="check-label">Product Description</mat-label>
-        <textarea matInput rows="5" placeholder="Product Description"
-        [ngModel]="product.description" name="description" ></textarea>
-      </mat-form-field>
-      <br>
-
-      <div class="row">
-
-        <div class="col">
-          <mat-form-field class="service-full-width-sm">
-            <mat-label >Quantity Type</mat-label>
-            <select matNativeControl required
-            [ngModel]="product.qty_type" name="quantity_type">
-             <option [value]="qty.val" *ngFor="let qty of quantities" >
-               {{qty.val}}
-             </option>
-            </select>
-          </mat-form-field>
-        </div>
-
-        <div class="col">
-          <mat-form-field class="service-full-width-sm">
-            <mat-label>Price(Rs.)</mat-label>
-            <input matInput placeholder="Unit Price here" required
-            [ngModel]="product.price" name="price" #price="ngModel">
-            <mat-error *ngIf="price.invalid">Please enter price </mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-
-      <br>
-      <div class="row">
-
-        <div class="col">
-            <mat-checkbox class="check-margin"
-            [(ngModel)]="product.availability" name="availability">Available for Sale</mat-checkbox>
-        </div>
-
-        <div class="col">
-          <mat-form-field class="service-full-width-sm">
-            <mat-label>Quantity</mat-label>
-            <input matInput   required type="number"
-            [ngModel]="product.inventory" name="inventory" #productInventory ="ngModel" value="0">
-            <mat-error *ngIf="productInventory.invalid">Please enter quantity</mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-      <hr>
-      <div class="text-center">
-        <div class="row container-fluid">
-          <div class="col-md-6">
-            <mat-checkbox class="check-margin"
-            [(ngModel)]="product.pay_on_delivery" name="pay_on_delivery">Pay on Delivery</mat-checkbox>
-              </div>
-          <div class="col-md-6">
-            <mat-form-field class="service-full-width-sm">
-              <mat-label >Delivery Service</mat-label>
-              <select matNativeControl required
-              [ngModel]="product.delivery_service" name="delivery_service">
-               <option [value]="del.delivery_service" *ngFor="let del of deliveryServices" >
-                 {{del.title}}
-               </option>
-              </select>
-            </mat-form-field>
-          </div>
-          <br>
-          <p class="pay-on-meet"> Note: If <b>Pay on Delivery</b> is selected, <b>no payment</b> will be charged on order. Payment need to be collected manullay. However, <b>system will charge the due commission form you.</b></p>
-        </div>
-         </div>
-
-      <hr>
-      <div class="enter-txt">
-        <p> Upload images of the product (up to 3 images *5MB Max)</p>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <a role="button" mdbWavesEffect (click)="img1.click()">
-            <img [src]="image01 ? image01Url : product.image_01" alt="front side" class="img-cls">
-          </a>
-          <input type="file" hidden="true" id="img1" #img1
-          ngModel name="image_01"  accept="image/*"  (change)="onImage01Uploaded($event)">
-          <p><b>Image 01</b></p>
-        </div>
-
-        <div class="col-md-4">
-          <a role="button" mdbWavesEffect (click)="img2.click()">
-            <img [src]="image02 ? image02Url : product.image_02" alt="front side" class="img-cls">
-          </a>
-          <input type="file" hidden="true" id="img2" #img2
-          ngMode name="image_02"  accept="image/*"  (change)="onImage02Uploaded($event)">
-          <p><b>Image 02</b></p>
-        </div>
-
-        <div class="col-md-4">
-          <a role="button" mdbWavesEffect (click)="img3.click()">
-            <img [src]="image03 ? image03Url : product.image_03" alt="front side" class="img-cls">
-          </a>
-          <input type="file" hidden="true" id="img3" #img3
-          name="image_03"  accept="image/*"  (change)="onImage03Uploaded($event)">
-          <p><b>Image 03</b></p>
-        </div>
-      </div>
-
-    <hr>
-  <!--back button only if !addnew-->
-  <div class="btns">
-    <button mdbBtn color="secondary" class="btn btn-md edtbt" mdbWavesEffect
-     type="submit">Save Changes</button>
-  <button mdbBtn color="secondary" class="btn btn-md edtbt" outline="yes" mdbWavesEffect
-  (click)="editmode = !editmode && editProductForm.resetForm()"  type="button">Discard</button>
-  </div>
-</form>
-</div>
-
-  <!-- order products -->
-  <div class="container-fluid" *ngIf="!editmode && !removed && orderUser && islogged && product">
-
-    <!-- order products-->
-    <div class="order">
-
-  <div class="text-center pd-top-min">
-    <h4> <b> Place an Order for {{product.product}} </b></h4>
-    <p> Please check the below  details are correct, and provide required information.
-      <hr>
-  </div>
-
-  <form class="service-form" (submit)="createOrder(orderForm)" #orderForm ="ngForm">
-    <h5> Product Details : </h5>
-    <br>
-    <div class="row container-fluid">
-      <div class="col-md-6">
-        <mat-form-field class="service-full-width">
-          <mat-label>Product: </mat-label>
-          <input matInput disabled
-          [ngModel]="product.product" name="product_name" >
-        </mat-form-field>
-      </div>
-
-    <div class="col-md-6">
-      <mat-form-field class="service-full-width">
-        <mat-label>Categoy : </mat-label>
-        <input matInput disabled
-        [ngModel]="product.product_category" name="product_category" >
-      </mat-form-field>
-    </div>
-  </div>
-
-  <div class="row container-fluid">
-
-    <div class="col-md-6">
-      <mat-form-field class="service-full-width">
-        <mat-label>Sold By: </mat-label>
-        <input matInput disabled
-        [ngModel]="product.business_name" name="business_name" >
-      </mat-form-field>
-    </div>
-
-    <div class="col-md-6">
-      <mat-form-field class="service-full-width">
-        <mat-label>Delivered By: </mat-label>
-        <input matInput disabled style="font-weight:bold;"
-        [ngModel]="delService.title" name="delivery_title">
-      </mat-form-field>
-    </div>
-
-</div>
-
-
-
-<hr>
-<div class="payment-section">
-
-<div class="row">
-  <!-- payment input-->
-  <div class="col-md-8">
-    <h5>Place your Order: </h5>
-    <p style="margin:0px;"> Available Now: {{ product.inventory +' ' + product.qty_type +'(s)'}} </p>
-    <mat-form-field class="service-full-width pd-top-min" >
-      <mat-label>Quantity: </mat-label>
-      <input matInput required #qtyInput="ngModel" type="number"  [min] = "1" [max]="product.inventory"
-      [(ngModel)] ="qty" name="quantity" (change) = "calcPayment(product.price, qty)">
-    </mat-form-field>
-    <mat-error *ngIf="qtyInput.invalid"> Please Enter the quantity </mat-error>
-
-    <!-- card details-->
-    <div class="row">
-      <div class="col-md-7">
-        <div style="padding-top:15px;">
-          <mdb-icon fas icon="list"> </mdb-icon> Card: {{' ...XXXX-XXXX-4419'}} <!--to be modified-->
-        </div>
-      </div>
-      <div class="col-md-5">
-        <a class="btn btn-sm" mdbBtn mdbWavesEffect color="secondary" (click)="cardDetails.show()">
-          Card Details
+      <div class="open-stat" *ngIf="!product.availability">
+        <a mdbWavesEffect role="button" disabled>
+          <span style="color: darkred;"
+            ><mdb-icon far icon="clock"> </mdb-icon>
+            {{ "Not Available Now" }}</span
+          >
         </a>
       </div>
     </div>
 
-    <hr>
-
-    <div class="amount-pay">
-      <!-- full payment-->
-      <div *ngIf="product.pay_on_delivery == false">
-        <p>This item does not accept payment on delivery. <br>
-        <b> Full payment should be paid now.</b></p>
-      <mat-form-field class="service-full-width">
-        <mat-label>Paying Amount (Rs.): </mat-label>
-        <input matInput readonly required type="number" [min]="totalAmount" [max]="totalAmount" class="amount-input"
-        [(ngModel)]="totalAmount" name="amount_paid" >
-      </mat-form-field>
-      </div>
-
-      <!-- Partial payment-->
-      <div *ngIf="product.pay_on_delivery">
-
-    <p> Minimum of 10% of the Total amount should be paid now. <br>
-      Rest can be paid on delivery. </p>
-      <mat-form-field class="service-full-width" >
-        <mat-label>Paying Amount (Rs.): </mat-label>
-        <input matInput required #payInput2="ngModel" type="number" [min]="totalAmount / 10" [max]="totalAmount" class="amount-input"
-        [(ngModel)]="payAmount" name="amount_paid" (change) ="payPalAmount = (payAmount/190).toFixed(2)" >
-      </mat-form-field>
-      <mat-error *ngIf="payInput2.invalid"> Please Enter a valid amount ( Min: Rs.{{totalAmount/10}} Max: Rs.{{totalAmount}} ) </mat-error>
+    <!--if editb=able by merchant-->
+    <div class="col-md-5 edit-cls" *ngIf="isowner">
+      <a
+        mdbBtn
+        color="secondary"
+        class="btn btn-md edit-btn"
+        mdbWavesEffect
+        (click)="editmode = !editmode"
+        >Edit Details</a
+      >
+      <a
+        mdbBtn
+        color="secondary"
+        class="btn btn-md edit-btn"
+        outline="yes"
+        style="border-radius: 25px; margin-top: 10px;"
+        mdbWavesEffect
+        (click)="promotionModal.show()"
+        >Add Promotions</a
+      >
     </div>
 
+    <!--if only shown to users-->
+    <div class="col-md-5 edit-cls" *ngIf="!isowner">
+      <a
+        mdbBtn
+        color="secondary"
+        outline="yes"
+        class="btn btn-lg book-btn"
+        mdbWavesEffect
+        [disabled]="!product.availability && product.inventory == 0"
+        (click)="orderUser = !orderUser"
+        (click)="calcPayment(product.price, qty)"
+        (click)="addPaypal()"
+        >Order Now</a
+      >
     </div>
   </div>
 
-  <!-- payment display-->
-  <div class="col-md-4">
-
-    <div style="text-align:right;">
-        <p style="margin:0px;">Price: </p>
-        <span class="duration-cls">Rs. {{product.price + ' /' + product.qty_type }} </span>
+  <hr />
+  <div class="row" *ngIf="product">
+    <div class="col-md-7 content-text">
+      {{ product ? product.description : "..." }}
+      <br />
+      <div class="category">
+        <mdb-icon far icon="calendar-alt"></mdb-icon> Categry:
+        {{ product ? product.product_category : "..." }}
       </div>
 
-      <div style="text-align:right; padding-top:12px;" >
-        <p style="margin:0px;">Delivery Charges: </p>
-        <span class="duration-cls">Rs. {{delService.delivery_rate }} </span>
+      <div class="category">
+        <mdb-icon far icon="calendar-alt"></mdb-icon> Delivery Service:
+        {{ delService ? delService.title : "..." }}
       </div>
 
-      <div class="pay-dispaly pd-top-min" style="text-align:right;" *ngIf="product.promotions.length">
-        <p style="margin:0px;"> Discounts:</p>
-        <span class="payment-cls-promo"> <b> Rs. -{{totalPromotion}}</b></span>
+      <div class="notify">
+        <mdb-icon far icon="calendar-check"> </mdb-icon>
+        {{
+          product.pay_on_delivery ? "Pay on Delivery Available" : "Pay Online"
+        }}
       </div>
-
-
-
-      <div class="pay-dispaly" style="text-align:right; padding-top:12px;">
-        <p style="margin:0px;"> Total Amount:</p>
-        <span class="payment-cls"> <b> Rs. {{totalAmount}}</b></span>
+      <br />
+      <div class="notify" *ngIf="isowner">
+        <mdb-icon fas icon="bookmark"> </mdb-icon>
+        {{ product ? product.no_of_orders : "..." }} Orderes
       </div>
-
-      <div class="pay-dispaly" style="text-align:right; padding-top:12px;" *ngIf="!product.pay_on_delivery">
-        <p style="margin:0px;"> Now Paying:</p>
-        <span class="payment-cls"> <b> Rs. {{totalAmount}}</b></span>
+      <hr />
+      <div *ngIf="product.promotions.length">
+        <div class="row container-fluid">
+          <div
+            class="promotion shadow text-center"
+            *ngFor="let promo of product.promotions"
+          >
+            <p style="font-weight: bold; color: darkslategray;">
+              {{ promo.title }}
+            </p>
+            <h3 style="font-weight: bold; color: darkmagenta;">
+              {{ promo.precentage }} %
+            </h3>
+            <span style="color: darkslategray;">
+              Valid Till: {{ promo.to_date.slice(0, 10) }}</span
+            >
+          </div>
+        </div>
       </div>
+    </div>
 
-      <div class="pay-dispaly pd-top-min" style="text-align:right;" *ngIf="product.pay_on_delivery">
-        <p style="margin:0px;"> Now Paying:</p>
-        <span class="payment-cls-min"> <b> Rs. {{totalAmount >= payAmount ? payAmount: totalAmount}}</b></span>
+    <!--price-->
+    <div class="col-md-5">
+      <div class="hr-rate">
+        <span class="hr-price"> Rs. {{ product.price }}</span>
       </div>
+      <hr />
 
-      <div class="pay-dispaly pd-top-min" style="text-align:right;" *ngIf="product.pay_on_delivery">
-        <p style="margin:0px;"> To be Paid:</p>
-        <span class="payment-cls-min"> <b> Rs. {{totalAmount - payAmount > 0 ? totalAmount- payAmount : 0}}</b></span>
+      <!--product ratings-->
+      <div class="rating">
+        <ngb-rating [(rate)]="product.rating" max="5">
+          <ng-template let-fill="fill" let-index="index">
+            <span class="star" [class.filled]="fill === 100">&#9733;</span>
+          </ng-template>
+        </ngb-rating>
+        <br />
+        <span class="rating-txt">
+          {{ product ? product.no_of_ratings : "..." }} Recommended
+        </span>
       </div>
-
+      <hr />
+      <div class="owner text-center">
+        <span>Owned by {{ product ? product.business_name : "..." }}</span>
+        <br />
+        <a
+          mdbBtn
+          color="secondary"
+          class="btn btn-md"
+          outline="yes"
+          mdbWavesEffect
+          *ngIf="!isowner"
+          routerLink="/bprofile/{{ product.user_id }}"
+          >View Business</a
+        >
+      </div>
+    </div>
   </div>
 
+  <hr />
+  <div class="rating-reviews container-fluid" *ngIf="product.reviews.length">
+    <hspan class="notify"
+      ><b>
+        <mdb-icon fas icon="bookmark"> </mdb-icon> What others tell about
+        {{ product.product }}...</b
+      ></hspan
+    >
+    <br />
+    <div class="review" *ngFor="let s of product.reviews">
+      <div class="row">
+        <div class="col-md-9">
+          <p style="font-weight: bold;">
+            <span style="color: darkmagenta;"
+              ><mdb-icon fas icon="grin-alt"> </mdb-icon
+            ></span>
+            <b> {{ s.user }}</b>
+          </p>
+        </div>
+        <div class="col-md-3" style="text-align: right;">
+          <ngb-rating [rate]="s.rating" max="5">
+            <ng-template let-fill="fill" let-index="index">
+              <span class="star2" [class.filled]="fill === 100">&#9733;</span>
+            </ng-template>
+          </ngb-rating>
+        </div>
+      </div>
+      <p style="padding-left: 15px;">{{ s.review }}</p>
+    </div>
+  </div>
 </div>
 
-    <hr>
-    <div class="comment-cls pd-top-min">
-      <h5><b>Delivery Address: </b></h5>
-      <mat-form-field class="service-full-width">
-        <textarea type="text" matInput ngModel name="delivery_address" placeholder="Address to delivery with Postal Code..."
-        required #deliveryAddress = "ngModel"></textarea>
-        <mat-error *ngIf="deliveryAddress.invalid"> Please Enter a valid address  </mat-error>
-      </mat-form-field>
-      <br><br>
-      <h5> Add a comment...</h5>
-      <mat-form-field class="service-full-width">
-        <textarea type="text" matInput ngModel name="comment" placeholder="Please deliver with good quality"></textarea>
-      </mat-form-field>
-    </div>
-    <hr>
-
-    <div class="btns text-center" >
-      <button mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect id="placeOrder"
-       type="submit" > Pay with Card</button>
-    <button mdbBtn color="secondary" class="btn btn-md edtbt" outline="yes" mdbWavesEffect
-    (click)="orderUser = !orderUser &&  orderForm.resetForm()" >Cancel</button>
-    <div style="margin-left:15px; margin-right:15px;" id="paybtn"
-    > Paypal Checkout</div>
+<!--edit product-->
+<div
+  class="container-fluid text-center"
+  *ngIf="editmode && !removed && !orderUser && product"
+>
+  <div class="center-txt">
+    <div class="row">
+      <div class="col-md-8">
+        <p style="line-height: 35px;">
+          You can change the details of <b>{{ product.product }}</b> below.
+        </p>
+      </div>
+      <div class="col-md-4">
+        <a
+          role="button"
+          mdbBtn
+          class="btn btn-sm"
+          color="red"
+          text="white"
+          (click)="removeProduct(product.product_id)"
+        >
+          Remove Product</a
+        >
+      </div>
     </div>
   </div>
+  <br />
+  <form
+    class="service-form"
+    (submit)="updateProduct(editProductForm)"
+    #editProductForm="ngForm"
+  >
+    <mat-form-field class="service-full-width">
+      <mat-label>Product name</mat-label>
+      <input
+        matInput
+        placeholder="Product name here"
+        required
+        [ngModel]="product.product"
+        name="product"
+        #productName="ngModel"
+      />
+      <mat-error *ngIf="productName.invalid"
+        >Please enter product name</mat-error
+      >
+    </mat-form-field>
+    <br />
 
+    <mat-form-field class="service-full-width">
+      <mat-label>Select Product Category</mat-label>
+      <select
+        matNativeControl
+        required
+        [ngModel]="product.product_category"
+        name="category"
+      >
+        <option [value]="cat.val" *ngFor="let cat of categories">
+          {{ cat.val }}</option
+        >
+      </select>
+    </mat-form-field>
+    <br />
+
+    <mat-form-field class="service-full-width">
+      <mat-label class="check-label">Product Description</mat-label>
+      <textarea
+        matInput
+        rows="5"
+        placeholder="Product Description"
+        [ngModel]="product.description"
+        name="description"
+      ></textarea>
+    </mat-form-field>
+    <br />
+
+    <div class="row">
+      <div class="col">
+        <mat-form-field class="service-full-width-sm">
+          <mat-label>Quantity Type</mat-label>
+          <select
+            matNativeControl
+            required
+            [ngModel]="product.qty_type"
+            name="quantity_type"
+          >
+            <option [value]="qty.val" *ngFor="let qty of quantities">
+              {{ qty.val }}
+            </option>
+          </select>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field class="service-full-width-sm">
+          <mat-label>Price(Rs.)</mat-label>
+          <input
+            matInput
+            placeholder="Unit Price here"
+            required
+            [ngModel]="product.price"
+            name="price"
+            #price="ngModel"
+          />
+          <mat-error *ngIf="price.invalid">Please enter price </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <br />
+    <div class="row">
+      <div class="col">
+        <mat-checkbox
+          class="check-margin"
+          [(ngModel)]="product.availability"
+          name="availability"
+          >Available for Sale</mat-checkbox
+        >
+      </div>
+
+      <div class="col">
+        <mat-form-field class="service-full-width-sm">
+          <mat-label>Quantity</mat-label>
+          <input
+            matInput
+            required
+            type="number"
+            [ngModel]="product.inventory"
+            name="inventory"
+            #productInventory="ngModel"
+            value="0"
+          />
+          <mat-error *ngIf="productInventory.invalid"
+            >Please enter quantity</mat-error
+          >
+        </mat-form-field>
+      </div>
+    </div>
+    <hr />
+    <div class="text-center">
+      <div class="row container-fluid">
+        <div class="col-md-6">
+          <mat-checkbox
+            class="check-margin"
+            [(ngModel)]="product.pay_on_delivery"
+            name="pay_on_delivery"
+            >Pay on Delivery</mat-checkbox
+          >
+        </div>
+        <div class="col-md-6">
+          <mat-form-field class="service-full-width-sm">
+            <mat-label>Delivery Service</mat-label>
+            <select
+              matNativeControl
+              required
+              [ngModel]="product.delivery_service"
+              name="delivery_service"
+            >
+              <option
+                [value]="del.delivery_service"
+                *ngFor="let del of deliveryServices"
+              >
+                {{ del.title }}
+              </option>
+            </select>
+          </mat-form-field>
+        </div>
+        <br />
+        <p class="pay-on-meet">
+          Note: If <b>Pay on Delivery</b> is selected, <b>no payment</b> will be
+          charged on order. Payment need to be collected manullay. However,
+          <b>system will charge the due commission form you.</b>
+        </p>
+      </div>
+    </div>
+
+    <hr />
+    <div class="enter-txt">
+      <p>Upload images of the product (up to 3 images *5MB Max)</p>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <a role="button" mdbWavesEffect (click)="img1.click()">
+          <img
+            [src]="image01 ? image01Url : product.image_01"
+            alt="front side"
+            class="img-cls"
+          />
+        </a>
+        <input
+          type="file"
+          hidden="true"
+          id="img1"
+          #img1
+          ngModel
+          name="image_01"
+          accept="image/*"
+          (change)="onImage01Uploaded($event)"
+        />
+        <p><b>Image 01</b></p>
+      </div>
+
+      <div class="col-md-4">
+        <a role="button" mdbWavesEffect (click)="img2.click()">
+          <img
+            [src]="image02 ? image02Url : product.image_02"
+            alt="front side"
+            class="img-cls"
+          />
+        </a>
+        <input
+          type="file"
+          hidden="true"
+          id="img2"
+          #img2
+          ngMode
+          name="image_02"
+          accept="image/*"
+          (change)="onImage02Uploaded($event)"
+        />
+        <p><b>Image 02</b></p>
+      </div>
+
+      <div class="col-md-4">
+        <a role="button" mdbWavesEffect (click)="img3.click()">
+          <img
+            [src]="image03 ? image03Url : product.image_03"
+            alt="front side"
+            class="img-cls"
+          />
+        </a>
+        <input
+          type="file"
+          hidden="true"
+          id="img3"
+          #img3
+          name="image_03"
+          accept="image/*"
+          (change)="onImage03Uploaded($event)"
+        />
+        <p><b>Image 03</b></p>
+      </div>
+    </div>
+
+    <hr />
+    <!--back button only if !addnew-->
+    <div class="btns">
+      <button
+        mdbBtn
+        color="secondary"
+        class="btn btn-md edtbt"
+        mdbWavesEffect
+        type="submit"
+      >
+        Save Changes
+      </button>
+      <button
+        mdbBtn
+        color="secondary"
+        class="btn btn-md edtbt"
+        outline="yes"
+        mdbWavesEffect
+        (click)="editmode = !editmode && editProductForm.resetForm()"
+        type="button"
+      >
+        Discard
+      </button>
+    </div>
   </form>
 </div>
 
+<!-- order products -->
+<div
+  class="container-fluid"
+  *ngIf="!editmode && !removed && orderUser && islogged && product"
+>
+  <!-- order products-->
+  <div class="order">
+    <div class="text-center pd-top-min">
+      <h4>
+        <b> Place an Order for {{ product.product }} </b>
+      </h4>
+      <p>
+        Please check the below details are correct, and provide required
+        information.
+      </p>
+      <hr />
+    </div>
 
-  </div>
+    <form
+      class="service-form"
+      (submit)="createOrder(orderForm)"
+      #orderForm="ngForm"
+    >
+      <h5>Product Details :</h5>
+      <br />
+      <div class="row container-fluid">
+        <div class="col-md-6">
+          <mat-form-field class="service-full-width">
+            <mat-label>Product: </mat-label>
+            <input
+              matInput
+              disabled
+              [ngModel]="product.product"
+              name="product_name"
+            />
+          </mat-form-field>
+        </div>
 
+        <div class="col-md-6">
+          <mat-form-field class="service-full-width">
+            <mat-label>Categoy : </mat-label>
+            <input
+              matInput
+              disabled
+              [ngModel]="product.product_category"
+              name="product_category"
+            />
+          </mat-form-field>
+        </div>
+      </div>
 
-      <!-- iF NOT LOGGED IN FOR BOOKING-->
-      <div class="container-fluid text-center" *ngIf="!editmode && !removed && orderUser && !islogged">
-        <div class="container text-center">
-              <img src="./assets/images/vectors/error.png" alt="Not Logged In" style="width:100%; margin-top:30px; margin-bottom:20px;">
-              <h2><b> You are not Logged in!</b></h2>
-              <p> You need to <a routerLink="/login">Sign In</a> or <a routerLink="/register"> Create an Account </a> to book a service. <br>
-              Please <b> Sign In</b> or <b> Sign up</b> to continue.</p>
-              <button mdbBtn mdbWavesEffect color="secondary" class="btn btn-md" routerLink="/login"> Sign In & Continue</button>
-              <button mdbBtn mdbWavesEffect color="red" class="btnn btn-md" (click)="orderUser = !orderUser"> GO Back</button>
+      <div class="row container-fluid">
+        <div class="col-md-6">
+          <mat-form-field class="service-full-width">
+            <mat-label>Sold By: </mat-label>
+            <input
+              matInput
+              disabled
+              [ngModel]="product.business_name"
+              name="business_name"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+          <mat-form-field class="service-full-width">
+            <mat-label>Delivered By: </mat-label>
+            <input
+              matInput
+              disabled
+              style="font-weight: bold;"
+              [ngModel]="delService.title"
+              name="delivery_title"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <hr />
+      <div class="payment-section">
+        <div class="row">
+          <!-- payment input-->
+          <div class="col-md-8">
+            <h5>Place your Order:</h5>
+            <p style="margin: 0px;">
+              Available Now:
+              {{ product.inventory + " " + product.qty_type + "(s)" }}
+            </p>
+            <mat-form-field class="service-full-width pd-top-min">
+              <mat-label>Quantity: </mat-label>
+              <input
+                matInput
+                required
+                #qtyInput="ngModel"
+                type="number"
+                [min]="1"
+                [max]="product.inventory"
+                [(ngModel)]="qty"
+                name="quantity"
+                (change)="calcPayment(product.price, qty)"
+              />
+            </mat-form-field>
+            <mat-error *ngIf="qtyInput.invalid">
+              Please Enter the quantity
+            </mat-error>
+
+            <!-- card details-->
+            <div class="row">
+              <div class="col-md-7">
+                <div style="padding-top: 15px;">
+                  <mdb-icon fas icon="list"> </mdb-icon> Card:
+                  {{ " ...XXXX-XXXX-4419" }}
+                  <!--to be modified-->
+                </div>
+              </div>
+              <div class="col-md-5">
+                <a
+                  class="btn btn-sm"
+                  mdbBtn
+                  mdbWavesEffect
+                  color="secondary"
+                  (click)="cardDetails.show()"
+                >
+                  Card Details
+                </a>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="amount-pay">
+              <!-- full payment-->
+              <div *ngIf="product.pay_on_delivery == false">
+                <p>
+                  This item does not accept payment on delivery. <br />
+                  <b> Full payment should be paid now.</b>
+                </p>
+                <mat-form-field class="service-full-width">
+                  <mat-label>Paying Amount (Rs.): </mat-label>
+                  <input
+                    matInput
+                    readonly
+                    required
+                    type="number"
+                    [min]="totalAmount"
+                    [max]="totalAmount"
+                    class="amount-input"
+                    [(ngModel)]="totalAmount"
+                    name="amount_paid"
+                  />
+                </mat-form-field>
+              </div>
+
+              <!-- Partial payment-->
+              <div *ngIf="product.pay_on_delivery">
+                <p>
+                  Minimum of 10% of the Total amount should be paid now. <br />
+                  Rest can be paid on delivery.
+                </p>
+                <mat-form-field class="service-full-width">
+                  <mat-label>Paying Amount (Rs.): </mat-label>
+                  <input
+                    matInput
+                    required
+                    #payInput2="ngModel"
+                    type="number"
+                    [min]="totalAmount / 10"
+                    [max]="totalAmount"
+                    class="amount-input"
+                    [(ngModel)]="payAmount"
+                    name="amount_paid"
+                    (change)="payPalAmount = (payAmount / 190).toFixed(2)"
+                  />
+                </mat-form-field>
+                <mat-error *ngIf="payInput2.invalid">
+                  Please Enter a valid amount ( Min: Rs.{{
+                    totalAmount / 10
+                  }}
+                  Max: Rs.{{ totalAmount }} )
+                </mat-error>
+              </div>
+            </div>
+          </div>
+
+          <!-- payment display-->
+          <div class="col-md-4">
+            <div style="text-align: right;">
+              <p style="margin: 0px;">Price:</p>
+              <span class="duration-cls"
+                >Rs. {{ product.price + " /" + product.qty_type }}
+              </span>
+            </div>
+
+            <div style="text-align: right; padding-top: 12px;">
+              <p style="margin: 0px;">Delivery Charges:</p>
+              <span class="duration-cls"
+                >Rs. {{ delService.delivery_rate }}
+              </span>
+            </div>
+
+            <div
+              class="pay-dispaly pd-top-min"
+              style="text-align: right;"
+              *ngIf="product.promotions.length"
+            >
+              <p style="margin: 0px;">Discounts:</p>
+              <span class="payment-cls-promo">
+                <b> Rs. -{{ totalPromotion }}</b></span
+              >
+            </div>
+
+            <div
+              class="pay-dispaly"
+              style="text-align: right; padding-top: 12px;"
+            >
+              <p style="margin: 0px;">Total Amount:</p>
+              <span class="payment-cls">
+                <b> Rs. {{ totalAmount }}</b></span
+              >
+            </div>
+
+            <div
+              class="pay-dispaly"
+              style="text-align: right; padding-top: 12px;"
+              *ngIf="!product.pay_on_delivery"
+            >
+              <p style="margin: 0px;">Now Paying:</p>
+              <span class="payment-cls">
+                <b> Rs. {{ totalAmount }}</b></span
+              >
+            </div>
+
+            <div
+              class="pay-dispaly pd-top-min"
+              style="text-align: right;"
+              *ngIf="product.pay_on_delivery"
+            >
+              <p style="margin: 0px;">Now Paying:</p>
+              <span class="payment-cls-min">
+                <b>
+                  Rs.
+                  {{ totalAmount >= payAmount ? payAmount : totalAmount }}</b
+                ></span
+              >
+            </div>
+
+            <div
+              class="pay-dispaly pd-top-min"
+              style="text-align: right;"
+              *ngIf="product.pay_on_delivery"
+            >
+              <p style="margin: 0px;">To be Paid:</p>
+              <span class="payment-cls-min">
+                <b>
+                  Rs.
+                  {{
+                    totalAmount - payAmount > 0 ? totalAmount - payAmount : 0
+                  }}</b
+                ></span
+              >
+            </div>
           </div>
         </div>
 
+        <hr />
+        <div class="comment-cls pd-top-min">
+          <h5><b>Delivery Address: </b></h5>
+          <mat-form-field class="service-full-width">
+            <textarea
+              type="text"
+              matInput
+              ngModel
+              name="delivery_address"
+              placeholder="Address to delivery with Postal Code..."
+              required
+              #deliveryAddress="ngModel"
+            ></textarea>
+            <mat-error *ngIf="deliveryAddress.invalid">
+              Please Enter a valid address
+            </mat-error>
+          </mat-form-field>
+          <br /><br />
+          <h5>Add a comment...</h5>
+          <mat-form-field class="service-full-width">
+            <textarea
+              type="text"
+              matInput
+              ngModel
+              name="comment"
+              placeholder="Please deliver with good quality"
+            ></textarea>
+          </mat-form-field>
+        </div>
+        <hr />
 
-<div class="container-fluid" *ngIf= "removed">
-  <div class="text-center" style="padding-top:20%">
-    <img src="./assets/images/other/tick.png" style="width:220px" alt="Delete Successful">
-    <br>
-    <h4><b>Product Removed!</b></h4>
+        <div class="btns text-center">
+          <button
+            mdbBtn
+            color="secondary"
+            class="btn btn-md"
+            mdbWavesEffect
+            id="placeOrder"
+            type="submit"
+          >
+            Pay with Card
+          </button>
+          <button
+            mdbBtn
+            color="secondary"
+            class="btn btn-md edtbt"
+            outline="yes"
+            mdbWavesEffect
+            (click)="orderUser = !orderUser && orderForm.resetForm()"
+          >
+            Cancel
+          </button>
+          <div style="margin-left: 15px; margin-right: 15px;" id="paybtn">
+            Paypal Checkout
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 </div>
 
+<!-- iF NOT LOGGED IN FOR BOOKING-->
+<div
+  class="container-fluid text-center"
+  *ngIf="!editmode && !removed && orderUser && !islogged"
+>
+  <div class="container text-center">
+    <img
+      src="./assets/images/vectors/error.png"
+      alt="Not Logged In"
+      style="width: 100%; margin-top: 30px; margin-bottom: 20px;"
+    />
+    <h2><b> You are not Logged in!</b></h2>
+    <p>
+      You need to <a routerLink="/login">Sign In</a> or
+      <a routerLink="/register"> Create an Account </a> to book a service.
+      <br />
+      Please <b> Sign In</b> or <b> Sign up</b> to continue.
+    </p>
+    <button
+      mdbBtn
+      mdbWavesEffect
+      color="secondary"
+      class="btn btn-md"
+      routerLink="/login"
+    >
+      Sign In & Continue
+    </button>
+    <button
+      mdbBtn
+      mdbWavesEffect
+      color="red"
+      class="btnn btn-md"
+      (click)="orderUser = !orderUser"
+    >
+      GO Back
+    </button>
+  </div>
+</div>
 
+<div class="container-fluid" *ngIf="removed">
+  <div class="text-center" style="padding-top: 20%;">
+    <img
+      src="./assets/images/other/tick.png"
+      style="width: 220px;"
+      alt="Delete Successful"
+    />
+    <br />
+    <h4><b>Product Removed!</b></h4>
+  </div>
+</div>
 
 <!--View Service Modal-->
 <div
@@ -523,12 +886,11 @@
   aria-labelledby="myBasicModalLabel"
   [config]="{ backdrop: false, ignoreBackdropClick: true }"
   aria-hidden="true"
-
 >
   <div
     class="modal-dialog modal-dialog-centered modal-md"
     role="document"
-    style="overflow-y: initial !important"
+    style="overflow-y: initial !important;"
   >
     <div class="modal-content">
       <div class="modal-header">
@@ -536,27 +898,25 @@
           type="button"
           class="close pull-right"
           aria-label="Close"
-          (click)="success=false"
+          (click)="success = false"
           (click)="cardDetails.hide()"
         >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
+        <h4 class="modal-title w-100" id="myModalLabel">
           <mat-icon>service</mat-icon>Card Details
         </h4>
       </div>
 
-      <div class="modal-body " style="height: 400px; overflow-y: auto;">
-
+      <div class="modal-body" style="height: 400px; overflow-y: auto;">
         <app-card-details></app-card-details>
-
       </div>
 
       <div class="modal-footer">
         <button
           mdbBtn
           color="link"
-          (click)="success=false"
+          (click)="success = false"
           (click)="cardDetails.hide()"
           mdbWavesEffect
         >
@@ -566,8 +926,6 @@
     </div>
   </div>
 </div>
-
-
 
 <!--Add Promotion Modal-->
 <div
@@ -579,12 +937,11 @@
   aria-labelledby="myBasicModalLabel"
   [config]="{ backdrop: false, ignoreBackdropClick: true }"
   aria-hidden="true"
-
 >
   <div
     class="modal-dialog modal-dialog-centered modal-md"
     role="document"
-    style="overflow-y: initial !important"
+    style="overflow-y: initial !important;"
   >
     <div class="modal-content">
       <div class="modal-header">
@@ -592,109 +949,152 @@
           type="button"
           class="close pull-right"
           aria-label="Close"
-          (click)="success=false"
+          (click)="success = false"
           (click)="promotionModal.hide()"
         >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
+        <h4 class="modal-title w-100" id="myModalLabel">
           <mat-icon>service</mat-icon>Add Promotion
         </h4>
       </div>
 
-      <div class="modal-body " style="height: 400px; overflow-y: auto;">
-
+      <div class="modal-body" style="height: 400px; overflow-y: auto;">
         <div class="pt-1">
           <form #addPromotionForm="ngForm">
             <div class="text-center">
               <p><b> Provide required details to create a promotion </b></p>
             </div>
-            <hr>
-                <div class="row">
-                  <div class="col-md-4">
-                    <mdb-icon fas icon="clock"></mdb-icon> <span> Promotion Title</span>
-                  </div>
-                  <div class="col-md-8">
-                    <mat-form-field class="service-full-width">
-                      <mat-label>  Enter Promotion title </mat-label>
-                      <input matInput
-                      required
-                      [(ngModel)]="promotion.title"
-                      name="promo_title"
-                      #taskTitle="ngModel">
-                      <mat-error *ngIf="taskTitle.invalid">A promotion should given a title </mat-error>
-                    </mat-form-field>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <mdb-icon fas icon="clock"></mdb-icon> <span> Precentage (On Price) </span>
-                  </div>
-                  <div class="col-md-8">
-                    <mat-form-field class="service-full-width">
-                      <mat-label>  Enter Promotion precentage </mat-label>
-                      <input matInput type="number"
-                      required
-                      [(ngModel)]="promotion.precentage"
-                      name="promo_precentage"
-                      #PromoPrecent="ngModel">
-                      <mat-error *ngIf="PromoPrecent.invalid">Promotion precentage is required </mat-error>
-                    </mat-form-field>
-                  </div>
-                </div>
-            <hr>
+            <hr />
+            <div class="row">
+              <div class="col-md-4">
+                <mdb-icon fas icon="clock"></mdb-icon>
+                <span> Promotion Title</span>
+              </div>
+              <div class="col-md-8">
+                <mat-form-field class="service-full-width">
+                  <mat-label> Enter Promotion title </mat-label>
+                  <input
+                    matInput
+                    required
+                    [(ngModel)]="promotion.title"
+                    name="promo_title"
+                    #taskTitle="ngModel"
+                  />
+                  <mat-error *ngIf="taskTitle.invalid"
+                    >A promotion should given a title
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <mdb-icon fas icon="clock"></mdb-icon>
+                <span> Precentage (On Price) </span>
+              </div>
+              <div class="col-md-8">
+                <mat-form-field class="service-full-width">
+                  <mat-label> Enter Promotion precentage </mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    required
+                    [(ngModel)]="promotion.precentage"
+                    name="promo_precentage"
+                    #PromoPrecent="ngModel"
+                  />
+                  <mat-error *ngIf="PromoPrecent.invalid"
+                    >Promotion precentage is required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <hr />
             <div class="row">
               <div class="col-md-6">
-                <mdb-icon fas icon="calendar-alt"></mdb-icon> <span> <b> Starting Date  </b></span> <br>
-                <mat-form-field class="pt-1" >
-                  <mat-label > From Date : </mat-label>
-                  <input matInput [matDatepicker]="picker1" required [min]="today"
-                  name="from_date" [(ngModel)]="start" #fDate="ngModel"
-                  (dateChange) = "end = start "/>
+                <mdb-icon fas icon="calendar-alt"></mdb-icon>
+                <span> <b> Starting Date </b></span> <br />
+                <mat-form-field class="pt-1">
+                  <mat-label> From Date : </mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="picker1"
+                    required
+                    [min]="today"
+                    name="from_date"
+                    [(ngModel)]="start"
+                    #fDate="ngModel"
+                    (dateChange)="end = start"
+                  />
                   <mat-datepicker-toggle
                     matSuffix
                     [for]="picker1"
                   ></mat-datepicker-toggle>
                   <mat-datepicker #picker1 [startAt]="start"></mat-datepicker>
-                  <mat-error *ngIf="fDate.invalid">Please select a date</mat-error>
+                  <mat-error *ngIf="fDate.invalid"
+                    >Please select a date</mat-error
+                  >
                 </mat-form-field>
               </div>
               <div class="col-md-6">
-                <mdb-icon fas icon="calendar-alt"></mdb-icon> <span><b> To Date </b></span> <br>
-                <mat-form-field class="pt-1" >
-                  <mat-label > To Date : </mat-label>
-                  <input matInput [matDatepicker]="picker2" required [min]="today"
-                  name="to_date" [(ngModel)]="end" #tDate="ngModel"
+                <mdb-icon fas icon="calendar-alt"></mdb-icon>
+                <span><b> To Date </b></span> <br />
+                <mat-form-field class="pt-1">
+                  <mat-label> To Date : </mat-label>
+                  <input
+                    matInput
+                    [matDatepicker]="picker2"
+                    required
+                    [min]="today"
+                    name="to_date"
+                    [(ngModel)]="end"
+                    #tDate="ngModel"
                   />
                   <mat-datepicker-toggle
                     matSuffix
                     [for]="picker2"
                   ></mat-datepicker-toggle>
                   <mat-datepicker #picker2 [startAt]="end"></mat-datepicker>
-                  <mat-error *ngIf="tDate.invalid">Please select a date</mat-error>
+                  <mat-error *ngIf="tDate.invalid"
+                    >Please select a date</mat-error
+                  >
                 </mat-form-field>
               </div>
             </div>
-            <hr>
-            <div class="text-center" >
-              <button  mdbBtn mdbWavesEffect color="secondary" text="white" class="btn btn-md"
-              (click)="addPromotion()" (click) = "addPromotionForm.resetForm()" (click) = "promotionModal.hide()">
+            <hr />
+            <div class="text-center">
+              <button
+                mdbBtn
+                mdbWavesEffect
+                color="secondary"
+                text="white"
+                class="btn btn-md"
+                (click)="addPromotion()"
+                (click)="addPromotionForm.resetForm()"
+                (click)="promotionModal.hide()"
+              >
                 Create Promotion
               </button>
-              <button  mdbBtn mdbWavesEffect color="red" text="white" class="btn btn-md"
-              (click)="promotionModal.hide()" >
+              <button
+                mdbBtn
+                mdbWavesEffect
+                color="red"
+                text="white"
+                class="btn btn-md"
+                (click)="promotionModal.hide()"
+              >
                 Discard
               </button>
             </div>
           </form>
-          </div>
+        </div>
       </div>
 
       <div class="modal-footer">
         <button
           mdbBtn
           color="link"
-          (click)="success=false"
+          (click)="success = false"
           (click)="promotionModal.hide()"
           mdbWavesEffect
         >

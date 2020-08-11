@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Subscription } from 'rxjs';
 import { EventService } from '../event.service';
 import { ActivatedRoute } from '@angular/router';
@@ -34,7 +34,7 @@ export class EventPlanComponent implements OnInit, OnDestroy {
   editTask = false;
 
   // selected task
-  selectedTask: Task ;
+  selectedTask: Task;
 
   // spent budget
   spentBudget = 0;
@@ -53,14 +53,14 @@ export class EventPlanComponent implements OnInit, OnDestroy {
     this.eventService.getEvent(this.eventId);
     this.eventSub = this.eventService.getEventUpdatedListener()
       .subscribe((recievedData: TheEvent) => {
-      this.event = recievedData;
-      this.tasks = recievedData.event_segments.tasks;
-      this.services = recievedData.event_segments.services;
-      this.products = recievedData.event_segments.products;
-      this.productCategories = recievedData.product_categories;
-      this.serviceCategories = recievedData.service_categories;
-      console.log(this.tasks);
-    });
+        this.event = recievedData;
+        this.tasks = recievedData.event_segments.tasks;
+        this.services = recievedData.event_segments.services;
+        this.products = recievedData.event_segments.products;
+        this.productCategories = recievedData.product_categories;
+        this.serviceCategories = recievedData.service_categories;
+        console.log(this.tasks);
+      });
   }
 
   ngOnDestroy() {
@@ -88,7 +88,7 @@ export class EventPlanComponent implements OnInit, OnDestroy {
 
   // update event  changes at the end - onDestroy
   updateEventChanges(tasks: Task[], eventId: string) {
-   this.eventService.updateTasks(tasks, eventId);
+    this.eventService.updateTasks(tasks, eventId);
   }
 
   // functions to select or add new service/ product to the list
@@ -102,20 +102,20 @@ export class EventPlanComponent implements OnInit, OnDestroy {
 
   emitItems(category: string, budget: number, eventId: string) {
     // pass date to be used in services filter view
-    this.eventService.setSelectedFilteration({category, allocated_budget: budget, eventId});
+    this.eventService.setSelectedFilteration({ category, allocated_budget: budget, eventId });
   }
 
 
   // get budget allocation
   getAllocation(precentage: number): number {
-   return Math.round((this.event.total_budget * precentage)/ 100);
+    return Math.round((this.event.total_budget * precentage) / 100);
   }
 
   // set emitted task into tasks list
   setTask(event: any) {
     let index: number;
-    for (const t of this.tasks){
-      if ( t.task_id === event.task_id){
+    for (const t of this.tasks) {
+      if (t.task_id === event.task_id) {
         index = this.tasks.indexOf(t);
         console.log(index);
       }
@@ -130,7 +130,7 @@ export class EventPlanComponent implements OnInit, OnDestroy {
     let output = 0;
     if (total - spent >= 0) {
       output = (total - spent);
-    };
+    }
     return output;
   }
 

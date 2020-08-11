@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
-import { Router } from '@angular/router';
 import * as io from 'socket.io-client';
 
 import {
@@ -19,18 +18,12 @@ import {
 } from './serviceprovider.model';
 import { Email } from '../eventplanner/eventplanner.model';
 import { SuccessComponent } from 'src/app/success/success.component';
-import { PaymentData, MerchantPayments } from '../admin/admin.model';
+import { MerchantPayments } from '../admin/admin.model';
 import { getUrl, getSocketUrl } from 'src/assets/url';
 
 @Injectable({ providedIn: 'root' })
 export class ServiceProviderService {
-  // socket connection
-  private socket = io(getSocketUrl());
-
-  // api url
-  url = getUrl();
-
-  // subjects
+  // observer  pattern - subjects
   private bookingsUpdated = new Subject<Booking[]>();
   private appointmentsUpdated = new Subject<Appointment[]>();
   private calendarBookingsUpdated = new Subject<CalendarBooking[]>();
@@ -48,6 +41,10 @@ export class ServiceProviderService {
   private paymentDetailsUpdated = new Subject<any>();
   private spIdUpdated = new Subject<string>();
 
+  // socket connection
+  private socket = io(getSocketUrl());
+  // api url
+  private url = getUrl();
   // recieved bookings
   private bookings: Booking[];
   // recieved appointments
@@ -68,81 +65,7 @@ export class ServiceProviderService {
   // get service provider ID for report generation
   private spId: string;
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    public dialog: MatDialog
-  ) { }
-
-  // change booking stste
-  changeBookingState(bookingState: { bookingId: string; state: string }) {
-    this.http
-      .post<{ message: string; booking: Booking }>(
-        this.url + 'sp/booking/edit',
-        bookingState
-      )
-      .subscribe((recievedData) => {
-        this.booking = recievedData.booking;
-        this.bookingUpdated.next(this.booking);
-        this.sendBookingState(
-          bookingState.bookingId,
-          recievedData.booking.service_name,
-          bookingState.state
-        );
-        this.dialog.open(SuccessComponent, {
-          data: { message: recievedData.message },
-        });
-      });
-  }
-
-  // change booking stste
-  updateBookingState(bookingState: { bookingId: string; state: string }) {
-    this.http
-      .post<{ message: string; booking: Booking }>(
-        this.url + 'sp/booking/edit',
-        bookingState
-      )
-      .subscribe((recievedData) => {
-        this.sendBookingState(
-          bookingState.bookingId,
-          recievedData.booking.service_name,
-          bookingState.state
-        );
-      });
-  }
-
-  // change appointment stste
-  changeAppointmentState(appointState: { appointId: string; state: string }) {
-    this.http
-      .post<{ message: string; appointment: Appointment }>(
-        this.url + 'sp/appoint/edit',
-        appointState
-      )
-      .subscribe((recievedData) => {
-        this.appointment = recievedData.appointment;
-        this.appointmentUpdated.next(this.appointment);
-        this.sendAppointmentState(
-          appointState.appointId,
-          recievedData.appointment.service_name,
-          appointState.state
-        );
-        this.dialog.open(SuccessComponent, {
-          data: { message: recievedData.message },
-        });
-      });
-  }
-
-  // send emails
-  sendEmail(mail: Email) {
-    this.http
-      .post<{ message: string }>(this.url + 'sp/mail', mail)
-      .subscribe((recievedData) => {
-        console.log(recievedData.message);
-        this.dialog.open(SuccessComponent, {
-          data: { message: recievedData.message },
-        });
-      });
-  }
+  constructor(private http: HttpClient, public dialog: MatDialog) {}
 
   // get methods
 
@@ -164,8 +87,10 @@ export class ServiceProviderService {
       });
   }
 
+  // getters
+
   // get list of bookings of an event planner
-  getBookings() {
+  public getBookings() {
     this.http
       .get<{ message: string; bookings: Booking[] }>(
         this.url + 'sp/booking/get'
@@ -177,7 +102,7 @@ export class ServiceProviderService {
   }
 
   // get list of appointments of an event planner
-  getAppointments() {
+  public getAppointments() {
     this.http
       .get<{ message: string; appointments: Appointment[] }>(
         this.url + 'sp/appoint/get'
@@ -189,7 +114,7 @@ export class ServiceProviderService {
   }
 
   // get single booking
-  getBooking(bookingId: string) {
+  public getBooking(bookingId: string) {
     this.http
       .get<{ message: string; booking: Booking }>(
         this.url + 'sp/booking/get/' + bookingId
@@ -201,7 +126,7 @@ export class ServiceProviderService {
   }
 
   // get single appointment
-  getAppointment(appointId: string) {
+  public getAppointment(appointId: string) {
     this.http
       .get<{ message: string; appointment: Appointment }>(
         this.url + 'sp/appoint/get/' + appointId
@@ -212,177 +137,8 @@ export class ServiceProviderService {
       });
   }
 
-  // get stat for report generation (only once)
-  getReportStat() {
-    this.http
-      .get<{
-        message: string;
-        appoints: AppointStat[];
-        bookings: BookingStat[];
-      }>(this.url + 'sp/stat/get')
-      .subscribe((recievedData) => {
-        this.bookingStat = recievedData.bookings;
-        this.appointStat = recievedData.appoints;
-        this.reportStatUpdated.next(true);
-      });
-  }
-
-  // update bookinfs on completion !!!! realtime
-  updateBookings() {
-    this.http
-      .get<{ message: string; bookings: Booking[] }>(
-        this.url + 'sp/booking/get'
-      )
-      .subscribe((recievedBookings) => {
-        this.checkBookings(recievedBookings.bookings);
-      });
-  }
-
-  async checkBookings(recievedBookings: Booking[]) {
-    const tday = new Date();
-    const newBookings: Booking[] = recievedBookings;
-    for (const book of recievedBookings) {
-      const toDate = new Date(book.to_date);
-      if (book.state === 'pending' && toDate <= tday) {
-        console.log('found', book.booking_id);
-        this.updateBookingState({
-          bookingId: book.booking_id,
-          state: 'completed',
-        });
-        newBookings.splice(recievedBookings.indexOf(book));
-      }
-    }
-    await this.addData(newBookings);
-  }
-
-  addData(recievedBookings: Booking[]) {
-    return new Promise((resolve) => {
-      this.bookings = recievedBookings;
-      this.bookings = recievedBookings;
-      this.bookingsUpdated.next([...this.bookings]);
-    });
-  }
-
-  // serviceprovider report generation handeling
-
-  // get service provider names for reporting
-  getSpNames() {
-    this.http
-      .get<{
-        message: string;
-        spnames: { service_name: string; service_id: string }[];
-      }>(this.url + 'sp/get/spnames')
-      .subscribe((res) => {
-        this.spNamesUpdated.next(res.spnames);
-      });
-  }
-
-  getSPId() {
-    this.http.get<{ id: string }>(this.url + 'sp/get/spid').subscribe((res) => {
-      this.spId = res.id;
-      this.spIdUpdated.next(res.id);
-    });
-  }
-
-  // get booking details for service order report
-  public getServiceOrderReport(fromDate: string, toDate: string) {
-    this.http
-      .post<{ message: string; bookings: BookingReport[] }>(
-        this.url + 'sp/reports/booking',
-        { fromDate, toDate }
-      )
-      .subscribe((res) => {
-        console.log(res.message);
-        this.bookingReportUpdated.next(res.bookings);
-      });
-  }
-
-  // get appointment details for service order report
-  public getServiceAppointReport(fromDate: string, toDate: string) {
-    this.http
-      .post<{ message: string; appoints: AppointmentReport[] }>(
-        this.url + 'sp/reports/appoint',
-        { fromDate, toDate }
-      )
-      .subscribe((res) => {
-        console.log(res.message);
-        this.appointReportUpdated.next(res.appoints);
-      });
-  }
-
-  // get payments & earnings details for service order report
-  public getPaymentEarningReport() {
-    this.http
-      .get<{ message: string; payments: MerchantPayments; earnings: any[] }>(
-        this.url + 'sp/reports/payment'
-      )
-      .subscribe((res) => {
-        console.log(res);
-        this.paymentDetailsUpdated.next(res);
-      });
-  }
-
-  // listners for subjects
-  getBookingsUpdateListener() {
-    return this.bookingsUpdated.asObservable();
-  }
-
-  getAppointmentsUpdateListener() {
-    return this.appointmentsUpdated.asObservable();
-  }
-
-  getBookingUpdatedListener() {
-    return this.bookingUpdated.asObservable();
-  }
-
-  getAppointmentUpdatedListener() {
-    return this.appointmentUpdated.asObservable();
-  }
-
-  getDashStatUpdatedListener() {
-    return this.dashStatUpdated.asObservable();
-  }
-
-  getEarningstUpdatedListener() {
-    return this.earningsUpdated.asObservable();
-  }
-
-  getPaystatUpdatedListener() {
-    return this.payStatupdated.asObservable();
-  }
-
-  getCalendarBookingsUpdatedListener() {
-    return this.calendarBookingsUpdated.asObservable();
-  }
-
-  getReportStatUpdatedListener() {
-    return this.reportStatUpdated.asObservable();
-  }
-
-  // report genration related listeners
-
-  getSpNamesupdatedListener() {
-    return this.spNamesUpdated.asObservable();
-  }
-
-  getBookingreportUpdatedListener() {
-    return this.bookingReportUpdated.asObservable();
-  }
-
-  getAppointreportUpdatedListener() {
-    return this.appointReportUpdated.asObservable();
-  }
-
-  getPaymentsDetailsUpdatedListener() {
-    return this.paymentDetailsUpdated.asObservable();
-  }
-
-  getSpIdUpdatedListener() {
-    return this.spIdUpdated.asObservable();
-  }
-
   // get dashboard stats
-  getDashStat() {
+  public getDashStat() {
     // initial declaration
     const dashStat: DashStat = {
       pending_bookings: 0,
@@ -448,7 +204,7 @@ export class ServiceProviderService {
   }
 
   // get business stat for business profile
-  getEarnings() {
+  public getEarnings() {
     const earnings: Earnings[] = [];
 
     // loop through bookings
@@ -472,6 +228,200 @@ export class ServiceProviderService {
       this.earnings = earnings;
       this.earningsUpdated.next(earnings);
     }, 1000);
+  }
+
+  // serviceprovider report generation handeling
+
+  // get service provider names for reporting
+  public getSpNames() {
+    this.http
+      .get<{
+        message: string;
+        spnames: { service_name: string; service_id: string }[];
+      }>(this.url + 'sp/get/spnames')
+      .subscribe((res) => {
+        this.spNamesUpdated.next(res.spnames);
+      });
+  }
+
+  // get Current Service Provider ID for report validation
+  public getSPId() {
+    this.http.get<{ id: string }>(this.url + 'sp/get/spid').subscribe((res) => {
+      this.spId = res.id;
+      this.spIdUpdated.next(res.id);
+    });
+  }
+
+  // get booking details for service order report
+  public getServiceOrderReport(fromDate: string, toDate: string) {
+    this.http
+      .post<{ message: string; bookings: BookingReport[] }>(
+        this.url + 'sp/reports/booking',
+        { fromDate, toDate }
+      )
+      .subscribe((res) => {
+        console.log(res.message);
+        this.bookingReportUpdated.next(res.bookings);
+      });
+  }
+
+  // get appointment details for service order report
+  public getServiceAppointReport(fromDate: string, toDate: string) {
+    this.http
+      .post<{ message: string; appoints: AppointmentReport[] }>(
+        this.url + 'sp/reports/appoint',
+        { fromDate, toDate }
+      )
+      .subscribe((res) => {
+        console.log(res.message);
+        this.appointReportUpdated.next(res.appoints);
+      });
+  }
+
+  // get payments & earnings details for service order report
+  public getPaymentEarningReport() {
+    this.http
+      .get<{ message: string; payments: MerchantPayments; earnings: any[] }>(
+        this.url + 'sp/reports/payment'
+      )
+      .subscribe((res) => {
+        console.log(res);
+        this.paymentDetailsUpdated.next(res);
+      });
+  }
+
+  // get stat for report generation (only once)
+  public getReportStat() {
+    this.http
+      .get<{
+        message: string;
+        appoints: AppointStat[];
+        bookings: BookingStat[];
+      }>(this.url + 'sp/stat/get')
+      .subscribe((recievedData) => {
+        this.bookingStat = recievedData.bookings;
+        this.appointStat = recievedData.appoints;
+        this.reportStatUpdated.next(true);
+      });
+  }
+
+  // setters
+
+  // change booking stste
+  public changeBookingState(bookingState: {
+    bookingId: string;
+    state: string;
+  }) {
+    this.http
+      .post<{ message: string; booking: Booking }>(
+        this.url + 'sp/booking/edit',
+        bookingState
+      )
+      .subscribe((recievedData) => {
+        this.booking = recievedData.booking;
+        this.bookingUpdated.next(this.booking);
+        this.sendBookingState(
+          bookingState.bookingId,
+          recievedData.booking.service_name,
+          bookingState.state
+        );
+        this.dialog.open(SuccessComponent, {
+          data: { message: recievedData.message },
+        });
+      });
+  }
+
+  // change booking stste : without generating a result
+  public updateBookingState(bookingState: {
+    bookingId: string;
+    state: string;
+  }) {
+    this.http
+      .post<{ message: string; booking: Booking }>(
+        this.url + 'sp/booking/edit',
+        bookingState
+      )
+      .subscribe((recievedData) => {
+        this.sendBookingState(
+          bookingState.bookingId,
+          recievedData.booking.service_name,
+          bookingState.state
+        );
+      });
+  }
+
+  // change appointment stste
+  public changeAppointmentState(appointState: {
+    appointId: string;
+    state: string;
+  }) {
+    this.http
+      .post<{ message: string; appointment: Appointment }>(
+        this.url + 'sp/appoint/edit',
+        appointState
+      )
+      .subscribe((recievedData) => {
+        this.appointment = recievedData.appointment;
+        this.appointmentUpdated.next(this.appointment);
+        this.sendAppointmentState(
+          appointState.appointId,
+          recievedData.appointment.service_name,
+          appointState.state
+        );
+        this.dialog.open(SuccessComponent, {
+          data: { message: recievedData.message },
+        });
+      });
+  }
+
+  // send service provider activities related emails
+  public sendEmail(mail: Email) {
+    this.http
+      .post<{ message: string }>(this.url + 'sp/mail', mail)
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.dialog.open(SuccessComponent, {
+          data: { message: recievedData.message },
+        });
+      });
+  }
+
+  // update bookinfs on completion !!!! realtime
+  public updateBookings() {
+    this.http
+      .get<{ message: string; bookings: Booking[] }>(
+        this.url + 'sp/booking/get'
+      )
+      .subscribe((recievedBookings) => {
+        this.checkBookings(recievedBookings.bookings);
+      });
+  }
+
+  // change booking state to completed if the day of completion has exceeeded : Automated Process
+  async checkBookings(recievedBookings: Booking[]) {
+    const tday = new Date();
+    const newBookings: Booking[] = recievedBookings;
+    for (const book of recievedBookings) {
+      const toDate = new Date(book.to_date);
+      if (book.state === 'pending' && toDate <= tday) {
+        console.log('found', book.booking_id);
+        this.updateBookingState({
+          bookingId: book.booking_id,
+          state: 'completed',
+        });
+        newBookings.splice(recievedBookings.indexOf(book));
+      }
+    }
+    await this.addData(newBookings);
+  }
+
+  // helper function to set sorted data
+  public addData(recievedBookings: Booking[]) {
+    return new Promise((resolve) => {
+      this.bookings = recievedBookings;
+      this.bookings = recievedBookings;
+      this.bookingsUpdated.next([...this.bookings]);
+    });
   }
 
   // realtime notifications with socket.io
@@ -518,5 +468,64 @@ export class ServiceProviderService {
       };
     });
     return observable;
+  }
+
+  // observer pattern :  listners for subjects
+  public getBookingsUpdateListener() {
+    return this.bookingsUpdated.asObservable();
+  }
+
+  public getAppointmentsUpdateListener() {
+    return this.appointmentsUpdated.asObservable();
+  }
+
+  public getBookingUpdatedListener() {
+    return this.bookingUpdated.asObservable();
+  }
+
+  public getAppointmentUpdatedListener() {
+    return this.appointmentUpdated.asObservable();
+  }
+
+  public getDashStatUpdatedListener() {
+    return this.dashStatUpdated.asObservable();
+  }
+
+  public getEarningstUpdatedListener() {
+    return this.earningsUpdated.asObservable();
+  }
+
+  public getPaystatUpdatedListener() {
+    return this.payStatupdated.asObservable();
+  }
+
+  public getCalendarBookingsUpdatedListener() {
+    return this.calendarBookingsUpdated.asObservable();
+  }
+
+  public getReportStatUpdatedListener() {
+    return this.reportStatUpdated.asObservable();
+  }
+
+  // report genration related listeners
+
+  public getSpNamesupdatedListener() {
+    return this.spNamesUpdated.asObservable();
+  }
+
+  public getBookingreportUpdatedListener() {
+    return this.bookingReportUpdated.asObservable();
+  }
+
+  public getAppointreportUpdatedListener() {
+    return this.appointReportUpdated.asObservable();
+  }
+
+  public getPaymentsDetailsUpdatedListener() {
+    return this.paymentDetailsUpdated.asObservable();
+  }
+
+  public getSpIdUpdatedListener() {
+    return this.spIdUpdated.asObservable();
   }
 }

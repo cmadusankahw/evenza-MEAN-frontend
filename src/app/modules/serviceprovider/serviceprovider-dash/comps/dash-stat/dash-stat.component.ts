@@ -19,20 +19,20 @@ export class DashStatComponent implements OnInit, OnDestroy {
   dashCounts: DashStat;
 
 
-  constructor(private serviceProviderService: ServiceProviderService ) { }
+  constructor(private serviceProviderService: ServiceProviderService) { }
 
   ngOnInit() {
-   this.serviceProviderService.getReportStat();
-   this.reportStatSub = this.serviceProviderService.getReportStatUpdatedListener()
-          .subscribe((recievedData: boolean) => {
-            if(recievedData) {
-              this.serviceProviderService.getDashStat();
-              this.dashStatSub = this.serviceProviderService.getDashStatUpdatedListener()
-              .subscribe ( (recievedStat: DashStat) => {
-                this.dashCounts = recievedStat;
-                console.log(this.dashCounts);
-              })
-            }
+    this.serviceProviderService.getReportStat();
+    this.reportStatSub = this.serviceProviderService.getReportStatUpdatedListener()
+      .subscribe((recievedData: boolean) => {
+        if (recievedData) {
+          this.serviceProviderService.getDashStat();
+          this.dashStatSub = this.serviceProviderService.getDashStatUpdatedListener()
+            .subscribe((recievedStat: DashStat) => {
+              this.dashCounts = recievedStat;
+              console.log(this.dashCounts);
+            })
+        }
       });
   }
 

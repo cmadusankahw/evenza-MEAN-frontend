@@ -29,21 +29,21 @@ export class AdminBusinessverifyComponent implements OnInit, OnDestroy {
 
   selectedVerification: BusinessVerifications;
 
-  constructor( private authService: AuthService) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
-       // get admin for child comp use
-   this.authService.getBusinessVerifications();
-   this.verifySub = this.authService.getBusinessVerificationsUpdateListener().subscribe(
-     res => {
-       if (res) {
-         this.businessVerifications = res;
-         console.log(this.businessVerifications);
-         this.dataSource = new MatTableDataSource(this.businessVerifications);
-         this.dataSource.paginator = this.paginator;
-         this.dataSource.sort = this.sort;
-      }
-     });
+    // get admin for child comp use
+    this.authService.getBusinessVerifications();
+    this.verifySub = this.authService.getBusinessVerificationsUpdateListener().subscribe(
+      res => {
+        if (res) {
+          this.businessVerifications = res;
+          console.log(this.businessVerifications);
+          this.dataSource = new MatTableDataSource(this.businessVerifications);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
+      });
   }
 
 
@@ -73,7 +73,7 @@ export class AdminBusinessverifyComponent implements OnInit, OnDestroy {
     }
   }
 
-  verifyBusiness(id: BusinessVerifications){
+  verifyBusiness(id: BusinessVerifications) {
     this.authService.approveBusinessVerification(id);
   }
 

@@ -1,340 +1,483 @@
-
 <!--Business Profile View-->
 <div class="planner-pd" *ngIf="!editmode">
   <section class="px-md-5 mx-md-5 dark-grey-text">
-
     <!--customize profile section-->
-      <div class="row cust-row" *ngIf="isowner">
-              <div class="col-md-8">
-                <p>Need to change something? Customize your Profile. </p>
-              </div>
-              <div class="col-md-4">
-                <a type="button" mdbBtn color="primary" class="waves-light btn btn-md  cust-btn"
-                (click)="editmode = !editmode" mdbWavesEffect>Customize Profile
-                </a>
-              </div>
+    <div class="row cust-row" *ngIf="isowner">
+      <div class="col-md-8">
+        <p>Need to change something? Customize your Profile.</p>
       </div>
-
+      <div class="col-md-4">
+        <a
+          type="button"
+          mdbBtn
+          color="primary"
+          class="waves-light btn btn-md cust-btn"
+          (click)="editmode = !editmode"
+          mdbWavesEffect
+          >Customize Profile
+        </a>
+      </div>
+    </div>
 
     <!--profile header-->
-    <div class="container-fluid header-cls shadow ">
+    <div class="container-fluid header-cls shadow">
       <div class="row f-image">
-        <img src='./assets/images/back/plannerProfile.jpg' alt="Profile Cover" class="feature-img" >
+        <img
+          src="./assets/images/back/plannerProfile.jpg"
+          alt="Profile Cover"
+          class="feature-img"
+        />
       </div>
       <div class="row logo-cls">
         <div class="col-md-2">
-            <img src="{{eventPlanner ? eventPlanner.profile_pic : imageUrl}}"
-            alt="User Pic" class="img-thumbnail logo-img">
+          <img
+            src="{{ eventPlanner ? eventPlanner.profile_pic : imageUrl }}"
+            alt="User Pic"
+            class="img-thumbnail logo-img"
+          />
         </div>
         <div class="col-md-10">
-          <h2 class="txt-title"> {{eventPlanner ? eventPlanner.first_name : 'Loading...'}}  {{eventPlanner ? eventPlanner.last_name : ' Loading...'}} </h2>
+          <h2 class="txt-title">
+            {{ eventPlanner ? eventPlanner.first_name : "Loading..." }}
+            {{ eventPlanner ? eventPlanner.last_name : " Loading..." }}
+          </h2>
         </div>
       </div>
 
       <!-- profile content-->
       <div class="page-content">
-        <div class="content-title" >
+        <div class="content-title">
           Personal Details
         </div>
-          <hr>
+        <hr />
 
-                <!--row 1-->
+        <!--row 1-->
 
-              <!--row 1-->
-            <div class="row div-content">
-              <div class="col-md-5 inst-text">
-                <mdb-icon fas icon="envelope"></mdb-icon> <span> Your Email </span>
-                <br>
-                <p class="infotxt"> This is your Personal email-address </p>
-              </div>
+        <!--row 1-->
+        <div class="row div-content">
+          <div class="col-md-5 inst-text">
+            <mdb-icon fas icon="envelope"></mdb-icon> <span> Your Email </span>
+            <br />
+            <p class="infotxt">This is your Personal email-address</p>
+          </div>
 
-              <div class="col-md-7 profile-text">
-                  <span> {{eventPlanner ? eventPlanner.email : 'Loading...'}}</span>
-              </div>
-            </div>
-
-               <!--row 2-->
-               <div class="row">
-                <div class="col-md-5 inst-text">
-                  <mdb-icon fas icon="phone"></mdb-icon> <span> Your Contact No </span>
-                  <br>
-                  <p class="infotxt"> This number will be used for two-factor authentication </p>
-                </div>
-
-                <div class="col-md-7 profile-text">
-                    <span> {{eventPlanner ? eventPlanner.contact_no : 'Loading...'}}</span>
-                </div>
-              </div>
-
-                <!--row 2-->
-                <div class="row">
-                  <div class="col-md-5 inst-text">
-                    <mdb-icon fas icon="mercury"></mdb-icon> <span> Gender</span>
-                  </div>
-
-                  <div class="col-md-7 profile-text">
-                      <span> {{eventPlanner ? eventPlanner.gender : 'Loading...'}}</span>
-                  </div>
-                </div>
-
-                  <!--row 2-->
-                  <div class="row div-content">
-                    <div class="col-md-5 inst-text">
-                      <mdb-icon fas icon="birthday-cake"></mdb-icon> <span> Date of Birth</span>
-                    </div>
-
-                    <div class="col-md-7 profile-text">
-                        <span> {{eventPlanner ? eventPlanner.date_of_birth.slice(0,10) : 'Loading...'}}</span>
-                    </div>
-                  </div>
-
-                    <!--row 2-->
-                    <div class="row div-content">
-                      <div class="col-md-5 inst-text">
-                        <mdb-icon fas icon="home"></mdb-icon> <span> Your Address </span>
-                        <br>
-                        <p class="infotxt"> Please mention your primary address communications. </p>
-                      </div>
-
-                      <div class="col-md-7 profile-text">
-                          <span> {{eventPlanner ? eventPlanner.address_line1 : 'Loading...'}}</span>
-                          <br>
-                          <span> {{eventPlanner ? eventPlanner.address_line2: ' Loading...'}}</span>
-                          <br>
-                          <span> {{eventPlanner ? eventPlanner.postal_code: ' Loading...'}}</span>
-                      </div>
-                    </div>
-                    <br>
-              <div class="content-title" >
-                Your Account Details
-              </div>
-                <hr>
-               <!--row 3-->
-
-                <!--row 4-->
-                <div class="row div-content">
-                  <div class="col-md-5 inst-text">
-                    <mdb-icon fas icon="key"></mdb-icon> <span> Password </span>
-                  </div>
-
-                  <div class="col-md-7 profile-text">
-                      <span> ******* </span>
-                      <a type="button" mdbBtn color="secondary"
-                      class="waves-light btn btn-md  cust-btn btn-lm" mdbWavesEffect (click)="changePassword.show()">
-                        Change Password
-                  </a>
-                  </div>
-                </div>
-
-                  <!--row 3-->
-               <div class="row div-content">
-                <div class="col-md-5 inst-text">
-                  <mdb-icon fas icon="calendar-check"></mdb-icon> <span> Account Created Date </span>
-                </div>
-
-                <div class="col-md-7 profile-text">
-                    <span> {{eventPlanner ? eventPlanner.reg_date.slice(0,10) : 'Loading...'}}</span>
-                </div>
-              </div>
-
+          <div class="col-md-7 profile-text">
+            <span> {{ eventPlanner ? eventPlanner.email : "Loading..." }}</span>
+          </div>
         </div>
-     </div>
- </section>
-</div>
 
+        <!--row 2-->
+        <div class="row">
+          <div class="col-md-5 inst-text">
+            <mdb-icon fas icon="phone"></mdb-icon>
+            <span> Your Contact No </span>
+            <br />
+            <p class="infotxt">
+              This number will be used for two-factor authentication
+            </p>
+          </div>
+
+          <div class="col-md-7 profile-text">
+            <span>
+              {{ eventPlanner ? eventPlanner.contact_no : "Loading..." }}</span
+            >
+          </div>
+        </div>
+
+        <!--row 2-->
+        <div class="row">
+          <div class="col-md-5 inst-text">
+            <mdb-icon fas icon="mercury"></mdb-icon> <span> Gender</span>
+          </div>
+
+          <div class="col-md-7 profile-text">
+            <span>
+              {{ eventPlanner ? eventPlanner.gender : "Loading..." }}</span
+            >
+          </div>
+        </div>
+
+        <!--row 2-->
+        <div class="row div-content">
+          <div class="col-md-5 inst-text">
+            <mdb-icon fas icon="birthday-cake"></mdb-icon>
+            <span> Date of Birth</span>
+          </div>
+
+          <div class="col-md-7 profile-text">
+            <span>
+              {{
+                eventPlanner
+                  ? eventPlanner.date_of_birth.slice(0, 10)
+                  : "Loading..."
+              }}</span
+            >
+          </div>
+        </div>
+
+        <!--row 2-->
+        <div class="row div-content">
+          <div class="col-md-5 inst-text">
+            <mdb-icon fas icon="home"></mdb-icon> <span> Your Address </span>
+            <br />
+            <p class="infotxt">
+              Please mention your primary address communications.
+            </p>
+          </div>
+
+          <div class="col-md-7 profile-text">
+            <span>
+              {{
+                eventPlanner ? eventPlanner.address_line1 : "Loading..."
+              }}</span
+            >
+            <br />
+            <span>
+              {{
+                eventPlanner ? eventPlanner.address_line2 : " Loading..."
+              }}</span
+            >
+            <br />
+            <span>
+              {{
+                eventPlanner ? eventPlanner.postal_code : " Loading..."
+              }}</span
+            >
+          </div>
+        </div>
+        <br />
+        <div class="content-title">
+          Your Account Details
+        </div>
+        <hr />
+        <!--row 3-->
+
+        <!--row 4-->
+        <div class="row div-content">
+          <div class="col-md-5 inst-text">
+            <mdb-icon fas icon="key"></mdb-icon> <span> Password </span>
+          </div>
+
+          <div class="col-md-7 profile-text">
+            <span> ******* </span>
+            <a
+              type="button"
+              mdbBtn
+              color="secondary"
+              class="waves-light btn btn-md cust-btn btn-lm"
+              mdbWavesEffect
+              (click)="changePassword.show()"
+            >
+              Change Password
+            </a>
+          </div>
+        </div>
+
+        <!--row 3-->
+        <div class="row div-content">
+          <div class="col-md-5 inst-text">
+            <mdb-icon fas icon="calendar-check"></mdb-icon>
+            <span> Account Created Date </span>
+          </div>
+
+          <div class="col-md-7 profile-text">
+            <span>
+              {{
+                eventPlanner ? eventPlanner.reg_date.slice(0, 10) : "Loading..."
+              }}</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
 
 <!--customize profile section-->
 <div class="container-fluid" *ngIf="editmode">
-
-  <form class="service-form pd-top-min" #editProfile="ngForm" (submit)= "editUser(editProfile)">
-
-  <section class="px-md-5 mx-md-5 dark-grey-text">
+  <form
+    class="service-form pd-top-min"
+    #editProfile="ngForm"
+    (submit)="editUser(editProfile)"
+  >
+    <section class="px-md-5 mx-md-5 dark-grey-text">
       <!--edit content-->
       <div class="shadow">
-      <div class="pd-top-min text-center">
-
-        <div class="content-title page-content" >
-          Edit Personal Details
+        <div class="pd-top-min text-center">
+          <div class="content-title page-content">
+            Edit Personal Details
           </div>
 
-        <hr>
-        <!--row1-->
-        <div class="row">
-
-          <div class="col-md-3 inst-text" >
-            <mdb-icon fas icon="award"></mdb-icon> <span> Change Profile Picture: </span>
-          </div>
-
-          <div class="col-md-3 text-center">
-            <a role="button" mdbWavesEffect (click)="img.click()">
-              <img [src]="image ? imageUrl : eventPlanner.profile_pic"
-              alt="Profile Picture" class="img-thumbnail logo-img-edit">
-            </a>
-            <input type="file" hidden="true" id="img" #img
-            ngmodel name="image" accept="image/*" (change) = "onImageUploaded($event)">
-            <p><b>Click to Upload</b></p>
-          </div>
-
-        </div>
-
-
-        <div class="row page-content">
-          <div class="col-md-3 inst-text">
-            <mdb-icon fas icon="file-signature"></mdb-icon> <span> Your Name: </span>
-          </div>
-
-        <div class="col-md-7 text-center">
+          <hr />
+          <!--row1-->
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-3 inst-text">
+              <mdb-icon fas icon="award"></mdb-icon>
+              <span> Change Profile Picture: </span>
+            </div>
+
+            <div class="col-md-3 text-center">
+              <a role="button" mdbWavesEffect (click)="img.click()">
+                <img
+                  [src]="image ? imageUrl : eventPlanner.profile_pic"
+                  alt="Profile Picture"
+                  class="img-thumbnail logo-img-edit"
+                />
+              </a>
+              <input
+                type="file"
+                hidden="true"
+                id="img"
+                #img
+                ngmodel
+                name="image"
+                accept="image/*"
+                (change)="onImageUploaded($event)"
+              />
+              <p><b>Click to Upload</b></p>
+            </div>
+          </div>
+
+          <div class="row page-content">
+            <div class="col-md-3 inst-text">
+              <mdb-icon fas icon="file-signature"></mdb-icon>
+              <span> Your Name: </span>
+            </div>
+
+            <div class="col-md-7 text-center">
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field class="service-full-width">
+                    <mat-label>First Name </mat-label>
+                    <input
+                      matInput
+                      [ngModel]="eventPlanner.first_name"
+                      required
+                      name="first_name"
+                      #firstName="ngModel"
+                    />
+                    <mat-error *ngIf="firstName.invalid"
+                      >Please enter your first name</mat-error
+                    >
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="service-full-width">
+                    <mat-label>Last Name </mat-label>
+                    <input
+                      matInput
+                      [ngModel]="eventPlanner.last_name"
+                      required
+                      #lastName="ngModel"
+                      name="last_name"
+                    />
+                    <mat-error *ngIf="lastName.invalid"
+                      >Please enter your last name</mat-error
+                    >
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--row 2-->
+          <div class="row page-content">
+            <div class="col-md-3 inst-text">
+              <mdb-icon fas icon="envelope"></mdb-icon>
+              <span> Email Address:</span>
+              <p class="infotxt">
+                Note: This will only change your personal email address. Your
+                Sign in address will remain same.
+              </p>
+            </div>
+
+            <div class="col-md-7 text-center">
               <mat-form-field class="service-full-width">
-                <mat-label>First Name </mat-label>
-                <input matInput [ngModel]="eventPlanner.first_name" required
-                name="first_name" #firstName="ngModel">
-                <mat-error *ngIf="firstName.invalid">Please enter your first name</mat-error>
+                <mat-label>Email Address here </mat-label>
+                <input
+                  type="email"
+                  matInput
+                  [ngModel]="eventPlanner.email"
+                  required
+                  #email="ngModel"
+                  name="email"
+                  ngModel
+                />
+                <mat-error *ngIf="email.invalid"
+                  >Please enter a valid email address</mat-error
+                >
               </mat-form-field>
             </div>
-            <div class="col-md-6">
+          </div>
+
+          <!--row 2-->
+          <div class="row page-content">
+            <div class="col-md-3 inst-text">
+              <mdb-icon fas icon="phone"></mdb-icon> <span> Contact No:</span>
+              <p class="infotxt">
+                If modified, re-configuration of two-factor authentication is
+                required if enabled
+              </p>
+            </div>
+
+            <div class="col-md-7 text-center">
               <mat-form-field class="service-full-width">
-                <mat-label>Last Name </mat-label>
-                <input matInput   [ngModel]="eventPlanner.last_name" required
-                #lastName="ngModel" name="last_name">
-                <mat-error *ngIf="lastName.invalid">Please enter your last name</mat-error>
+                <mat-label> Contact No here </mat-label>
+                <input
+                  matInput
+                  [ngModel]="eventPlanner.contact_no"
+                  required
+                  #contactNo="ngModel"
+                  minlength="10"
+                  maxlength="10"
+                  name="contact_no"
+                />
+                <mat-error *ngIf="contactNo.invalid"
+                  >Contact No must contain 10 digits</mat-error
+                >
               </mat-form-field>
             </div>
           </div>
-         </div>
-       </div>
 
+          <!--row 3-->
+          <div class="row page-content">
+            <div class="col-md-3 inst-text">
+              <mdb-icon fas icon="mercury"></mdb-icon> <span> Gender:</span>
+            </div>
 
-         <!--row 2-->
-         <div class="row page-content">
-
-          <div class="col-md-3 inst-text">
-            <mdb-icon fas icon="envelope"></mdb-icon> <span> Email Address:</span>
-            <p class="infotxt"> Note: This will only change your personal email address. Your Sign in address will remain same.</p>
+            <div class="col-md-7 text-center">
+              <mat-form-field class="service-full-width">
+                <mat-label>Select Gender</mat-label>
+                <mat-select
+                  [ngModel]="eventPlanner.gender"
+                  required
+                  ngModel
+                  name="gender"
+                >
+                  <mat-option value="male">Male</mat-option>
+                  <mat-option value="female">Female</mat-option>
+                  <mat-option value="none">Prefer Not to Say</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
           </div>
 
-          <div class="col-md-7 text-center">
-            <mat-form-field class="service-full-width">
-              <mat-label>Email Address here </mat-label>
-              <input type="email" matInput [ngModel]="eventPlanner.email" required
-              #email="ngModel" name="email" ngModel >
-              <mat-error *ngIf="email.invalid">Please enter a valid email address</mat-error>
-            </mat-form-field>
-          </div>
-         </div>
+          <!--row 4-->
+          <div class="row page-content">
+            <div class="col-md-3 inst-text">
+              <mdb-icon fas icon="birthday-cake"></mdb-icon>
+              <span> Date of Birth:</span>
+            </div>
 
-            <!--row 2-->
-            <div class="row page-content">
-
-              <div class="col-md-3 inst-text">
-                <mdb-icon fas icon="phone"></mdb-icon> <span> Contact No:</span>
-                <p class="infotxt"> If modified, re-configuration of two-factor authentication is required if enabled</p>
-              </div>
-
-              <div class="col-md-7 text-center">
-                <mat-form-field class="service-full-width">
-                  <mat-label> Contact No here </mat-label>
-                  <input matInput [ngModel]="eventPlanner.contact_no" required
-                  #contactNo="ngModel" minlength="10" maxlength="10" name="contact_no">
-                  <mat-error *ngIf="contactNo.invalid">Contact No must contain 10 digits</mat-error>
-                </mat-form-field>
-              </div>
-             </div>
-
-
-             <!--row 3-->
-             <div class="row  page-content">
-
-              <div class="col-md-3 inst-text">
-                <mdb-icon fas icon="mercury"></mdb-icon> <span> Gender:</span>
-              </div>
-
-              <div class="col-md-7 text-center">
-                <mat-form-field class="service-full-width">
-                  <mat-label>Select Gender</mat-label>
-                  <mat-select [ngModel]="eventPlanner.gender" required
-                     ngModel name="gender">
-                    <mat-option value="male">Male</mat-option>
-                    <mat-option value="female">Female</mat-option>
-                    <mat-option value="none">Prefer Not to Say</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-             </div>
-
-              <!--row 4-->
-         <div class="row page-content">
-
-          <div class="col-md-3 inst-text">
-            <mdb-icon fas icon="birthday-cake"></mdb-icon> <span> Date of Birth:</span>
+            <div class="col-md-7 text-center">
+              <mat-form-field class="service-full-width">
+                <mat-label> Select Your Birthday </mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  required
+                  name="date_of_birth"
+                  [ngModel]="eventPlanner.date_of_birth"
+                  #birthday="ngModel"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker
+                  #picker
+                  [startAt]="eventPlanner.date_of_birth"
+                ></mat-datepicker>
+                <mat-error *ngIf="birthday.invalid"
+                  >Please select your Birthday</mat-error
+                >
+              </mat-form-field>
+            </div>
           </div>
 
-          <div class="col-md-7 text-center">
-            <mat-form-field class="service-full-width">
-              <mat-label> Select Your Birthday </mat-label>
-              <input matInput [matDatepicker]="picker" required
-              name="date_of_birth" [ngModel]="eventPlanner.date_of_birth" #birthday="ngModel" />
-              <mat-datepicker-toggle
-                matSuffix
-                [for]="picker"
-              ></mat-datepicker-toggle>
-              <mat-datepicker #picker [startAt]="eventPlanner.date_of_birth"></mat-datepicker>
-              <mat-error *ngIf="birthday.invalid">Please select your Birthday</mat-error>
-            </mat-form-field>
+          <!--row 6-->
+          <div class="row page-content">
+            <div class="col-md-3 inst-text">
+              <mdb-icon fas icon="home"></mdb-icon>
+              <span> Postal Address:</span>
+              <p class="infotxt">
+                This address will be used as default for deliveries
+              </p>
+            </div>
+
+            <div class="col-md-7 text-center">
+              <mat-form-field class="service-full-width">
+                <mat-label>Address Line 1 </mat-label>
+                <input
+                  matInput
+                  [ngModel]="eventPlanner.address_line1"
+                  required
+                  name="address_line1"
+                  #addressLine1="ngModel"
+                  ngModel
+                />
+                <mat-error *ngIf="addressLine1.invalid"
+                  >Address must be provided</mat-error
+                >
+              </mat-form-field>
+              <mat-form-field class="service-full-width">
+                <mat-label>Address Line 2 </mat-label>
+                <input
+                  matInput
+                  [ngModel]="eventPlanner.address_line2"
+                  name="address_line2"
+                  ngModel
+                />
+              </mat-form-field>
+              <mat-form-field class="service-full-width">
+                <mat-label>Postal Code </mat-label>
+                <input
+                  matInput
+                  [ngModel]="eventPlanner.postal_code"
+                  required
+                  name="postal_code"
+                  #postalCode="ngModel"
+                  ngModel
+                />
+                <mat-error *ngIf="postalCode.invalid"
+                  >Postal Code must be provided</mat-error
+                >
+              </mat-form-field>
+            </div>
           </div>
-         </div>
 
-               <!--row 6-->
-            <div class="row  page-content">
-
-              <div class="col-md-3 inst-text">
-                <mdb-icon fas icon="home"></mdb-icon> <span> Postal Address:</span>
-                <p class="infotxt">This address will be used as default for deliveries</p>
-              </div>
-
-              <div class="col-md-7 text-center">
-                <mat-form-field class="service-full-width">
-                  <mat-label>Address Line 1 </mat-label>
-                  <input matInput [ngModel]="eventPlanner.address_line1" required
-                  name="address_line1" #addressLine1="ngModel" ngModel>
-                  <mat-error *ngIf="addressLine1.invalid">Address must be provided</mat-error>
-                </mat-form-field>
-                <mat-form-field class="service-full-width">
-                  <mat-label>Address Line 2 </mat-label>
-                  <input matInput [ngModel]="eventPlanner.address_line2" name="address_line2" ngModel>
-                </mat-form-field >
-                <mat-form-field class="service-full-width">
-                  <mat-label>Postal Code </mat-label>
-                  <input matInput [ngModel]="eventPlanner.postal_code" required
-                  name="postal_code" #postalCode="ngModel" ngModel>
-                  <mat-error *ngIf="postalCode.invalid">Postal Code must be provided</mat-error>
-                </mat-form-field>
-              </div>
-             </div>
-
-            <hr>
-           <!--row 4-->
-
-
-    </div>
-     <!--save buttons-->
-  <div class="text-center">
-    <button type="button" mdbBtn color="secondary"
-    class="waves-light btn btn-md  cust-btn btn-tab" mdbWavesEffect
-    type="submit">Save Changes</button>
-    <button type="button" mdbBtn color="secondary"
-    class="waves-light btn btn-md  cust-btn btn-tab" mdbWavesEffect outline="yes"
-    (click)="editmode = !editmode" (click) ="editProfile.resetForm()">Discard</button>
-    </div>
-  </div>
-  </section>
-
-</form>
+          <hr />
+          <!--row 4-->
+        </div>
+        <!--save buttons-->
+        <div class="text-center">
+          <button
+            type="button"
+            mdbBtn
+            color="secondary"
+            class="waves-light btn btn-md cust-btn btn-tab"
+            mdbWavesEffect
+            type="submit"
+          >
+            Save Changes
+          </button>
+          <button
+            type="button"
+            mdbBtn
+            color="secondary"
+            class="waves-light btn btn-md cust-btn btn-tab"
+            mdbWavesEffect
+            outline="yes"
+            (click)="editmode = !editmode"
+            (click)="editProfile.resetForm()"
+          >
+            Discard
+          </button>
+        </div>
+      </div>
+    </section>
+  </form>
 </div>
-
-
-
 
 <!--change password Modal-->
 <div
@@ -347,106 +490,123 @@
   [config]="{ backdrop: false, ignoreBackdropClick: true }"
   aria-hidden="true"
 >
-<form #pwordForm="ngForm" (submit)="changeUserPassword(pwordForm)">
+  <form #pwordForm="ngForm" (submit)="changeUserPassword(pwordForm)">
+    <div
+      class="modal-dialog modal-dialog-centered"
+      role="document"
+      style="overflow-y: initial !important;"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <button
+            type="button"
+            class="close pull-right"
+            aria-label="Close"
+            (click)="changePassword.hide()"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel">
+            Change Password
+          </h4>
+        </div>
+        <div class="modal-body" style="height: 330px; overflow-y: auto;">
+          <!--row 2-->
+          <div class="row page-content">
+            <div class="col-md-5 inst-text">
+              <span> Current Password:</span>
+            </div>
 
-  <div
-    class="modal-dialog modal-dialog-centered"
-    role="document"
-    style="overflow-y: initial !important"
-  >
-    <div class="modal-content">
-      <div class="modal-header">
-        <button
-          type="button"
-          class="close pull-right"
-          aria-label="Close"
-          (click)="changePassword.hide()"
-        >
-          <span aria-hidden="true">×</span>
-        </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
-          Change Password
-        </h4>
-      </div>
-      <div class="modal-body " style="height: 330px; overflow-y: auto;" >
+            <div class="col-md-7 text-center">
+              <mat-form-field class="service-full-width">
+                <mat-label>Current Password here </mat-label>
+                <input
+                  type="password"
+                  matInput
+                  required
+                  name="current_password"
+                  #currentPword="ngModel"
+                  ngModel
+                />
+                <mat-error *ngIf="currentPword.invalid"
+                  >Current Password is required</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </div>
+          <hr />
 
-         <!--row 2-->
-         <div class="row page-content">
+          <!--row 2-->
+          <div class="row page-content">
+            <div class="col-md-5 inst-text">
+              <span> New Password:</span>
+            </div>
 
-          <div class="col-md-5 inst-text">
-             <span> Current Password:</span>
+            <div class="col-md-7 text-center">
+              <mat-form-field class="service-full-width">
+                <mat-label>New Password here </mat-label>
+                <input
+                  type="password"
+                  matInput
+                  required
+                  name="new_password1"
+                  #newPassword1="ngModel"
+                  ngModel
+                />
+                <mat-error *ngIf="newPassword1.invalid"
+                  >New Password cannot be empty</mat-error
+                >
+              </mat-form-field>
+            </div>
           </div>
 
-          <div class="col-md-7 text-center">
-            <mat-form-field class="service-full-width">
-              <mat-label>Current Password here </mat-label>
-              <input type="password" matInput required
-              name="current_password" #currentPword= "ngModel" ngModel>
-              <mat-error *ngIf="currentPword.invalid">Current Password is required</mat-error>
-            </mat-form-field>
+          <!--row 2-->
+          <div class="row">
+            <div class="col-md-5 inst-text">
+              <span> Retype Password:</span>
+            </div>
+
+            <div class="col-md-7 text-center">
+              <mat-form-field class="service-full-width">
+                <mat-label>Retype Password here </mat-label>
+                <input
+                  type="password"
+                  matInput
+                  required
+                  name="new_password2"
+                  #newPassword2="ngModel"
+                  ngModel
+                />
+                <mat-error *ngIf="newPassword2.invalid"
+                  >Plase re-type the password</mat-error
+                >
+              </mat-form-field>
+            </div>
           </div>
-         </div>
-         <hr>
+        </div>
 
-         <!--row 2-->
-         <div class="row page-content">
-
-          <div class="col-md-5 inst-text">
-            <span> New Password:</span>
-          </div>
-
-          <div class="col-md-7 text-center">
-            <mat-form-field class="service-full-width">
-              <mat-label>New Password here </mat-label>
-              <input type="password" matInput required
-              name="new_password1"  #newPassword1="ngModel" ngModel>
-              <mat-error *ngIf="newPassword1.invalid">New Password cannot be empty</mat-error>
-            </mat-form-field>
-          </div>
-         </div>
-
-         <!--row 2-->
-         <div class="row">
-
-          <div class="col-md-5 inst-text">
-            <span> Retype Password:</span>
-          </div>
-
-          <div class="col-md-7 text-center">
-            <mat-form-field class="service-full-width">
-              <mat-label>Retype Password here </mat-label>
-              <input type="password" matInput required
-              name="new_password2" #newPassword2="ngModel" ngModel
-              >
-              <mat-error *ngIf="newPassword2.invalid">Plase re-type the password</mat-error>
-            </mat-form-field>
-          </div>
-         </div>
-
-      </div>
-
-      <div class="modal-footer">
-        <button
-          mdbBtn class="btn btn-md"
-          color="secondary"
-          type="submit"
-          mdbWavesEffect
-        >
-          Change Password
-        </button>
-        <button
-          mdbBtn class="btn btn-md"
-          color="secondary"
-          outline="yes"
-          (click)="changePassword.hide()"
-          mdbWavesEffect
-        >
-          Close
-        </button>
+        <div class="modal-footer">
+          <button
+            mdbBtn
+            class="btn btn-md"
+            color="secondary"
+            type="submit"
+            mdbWavesEffect
+          >
+            Change Password
+          </button>
+          <button
+            mdbBtn
+            class="btn btn-md"
+            color="secondary"
+            outline="yes"
+            (click)="changePassword.hide()"
+            mdbWavesEffect
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-</form>
+  </form>
 </div>
-
-

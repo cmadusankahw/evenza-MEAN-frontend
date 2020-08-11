@@ -17,10 +17,10 @@ import { EventPlannerService } from '../../eventplanner/eventplanner.service';
 })
 export class SearchProductsComponent implements OnInit, OnDestroy {
 
-    // subscription
-    private productSub: Subscription ;
-    private categorySub: Subscription ;
-    private searchedProductSub: Subscription;
+  // subscription
+  private productSub: Subscription;
+  private categorySub: Subscription;
+  private searchedProductSub: Subscription;
 
   // this is main product list
   products: Product[] = [];
@@ -60,28 +60,28 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
               private eventPlannerService: EventPlannerService) { }
 
   ngOnInit() {
-        // get the product
-        this.productService.getProducts();
-        this.productSub = this.productService.getProductsUpdateListener()
-          .subscribe((recievedProducts: Product[]) => {
-              this.products = recievedProducts;
-              console.log(this.products);
+    // get the product
+    this.productService.getProducts();
+    this.productSub = this.productService.getProductsUpdateListener()
+      .subscribe((recievedProducts: Product[]) => {
+        this.products = recievedProducts;
+        console.log(this.products);
       });
 
-       // import categories
-        this.productService.getCategories();
-        this.categorySub = this.productService.getCategoriesUpdateListener()
-         .subscribe((recievedData: ProductCategories[]) => {
-         this.categories = recievedData;
-         console.log(this.categories);
-     });
+    // import categories
+    this.productService.getCategories();
+    this.categorySub = this.productService.getCategoriesUpdateListener()
+      .subscribe((recievedData: ProductCategories[]) => {
+        this.categories = recievedData;
+        console.log(this.categories);
+      });
   }
 
   ngOnDestroy() {
     if (this.productSub) {
-    this.productSub.unsubscribe();
+      this.productSub.unsubscribe();
     }
-    if (this.categorySub){
+    if (this.categorySub) {
       this.categorySub.unsubscribe();
     }
     if (this.searchedProductSub) {
@@ -104,20 +104,20 @@ export class SearchProductsComponent implements OnInit, OnDestroy {
     console.log(searchQuery);
     this.productService.searchProducts(searchQuery);
     this.searchedProductSub = this.productService.getSearchedProductUpdatedListener()
-    .subscribe((recievedData: Product[]) => {
-    this.products = recievedData;
-    console.log(this.products);
-   });
+      .subscribe((recievedData: Product[]) => {
+        this.products = recievedData;
+        console.log(this.products);
+      });
   }
 
-     // send user details to the inquery for
-     emitUser() {
-      this.eventPlannerService.setUser('');
-     }
+  // send user details to the inquery for
+  emitUser() {
+    this.eventPlannerService.setUser('');
+  }
 
 
   sendProduct(product: Product) {
     this.success = this.productService.setProduct(product);
-   }
+  }
 
 }

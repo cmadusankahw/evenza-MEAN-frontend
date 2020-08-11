@@ -1,292 +1,416 @@
 <div class="pd-top-min">
-
   <h4 *ngIf="userType == 'serviceProvider'">
     <mat-icon>library_books</mat-icon>
-   <b> Service Providers</b>
+    <b> Service Providers</b>
   </h4>
   <h4 *ngIf="userType == 'seller'">
     <mat-icon>library_books</mat-icon>
-   <b> Sellers</b>
+    <b> Sellers</b>
   </h4>
 
   <mat-form-field>
-
     <mat-label>
       <mat-icon>search</mat-icon>
-      Search Users</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Saman">
+      Search Users</mat-label
+    >
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Saman" />
   </mat-form-field>
 
   <div class="mat-elevation-z8">
-    <table class="table-responsive" mat-table [dataSource]="dataSource"  *ngIf="merchants.length">
-
+    <table
+      class="table-responsive"
+      mat-table
+      [dataSource]="dataSource"
+      *ngIf="merchants.length"
+    >
       <!-- ID Column -->
       <ng-container matColumnDef="user_id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header > User ID</th>
-        <td mat-cell *matCellDef="let row"> {{row.user_id}} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>User ID</th>
+        <td mat-cell *matCellDef="let row">{{ row.user_id }}</td>
       </ng-container>
 
       <!-- Progress Column -->
       <ng-container matColumnDef="user_type">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header > User Type </th>
-        <td mat-cell *matCellDef="let row"> {{row.user_type}} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>User Type</th>
+        <td mat-cell *matCellDef="let row">{{ row.user_type }}</td>
       </ng-container>
 
       <!-- Name Column -->
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header > Full Name </th>
-        <td mat-cell *matCellDef="let row"> {{row.first_name + ' ' + row.last_name}} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.first_name + " " + row.last_name }}
+        </td>
       </ng-container>
 
       <!-- Color Column -->
       <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header > Email </th>
-        <td mat-cell *matCellDef="let row" style="color:red;" > {{row.email}}  </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+        <td mat-cell *matCellDef="let row" style="color: red;">
+          {{ row.email }}
+        </td>
       </ng-container>
 
-       <!-- Color Column -->
-       <ng-container matColumnDef="business">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header > Business </th>
-        <td mat-cell *matCellDef="let row" > {{row.business ? row.business.title : 'No Business'}}  </td>
-      </ng-container>
-
-
-       <!-- Action Column -->
-       <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align:center;"> ACTION </th>
+      <!-- Color Column -->
+      <ng-container matColumnDef="business">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Business</th>
         <td mat-cell *matCellDef="let row">
-          <button mdbBtn color="purple" text="white" class="btn btn-sm text-center"
-          (click)= "showUsertDetails(row.user_id)" (click)="paymentOptions.show()">
+          {{ row.business ? row.business.title : "No Business" }}
+        </td>
+      </ng-container>
+
+      <!-- Action Column -->
+      <ng-container matColumnDef="action">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          style="text-align: center;"
+        >
+          ACTION
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <button
+            mdbBtn
+            color="purple"
+            text="white"
+            class="btn btn-sm text-center"
+            (click)="showUsertDetails(row.user_id)"
+            (click)="paymentOptions.show()"
+          >
             ACTION
           </button>
-         </td>
+        </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
-      </tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
 
-    <div class="text-center pd-top-min"  *ngIf="!merchants.length">
+    <div class="text-center pd-top-min" *ngIf="!merchants.length">
       No Registered Users
     </div>
 
     <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
   </div>
+</div>
 
-
-
-  </div>
-
-
-
-  <!--View Details Modal-->
+<!--View Details Modal-->
+<div
+  mdbModal
+  #paymentOptions="mdbModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-hidden="true"
+>
   <div
-    mdbModal
-    #paymentOptions="mdbModal"
-    class="modal fade"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="myBasicModalLabel"
-    [config]="{ backdrop: false, ignoreBackdropClick: true }"
-    aria-hidden="true"
-
-
+    class="modal-dialog modal-dialog-centered modal-lg"
+    role="document"
+    style="overflow-y: initial !important;"
   >
-    <div
-      class="modal-dialog modal-dialog-centered modal-lg"
-      role="document"
-      style="overflow-y: initial !important"
-    >
-      <div class="modal-content"   *ngIf = "selectedMerchant">
-        <div class="modal-header">
-          <button
-            type="button"
-            class="close pull-right"
-            aria-label="Close"
-            (click)="paymentOptions.hide()"
-          >
-            <span aria-hidden="true">×</span>
-          </button>
-          <h4 class="modal-title w-100" id="myModalLabel" >
-            <mat-icon>auth_circle</mat-icon> {{userType }} : {{ selectedMerchant.first_name + ' '  + selectedMerchant.last_name}}
-          </h4>
-        </div>
-
-        <div class="modal-body " style="height: 450px; overflow-y: auto;">
-
-              <!--more info-->
-              <div class="text-center">
-
-                <section class="text-center dark-grey-text">
-                  <!--booking info-->
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                      User ID
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{selectedMerchant.user_id}}">
-                    </div>
-                  </div>
-
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                      Full Name
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{selectedMerchant.first_name + ' ' + selectedMerchant.last_name}}">
-                    </div>
-                  </div>
-
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                      Email
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{selectedMerchant.email}}">
-                    </div>
-                  </div>
-
-                    <div class="row ">
-                      <div class="col-md-4 info-text">
-                        User type
-                      </div>
-                      <div class="col info-input">
-                        <input type="text" matInput disabled value=" {{selectedMerchant.user_type}}">
-                      </div>
-                    </div>
-
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                     Contact No
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{selectedMerchant.contact_no}}">
-                    </div>
-                  </div>
-
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                     Postal Address
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{selectedMerchant.address_line1 + ' ' +selectedMerchant.address_line2 + ' ' + selectedMerchant.postal_code }}">
-                    </div>
-                  </div>
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                     Verification State
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{selectedMerchant.id_verification.isverified ? 'Verified' : 'Not verified'}}">
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row " *ngIf="selectedMerchant.business">
-                    <div class="col-md-4 info-text">
-                     Business Title
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{selectedMerchant.business.title}}">
-                    </div>
-                  </div>
-                  <div class="row ">
-                    <div class="col-md-4 info-text">
-                     Business Verification
-                    </div>
-                    <div class="col info-input">
-                      <input type="text" matInput disabled value=" {{selectedMerchant.business.business_verification.business_isverified ? 'Verified' : 'Not Verified'}}">
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="info-top text-center"  >
-                    <button mdbBtn color="red" text="white" class="btn  btn-md text-center"
-                     (click)="cancelDialog.show()" >
-                     <span >  Remove this Merchant </span>
-                    </button>
-                  </div>
-                </section>
-              </div>
-        </div>
-
-
-        <div class="modal-footer">
-          <button
-            mdbBtn
-            color="link"
-            (click)="paymentOptions.hide()"
-            mdbWavesEffect
-          >
-            Close
-          </button>
-        </div>
+    <div class="modal-content" *ngIf="selectedMerchant">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="paymentOptions.hide()"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel">
+          <mat-icon>auth_circle</mat-icon> {{ userType }} :
+          {{ selectedMerchant.first_name + " " + selectedMerchant.last_name }}
+        </h4>
       </div>
-      <div class="modal-content" *ngIf = "!selectedMerchant">
-        <app-not-found-page></app-not-found-page>
-       </div>
-    </div>
-  </div>
 
-
-    <!--  remove user confirmation-->
-    <div mdbModal #cancelDialog="mdbModal"
-    class="modal fade top"
-    id="frameModalTop" tabindex="-1" role="dialog"
-    [config]="{ backdrop: false, ignoreBackdropClick: true }"
-      aria-labelledby="myModalLabel" aria-hidden="true" >
-      <div class="modal-dialog modal-notify modal-danger  modal-dialog-centered" role="document">
-        <!--Content-->
-        <div class="modal-content">
-          <!--Header-->
-          <div class="modal-header">
-            <p class="heading">Remove User</p>
-
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelDialog.hide()">
-              <span aria-hidden="true" class="white-text">&times;</span>
-            </button>
-          </div>
-
-          <!--Body-->
-          <div class="modal-body">
-
+      <div class="modal-body" style="height: 450px; overflow-y: auto;">
+        <!--more info-->
+        <div class="text-center">
+          <section class="text-center dark-grey-text">
+            <!--booking info-->
             <div class="row">
-              <div class="col-3">
-                <p></p>
-                <p class="text-center">
-                  <mdb-icon fas icon="ban" size="3x" class="mb-3 animated rotateIn"></mdb-icon>
-                </p>
+              <div class="col-md-4 info-text">
+                User ID
               </div>
-
-              <div class="col-9">
-                <h5>Are you sure want to remove this User?</h5>
-                <p><b> Please Note: Please perform this action If necessarily
-                  required. Once a User is Removed, all his services, products and the Business Profile will also get removed.
-                </b></p>
-                <mat-form-field>
-                  <mat-label>Enter your Password..</mat-label>
-                  <input matInput  name="event_title"
-                  #pword="ngModel" ngModel name="password" required>
-                </mat-form-field>
-                <mat-error *ngIf="pword.invalid">Please enter your Password</mat-error>
+              <div class="col info-input">
+                <input
+                  type="text"
+                  matInput
+                  disabled
+                  value=" {{ selectedMerchant.user_id }}"
+                />
               </div>
             </div>
-          </div>
 
-          <!--Footer-->
+            <div class="row">
+              <div class="col-md-4 info-text">
+                Full Name
+              </div>
+              <div class="col info-input">
+                <input
+                  type="text"
+                  matInput
+                  disabled
+                  value=" {{
+                    selectedMerchant.first_name +
+                      ' ' +
+                      selectedMerchant.last_name
+                  }}"
+                />
+              </div>
+            </div>
 
-          <!-- note: include password confirmation before removal-->
-          <div class="modal-footer justify-content-center">
-            <a type="button" mdbBtn color="danger" class="waves-effect"
-            (click)="cancelDialog.hide()"  (click)= "removeMerchant(selectedMerchant.user_id)"
-            [disabled] = "pword.invalid"
-            mdbWavesEffect>Remove User
-              <mdb-btn far icon="ban" class="ml-1"></mdb-btn>
-            </a>
-            <a type="button" mdbBtn color="danger" outline="true" class="waves-effect" mdbWavesEffect
-            (click)="cancelDialog.hide()"
-              data-dismiss="modal">Not Now</a>
-          </div>
+            <div class="row">
+              <div class="col-md-4 info-text">
+                Email
+              </div>
+              <div class="col info-input">
+                <input
+                  type="text"
+                  matInput
+                  disabled
+                  value=" {{ selectedMerchant.email }}"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 info-text">
+                User type
+              </div>
+              <div class="col info-input">
+                <input
+                  type="text"
+                  matInput
+                  disabled
+                  value=" {{ selectedMerchant.user_type }}"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 info-text">
+                Contact No
+              </div>
+              <div class="col info-input">
+                <input
+                  type="text"
+                  matInput
+                  disabled
+                  value=" {{ selectedMerchant.contact_no }}"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 info-text">
+                Postal Address
+              </div>
+              <div class="col info-input">
+                <input
+                  type="text"
+                  matInput
+                  disabled
+                  value=" {{
+                    selectedMerchant.address_line1 +
+                      ' ' +
+                      selectedMerchant.address_line2 +
+                      ' ' +
+                      selectedMerchant.postal_code
+                  }}"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4 info-text">
+                Verification State
+              </div>
+              <div class="col info-input">
+                <input
+                  type="text"
+                  matInput
+                  disabled
+                  value=" {{
+                    selectedMerchant.id_verification.isverified
+                      ? 'Verified'
+                      : 'Not verified'
+                  }}"
+                />
+              </div>
+            </div>
+            <hr />
+            <div class="row" *ngIf="selectedMerchant.business">
+              <div class="col-md-4 info-text">
+                Business Title
+              </div>
+              <div class="col info-input">
+                <input
+                  type="text"
+                  matInput
+                  disabled
+                  value=" {{ selectedMerchant.business.title }}"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4 info-text">
+                Business Verification
+              </div>
+              <div class="col info-input">
+                <input
+                  type="text"
+                  matInput
+                  disabled
+                  value=" {{
+                    selectedMerchant.business.business_verification
+                      .business_isverified
+                      ? 'Verified'
+                      : 'Not Verified'
+                  }}"
+                />
+              </div>
+            </div>
+            <hr />
+            <div class="info-top text-center">
+              <button
+                mdbBtn
+                color="red"
+                text="white"
+                class="btn btn-md text-center"
+                (click)="cancelDialog.show()"
+              >
+                <span> Remove this Merchant </span>
+              </button>
+            </div>
+          </section>
         </div>
-        <!--/.Content-->
+      </div>
+
+      <div class="modal-footer">
+        <button
+          mdbBtn
+          color="link"
+          (click)="paymentOptions.hide()"
+          mdbWavesEffect
+        >
+          Close
+        </button>
       </div>
     </div>
+    <div class="modal-content" *ngIf="!selectedMerchant">
+      <app-not-found-page></app-not-found-page>
+    </div>
+  </div>
+</div>
+
+<!--  remove user confirmation-->
+<div
+  mdbModal
+  #cancelDialog="mdbModal"
+  class="modal fade top"
+  id="frameModalTop"
+  tabindex="-1"
+  role="dialog"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-labelledby="myModalLabel"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-notify modal-danger modal-dialog-centered"
+    role="document"
+  >
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <p class="heading">Remove User</p>
+
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="cancelDialog.hide()"
+        >
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-3">
+            <p></p>
+            <p class="text-center">
+              <mdb-icon
+                fas
+                icon="ban"
+                size="3x"
+                class="mb-3 animated rotateIn"
+              ></mdb-icon>
+            </p>
+          </div>
+
+          <div class="col-9">
+            <h5>Are you sure want to remove this User?</h5>
+            <p>
+              <b>
+                Please Note: Please perform this action If necessarily required.
+                Once a User is Removed, all his services, products and the
+                Business Profile will also get removed.
+              </b>
+            </p>
+            <mat-form-field>
+              <mat-label>Enter your Password..</mat-label>
+              <input
+                matInput
+                name="event_title"
+                #pword="ngModel"
+                ngModel
+                name="password"
+                required
+              />
+            </mat-form-field>
+            <mat-error *ngIf="pword.invalid"
+              >Please enter your Password</mat-error
+            >
+          </div>
+        </div>
+      </div>
+
+      <!--Footer-->
+
+      <!-- note: include password confirmation before removal-->
+      <div class="modal-footer justify-content-center">
+        <a
+          type="button"
+          mdbBtn
+          color="danger"
+          class="waves-effect"
+          (click)="cancelDialog.hide()"
+          (click)="removeMerchant(selectedMerchant.user_id)"
+          [disabled]="pword.invalid"
+          mdbWavesEffect
+          >Remove User
+          <mdb-btn far icon="ban" class="ml-1"></mdb-btn>
+        </a>
+        <a
+          type="button"
+          mdbBtn
+          color="danger"
+          outline="true"
+          class="waves-effect"
+          mdbWavesEffect
+          (click)="cancelDialog.hide()"
+          data-dismiss="modal"
+          >Not Now</a
+        >
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>

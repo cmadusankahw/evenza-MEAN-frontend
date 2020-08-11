@@ -1,8 +1,8 @@
 //model imports
 const User = require("../../model/auth/user.model");
+const Admin = require("../../model/admin/admin.model");
 const EventPlanner = require("../../model/auth/eventPlanner.model");
 const Merchant = require("../../model/auth/merchant.model");
-const Admin = require("../../model/admin/admin.model");
 const checkAuth = require("../../middleware/auth-check");
 const IDVerification = require("../../model/auth/idVerification.model");
 const BusinessVerification = require("../../model/auth/businessVerification.model");
@@ -78,14 +78,37 @@ auth.post('/signup/user', (req, res, next) => {
 // signup merchant
 auth.post('/signup/merchant', (req, res, next) => {
   const merchant = new Merchant (req.body);
+  const tDate = new Date();
+  const year = tDate.getFullYear();
+  const month = tDate.getMonth() +1 ;
   console.log(merchant);
   merchant.save()
     .then (result => {
-      res.status(200).json({
-        message: 'Merchant added successfully!'
-      });
+      // adding initial subscription
+      // PROTOCOL - first Month No Subscription FEE
+      Admin.updateOne({},{
+        $push : { payment_details: {user_id: result.user_id,
+                                    user_type: result.user_type,
+                                    first_name: result.first_name,
+                                    last_name: result.last_name,
+                                    email: result.email,
+                                    pays: [{
+                                      timestamp: {type: year,
+                                      month:month + 1},
+                                      paid_date: tDate,
+                                      paid_amount: 0,
+                                      due_amount: 0,
+                                    }]} }
+      }).then( fs => {
+        console.log(fs);
+        res.status(200).json({
+          message: 'Merchant added successfully!'
+        });
+      })
+
     })
     .catch( err => {
+      console.log(err);
       res.status(500).json({
         message: 'Merchant sign up was not successfull! Please try again!'
       });

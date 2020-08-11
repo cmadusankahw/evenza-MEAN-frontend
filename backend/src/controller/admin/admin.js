@@ -72,22 +72,26 @@ cron.schedule("* * 28 * *", function () {
         dueAmt += p.due_amount;
         timeStamp = p.timestamp;
         paysIndex++;
+        console.log('P :p',paysIndex);
       }
       // deduct due amount and pass to the latest month
       for (let i = 0; i < paysIndex; i++) {
         paymentDetails[merchantIndex].pays[i].due_amount = 0;
+        console.log('i ', i);
       }
       // create new entry to hold updated payment details
       paymentDetails[merchantIndex].pays[paysIndex] = {
         due_amount: dueAmt,
         paid_amount: 0,
-        paid_date: 'Not Payed',
+        paid_date: null,
         timestamp: {
           year: timeStamp.year,
           month: timeStamp.month + 1,
         }
       }
       merchantIndex++;
+      paysIndex = 0;
+      console.log('M :', merchantIndex)
     }
     console.log(paymentDetails);
     Admin.updateOne({}, {
@@ -326,7 +330,7 @@ admin.get('/get/payment', checkAuth, (req, res, next) => {
     console.log(result);
     paymentDetails = result.payment_details;
     for (let pd of paymentDetails) {
-      if (pd.user_id = req.userData.user_id) {
+      if (pd.user_id == req.userData.user_id) {
         merchantPay = pd;
       }
     }

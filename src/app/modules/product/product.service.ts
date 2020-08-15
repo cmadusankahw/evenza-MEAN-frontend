@@ -256,6 +256,34 @@ export class ProductService {
       });
   }
 
+  // add a new delivery service
+  addDeliveryService(del: DeliveryService) {
+    this.http
+    .post<{ message: string }>(this.url + 'product/delivery/add', del )
+    .subscribe((res) => {
+      this.dialog.open(SuccessComponent, {
+        data: { message: res.message },
+      });
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate(['/sel/dash/inventory']);
+    });
+  }
+
+  // update delivery service
+  editDeliveryService(del: DeliveryService) {
+    this.http
+    .post<{ message: string }>(this.url + 'product/delivery/edit', del )
+    .subscribe((res) => {
+      this.dialog.open(SuccessComponent, {
+        data: { message: res.message },
+      });
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate(['/sel/dash/inventory']);
+    });
+  }
+
   // add new category by admin
   public addCategory(category: string) {
     this.http

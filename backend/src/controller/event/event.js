@@ -2,12 +2,15 @@
 const Event = require("../../model/event/event.model");
 const checkAuth = require("../../middleware/auth-check");
 const email = require("../common/mail");
+
+// express app imports
 const eventAlerts = require("./event-alerts");
 const eventPlan = require("./event-plan");
 const eventParticipants = require("./event-participants");
 const eventCat = require("./event-cat");
 const eventImg = require("./event-img");
 const eventTasks = require("./event-tasks");
+const eventOpen = require("./event-open");
 
 //dependency imports
 const express = require("express");
@@ -27,10 +30,9 @@ event.use('/plan', eventPlan);
 event.use('/img', eventImg);
 event.use('/tasks', eventTasks);
 event.use('/participants', eventParticipants);
-
+event.use('/open', eventOpen);
 
 // REST API
-
 
 //add new event
 event.post('/add',checkAuth, (req, res) => {

@@ -47,11 +47,38 @@ productDelivery.get('/get', (req, res, next) => {
 //get delivery services
 productDelivery.post('/add', (req, res, next) => {
   const deliverService = new DeliveryService(req.body);
-  deliverService.save90.then(deliveryServices => {
+  deliverService.save().then(deliveryServices => {
     console.log(deliveryServices);
     res.status(200).json(
       {
         message: 'Delivery Services added successfully!',
+      }
+    );
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json(
+      {
+        message: 'Operation was unsuccessfull!',
+      }
+    );
+  });
+});
+
+//get delivery services
+productDelivery.post('/edit', (req, res, next) => {
+
+  DeliveryService.updateOne({'delivery_service': req.body.delivery_service},{
+    title: req.body.title,
+    address: req.body.address,
+    hotline: req.body.hotline,
+    delivery_rate: req.body.delivery_rate,
+    min_delivery_time: req.body.min_delivery_time,
+    max_delivery_time: req.body.max_delivery_time,
+  }).then(result => {
+    console.log(result);
+    res.status(200).json(
+      {
+        message: 'Delivery Services updated successfully!',
       }
     );
   }).catch( err => {

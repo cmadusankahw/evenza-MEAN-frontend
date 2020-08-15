@@ -2,16 +2,16 @@
 <section class="magazine-section dark-grey-text">
   <!-- Section heading -->
   <h3 class="text-center font-weight-bold mb-4 pb-2">
-    Events Happening near You
+    Events Happening Now
   </h3>
   <!-- Section description -->
   <p class="text-center w-responsive mx-auto mb-5">
-    Find the amazing events happening near you. They all are managed through
+    Find events happening near you. They all are planned through
     Evenza, the smart event management and resourcing platform...
   </p>
 
   <!-- Grid row -->
-  <div class="row">
+  <div class="row" *ngIf="events.length">
     <!-- Grid column -->
     <div class="col-lg-6 col-md-12 mb-4">
       <!-- Featured news -->
@@ -34,10 +34,9 @@
           <a
             href="#!"
             class="purple-text"
-            *ngFor="let feature of events[0].features"
           >
             <h6 class="font-weight-bold">
-              <i class="fas fa-utensils pr-2"></i>{{ feature }}
+              <i class="fas fa-utensils pr-2"></i>{{ events[0].event_category }}
             </h6>
           </a>
         </div>
@@ -49,10 +48,10 @@
 
         <!--event date-->
         <p class="font-weight-bold dark-grey-text">
-          <i class="fas fa-clock pr-2"></i>{{ events[0].date }}
+          <i class="fas fa-clock pr-2"></i>{{ events[0].from_date.slice(0,10) }}
         </p>
 
-        <p class="dark-grey-text">{{ events[0].description }}</p>
+        <p class="dark-grey-text">{{ events[0].description.slice(0,15) + '...' }}</p>
       </div>
       <!-- Featured news -->
     </div>
@@ -74,7 +73,7 @@
                     <img
                       class="img-fluid"
                       src="{{ event.feature_img }}"
-                      alt="Sample image"
+                      alt="Feature image"
                     />
                     <a>
                       <div class="mask rgba-white-slight"></div>
@@ -87,7 +86,7 @@
                 <div class="col-md-9">
                   <!-- Excerpt -->
                   <p class="font-weight-bold dark-grey-text">
-                    {{ event.date }}
+                    {{ event.from_date.slice(0,10) }}
                   </p>
                   <div class="d-flex justify-content-between">
                     <div class="col-11 text-truncate pl-0 mb-3">
@@ -107,6 +106,10 @@
       </div>
     </div>
     <!--Grid column-->
+  </div>
+
+  <div class="pt-4 text-center" style="color:lightgray;">
+    <h4> Oops!!! No any ongoing Events Found.. :(</h4>
   </div>
   <!-- Grid row -->
 </section>

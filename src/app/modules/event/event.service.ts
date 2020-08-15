@@ -15,6 +15,7 @@ export class EventService {
 
   // observer pattern - subjects
   private eventsUpdated = new Subject<EventCard[]>();
+  private openEventsUpdated = new Subject<EventCard[]>();
   private eventUpdated = new Subject<TheEvent>();
   private eventCategoryUpdated = new Subject<EventCategory>();
   private eventCategoriesUpdated = new Subject<EventCategory[]>();
@@ -22,20 +23,20 @@ export class EventService {
 
   // api url
   public url = getUrl();
-
+  // recieved event
   private event: TheEvent;
-
+  // recieved events
   private events: EventCard[];
-
+  // recieved open events
+  private openEvents: EventCard[];
+  // recieved event categories
   private eventCategories: EventCategory[];
-
+  // recieved event category
   private eventCategory: EventCategory;
-
+  // recieved alerts
   private recievedAlerts: ScheduleAlert[];
-
   // passing selected event for service/ product search
   private eventId: string;
-
   // passing selected filterations for service/ product search
   private filter: Filteration;
 
@@ -74,6 +75,18 @@ export class EventService {
         this.eventsUpdated.next([...this.events]);
       });
   }
+
+    // get a list of all published open events for homepage
+    public getOpenEvents() {
+      this.http.get<{ message: string, events: EventCard[] }>(this.url + 'event/open/get')
+        .subscribe((recievedData) => {
+          if ( recievedData.events.length) {
+            console.log(recievedData.events);
+            this.openEvents = recievedData.events;
+            this.openEventsUpdated.next([...this.events]);
+          }
+        });
+    }
 
   // get a specific event details using ID
   public getEvent(eventId: string) {
@@ -319,6 +332,10 @@ export class EventService {
 
   public getalertsUpdatedListener() {
     return this.alertsUpdated.asObservable();
+  }
+
+  public getOpenEventsUpdatedListener() {
+    return this.openEventsUpdated.asObservable();
   }
 
 }

@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 var backup = require('mongodb-backup');
 var restore = require('mongodb-restore');
 const cron = require("node-cron"); // running scheduled tasks
+var exec = require('child_process').exec;
 
 //express app declaration
 const adminBackup = express();
@@ -25,7 +26,16 @@ cron.schedule("* * 28 * *", function () {
 
 // create a backup
 adminBackup.get('/create', (req, res, next) => {
-  // const url = req.protocol + '://' + req.get("host");
+ // create cloud atlas db backup
+  exec('mongodump --uri="mongodb://admin:abcd1234@cluster0.xnfvc.gcp.mongodb.net/evenza" --out="' +  path.join(__dirname, 'database_backup_dump') + '"', function( err, success) {
+    if (err) {
+      console.log(err);
+    }
+    else {
+      console.log('success :', success);
+    }
+  });
+  // backup local db
   backup({
     uri: 'mongodb://localhost:27017/evenza', // mongodb://<dbuser>:<dbpassword>@<dbdomain>.mongolab.com:<dbport>/<dbdatabase>
     root: path.join(__dirname, 'database-backup'),
@@ -39,7 +49,9 @@ adminBackup.get('/create', (req, res, next) => {
         message: 'backup created successfully!',
       });
     }
-  })
+  });
+
+
 
 
 
@@ -47,7 +59,16 @@ adminBackup.get('/create', (req, res, next) => {
 
 // restore from  a backup
 adminBackup.post('/restore', (req, res, next) => {
-  // const url = req.protocol + '://' + req.get("host");
+   // create cloud atlas db backup
+   exec('mongorestore --db evenza ' +  path.join(__dirname, 'database_backup_dump') + '', function( err, success) {
+    if (err) {
+      console.log(err);
+    }
+    else {
+      console.log('success :', success);
+    }
+  });
+  // restore local db backup
   restore({
     uri: 'mongodb://localhost:27017/evenza', // mongodb://<dbuser>:<dbpassword>@<dbdomain>.mongolab.com:<dbport>/<dbdatabase>
     root: path.join(__dirname, 'database-backup')

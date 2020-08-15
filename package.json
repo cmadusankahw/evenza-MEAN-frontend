@@ -57,7 +57,7 @@
     "mongoose": "^5.9.4",
     "mongoose-unique-validator": "^2.0.3",
     "multer": "^1.4.2",
-    "ngx-quill": "^12.0.1",
+    "ngx-quill": "^5.2.0",
     "ngx-socket-io": "^3.2.0",
     "ngx-toastr": "^11.3.3",
     "node-cron": "^2.0.3",

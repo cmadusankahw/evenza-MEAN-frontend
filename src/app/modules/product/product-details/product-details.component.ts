@@ -22,7 +22,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   private categorySub: Subscription;
   private deliveryServiceSub: Subscription;
   // created date
-  private today = new Date();
+  public today = new Date();
 
   // service is editable by parent comp
   @Input() public isowner = false;

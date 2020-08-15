@@ -87,7 +87,7 @@ export class EventService {
 
   // get event categories list
   public getEventCategories() {
-    this.http.get<{ message: string, categories: EventCategory[] }>(this.url + 'event/cat')
+    this.http.get<{ message: string, categories: EventCategory[] }>(this.url + 'event/cat/get')
       .subscribe((recievedData) => {
         console.log(recievedData.categories);
         this.eventCategories = recievedData.categories;
@@ -97,7 +97,7 @@ export class EventService {
 
   // get a specific event category
   public getEventCategory(catId: string) {
-    this.http.get<{ message: string, category: EventCategory }>(this.url + 'event/cat/' + catId)
+    this.http.get<{ message: string, category: EventCategory }>(this.url + 'event/cat/get/' + catId)
       .subscribe((recievedData) => {
         console.log(recievedData.category);
         this.eventCategory = recievedData.category;
@@ -107,7 +107,7 @@ export class EventService {
 
   // get a list of scheduled task alerts
   public getAlerts(id: string) {
-    this.http.get<{ message: string, alerts: ScheduleAlert[] }>(this.url + 'event/get/alerts/' + id)
+    this.http.get<{ message: string, alerts: ScheduleAlert[] }>(this.url + 'event/alerts/get/' + id)
       .subscribe((recievedData) => {
         console.log(recievedData.message);
         this.recievedAlerts = recievedData.alerts;
@@ -122,12 +122,12 @@ export class EventService {
       const catImage = new FormData();
       catImage.append('images[]', categoryImage, categoryImage.name);
       console.log(catImage);
-      this.http.post<{ imagePath: string }>(this.url + 'event/cat/img', catImage)
+      this.http.post<{ imagePath: string }>(this.url + 'event/img/add', catImage)
         .subscribe((recievedImage) => {
           if (recievedImage) {
             eventCategory.img = recievedImage.imagePath;
           }
-          this.http.post<{ message: string }>(this.url + 'event/cat/create', eventCategory)
+          this.http.post<{ message: string }>(this.url + 'event/cat/add', eventCategory)
             .subscribe((recievedData) => {
               this.router.routeReuseStrategy.shouldReuseRoute = () => false;
               this.router.onSameUrlNavigation = 'reload';
@@ -136,7 +136,7 @@ export class EventService {
             });
         });
     } else {
-      this.http.post<{ message: string }>(this.url + 'event/cat/create', eventCategory)
+      this.http.post<{ message: string }>(this.url + 'event/cat/add', eventCategory)
         .subscribe((recievedData) => {
           this.router.routeReuseStrategy.shouldReuseRoute = () => false;
           this.router.onSameUrlNavigation = 'reload';
@@ -164,9 +164,9 @@ export class EventService {
       const newImages = new FormData();
       newImages.append('images[]', image, image.name);
 
-      this.http.post<{ imageUrl: string }>(this.url + 'event/add/img', newImages)
+      this.http.post<{ imagePath: string }>(this.url + 'event/img/add', newImages)
         .subscribe((recievedImages) => {
-          event.feature_img = recievedImages.imageUrl;
+          event.feature_img = recievedImages.imagePath;
           this.http.post<{ message: string }>(this.url + 'event/add', event)
             .subscribe((recievedData) => {
               this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
@@ -193,10 +193,10 @@ export class EventService {
       const newImages = new FormData();
       newImages.append('images[]', image, image.name);
 
-      this.http.post<{ imageUrl: string }>(this.url + 'event/edit/img', newImages)
+      this.http.post<{ imagePath: string }>(this.url + 'event/img/add', newImages)
         .subscribe((recievedImages) => {
-          if (recievedImages.imageUrl) {
-            event.feature_img = recievedImages.imageUrl;
+          if (recievedImages.imagePath) {
+            event.feature_img = recievedImages.imagePath;
           }
           this.http.post<{ message: string }>(this.url + 'event/edit', event)
             .subscribe((recievedData) => {
@@ -288,7 +288,7 @@ export class EventService {
   // All participants are sent the last modified invitation
   // proceed all stated service, product requests
   public publishEvent(eventId: string) {
-    this.http.post<{ message: string }>(this.url + 'event/publish', { eventId })
+    this.http.get<{ message: string }>(this.url + 'event/publish/' + eventId )
       .subscribe((recievedData) => {
         console.log(recievedData.message);
         this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });

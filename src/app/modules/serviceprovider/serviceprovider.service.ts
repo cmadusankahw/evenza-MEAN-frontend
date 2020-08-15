@@ -73,7 +73,7 @@ export class ServiceProviderService {
   getCalendarBookings() {
     this.http
       .get<{ message: string; bookings: Booking[] }>(
-        this.url + 'sp/calbooking/get'
+        this.url + 'sp/booking/cal/get'
       )
       .subscribe((recievedBookings) => {
         for (const book of recievedBookings.bookings) {
@@ -238,7 +238,7 @@ export class ServiceProviderService {
       .get<{
         message: string;
         spnames: { service_name: string; service_id: string }[];
-      }>(this.url + 'sp/get/spnames')
+      }>(this.url + 'sp/spnames/get')
       .subscribe((res) => {
         this.spNamesUpdated.next(res.spnames);
       });
@@ -246,7 +246,7 @@ export class ServiceProviderService {
 
   // get Current Service Provider ID for report validation
   public getSPId() {
-    this.http.get<{ id: string }>(this.url + 'sp/get/spid').subscribe((res) => {
+    this.http.get<{ id: string }>(this.url + 'sp/spid/get').subscribe((res) => {
       this.spId = res.id;
       this.spIdUpdated.next(res.id);
     });
@@ -424,51 +424,6 @@ export class ServiceProviderService {
     });
   }
 
-  // realtime notifications with socket.io
-
-  // trigger booking state change event realtime for interested listeners
-  onBookingStateChanged() {
-    const observable = new Observable<{
-      bookingId: string;
-      service: string;
-      state: string;
-    }>((observer) => {
-      this.socket.on('booking state', (data) => {
-        observer.next(data);
-      });
-      return () => {
-        this.socket.disconnect();
-      };
-    });
-    return observable;
-  }
-
-  // emit socket once a booking state chnaged
-  sendBookingState(bookingId: string, service: string, state: string) {
-    this.socket.emit('booking-state', { bookingId, service, state });
-  }
-
-  // emit socket once a appoint state changed
-  sendAppointmentState(appointId: string, service: string, state: string) {
-    this.socket.emit('appoint-state', { appointId, service, state });
-  }
-
-  // trigger appointment state change event realtime for interested listeners
-  onAppointmentStateChanged() {
-    const observable = new Observable<{
-      appointId: string;
-      service: string;
-      state: string;
-    }>((observer) => {
-      this.socket.on('appoint stat', (data) => {
-        observer.next(data);
-      });
-      return () => {
-        this.socket.disconnect();
-      };
-    });
-    return observable;
-  }
 
   // observer pattern :  listners for subjects
   public getBookingsUpdateListener() {
@@ -528,4 +483,53 @@ export class ServiceProviderService {
   public getSpIdUpdatedListener() {
     return this.spIdUpdated.asObservable();
   }
+
+
+
+  // realtime notifications with socket.io
+
+  // trigger booking state change event realtime for interested listeners
+  onBookingStateChanged() {
+    const observable = new Observable<{
+      bookingId: string;
+      service: string;
+      state: string;
+    }>((observer) => {
+      this.socket.on('booking state', (data) => {
+        observer.next(data);
+      });
+      return () => {
+        this.socket.disconnect();
+      };
+    });
+    return observable;
+  }
+
+  // emit socket once a booking state chnaged
+  sendBookingState(bookingId: string, service: string, state: string) {
+    this.socket.emit('booking-state', { bookingId, service, state });
+  }
+
+  // emit socket once a appoint state changed
+  sendAppointmentState(appointId: string, service: string, state: string) {
+    this.socket.emit('appoint-state', { appointId, service, state });
+  }
+
+  // trigger appointment state change event realtime for interested listeners
+  onAppointmentStateChanged() {
+    const observable = new Observable<{
+      appointId: string;
+      service: string;
+      state: string;
+    }>((observer) => {
+      this.socket.on('appoint stat', (data) => {
+        observer.next(data);
+      });
+      return () => {
+        this.socket.disconnect();
+      };
+    });
+    return observable;
+  }
+
 }

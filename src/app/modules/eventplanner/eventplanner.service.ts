@@ -62,7 +62,7 @@ export class EventPlannerService {
   // get seller ID for report generation
   public getId() {
     this.http
-      .get<{ id: string }>(this.url + 'planner/get/id')
+      .get<{ id: string }>(this.url + 'planner/id/get')
       .subscribe((res) => {
         this.id = res.id;
         this.idupdated.next(res.id);
@@ -186,7 +186,7 @@ export class EventPlannerService {
   // create an inquery
   public createInquery(inq: Inquery) {
     this.http
-      .post<{ message: string }>(this.url + 'planner/inquery/create', inq)
+      .post<{ message: string }>(this.url + 'planner/inquery/add', inq)
       .subscribe((recievedData) => {
         console.log(recievedData.message);
         this.dialog.open(SuccessComponent, {
@@ -199,7 +199,9 @@ export class EventPlannerService {
   }
 
   // remove an inquery
-  public removeInquery(inqId: string) {}
+  public removeInquery(inqId: string) {
+
+  }
 
   // send emails
   public sendEmail(mail: Email) {

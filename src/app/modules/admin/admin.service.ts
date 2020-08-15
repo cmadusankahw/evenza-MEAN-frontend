@@ -28,10 +28,8 @@ export class AdminService {
   private paymentData: PaymentData[];
   // api url
   private url = getUrl();
-
   // payments dtails recieved
   private adminPayments: MerchantPayments[];
-
   // recieved merchant's payment
   private merchantPayment: MerchantPayments;
 
@@ -43,21 +41,11 @@ export class AdminService {
 
   // get methods
 
-  // get event planner after login
-  public getAdmin() {
-    this.http
-      .get<{ message: string; admin: Admin }>(this.url + 'admin/get/self')
-      .subscribe((recievedMerchant) => {
-        this.admin = recievedMerchant.admin;
-        this.adminUpdated.next(this.admin);
-      });
-  }
-
   // get booking data
   public getDashBoardData() {
     this.http
       .get<{ message: string; dashboardData: DashboardData }>(
-        this.url + 'admin/get/dbdata'
+        this.url + 'admin/dbdata/get'
       )
       .subscribe((res) => {
         console.log(res);
@@ -70,7 +58,7 @@ export class AdminService {
   public getPaymentData(dat: { fromMonth: number; toMonth: number }) {
     this.http
       .post<{ message: string; paymntData: PaymentData[] }>(
-        this.url + 'admin/get/paydata',
+        this.url + 'admin/paydata/get',
         dat
       )
       .subscribe((res) => {
@@ -83,7 +71,7 @@ export class AdminService {
   public getAdminPayments() {
     this.http
       .get<{ message: string; paymentDetails: MerchantPayments[] }>(
-        this.url + 'admin/get/payments'
+        this.url + 'admin/payment/get'
       )
       .subscribe((res) => {
         console.log(res);
@@ -96,7 +84,7 @@ export class AdminService {
   public getMerchantPayment() {
     this.http
       .get<{ message: string; merchantPayment: MerchantPayments }>(
-        this.url + 'admin/get/payment'
+        this.url + 'admin/payment/get/user'
       )
       .subscribe((res) => {
         console.log(res);
@@ -108,7 +96,7 @@ export class AdminService {
   // get location data
   public getMerchantLocation() {
     this.http
-      .get<{ locations: any[] }>(this.url + 'admin/get/location/m')
+      .get<{ locations: any[] }>(this.url + 'admin/location/get/m')
       .subscribe((res) => {
         console.log(res);
         this.merchantLocationUpdated.next(res.locations);
@@ -118,7 +106,7 @@ export class AdminService {
   // get location data
   public getEventLocation() {
     this.http
-      .get<{ locations: any[] }>(this.url + 'admin/get/location/e')
+      .get<{ locations: any[] }>(this.url + 'admin/location/get/e')
       .subscribe((res) => {
         console.log(res);
         this.eventLocationUpdated.next(res.locations);
@@ -154,7 +142,7 @@ export class AdminService {
   // collect service provider payment
   public makePayment(amount: number) {
     this.http
-      .post<{ message: string }>(this.url + 'admin/make/payment', { amount })
+      .post<{ message: string }>(this.url + 'admin/payment/add', { amount })
       .subscribe((recievedData) => {
         console.log(recievedData.message);
         this.dialog.open(SuccessComponent, {

@@ -3,7 +3,7 @@ mdb-card{
   min-height:200px;
   max-width:250px;
   min-width:220px;
-  margin:0 auto !important;
+
   margin-bottom:13px !important;
   margin-left:13px !important;
   margin-right:13px !important;
@@ -42,7 +42,14 @@ mdb-icon{
 //mobile view
 @media screen and (max-width: 600px) {
   mdb-card{
-    margin-left:auto!important;
-    margin-right:auto !important;
+    margin-top:10px;
+    margin-left:0px;
+    margin-right:0px;
+  }
+  .card-deck {
+    text-align: center;
+  }
+  .mobile {
+    text-align:center;
   }
 }

@@ -59,9 +59,6 @@ export class SellerDashboardComponent implements OnInit, OnDestroy {
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,
         });
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['/sel/dash']);
       });
 
   }

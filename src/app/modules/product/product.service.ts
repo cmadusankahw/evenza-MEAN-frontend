@@ -99,7 +99,7 @@ export class ProductService {
   public getCategories() {
     this.http
       .get<{ message: string; categories: ProductCategories[] }>(
-        this.url + 'product/cat'
+        this.url + 'product/cat/get'
       )
       .subscribe((categoriesList) => {
         this.categories = categoriesList.categories;
@@ -116,7 +116,7 @@ export class ProductService {
   public getDeliveryServices() {
     this.http
       .get<{ message: string; deliveryServices: DeliveryService[] }>(
-        this.url + 'product/delivery'
+        this.url + 'product/delivery/get'
       )
       .subscribe((deliveryServiceList) => {
         this.deliveryServices = deliveryServiceList.deliveryServices;
@@ -136,7 +136,7 @@ export class ProductService {
     }
     console.log(productData);
     this.http
-      .post<{ imagePaths: string[] }>(this.url + 'product/add/img', productData)
+      .post<{ imagePaths: string[] }>(this.url + 'product/img/add', productData)
       .subscribe((recievedImages) => {
         console.log(recievedImages);
         if (recievedImages.imagePaths[0]) {
@@ -178,7 +178,7 @@ export class ProductService {
     }
     console.log(productData);
     this.http
-      .post<{ imagePaths: string[] }>(this.url + 'product/add/img', productData)
+      .post<{ imagePaths: string[] }>(this.url + 'product/img/add', productData)
       .subscribe((recievedImages) => {
         console.log(recievedImages);
         recievedImages.imagePaths.find((img) => {
@@ -234,7 +234,7 @@ export class ProductService {
   public removeProduct(productId: string) {
     console.log(productId);
     this.http
-      .delete<{ message: string }>(this.url + 'product/edit/' + productId)
+      .delete<{ message: string }>(this.url + 'product/remove/' + productId)
       .subscribe((recievedData) => {
         const updatedProducts = this.sellerProducts.filter(
           (prod) => prod.product_id !== productId
@@ -309,7 +309,7 @@ export class ProductService {
   public searchProducts(searchQuery: ProductQuery) {
     this.http
       .post<{ message: string; products: Product[] }>(
-        this.url + 'product/search',
+        this.url + 'product/search/all',
         searchQuery
       )
       .subscribe((productList) => {

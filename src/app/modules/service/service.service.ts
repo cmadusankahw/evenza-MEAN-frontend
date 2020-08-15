@@ -121,7 +121,7 @@ export class ServiceService {
   public getCategories() {
     this.http
       .get<{ message: string; categories: ServiceCategories[] }>(
-        this.url + 'service/cat'
+        this.url + 'service/cat/get'
       )
       .subscribe((categoriesList) => {
         this.categories = categoriesList.categories;
@@ -159,38 +159,6 @@ export class ServiceService {
       });
   }
 
-  // listners for subjects
-  public getServiceUpdateListener() {
-    return this.serviceUpdated.asObservable();
-  }
-
-  public getBookingsUpdateListener() {
-    return this.bookingsUpdated.asObservable();
-  }
-
-  public getSearchedServiceUpdatedListener() {
-    return this.searchedServiceUpdated.asObservable();
-  }
-
-  public getSearchedEventServiceUpdatedListener() {
-    return this.searchedEventServiceUpdated.asObservable();
-  }
-
-  public getServiceProviderServiceUpdateListener() {
-    return this.serviceProviderServiceUpdated.asObservable();
-  }
-
-  public getservicesUpdateListener() {
-    return this.servicesUpdated.asObservable();
-  }
-
-  public getCategoriesUpdateListener() {
-    return this.categoriesUpdated.asObservable();
-  }
-
-  public getLocationsUpdateListener() {
-    return this.locationsUpdated.asObservable();
-  }
 
   // setters
 
@@ -204,7 +172,7 @@ export class ServiceService {
     }
     console.log(serviceData);
     this.http
-      .post<{ imagePaths: string[] }>(this.url + 'service/add/img', serviceData)
+      .post<{ imagePaths: string[] }>(this.url + 'service/img/add', serviceData)
       .subscribe((recievedImages) => {
         console.log(recievedImages);
         if (recievedImages.imagePaths[0]) {
@@ -246,7 +214,7 @@ export class ServiceService {
     }
     console.log(serviceData);
     this.http
-      .post<{ imagePaths: string[] }>(this.url + 'service/add/img', serviceData)
+      .post<{ imagePaths: string[] }>(this.url + 'service/img/add', serviceData)
       .subscribe((recievedImages) => {
         console.log(recievedImages);
         recievedImages.imagePaths.find((img) => {
@@ -353,7 +321,7 @@ export class ServiceService {
   public searchServices(searchQuery: ServiceQuery) {
     this.http
       .post<{ message: string; services: Service[] }>(
-        this.url + 'service/search',
+        this.url + 'service/search/all',
         searchQuery
       )
       .subscribe((serviceList) => {
@@ -367,7 +335,7 @@ export class ServiceService {
   public searchEventServices(searchQuery: EventServiceQuery) {
     this.http
       .post<{ message: string; services: Service[] }>(
-        this.url + 'service/event/search',
+        this.url + 'service/search/event',
         searchQuery
       )
       .subscribe((serviceList) => {
@@ -509,15 +477,9 @@ export class ServiceService {
 
   // create new calendar booking
   public createCalendarBooking(booking: Booking) {
-    this.checkAvailability(
-      booking.from_date,
-      booking.to_date,
-      booking.service_id
-    ).subscribe((recievedAvailability) => {
-      if (recievedAvailability.availability) {
         this.http
           .post<{ message: string; bookingId: string }>(
-            this.url + 'service/calbooking/add',
+            this.url + 'service/booking/cal/add',
             booking
           )
           .subscribe((recievedData) => {
@@ -530,14 +492,6 @@ export class ServiceService {
               },
             });
           });
-      } else {
-        this.dialog.open(ErrorComponent, {
-          data: {
-            message: 'Sorry! The Service not available on selected Dates',
-          },
-        });
-      }
-    });
   }
 
   // create new appointment
@@ -610,6 +564,41 @@ export class ServiceService {
     );
   }
 
+
+   // listners for subjects
+   public getServiceUpdateListener() {
+    return this.serviceUpdated.asObservable();
+  }
+
+  public getBookingsUpdateListener() {
+    return this.bookingsUpdated.asObservable();
+  }
+
+  public getSearchedServiceUpdatedListener() {
+    return this.searchedServiceUpdated.asObservable();
+  }
+
+  public getSearchedEventServiceUpdatedListener() {
+    return this.searchedEventServiceUpdated.asObservable();
+  }
+
+  public getServiceProviderServiceUpdateListener() {
+    return this.serviceProviderServiceUpdated.asObservable();
+  }
+
+  public getservicesUpdateListener() {
+    return this.servicesUpdated.asObservable();
+  }
+
+  public getCategoriesUpdateListener() {
+    return this.categoriesUpdated.asObservable();
+  }
+
+  public getLocationsUpdateListener() {
+    return this.locationsUpdated.asObservable();
+  }
+
+
   // realtime notifications with socket.io
 
   // trigger booking created event realtime for interested listeners
@@ -640,7 +629,7 @@ export class ServiceService {
     appointedDate: string,
     appointedtime: string
   ) {
-    this.socket.emit('booking-add', { service, appointedDate, appointedtime });
+    this.socket.emit('appoint-add', { service, appointedDate, appointedtime });
   }
 
   // appointment handeling
@@ -659,4 +648,5 @@ export class ServiceService {
     });
     return observable;
   }
+
 }

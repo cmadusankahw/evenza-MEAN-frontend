@@ -15,13 +15,11 @@ import { ErrorComponent } from 'src/app/error/error.component';
 })
 export class LoginComponent implements OnInit {
 
-  loginForm: FormGroup;
-
+  public loginForm: FormGroup;
   // show alert on login failed
-  showAlert = false;
-
+  public showAlert = false;
   // recieving user list to check
-  recievedUsers: User;
+  public recievedUsers: User;
 
   constructor(private http: HttpClient,
               public authService: AuthService,
@@ -41,16 +39,17 @@ export class LoginComponent implements OnInit {
   get password() { return this.loginForm.get('password'); }
 
 
-  loginUser(loginform: NgForm) {
-    if (this.loginForm.invalid) {
+  loginUser() {
+    if (this.email.invalid || this.password.invalid) {
       console.log('form invalid');
       this.dialog.open(ErrorComponent, { data: { message: 'Incorrect Username or Password' } });
     } else {
       this.showAlert = false;
       const login: LogIn = {
-        email: loginform.value.email,
-        password: loginform.value.password
+        email: this.loginForm.get('email').value,
+        password: this.loginForm.get('password').value
       };
+      console.log(login);
       this.authService.signIn(login);
     }
   }

@@ -24,8 +24,8 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   // subscription
   private serviceSub: Subscription;
   private categorySub: Subscription;
-
-  private today = new Date();
+ // current date
+  public today = new Date();
 
   // service is editable by parent comp
   @Input() public isowner = false;

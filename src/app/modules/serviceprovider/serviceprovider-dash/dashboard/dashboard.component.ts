@@ -47,9 +47,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     );
 
   constructor(private breakpointObserver: BreakpointObserver,
-    private router: Router, private authService: AuthService,
-    private serviceService: ServiceService,
-    private _snackBar: MatSnackBar) {
+              private router: Router, private authService: AuthService,
+              private serviceService: ServiceService,
+              private _snackBar: MatSnackBar) {
 
     // handeling booking created notification
     this.serviceService.newBookingCreated()
@@ -60,9 +60,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,
         });
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['/sp/dash']);
       });
 
     // handeling appointment created notification
@@ -74,9 +71,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,
         });
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate(['/sp/dash']);
       });
 
   }

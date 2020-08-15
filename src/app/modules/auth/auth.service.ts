@@ -90,7 +90,7 @@ export class AuthService {
   // get users list to login
   public getUser() {
     this.http
-      .get<{ message: string; users: User[] }>(this.url + 'auth/users')
+      .get<{ message: string; users: User[] }>(this.url + 'auth/user/get')
       .subscribe((recievedUsers) => {
         this.users = recievedUsers.users;
         this.userUpdated.next([...this.users]);
@@ -101,7 +101,7 @@ export class AuthService {
   public getMerchant() {
     this.http
       .get<{ message: string; merchant: Merchant }>(
-        this.url + 'auth/get/merchant'
+        this.url + 'auth/merchant/get'
       )
       .subscribe((recievedMerchant) => {
         this.merchant = recievedMerchant.merchant;
@@ -113,7 +113,7 @@ export class AuthService {
   public getMerchantbyId(id: string) {
     this.http
       .get<{ message: string; merchant: Merchant }>(
-        this.url + 'auth/get/merchant/' + id
+        this.url + 'auth/merchant/get/' + id
       )
       .subscribe((recievedMerchant) => {
         this.merchant = recievedMerchant.merchant;
@@ -125,7 +125,7 @@ export class AuthService {
   public getEventPlanner() {
     this.http
       .get<{ message: string; eventPlanner: EventPlanner }>(
-        this.url + 'auth/get/planner'
+        this.url + 'auth/planner/get'
       )
       .subscribe((recievedMerchant) => {
         this.eventPlanner = recievedMerchant.eventPlanner;
@@ -136,18 +136,18 @@ export class AuthService {
   // get event planner after login
   public getAdmin() {
     this.http
-      .get<{ message: string; admin: Admin }>(this.url + 'auth/get/admin')
+      .get<{ message: string; admin: Admin }>(this.url + 'auth/admin/get')
       .subscribe((recievedMerchant) => {
         this.admin = recievedMerchant.admin;
         this.adminUpdated.next(this.admin);
       });
   }
 
-  // get merchant list
+  // get all merchants list for admin
   public getMerchants() {
     this.http
       .get<{ message: string; merchants: any[] }>(
-        this.url + 'auth/get/merchants'
+        this.url + 'auth/merchant/get/all'
       )
       .subscribe((recievedMerchant) => {
         this.merchants = recievedMerchant.merchants;
@@ -160,7 +160,7 @@ export class AuthService {
     if (this.token) {
       this.http
         .get<{ user_type: string; user_name: string; profile_pic: string }>(
-          this.url + 'auth/get/header'
+          this.url + 'auth/header'
         )
         .subscribe((recievedHeader) => {
           this.headerDetails = {
@@ -200,7 +200,7 @@ export class AuthService {
   // add id verifications details for submission
   public approveIDVerification(id: IdVerifications) {
     this.http
-      .post<{ message: string }>(this.url + 'auth/verify/post/id', id)
+      .post<{ message: string }>(this.url + 'auth/verify/update/id', id)
       .subscribe((recievedData) => {
         console.log(recievedData.message);
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -215,7 +215,7 @@ export class AuthService {
   // add  business verifications details fro submissio
   public approveBusinessVerification(id: BusinessVerifications) {
     this.http
-      .post<{ message: string }>(this.url + 'auth/verify/post/br', id)
+      .post<{ message: string }>(this.url + 'auth/verify/update/br', id)
       .subscribe((recievedData) => {
         console.log(recievedData.message);
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -258,7 +258,7 @@ export class AuthService {
   // remove merchants by admin only
   public removeMerchant(userId: string) {
     this.http
-      .delete<{ message: string }>(this.url + 'auth/edit/merchant' + userId)
+      .delete<{ message: string }>(this.url + 'auth/merchant/remove/' + userId)
       .subscribe((recievedData) => {
         const updatedMerchants = this.merchants.filter(
           (merchant) => merchant.user_id !== userId
@@ -285,7 +285,7 @@ export class AuthService {
     };
     this.http
       .post<{ message: string; result: User }>(
-        this.url + 'auth/signup/user',
+        this.url + 'auth/user/signup',
         user
       )
       .subscribe(
@@ -296,7 +296,7 @@ export class AuthService {
           this.userUpdated.next([...this.users]);
           this.http
             .post<{ message: string }>(
-              this.url + 'auth/signup/merchant',
+              this.url + 'auth/merchant/signup',
               merchant
             )
             .subscribe(
@@ -331,7 +331,7 @@ export class AuthService {
     };
     this.http
       .post<{ message: string; result: User }>(
-        this.url + 'auth/signup/user',
+        this.url + 'auth/user/signup',
         user
       )
       .subscribe(
@@ -342,7 +342,7 @@ export class AuthService {
           this.userUpdated.next([...this.users]);
           this.http
             .post<{ message: string }>(
-              this.url + 'auth/signup/planner',
+              this.url + 'auth/planner/signup',
               eventPlanner
             )
             .subscribe(
@@ -375,14 +375,14 @@ export class AuthService {
 
       this.http
         .post<{ profile_pic: string }>(
-          this.url + 'auth/merchant/img',
+          this.url + 'auth/img/add',
           newMerchant
         )
         .subscribe((recievedImage) => {
           console.log(recievedImage);
           merchant.profile_pic = recievedImage.profile_pic;
           this.http
-            .post<{ message: string }>(this.url + 'auth/merchant', merchant)
+            .post<{ message: string }>(this.url + 'auth/merchant/edit', merchant)
             .subscribe(
               (recievedData) => {
                 console.log(recievedData.message);
@@ -401,7 +401,7 @@ export class AuthService {
         });
     } else {
       this.http
-        .post<{ message: string }>(this.url + 'auth/merchant', merchant)
+        .post<{ message: string }>(this.url + 'auth/merchant/edit', merchant)
         .subscribe(
           (recievedData) => {
             console.log(recievedData.message);
@@ -425,12 +425,12 @@ export class AuthService {
       newImage.append('images[]', image, image.name);
 
       this.http
-        .post<{ profile_pic: string }>(this.url + 'auth/admin/img', newImage)
+        .post<{ profile_pic: string }>(this.url + 'auth/img/add', newImage)
         .subscribe((recievedImage) => {
           console.log(recievedImage);
           admin.profile_pic = recievedImage.profile_pic;
           this.http
-            .post<{ message: string }>(this.url + 'auth/admin', admin)
+            .post<{ message: string }>(this.url + 'auth/admin/edit', admin)
             .subscribe(
               (recievedData) => {
                 console.log(recievedData.message);
@@ -452,7 +452,7 @@ export class AuthService {
         });
     } else {
       this.http
-        .post<{ message: string }>(this.url + 'auth/admin', admin)
+        .post<{ message: string }>(this.url + 'auth/admin/edit', admin)
         .subscribe(
           (recievedData) => {
             console.log(recievedData.message);
@@ -487,7 +487,7 @@ export class AuthService {
     console.log(imageData);
     console.log(currentImg);
     this.http
-      .post<{ imagePaths: string[] }>(this.url + 'auth/business/img', imageData)
+      .post<{ imagePaths: string[] }>(this.url + 'auth/img/mul', imageData)
       .subscribe((recievedImages) => {
         console.log(recievedImages);
         recievedImages.imagePaths.find((img) => {
@@ -523,14 +523,14 @@ export class AuthService {
 
       this.http
         .post<{ profile_pic: string }>(
-          this.url + 'auth/planner/img',
+          this.url + 'auth/img/add',
           newPlanner
         )
         .subscribe((recievedImage) => {
           console.log(recievedImage);
           planner.profile_pic = recievedImage.profile_pic;
           this.http
-            .post<{ message: string }>(this.url + 'auth/planner', planner)
+            .post<{ message: string }>(this.url + 'auth/planner/edit', planner)
             .subscribe(
               (recievedData) => {
                 console.log(recievedData.message);
@@ -549,7 +549,7 @@ export class AuthService {
         });
     } else {
       this.http
-        .post<{ message: string }>(this.url + 'auth/planner', planner)
+        .post<{ message: string }>(this.url + 'auth/planner/edit', planner)
         .subscribe(
           (recievedData) => {
             console.log(recievedData.message);
@@ -571,10 +571,12 @@ export class AuthService {
     userType: string,
     currentPword: string,
     newPword: string
-  ) {}
+  ) {
+
+  }
 
   // add a new Merchant Temp
-  public addMerchantTemp(merchantTemp: MerchantTemp) {
+  public setMerchantTemp(merchantTemp: MerchantTemp) {
     this.merchantTemp = merchantTemp;
   }
 
@@ -593,19 +595,19 @@ export class AuthService {
       }
 
       this.http
-        .post<{ imageUrls: string[] }>(
-          this.url + 'auth/verify/idImg',
+        .post<{ imagePaths: string[] }>(
+          this.url + 'auth/img/mul',
           newImages
         )
         .subscribe((recievedImages) => {
-          if (recievedImages.imageUrls[0]) {
-            id.id_sideA = recievedImages.imageUrls[0];
+          if (recievedImages.imagePaths[0]) {
+            id.id_sideA = recievedImages.imagePaths[0];
           }
-          if (recievedImages.imageUrls[1]) {
-            id.id_sideB = recievedImages.imageUrls[1];
+          if (recievedImages.imagePaths[1]) {
+            id.id_sideB = recievedImages.imagePaths[1];
           }
           this.http
-            .post<{ message: string }>(this.url + 'auth/verify/id', id)
+            .post<{ message: string }>(this.url + 'auth/verify/add/id', id)
             .subscribe(
               (recievedData) => {
                 console.log(recievedData.message);
@@ -635,19 +637,19 @@ export class AuthService {
       }
 
       this.http
-        .post<{ imageUrls: string[] }>(
-          this.url + 'auth/verify/brImg',
+        .post<{ imagePaths: string[] }>(
+          this.url + 'auth/img/mul',
           newImages
         )
         .subscribe((recievedImages) => {
-          if (recievedImages.imageUrls[0]) {
-            id.br_side_a = recievedImages.imageUrls[0];
+          if (recievedImages.imagePaths[0]) {
+            id.br_side_a = recievedImages.imagePaths[0];
           }
-          if (recievedImages.imageUrls[1]) {
-            id.br_side_b = recievedImages.imageUrls[1];
+          if (recievedImages.imagePaths[1]) {
+            id.br_side_b = recievedImages.imagePaths[1];
           }
           this.http
-            .post<{ message: string }>(this.url + 'auth/verify/br', id)
+            .post<{ message: string }>(this.url + 'auth/verify/add/br', id)
             .subscribe(
               (recievedData) => {
                 console.log(recievedData.message);

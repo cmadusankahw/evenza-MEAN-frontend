@@ -176,7 +176,7 @@ export class SellerService {
       .get<{
         message: string;
         selnames: { product: string; product_id: string }[];
-      }>(this.url + 'seller/get/selnames')
+      }>(this.url + 'seller/selnames/get')
       .subscribe((res) => {
         this.selNamesUpdated.next(res.selnames);
       });
@@ -185,7 +185,7 @@ export class SellerService {
   // get seller ID for report generation
   public getSelId() {
     this.http
-      .get<{ id: string }>(this.url + 'seller/get/selid')
+      .get<{ id: string }>(this.url + 'seller/selid/get')
       .subscribe((res) => {
         this.selId = res.id;
         this.selIdUpdated.next(res.id);
@@ -253,29 +253,6 @@ export class SellerService {
       });
   }
 
-  // realtime notifications with socket.io
-
-  // trigger order state change event realtime for interested listeners
-  public onOrderStateChanged() {
-    const observable = new Observable<{
-      orderId: string;
-      product: string;
-      state: string;
-    }>((observer) => {
-      this.socket.on('order state', (data) => {
-        observer.next(data);
-      });
-      return () => {
-        this.socket.disconnect();
-      };
-    });
-    return observable;
-  }
-
-  // emit socket once a order state chnaged
-  public sendOrderState(orderId: string, product: string, state: string) {
-    this.socket.emit('order-state', { orderId, product, state });
-  }
 
   // listeners for subjects
   public getOrdersUpdateListener() {
@@ -319,4 +296,29 @@ export class SellerService {
   public getSelIdUpdatedListener() {
     return this.selIdUpdated.asObservable();
   }
+
+  // realtime notifications with socket.io
+
+  // trigger order state change event realtime for interested listeners
+  public onOrderStateChanged() {
+    const observable = new Observable<{
+      orderId: string;
+      product: string;
+      state: string;
+    }>((observer) => {
+      this.socket.on('order state', (data) => {
+        observer.next(data);
+      });
+      return () => {
+        this.socket.disconnect();
+      };
+    });
+    return observable;
+  }
+
+  // emit socket once a order state chnaged
+  public sendOrderState(orderId: string, product: string, state: string) {
+    this.socket.emit('order-state', { orderId, product, state });
+  }
+
 }

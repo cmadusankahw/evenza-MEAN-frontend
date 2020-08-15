@@ -491,7 +491,7 @@
         class="btn btn-md edtbt"
         outline="yes"
         mdbWavesEffect
-        (click)="editmode = !editmode && editProductForm.resetForm()"
+        (click)="editmode = false && editProductForm.resetForm()"
         type="button"
       >
         Discard
@@ -606,13 +606,13 @@
               Please Enter the quantity
             </mat-error>
 
-            <!-- card details-->
+            <!--
             <div class="row">
               <div class="col-md-7">
                 <div style="padding-top: 15px;">
                   <mdb-icon fas icon="list"> </mdb-icon> Card:
                   {{ " ...XXXX-XXXX-4419" }}
-                  <!--to be modified-->
+
                 </div>
               </div>
               <div class="col-md-5">
@@ -626,7 +626,7 @@
                   Card Details
                 </a>
               </div>
-            </div>
+            </div> -->
 
             <hr />
 
@@ -671,7 +671,7 @@
                     class="amount-input"
                     [(ngModel)]="payAmount"
                     name="amount_paid"
-                    (change)="payPalAmount = (payAmount / 190).toFixed(2)"
+                    (change)="payPalAmount = (payAmount / 190)"
                   />
                 </mat-form-field>
                 <mat-error *ngIf="payInput2.invalid">
@@ -812,7 +812,7 @@
             class="btn btn-md edtbt"
             outline="yes"
             mdbWavesEffect
-            (click)="orderUser = !orderUser && orderForm.resetForm()"
+            (click)="orderUser = false && orderForm.resetForm()"
           >
             Cancel
           </button>
@@ -876,56 +876,7 @@
   </div>
 </div>
 
-<!--View Service Modal-->
-<div
-  mdbModal
-  #cardDetails="mdbModal"
-  class="modal fade"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="myBasicModalLabel"
-  [config]="{ backdrop: false, ignoreBackdropClick: true }"
-  aria-hidden="true"
->
-  <div
-    class="modal-dialog modal-dialog-centered modal-md"
-    role="document"
-    style="overflow-y: initial !important;"
-  >
-    <div class="modal-content">
-      <div class="modal-header">
-        <button
-          type="button"
-          class="close pull-right"
-          aria-label="Close"
-          (click)="success = false"
-          (click)="cardDetails.hide()"
-        >
-          <span aria-hidden="true">×</span>
-        </button>
-        <h4 class="modal-title w-100" id="myModalLabel">
-          <mat-icon>service</mat-icon>Card Details
-        </h4>
-      </div>
 
-      <div class="modal-body" style="height: 400px; overflow-y: auto;">
-        <app-card-details></app-card-details>
-      </div>
-
-      <div class="modal-footer">
-        <button
-          mdbBtn
-          color="link"
-          (click)="success = false"
-          (click)="cardDetails.hide()"
-          mdbWavesEffect
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!--Add Promotion Modal-->
 <div
@@ -949,7 +900,6 @@
           type="button"
           class="close pull-right"
           aria-label="Close"
-          (click)="success = false"
           (click)="promotionModal.hide()"
         >
           <span aria-hidden="true">×</span>
@@ -1094,7 +1044,6 @@
         <button
           mdbBtn
           color="link"
-          (click)="success = false"
           (click)="promotionModal.hide()"
           mdbWavesEffect
         >

@@ -12,8 +12,6 @@
     <form
       style="color: #757575;"
       [formGroup]="signupForm"
-      (submit)="signupUser(signupform)"
-      #signupform="ngForm"
     >
       <div class="text-center p-md-3">
         <p>Reach out the most by signing up today..</p>
@@ -31,8 +29,7 @@
               id="materialRegisterFormFirstName"
               class="form-control"
               formControlName="firstName"
-              name="firstName"
-              ngModel
+
               rquired
             />
             <mdb-error
@@ -55,8 +52,7 @@
               id="materialRegisterFormLastName"
               class="form-control"
               formControlName="lastName"
-              name="lastName"
-              ngModel
+
               required
             />
             <mdb-error
@@ -79,8 +75,7 @@
           id="materialRegisterFormEmail"
           class="form-control"
           formControlName="email"
-          name="email"
-          ngModel
+
           required
         />
         <mdb-error *ngIf="email.invalid && (email.dirty || email.touched)">
@@ -100,8 +95,7 @@
           class="form-control"
           aria-describedby="materialRegisterFormPasswordHelpBlock"
           formControlName="password"
-          name="password"
-          ngModel
+
         />
         <mdb-error
           *ngIf="password.invalid && (password.dirty || password.touched)"
@@ -134,8 +128,7 @@
           aria-describedby="materialRegisterFormPhoneHelpBlock"
           required
           formControlName="contactno"
-          name="contactno"
-          ngModel
+
         />
         <mdb-error
           *ngIf="contactno.invalid && (contactno.dirty || contactno.touched)"
@@ -154,7 +147,7 @@
         block="true"
         class="my-4 waves-effect z-depth-0"
         mdbWavesEffect
-        type="submit"
+        (click)="signupUser()"
       >
         Sign Up
       </button>

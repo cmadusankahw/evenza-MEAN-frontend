@@ -1,6 +1,8 @@
 //model imports
 const checkAuth = require("../../middleware/auth-check");
 const email = require("../common/mail");
+const mailHeader = require("../common/mail-header");
+const mailFooter = require("../common/mail-footer");
 
 // export app imports
 const eventPlannerImg = require("./eventPlanner-img");
@@ -42,6 +44,7 @@ eventPlanner.get('/id/get', checkAuth, (req, res, next) => {
 eventPlanner.post("/mail", checkAuth, (req,res,next) => {
   let mail = req.body;
   mail.email = req.userData.email;
+  mail.html = mailHeader.mailHeader + mail.html + mailFooter.mailFooter;
   console.log(mail);
   email.sendMail(mail, info => {
     res.status(200).json(

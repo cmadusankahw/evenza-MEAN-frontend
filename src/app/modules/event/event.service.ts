@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
 
 
-import { TheEvent, EventCategory, EventCard, Task, Participant, Alert, ScheduleAlert, Filteration } from './event.model';
+import { TheEvent, EventCategory, EventCard, Task, Participant, Alert, ScheduleAlert, Filteration, RegistrationForm } from './event.model';
 import { SuccessComponent } from 'src/app/success/success.component';
 import { getUrl } from 'src/assets/url';
 
@@ -291,6 +291,17 @@ export class EventService {
     this.http.post<{ message: string }>(this.url + 'event/participants/update', { participants, invitation, eventId })
       .subscribe((recievedData) => {
         console.log(recievedData.message);
+        this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
+      });
+  }
+
+   // rregister a new participant to open type event
+   public registerOpenEventParticipant(participant: RegistrationForm, eventId: string  ) {
+    this.http.post<{ message: string }>(this.url + 'event/participants/open/add', {participant, eventId})
+      .subscribe((recievedData) => {
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/']);
         this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
       });
   }

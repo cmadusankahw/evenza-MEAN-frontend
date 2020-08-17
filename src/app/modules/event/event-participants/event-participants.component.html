@@ -49,11 +49,16 @@
           <h5 class="budget-total">
             <b> No of Participants: {{ event.no_of_participants }}</b>
           </h5>
-          <span style="color: darkgreen; padding-top: 8px;"
+          <span *ngIf="event.event_type == 'closed'" style="color: darkgreen; padding-top: 8px;"
             ><b
               >Approved: {{ event.participants.approved_participants }}</b
             ></span
           >
+          <span  *ngIf="event.event_type == 'open'"  style="color: darkgreen; padding-top: 8px;"
+          ><b
+            >Registered: {{ event.participants.approved_participants }}</b
+          ></span
+        >
           <hr />
           <h5 class="budget-total" style="color: darkmagenta;">
             <b>Event State: {{ event.state }}</b>
@@ -150,7 +155,21 @@
       <b> <mdb-icon fas icon="user-friends"> </mdb-icon> Add Guests:</b>
     </h4>
     <hr />
-    <div class="row paticipant-add">
+    <div class="text-center pt-3" *ngIf="event.event_type == 'open'">
+      This is an Open Event! you can add guests directly or share the Registration Link with them.<br> Please update &  share the <b> Event Registration Form </b> in the Event Details page. <br>
+      Once guests registered, a list will appear below.<br>
+      <div class="pt-3 pb-3 text-center reg-link">
+        <div class="row">
+          <div class="col-md-8 pt-3 text-center">
+            <a href="http://evenza.biz/events/register/{{eventId}}"> http://evenza.biz/events/register/{{eventId}} </a>
+          </div>
+          <div class="col-md-4 text-center">
+            <button class="btn btn-md" mdbBtn mdbWavesEffect color="primary" (click) = "copyMessage()"> Copy Link </button>
+          </div>
+          </div>
+        </div>
+    </div>
+    <div class="row paticipant-add" *ngIf="event.event_type == 'closed'">
       <form
         class="service-full-width"
         (submit)="addParticipant(addParticipantForm)"
@@ -209,6 +228,7 @@
         </div>
       </form>
     </div>
+
     <hr />
     <div class="row pt-3 pb-3">
       <div class="col-md-9">
@@ -236,8 +256,8 @@
       </div>
       <hr />
       <!--accepted participants list-->
-      <div class="row">
-        <div class="col" style="margin-left: 20px;">
+      <div class="row" style="margin-left: 20px;" >
+        <div class="col" *ngIf="event.event_type == 'closed'">
           <h5>
             <b
               ><mdb-icon fas icon="user-friends"> </mdb-icon> Pending
@@ -245,10 +265,10 @@
             </b>
           </h5>
           <div *ngFor="let par of participants">
-            <div class="participant">
+
               <div
                 class="row"
-                *ngIf="par.state == 'pending' || par.state == 'invited'"
+                *ngIf="par.state == 'pending' || par.state == 'invited'" class="participant"
               >
                 <div class="col-md-8">
                   Name: {{ par.first_name }} {{ par.last_name }} <br />
@@ -278,7 +298,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+
           </div>
         </div>
 

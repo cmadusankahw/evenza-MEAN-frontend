@@ -151,6 +151,18 @@ export interface Filteration {
   category: string;
 }
 
+export interface RegistrationForm {
+  participant_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  gender: string;
+  nic: string;
+  contant_no: string;
+  optional_questions: {question: string, answer: string}[];
+  state: string;
+}
+
 export function refactorDate(date: Date, time: {hour: number, minute: number}): string {
   let ISODate = date.toISOString();
   let timeString = '';

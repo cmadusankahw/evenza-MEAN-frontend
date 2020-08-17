@@ -19,19 +19,14 @@ import { NgForm } from '@angular/forms';
 export class AdminDashProfileComponent implements OnInit, OnDestroy {
 
   private merchantSubs: Subscription;
-
   // edit profile mode
   editmode = false;
-
   // enabling ctomization only if it is the owner
   isowner = true;
-
   // bprofile data binding
   admin: Admin;
-
   // card details
   cardDetails: CardDetails;
-
    // image to upload
    image: File;
    imageUrl: any = './assets/images/merchant/nopic.png';
@@ -86,6 +81,7 @@ export class AdminDashProfileComponent implements OnInit, OnDestroy {
         address_line2: editForm.value.address_line2,
         postal_code: editForm.value.postal_code,
         gender: editForm.value.gender,
+        subscription_fee: this.admin.subscription_fee,
         card_details: this.cardDetails,
         payment_details: this.admin.payment_details,
         };

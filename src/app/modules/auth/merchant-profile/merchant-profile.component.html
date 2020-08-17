@@ -218,6 +218,19 @@
           </div>
         </div>
         <hr />
+        <div class="deactivate text-center pt-2">
+          <div class="row">
+            <div class="col-md-8">
+              <p> <b> Deactivate your Merchant Account <br> (this action can't be undone) :</b></p>
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-md" mdbBtn mdbWavesEffect color="red" (click) = "cancelModal.show()">
+                Deactivate Account
+              </button>
+            </div>
+          </div>
+        </div>
+        <hr>
       </div>
     </div>
   </section>
@@ -749,5 +762,104 @@
         </button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- deactivate confirmation-->
+<div
+  mdbModal
+  #cancelModal="mdbModal"
+  class="modal fade top"
+  id="frameModalTop"
+  tabindex="-1"
+  role="dialog"
+  [config]="{ backdrop: false, ignoreBackdropClick: true }"
+  aria-labelledby="myModalLabel"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-notify modal-danger modal-dialog-centered"
+    role="document"
+  >
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <p class="heading">Deactvate Merchant Account</p>
+
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="cancelModal.hide()"
+        >
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-3">
+            <p></p>
+            <p class="text-center">
+              <mdb-icon
+                fas
+                icon="ban"
+                size="3x"
+                class="mb-3 animated rotateIn"
+              ></mdb-icon>
+            </p>
+          </div>
+
+          <div class="col-9">
+            <h5>Are you sure want to deactivate your account?</h5>
+            <p>
+              <b>
+                Please Note: Please perform this action If necessarily required.
+               <span style="color: red;"> this action can't be undone! </span>
+               <br>
+               Once deacivated, all your Business Profile, Services or Products will be removed from the system.
+               <br>
+               Please enter your NIC to deativate
+              </b>
+            </p>
+            <mat-form-field style="width:90%">
+              <mat-label> You NIC</mat-label>
+              <input matInput required #nicTyped [(ngModel)] = "nict">
+              <mat-error *ngIf="nicTyped.invalid"> Your NIC required </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <!--Footer-->
+      <div class="modal-footer justify-content-center">
+        <a
+          type="button"
+          mdbBtn
+          color="danger"
+          class="waves-effect"
+          (click)="cancelModal.hide()"
+          (click)="deactivateAccount()"
+          mdbWavesEffect
+          >I'm Sure. Deactivate Account
+          <mdb-btn far icon="ban" class="ml-1"></mdb-btn>
+        </a>
+        <a
+          type="button"
+          mdbBtn
+          color="danger"
+          outline="true"
+          class="waves-effect"
+          mdbWavesEffect
+          (click)="cancelModal.hide()"
+          data-dismiss="modal"
+          >Not Now</a
+        >
+      </div>
+    </div>
+    <!--/.Content-->
   </div>
 </div>

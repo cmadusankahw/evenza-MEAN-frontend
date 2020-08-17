@@ -7,6 +7,7 @@ import { Alert } from '../event.model';
 import { NgForm } from '@angular/forms';
 import { pid } from 'process';
 import { printData } from '../../eventplanner/eventplanner.model';
+import { MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition, MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-event-participants',
@@ -17,24 +18,23 @@ export class EventParticipantsComponent implements OnInit, OnDestroy {
 
   // subscriptions
   private eventSub: Subscription;
-
+  // recieved event
   event: TheEvent;
-
+ // recieved event id
   eventId: string;
-
   // invitation message temp
   message = 'Start editing your invitation';
-
   // modified invitation
   invitation: Alert;
-
   // edit invitation
   invitationEditMode = false;
-
   // event participants
   participants: Participant[] = [];
+  // snack bars for notification display
+  private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
-  constructor(private eventService: EventService, private route: ActivatedRoute, private router: Router) {
+  constructor(private eventService: EventService, private route: ActivatedRoute, private router: Router,  private _snackBar: MatSnackBar) {
     this.eventId = route.snapshot.params.id;
   }
 
@@ -96,4 +96,23 @@ export class EventParticipantsComponent implements OnInit, OnDestroy {
     printData(content, type);
   }
 
+  // copy selected event link to clipboard
+  copyMessage(){
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = 'http://evenza.biz/events/register/' + this.eventId;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+    this._snackBar.open( 'Likn copied to clipboard ', 'Dismiss', {
+    duration: 5000,
+    horizontalPosition: this.horizontalPosition,
+    verticalPosition: this.verticalPosition,
+  });
+  }
 }

@@ -2,6 +2,10 @@
 const Event = require("../../model/event/event.model");
 const checkAuth = require("../../middleware/auth-check");
 const email = require("../common/mail");
+const mailHeader = require("../common/mail-header");
+const mailFooter = require("../common/mail-footer");
+const fs = require("fs");
+const path = require('path');
 
 // express app imports
 const eventAlerts = require("./event-alerts");
@@ -191,15 +195,19 @@ event.get('/publish/:id',checkAuth, (req, res) => {
       console.log('recieved participants: ',pars);
       // sending mails to participants
       for (const  doc of pars) {
-        const mail= {
-          email:doc.email,
-          subject: result.alerts[0].heading,
-          html: createHTML(result.alerts[0].message,doc.participant_id,req.params.id)
-        };
-        console.log( 'new Mail:' , mail);
-        email.sendMail(mail, () => {});
-        const index = pars.indexOf(doc);
-        pars[index].state = "invited";
+        var mail;
+        if ( result.event_type == 'closed' && doc.state != 'accepted') {
+          mail= {
+            email:doc.email,
+            subject: result.alerts[0].heading,
+            html: createHTML(result.alerts[0].message,doc.participant_id,req.params.id)
+          };
+          console.log( 'new closed Mail:' , mail);
+          email.sendMail(mail, () => {});
+          const index = pars.indexOf(doc);
+          pars[index].state = "invited";
+
+        }
       }
       // finally update the modified event
       Event.updateOne({event_id: req.params.id},{
@@ -207,7 +215,7 @@ event.get('/publish/:id',checkAuth, (req, res) => {
         'participants.participants': pars,
       }).then( (updatedResult) => {
         console.log(updatedResult);
-        res.status(200).json({ message: "Event Publish was Successfull!" });
+        res.status(200).json( {message: "Event Publish was Successfull!"} );
       }).catch( err => {
         console.log(err);
         res.status(500).json({ message: "Event Not Publiished! Please try again!" });
@@ -223,23 +231,39 @@ event.get('/confirm/:id', (req, res) => {
   var idS = req.params.id.split('_');
   console.log(idS);
   var pars;
+  var approvedParticipants = 0;
 
   Event.findOne({event_id: idS[1]}).then( result => {
     pars = result.participants.participants;
+    approvedParticipants = +(result.participants.approved_participants);
     console.log('recieved participants: ',pars);
     // find and update confirmed participant state
     for (const  doc of pars) {
      if( doc.participant_id == idS[0]){
       const index = pars.indexOf(doc);
-      pars[index].state = "accepted";
+      if (pars[index].state != "accepted") {
+        pars[index].state = "accepted";
+        approvedParticipants++;
+      }
+
      }
     };
     Event.updateOne({event_id: idS[1]},{
       'participants.participants': pars,
-      $inc : { 'participants.approved_participants' : 1}
+       'participants.approved_participants' : approvedParticipants
     }).then( (updatedResult) => {
       console.log(updatedResult);
-      res.status(200).json({ message: "Your participation successfully confirmed!" });
+      fs.readFile(path.join(__dirname, 'confirm/confirm.html'), null, function (err, data) {
+        if (err) {
+          console.log(err);
+          res.writeHead(404);
+          res.write('Something went Wrong!');
+        } else {
+          res.writeHead(200);
+          res.write(data);
+        }
+        res.end();
+      })
     }).catch( err => {
       console.log(err);
       res.status(500).json({ message: "Confirmation Unsuccessful! Please try again!"});
@@ -254,17 +278,19 @@ event.get('/confirm/:id', (req, res) => {
 
 // create event invitation HTML with confirmation link
 function createHTML(content, pid, eventId) {
-   const message = "<h3> Invitation </h3><br> Dear Sir/Madam, <br><br>" + content
-   +"<br><br> Click below link to confirm your participation:<hr> <b> <a href='http://localhost:3000/api/event/confirm/"+ pid + '_' + eventId + "' target='_blank'> Conirm My Participation</a></br>"
-   + "<div> <hr> Thank You, <br> Your Sincere, <br><br> Event Organizer at Evenza</div>"
+   const message =  mailHeader.mailHeader + "<h3> Invitation </h3><br> Dear Sir/Madam, <br><br>" + content
+   +"<br><br> Click below link to confirm your participation:<hr> <b> <a href='https://tranquil-shore-24102.herokuapp.com/api/event/confirm/"+ pid + '_' + eventId + "' target='_blank'> Conirm My Participation</a></br>"
+   + "<div> <hr> Thank You, <br> Your Sincere, <br><br> Event Organizer at Evenza</div>" + mailFooter.mailFooter
    return message;
   }
+  //
+
 
     // create cancelrequest HTML
 function createCancelHTML(eventTitle, fromDate, toDate) {
-  const message = "<h3> Cancellation Notice! </h3><br> Dear Sir/Madam," +
+  const message =  mailHeader.mailHeader + "<h3> Cancellation Notice! </h3><br> Dear Sir/Madam," +
   +"<br><br> <b> The Event : "+ eventTitle +"</b> which is to be held from " + fromDate.slice(0,10) + " to "+  toDate.slice(0,10) + " , was cancelled due to an unavoidable reason."  + "<br><br>"
-  + "<div> <hr> Thank You for your understanding,,<br> <br> Your Sincere, <br><br> Event Organizer at Evenza</div>"
+  + "<div> <hr> Thank You for your understanding,,<br> <br> Your Sincere, <br><br> Event Organizer at Evenza</div>"  + mailFooter.mailFooter
   return message;
  }
 

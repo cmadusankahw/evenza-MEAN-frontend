@@ -16,7 +16,7 @@ export class AdminService {
   private dashboardDataUpdated = new Subject<DashboardData>();
   private adminPaymentsUpdated = new Subject<MerchantPayments[]>();
   private merchantPaymentUpdated = new Subject<MerchantPayments>();
-
+  private feeUpdated = new Subject<number>();
   private merchantLocationUpdated = new Subject<any[]>();
   private eventLocationUpdated = new Subject<any[]>();
 
@@ -32,6 +32,8 @@ export class AdminService {
   private adminPayments: MerchantPayments[];
   // recieved merchant's payment
   private merchantPayment: MerchantPayments;
+  // recieved subscription fee amount
+  private fee: number;
 
   constructor(
     private http: HttpClient,
@@ -51,6 +53,18 @@ export class AdminService {
         console.log(res);
         this.dashboardData = res.dashboardData;
         this.dashboardDataUpdated.next(this.dashboardData);
+      });
+  }
+
+   // get payment data fbetween given 6 months period
+   public getSubscription() {
+    this.http
+      .get<{ message: string; fee: number }>(
+        this.url + 'admin/payment/fee/get'
+      )
+      .subscribe((res) => {
+        this.fee = res.fee;
+        this.feeUpdated.next(this.fee);
       });
   }
 
@@ -114,6 +128,18 @@ export class AdminService {
   }
 
   // setters
+
+  // set charge subscription fee amount by admin
+  public setSubscription(fee: number) {
+    this.http
+    .post<{ message: string }>(this.url + 'admin/payment/fee/update', { fee })
+    .subscribe((recievedData) => {
+      console.log(recievedData.message);
+      this.dialog.open(SuccessComponent, {
+        data: { message: recievedData.message },
+      });
+    });
+  }
 
   // create a new backup of database
   public createBackup() {
@@ -194,5 +220,9 @@ export class AdminService {
 
   public getEventLocationUpdateListener() {
     return this.eventLocationUpdated.asObservable();
+  }
+
+  public getSubscriptionUpdatedListener() {
+    return this.feeUpdated.asObservable();
   }
 }

@@ -19,19 +19,17 @@ import { Merchant } from '../auth.model';
 export class MerchantProfileComponent implements OnInit, OnDestroy {
 
   private merchantSubs: Subscription;
-
   // edit profile mode
-  editmode = false;
-
+  public editmode = false;
   // enabling ctomization only if it is the owner
   @Input() isowner: boolean;
-
   // bprofile data binding
-  serviceProvider: Merchant;
-
+  public serviceProvider: Merchant;
+  // enterd nic for deactivation
+  public nict = '';
   // image to upload
-  image: File;
-  imageUrl: any = './assets/images/merchant/nopic.png';
+  public image: File;
+  public imageUrl: any = './assets/images/merchant/nopic.png';
 
 
   constructor(private authService: AuthService,
@@ -123,6 +121,15 @@ export class MerchantProfileComponent implements OnInit, OnDestroy {
       this.image = file;
       this.imageUrl = reader.result;
     };
+  }
+
+  // deactivate merchant profile
+  public deactivateAccount() {
+    if ( this.nict === this.serviceProvider.nic) {
+      this.authService.deativateAccount(this.serviceProvider.user_id);
+    } else {
+      this.dialog.open(ErrorComponent, { data: { message: 'Incorrect NIC! Please try Again' } });
+    }
   }
 
 }

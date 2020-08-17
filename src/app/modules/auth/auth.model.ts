@@ -31,6 +31,7 @@ export interface Admin {
   postal_code: string;
   gender: string;
   card_details: CardDetails;
+  subscription_fee: number;
   payment_details: {
     user_id: string;
     user_type: string;

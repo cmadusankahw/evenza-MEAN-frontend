@@ -575,6 +575,24 @@ export class AuthService {
 
   }
 
+  // deactivate merchant profile
+  public deativateAccount(userId: string) {
+    this.http
+    .delete<{ message: string }>(this.url + 'auth/merchant/remove/' + userId)
+    .subscribe(
+      (recievedData) => {
+        console.log(recievedData.message);
+        this.signOut();
+        this.dialog.open(SuccessComponent, {
+          data: { message: recievedData.message },
+        });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
   // add a new Merchant Temp
   public setMerchantTemp(merchantTemp: MerchantTemp) {
     this.merchantTemp = merchantTemp;

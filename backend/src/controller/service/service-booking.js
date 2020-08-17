@@ -6,6 +6,8 @@ const Merchant = require("../../model/auth/merchant.model");
 const Event = require("../../model/event/event.model");
 const checkAuth = require("../../middleware/auth-check");
 const email = require("../common/mail");
+const mailHeader = require("../common/mail-header");
+const mailFooter = require("../common/mail-footer");
 
 //dependency imports
 const express = require("express");
@@ -279,11 +281,12 @@ serviceBooking.get('/get',checkAuth, (req, res, next) => {
 
 // create custom HTML
 function createHTML(content) {
-    const message = "<h3> You have new "+ mailType + " on " + content.service_name + "</h3><hr><h4>" + mailType + " ID : <b> " +
+    const message = mailHeader.mailHeader +  "<h3> You have new "+ mailType + " on " + content.service_name + "</h3><hr><h4>" + mailType + " ID : <b> " +
     content.booking_id
     + "</b></h4><h4>Booked Date : <b> " +
    content.from_date.slice(0,10)
     + " </b></h4><h4>Duration : <b> " + content.duration + ' ' + content.rate_type.slice(1) + "(s) </b></h4><hr><div class='text-center'><p><b> Please log in to view more details.<br><br><a class='btn btn-lg' href='evenza.biz//login'>Log In</a></b></p></div>"
+    + mailFooter.mailFooter;
    return message;
 
   }

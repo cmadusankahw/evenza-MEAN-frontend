@@ -172,6 +172,7 @@ import { SellerPaymentsReportComponent } from './modules/seller/reports/seller-p
 import { SellerProductDetailsReportComponent } from './modules/seller/reports/seller-product-details-report/seller-product-details-report.component';
 import { SellerBusinessForecastComponent } from './modules/seller/reports/seller-business-forecast/seller-business-forecast.component';
 import { PlannerEventDetailsReportComponent } from './modules/eventplanner/reports/planner-event-details-report/planner-event-details-report.component';
+import { EventRegFormComponent } from './modules/event/event-reg-form/event-reg-form.component';
 
 
 // socket io ocnfiguration
@@ -295,6 +296,7 @@ const config: SocketIoConfig = { url: getSocketUrl(), options: {} };
     SellerProductDetailsReportComponent,
     SellerBusinessForecastComponent,
     PlannerEventDetailsReportComponent,
+    EventRegFormComponent,
   ],
   imports: [
     BrowserModule,

@@ -6,6 +6,8 @@ const Order = require ("../../model/product/order.model");
 const Event = require("../../model/event/event.model");
 const checkAuth = require("../../middleware/auth-check");
 const email = require("../common/mail");
+const mailHeader = require("../common/mail-header");
+const mailFooter = require("../common/mail-footer");
 
 //dependency imports
 const express = require("express");
@@ -156,7 +158,8 @@ productOrder.post('/event', (req, res, next) => {
 
 // create custom HTML
 function createHTML(content) {
-   const message = "<h3> You have new Order on " + content.product + "</h3><hr><h4>Order ID : <b> " + content.order_id + "</b></h4><h4>Date : <b> " +content.created_date.slice(0,10) + ' ' + content.created_date.slice(11,19) + " </b></h4><h4>Quantity : <b> " + content.quantity + " </b></h4><hr><div class='text-center'><p><b> Please log in to view more details.<br><br><a class='btn btn-lg' href='evenza.biz//login'>Log In</a></b></p></div>"
+   const message = mailHeader.mailHeader + "<h3> You have new Order on " + content.product + "</h3><hr><h4>Order ID : <b> " + content.order_id + "</b></h4><h4>Date : <b> " +content.created_date.slice(0,10) + ' ' + content.created_date.slice(11,19) + " </b></h4><h4>Quantity : <b> " + content.quantity + " </b></h4><hr><div class='text-center'><p><b> Please log in to view more details.<br><br><a class='btn btn-lg' href='evenza.biz//login'>Log In</a></b></p></div>"
+    mailFooter.mailFooter;
    return message;
   }
 

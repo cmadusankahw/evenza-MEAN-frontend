@@ -1,6 +1,9 @@
 //model imports
 const Admin = require("../../model/admin/admin.model");
+const User = require("../../model/auth/user.model");
 const Merchant = require("../../model/auth/merchant.model");
+const Product = require("../../model/product/product.model");
+const Service = require("../../model/service/service.model");
 const checkAuth = require("../../middleware/auth-check");
 
 //dependency imports
@@ -94,24 +97,45 @@ authMerchant.post('/edit',checkAuth, (req, res, next) => {
 authMerchant.delete('/remove:id',checkAuth, (req, res, next) => {
 
   var removeMerchantQuery =  Merchant.deleteOne({user_id: req.params.id});
+  var removeUserQuery =  User.deleteOne({user_id: req.params.id});
   var removeServiceQuery = Service.delete({user_id: req.params.id});
-  var removeProductQuery = Service.delete({user_id: req.params.id});
+  var removeProductQuery = Product.delete({user_id: req.params.id});
 
+  removeUserQuery.exec().thrn ( () => {
   removeMerchantQuery.exec().then( () => {
     removeServiceQuery.exec().then( () => {
       removeProductQuery.exec().then ( ()=> {
         res.status(200).json(
           {
-            message: 'Merchants removed successfully!',
+            message: 'Your Profile has been deactivated!',
           }
         );
-      })
-    })
+      }).catch( (err) => {
+        console.log(err);
+        res.status(500).json(
+          {
+            message: 'Couldn\'t deactivate! Please retry!'
+          });
+      });
+    }).catch( (err) => {
+      console.log(err);
+      res.status(500).json(
+        {
+          message: 'Couldn\'t deactivate! Please retry!'
+        });
+    });
   }).catch( (err) => {
     console.log(err);
     res.status(500).json(
       {
-        message: 'Couldn\'t remove Merchant! Please retry!'
+        message: 'Couldn\'t deactivate! Please retry!'
+      });
+  });
+  }).catch( (err) => {
+    console.log(err);
+    res.status(500).json(
+      {
+        message: 'Couldn\'t deactivate! Please retry!'
       });
   });
 });

@@ -12,6 +12,7 @@ export interface Admin {
   address_line2: string;
   postal_code: string;
   gender: string;
+  subscription_fee: number;
   card_details: CardDetails;
   payment_details: MerchantPayments[];
 }

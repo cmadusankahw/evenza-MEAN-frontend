@@ -1,13 +1,6 @@
 //model imports
 const Product = require("../../model/product/product.model");
-const ProductCategories = require("../../model/product/categories.model");
-const EventPlanner = require("../../model/auth/eventPlanner.model");
-const Merchant = require("../../model/auth/merchant.model");
-const Order = require ("../../model/product/order.model");
-const DeliveryService = require("../../model/product/deliveryService.model");
-const Event = require("../../model/event/event.model");
 const checkAuth = require("../../middleware/auth-check");
-const email = require("../common/mail");
 
 // express app imports
 const productDelivery = require("./product-delivery");

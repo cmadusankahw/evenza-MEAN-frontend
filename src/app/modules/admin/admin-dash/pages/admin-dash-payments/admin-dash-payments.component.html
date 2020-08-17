@@ -1,4 +1,26 @@
 <div class="pt-4 pb-2">
+  <div class="text-center ml-3 pt-4 pb-3">
+      <div class="row">
+        <div class="col-md-8 pt-3 wrapped">
+          <div class="row">
+            <div class="col-md-4 text-center">
+              <p> Update Subscription Fee charged: </p>
+            </div>
+            <div class="col-md-4 text-center">
+              <mat-form-field style="width:80%;">
+                <mat-label>Subscription Fee: </mat-label>
+                <input matInput type="number" required name="fee" [(ngModel)]= "fee">
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" (click)="setSubscription()">
+                Update Fee
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
   <app-admin-payments [userType]="'serviceProvider'"></app-admin-payments>
   <hr />
   <app-admin-payments [userType]="'seller'"></app-admin-payments>

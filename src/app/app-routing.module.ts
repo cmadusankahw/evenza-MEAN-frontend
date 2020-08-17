@@ -56,6 +56,7 @@ import { EventProductSearchComponent } from './modules/event/event-product-searc
 import { EventBudgetReportComponent } from './modules/event/event-budget-report/event-budget-report.component';
 import { PlannerChatComponent } from './modules/eventplanner/planner-chat/planner-chat.component';
 import { PlannerEventDetailsReportComponent } from './modules/eventplanner/reports/planner-event-details-report/planner-event-details-report.component';
+import { EventRegFormComponent } from './modules/event/event-reg-form/event-reg-form.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -64,6 +65,7 @@ const routes: Routes = [
   { path: 'register/merchant', component: SignupMerchantComponent },
   { path: 'bprofile/:id', component: BprofileComponent },
   { path: 'events/:id', component: EventDetailsComponent },
+  { path: 'events/register/:id', component: EventRegFormComponent },
   { path: 'contactus', component: ContactUsComponent },
   { path: 'services', component: SearchServicesComponent },
   { path: 'products', component: SearchProductsComponent },

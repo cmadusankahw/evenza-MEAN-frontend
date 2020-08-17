@@ -33,12 +33,12 @@ admin.use('/img', adminImg);
 // schedule tasks to be run on the server - update payments
 cron.schedule("* * 28 * *", function () {
   var i = 0;
-  Admin.findOne().select('payment_details').then(result => {
+  Admin.findOne().select('payment_details subscription_fee').then(result => {
 
     var paymentDetails = result.payment_details;
     var merchantIndex = 0;
     var paysIndex = 0;
-    var dueAmt = 299;
+    var dueAmt = result.subscription_fee;
     var timeStamp;
     for (let pd of paymentDetails) {
       for (let p of pd.pays) {

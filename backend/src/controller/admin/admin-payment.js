@@ -19,7 +19,7 @@ adminPayment.use(bodyParser.urlencoded({ extended: false }));
 // update admin payment details
 // auto update once id paid, or -> paid_amount
 // auto update on month end -> due amount
-adminPayment.post('/update', (req, res, next) => {
+adminPayment.post('/update', checkAuth, (req, res, next) => {
   Admin.updateOne({ user_id: req.userData.user_id }, {
     // update data
   })
@@ -36,6 +36,26 @@ adminPayment.post('/update', (req, res, next) => {
       });
     });
 });
+
+// update subscription fee amount
+adminPayment.post('/fee/update', checkAuth, (req, res, next) => {
+  Admin.updateOne({ user_id: req.userData.user_id }, {
+   subscription_fee: req.body.fee
+  })
+    .then((result) => {
+      console.log(result);
+      res.status(200).json({
+        message: 'Fee details updated successfully!',
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        message: 'Fee details update unsuccessfull! Please Try Again!'
+      });
+    });
+});
+
 
 
 // get all payments details
@@ -54,6 +74,27 @@ adminPayment.get('/get', checkAuth, (req, res, next) => {
       console.log(err);
       res.status(500).json({
         message: 'Payment Details Retrival unsuccessfull! Please Try Again!'
+      });
+    });
+});
+
+
+// get subscription fee to edit by admin
+adminPayment.get('/fee/get', checkAuth, (req, res, next) => {
+
+  var Query = Admin.findOne({ user_id: req.userData.user_id }).select('subscription_fee');
+
+  Query.exec().then((result) => {
+    console.log(result);
+    res.status(200).json({
+      message: 'Fee details retrived successfully!',
+      fee: result.subscription_fee
+    });
+  })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        message: 'Fee Details Retrival unsuccessfull! Please Try Again!'
       });
     });
 });

@@ -62,12 +62,41 @@
         {{ event.event_category }}
       </div>
       <hr />
+      <div class="notify" *ngIf="published && event.event_type == 'open'">
+        <div class="row">
+          <div class="col-md-6">
+            <mdb-icon far icon="user-friends"></mdb-icon>
+            <b> Register Now & reserve your Seat </b>
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-md" mdbBtn mdbWavesEffect color="primary" routerLink="/events/register/{{eventId}}">
+              Register Now
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="notify" *ngIf="!published && event.event_type == 'open'">
+        <div class="row">
+          <div class="col-md-6 pt-2">
+            <mdb-icon fas icon="user-friends"></mdb-icon>
+            <b> View & Edit User Registration Form </b>
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-md" mdbBtn mdbWavesEffect color="primary" routerLink="/events/register/{{eventId}}">
+              View Form
+            </button>
+          </div>
+        </div>
+        <hr>
+      </div>
+
       <div class="notify" style="color: darkblue;" *ngIf="!published">
         <mdb-icon far icon="money-bill-alt"></mdb-icon>
         <b> Budget: Rs. {{ event.total_budget }} </b>
       </div>
       <br />
-      <div class="notify" *ngIf="isowner">
+      <div class="notify" *ngIf="isowner && !published">
         <mdb-icon fas icon="user-friends"> </mdb-icon> No of Participants
         (Expected): {{ event.no_of_participants }} <br />
         <br />

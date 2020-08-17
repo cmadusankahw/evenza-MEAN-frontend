@@ -13,6 +13,7 @@ const adminSchema = mongoose.Schema(
     address_line2: {type: String},
     postal_code: {type: String},
     gender: {type: String, required: true, default: 'none'},
+    subscription_fee: { type: Number, required: true},
     card_details: { type: {name_on_card: String,
       card_no: String,
       cvc_no: String,

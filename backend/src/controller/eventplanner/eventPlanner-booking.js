@@ -36,33 +36,27 @@ eventPlannerBooking.post('/review/:id',checkAuth, (req, res, next) => {
 
 //get list of bookings
 eventPlannerBooking.get('/get',checkAuth, (req, res, next) => {
-  Booking.find({'user.user_id': req.userData.user_id},function (err, bookings) {
+  Booking.find({'user.user_id': req.userData.user_id}).then( (bookings) => {
     console.log(bookings);
-    if (err) return handleError(err => {
-      res.status(500).json(
-        { message: 'No bookings Found!'}
-        );
-    });
     res.status(200).json(
       {
         message: 'booking list recieved successfully!',
         bookings: bookings
       }
     );
-  });
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json(
+      { message: 'No bookings Found!'}
+      );
+  })
 });
 
 
 //get selected booking
 eventPlannerBooking.get('/get/:id',checkAuth, (req, res, next) => {
 
-  Booking.findOne({ 'booking_id': req.params.id }, function (err,recievedBooking) {
-    if (err) return handleError(err => {
-      console.log(err);
-      res.status(500).json(
-        { message: 'Error while loading Booking Details! Please Retry!'}
-        );
-    });
+  Booking.findOne({ 'booking_id': req.params.id }).then ( (recievedBooking) => {
     console.log(recievedBooking);
     res.status(200).json(
       {
@@ -70,7 +64,12 @@ eventPlannerBooking.get('/get/:id',checkAuth, (req, res, next) => {
         booking: recievedBooking
       }
     );
-  });
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json(
+      { message: 'Error while loading Booking Details! Please Retry!'}
+      );
+  })
 });
 
 

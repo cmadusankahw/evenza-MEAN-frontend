@@ -2,6 +2,8 @@
 const Admin = require("../../model/admin/admin.model");
 const checkAuth = require("../../middleware/auth-check");
 const email = require("../common/mail");
+const mailHeader = require("../common/mail-header");
+const mailFooter = require("../common/mail-footer");
 
 //dependency imports
 const express = require("express");
@@ -115,8 +117,9 @@ admin.post("/report/mail", checkAuth, (req, res, next) => {
 
 // create custom HTML
 function createHTML(title) {
-  const message = "<h3> You business report: " + title + " has generated successfully.</h3><hr>"
+  const message = mailHeader.mailHeader +  "<h3> You business report: " + title + " has generated successfully.</h3><hr>"
     + "</b></h4><hr><div class='text-center'><p><b> Please Find the attached Report.<br> <br> For more information, Log in to the System.<br><br><a class='btn btn-lg' href='evenza.biz//login'>Log In</a></b></p></div>"
+    mailFooter.mailFooter;
   return message;
 
 }

@@ -216,6 +216,7 @@
                     mdbWavesEffect
                     color="secondary"
                     *ngIf="service.booking_id || service.appoint_id"
+                    (click) = "sendService(service)"
                     routerLink="/planner/service/{{ service.service_id }}"
                   >
                     VIew Service
@@ -248,7 +249,7 @@
                     mdbWavesEffect
                     color="secondary"
                     routerLink="/planner/service/{{ service.service_id }}"
-                    (click)="emitEvent(event.event_id)"
+                    (click)=" emitItems('all', event.total_budget - event.total_spent_budget ,event.event_id)"
                   >
                     Book Now
                   </button>
@@ -434,7 +435,7 @@
 
       <div class="drag-box drag-create">
         <div class="create-service-btn">
-          <a routerLink="/planner/services" (click)="emitEvent(event.event_id)">
+          <a routerLink="/planner/services" (click)=" emitItems('all', event.total_budget - event.total_spent_budget ,event.event_id)">
             <mdb-icon fas icon="plus-circle"> </mdb-icon> Assign New Service
           </a>
         </div>
@@ -473,6 +474,7 @@
                     mdbBtn
                     mdbWavesEffect
                     color="secondary"
+                    (click) = "sendProduct(p)"
                     routerLink="/planner/product/{{ p.product_id }}"
                   >
                     VIew Product
@@ -650,7 +652,7 @@
 
       <div class="drag-box drag-create">
         <div class="create-service-btn">
-          <a routerLink="/planner/products" (click)="emitEvent(event.event_id)">
+          <a routerLink="/planner/products" (click)="emitItems('all', event.total_budget - event.total_spent_budget ,event.event_id)">
             <mdb-icon fas icon="plus-circle"> </mdb-icon> Add New Product
           </a>
         </div>

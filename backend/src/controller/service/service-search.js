@@ -48,12 +48,20 @@ serviceSearch.post('/all', (req, res, next) => {
 //search services for an event
 serviceSearch.post('/event', (req, res, next) => {
   console.log(req.body);
-  Service.find({"service_category": req.body.category,
-                "rate": {$lte: req.body.maxPrice},
-                "pay_on_meet":req.body.payOnMeet,
-                "rating": {$gte: req.body.userRating},
-                "available_booking": true})
-  .then (finalResult => {
+  var  Query = Service.find({"service_category": req.body.category,
+                              "rate": {$lte: req.body.maxPrice},
+                              "pay_on_meet":req.body.payOnMeet,
+                              "rating": {$gte: req.body.userRating},
+                              "available_booking": true});
+
+  // create query depend on category
+  if ( req.body.category == 'all') {
+    Query = Service.find({"rate": {$lte: req.body.maxPrice},
+                          "rating": {$gte: req.body.userRating},
+                          "available_booking": true});
+  }
+
+  Query.exec().then (finalResult => {
     console.log(finalResult);
       res.status(200).json({
         message: 'services recieved successfully!',

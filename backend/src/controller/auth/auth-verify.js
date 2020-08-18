@@ -87,7 +87,7 @@ authVerify.get('/get/id',checkAuth, (req, res, next) => {
 });
 
 authVerify.get('/get/br',checkAuth, (req, res, next) => {
-  IDVerification.find()
+  BusinessVerification.find()
   .then((result) => {
     res.status(200).json(
       {

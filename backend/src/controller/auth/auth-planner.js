@@ -64,20 +64,20 @@ authPlanner.post('/edit',checkAuth, (req, res, next) => {
 // get event planner logged in
 authPlanner.get('/get',checkAuth, (req, res, next) => {
 
-  EventPlanner.findOne({ user_id: req.userData.user_id }, function (err,planner) {
-    if (err) return handleError(err => {
-      res.status(500).json(
-        {
-          message: 'Couldn\'t recieve Event Planner Details! Please check your connetion'
-        });
-    });
+  EventPlanner.findOne({ user_id: req.userData.user_id }).then( (planner) => {
     res.status(200).json(
       {
         message: 'Event Planner recieved successfully!',
         eventPlanner: planner
       }
     );
-  });
+  }).then ( err =>{
+    console.log(err);
+    res.status(500).json(
+      {
+        message: 'Couldn\'t recieve Event Planner Details! Please check your connetion'
+      });
+  })
 });
 
 

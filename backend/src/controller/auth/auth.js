@@ -85,11 +85,60 @@ auth.post('/signin', (req, res, next) => {
 });
 
 
+//change user password
+auth.post('/password/reset',checkAuth, (req, res, next) => {
+  User.findOne({ user_id: req.userData.user_id })
+  .then( user => {
+    if (!user){
+      res.status(401).json(
+        {
+          message: 'User not Found!',
+        });
+    }
+    return bcrypt.compare(req.body.currentPass, user.password);
+  })
+  .then( result => {
+    if (!result) {
+      res.status(401).json(
+        {
+          message: 'Your Current Password is Invalid! Please retry!',
+        });
+    } else {
+      bcrypt.hash(req.body.newPass, 10)
+      .then( hash => {
+       User.updateOne({user_id: req.userData.user_id}, {
+        password: hash
+       }).then( () => {
+        res.status(200).json({
+          message: 'Password Resetsuccessfull! Please Sign back with New Password!',
+        });
+      }).catch( err => {
+          console.log(err);
+          res.status(500).json({
+            message: 'Password change was not successfull! Please try again!'
+          });
+        });
+      }).catch( err => {
+        console.log(err);
+        res.status(500).json({
+          message: 'Password change was not successfull! Please try again!'
+        });
+      });
+    }
+    }).catch(err => {
+      console.log(err);
+    res.status(401).json(
+      {
+        message: 'Password change was not successfull! Please try again!!',
+      });
+  });
+});
+
 
 // get header details
 auth.get('/header',checkAuth, (req, res, next) => {
   if (req.userData.user_type == 'eventPlanner'){
-    EventPlanner.findOne({ user_id: req.userData.user_id }, function (err,planner) {
+    EventPlanner.findOne({ user_id: req.userData.user_id }).then ( (planner) => {
       res.status(200).json(
         {
           user_type: req.userData.user_type,
@@ -97,10 +146,12 @@ auth.get('/header',checkAuth, (req, res, next) => {
           profile_pic: planner.profile_pic
         }
       );
+    }).catch( err => {
+      console.log(err);
     });
   }
   else if  (req.userData.user_type == 'admin') {
-  Admin.findOne({ user_id: req.userData.user_id }, function (err,admin) {
+  Admin.findOne({ user_id: req.userData.user_id }).then( (admin) => {
     res.status(200).json(
       {
         user_type: req.userData.user_type,
@@ -108,9 +159,11 @@ auth.get('/header',checkAuth, (req, res, next) => {
         profile_pic: admin.profile_pic
       }
     );
+  }).catch( err => {
+    console.log(err);
   });
 } else {
-  Merchant.findOne({ user_id: req.userData.user_id }, function (err,merchant) {
+  Merchant.findOne({ user_id: req.userData.user_id }).then( (merchant) => {
     res.status(200).json(
       {
         user_type: req.userData.user_type,
@@ -118,6 +171,8 @@ auth.get('/header',checkAuth, (req, res, next) => {
         profile_pic: merchant.profile_pic
       }
     );
+  }).catch( err => {
+    console.log(err);
   });
 }
 
@@ -125,7 +180,7 @@ auth.get('/header',checkAuth, (req, res, next) => {
 
 //get last user ID
 auth.get('/last', (req, res, next) => {
-  User.find(function (err, users) {
+  User.find().then ( (users) => {
     var lastid;
     if(users.length){
       lastid = users[users.length-1].user_id;
@@ -134,12 +189,13 @@ auth.get('/last', (req, res, next) => {
     } else {
       lastid= 'U0';
     }
-    if (err) return handleError(err);
     res.status(200).json(
       {
         lastid: lastid
       }
     );
+  }).catch( err => {
+    console.log(err);
   });
 });
 

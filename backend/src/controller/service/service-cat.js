@@ -53,16 +53,17 @@ serviceCat.post('/remove',checkAuth, (req, res, next) => {
 //get product categories
 serviceCat.get('/get', (req, res, next) => {
 
-  ServiceCategories.find(function (err, categories) {
+  ServiceCategories.find().then ( (categories) => {
     console.log(categories);
-    if (err) return handleError(err);
     res.status(200).json(
       {
         message: 'Product categories recieved successfully!',
         categories: categories
       }
     );
-  });
+  }).then( err => {
+    console.log(err);
+  })
 });
 
 

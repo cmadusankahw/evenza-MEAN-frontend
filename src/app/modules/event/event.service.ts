@@ -21,6 +21,7 @@ export class EventService {
   private eventCategoriesUpdated = new Subject<EventCategory[]>();
   private alertsUpdated = new Subject<ScheduleAlert[]>();
 
+
   // api url
   public url = getUrl();
   // recieved event
@@ -76,17 +77,17 @@ export class EventService {
       });
   }
 
-    // get a list of all published open events for homepage
-    public getOpenEvents() {
-      this.http.get<{ message: string, events: EventCard[] }>(this.url + 'event/open/get')
-        .subscribe((recievedData) => {
-          if ( recievedData.events.length) {
-            console.log(recievedData.events);
-            this.openEvents = recievedData.events;
-            this.openEventsUpdated.next([...this.events]);
-          }
-        });
-    }
+  // get a list of all published open events for homepage
+  public getOpenEvents() {
+    this.http.get<{ message: string, events: EventCard[] }>(this.url + 'event/open/get')
+      .subscribe((recievedData) => {
+        if (recievedData.events.length) {
+          console.log(recievedData.events);
+          this.openEvents = recievedData.events;
+          this.openEventsUpdated.next([...this.events]);
+        }
+      });
+  }
 
   // get a specific event details using ID
   public getEvent(eventId: string) {
@@ -118,9 +119,19 @@ export class EventService {
       });
   }
 
-  // get a list of scheduled task alerts
+  // get a list of scheduled task alerts: for a specific event
   public getAlerts(id: string) {
     this.http.get<{ message: string, alerts: ScheduleAlert[] }>(this.url + 'event/alerts/get/' + id)
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.recievedAlerts = recievedData.alerts;
+        this.alertsUpdated.next([...this.recievedAlerts]);
+      });
+  }
+
+  // get all event alerts
+  public getAllAlerts() {
+    this.http.get<{ message: string, alerts: ScheduleAlert[] }>(this.url + 'event/alerts/get')
       .subscribe((recievedData) => {
         console.log(recievedData.message);
         this.recievedAlerts = recievedData.alerts;
@@ -295,9 +306,9 @@ export class EventService {
       });
   }
 
-   // rregister a new participant to open type event
-   public registerOpenEventParticipant(participant: RegistrationForm, eventId: string  ) {
-    this.http.post<{ message: string }>(this.url + 'event/participants/open/add', {participant, eventId})
+  // rregister a new participant to open type event
+  public registerOpenEventParticipant(participant: RegistrationForm, eventId: string) {
+    this.http.post<{ message: string }>(this.url + 'event/participants/open/add', { participant, eventId })
       .subscribe((recievedData) => {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
@@ -312,7 +323,7 @@ export class EventService {
   // All participants are sent the last modified invitation
   // proceed all stated service, product requests
   public publishEvent(eventId: string) {
-    this.http.get<{ message: string }>(this.url + 'event/publish/' + eventId )
+    this.http.get<{ message: string }>(this.url + 'event/publish/' + eventId)
       .subscribe((recievedData) => {
         console.log(recievedData.message);
         this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });

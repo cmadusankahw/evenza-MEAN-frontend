@@ -148,7 +148,7 @@ serviceAppoint.post('/event', (req, res, next) => {
 
 // create custom HTML
 function createHTML(content) {
-    const message = mailHeader.mailHeader + "<h3> You have new "+ mailType + " on " + content.service_name + "</h3><hr><h4>" + mailType + " ID : <b> " +
+    const message = mailHeader.mailHeader + "<h3> You have new  Appointment on " + content.service_name + "</h3><hr><h4> Appointment ID : <b> " +
     content.appoint_id
     + "</b></h4><h4>Appointed Date : <b> " +
    content.appointed_date.slice(0,10)

@@ -49,20 +49,20 @@ authAdmin.post('/edit',checkAuth, (req, res, next) => {
 // get event planner logged in
 authAdmin.get('/get',checkAuth, (req, res, next) => {
 
-  Admin.findOne({ user_id: req.userData.user_id }, function (err,admin) {
-    if (err) return handleError(err => {
-      res.status(500).json(
-        {
-          message: 'Couldn\'t recieve Admin Details! Please check your connetion'
-        });
-    });
+  Admin.findOne({ user_id: req.userData.user_id }).then( (admin) => {
     res.status(200).json(
       {
         message: 'Admin details recieved successfully!',
         admin: admin
       }
     );
-  });
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json(
+      {
+        message: 'Couldn\'t recieve Admin Details! Please check your connetion'
+      });
+  })
 });
 
 module.exports = authAdmin;

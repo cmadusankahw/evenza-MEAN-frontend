@@ -27,7 +27,7 @@ export class AddEventComponent implements OnInit, OnDestroy {
   image: File;
 
   // created event
-  sampleEvent: TheEvent = {
+  public sampleEvent: TheEvent = {
     event_id: null,
     created_date: null,
     participants: null,
@@ -55,11 +55,10 @@ export class AddEventComponent implements OnInit, OnDestroy {
       other: ''
     }
   };
-
-  createdEvent: TheEvent;
-
+  // recieved event
+  public createdEvent: TheEvent;
   // recieved Event category
-  eventCategory: EventCategory = {
+  public eventCategory: EventCategory = {
     id: null,
     category: '',
     img: '',
@@ -67,9 +66,14 @@ export class AddEventComponent implements OnInit, OnDestroy {
     products: []
   };
 
-  times = { fromTime: { hour: 8, minute: 0 }, toTime: { hour: 16, minute: 0 } };
+  // time allocations
+  public times = { fromTime: { hour: 8, minute: 0 }, toTime: { hour: 16, minute: 0 } };
+  // date allocations
+  public dates = { fromDate: this.tday, toDate: this.tday };
 
-  dates = { fromDate: this.tday, toDate: this.tday };
+  // temperary category list for opt out
+  public tempServices = [];
+  public tempProducts = [];
 
   // edit mode
   @Input() editmode = false;
@@ -99,6 +103,16 @@ export class AddEventComponent implements OnInit, OnDestroy {
       this.eventSub = this.eventService.getEventUpdatedListener()
         .subscribe((recievedData: TheEvent) => {
           this.eventCategory.category = recievedData.event_category;
+          this.eventService.getEventCategory(recievedData.event_category.replace(' ', ''));
+          this.catSub = this.eventService.getEventCategoryUpdatedListener()
+          .subscribe((recievedCategory: EventCategory) => {
+            if (recievedCategory) {
+              this.eventCategory = recievedCategory;
+            }
+          });
+          // set service and product categories
+          this.eventCategory.services = this.tempServices;
+          this.eventCategory.products = this.tempProducts;
           this.createdEvent = recievedData;
           this.imageUrl = this.createdEvent.feature_img;
           this.dates.fromDate = new Date(this.createdEvent.from_date);
@@ -207,7 +221,7 @@ export class AddEventComponent implements OnInit, OnDestroy {
 
   addProductCategoryItem(item: Category) {
     if (this.createdEvent.product_categories.includes(item)) {
-      this.createdEvent.product_categories = this.createdEvent.product_categories.filter((a) => a === item);
+      this.createdEvent.product_categories = this.createdEvent.product_categories.filter((a) => a !== item);
       console.log(item.category + ' removed');
     } else {
       this.createdEvent.product_categories.push(item);
@@ -217,7 +231,7 @@ export class AddEventComponent implements OnInit, OnDestroy {
 
   addServiceCategoryItem(item: Category) {
     if (this.createdEvent.service_categories.includes(item)) {
-      this.createdEvent.service_categories = this.createdEvent.service_categories.filter((a) => a === item);
+      this.createdEvent.service_categories = this.createdEvent.service_categories.filter((a) => a !== item);
       console.log(item.category + ' removed');
     } else {
       this.createdEvent.service_categories.push(item);

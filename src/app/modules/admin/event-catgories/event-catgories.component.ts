@@ -125,7 +125,7 @@ export class EventCatgoriesComponent implements OnInit, OnDestroy {
       console.log('Form Invalid!');
     } else {
       const newCatedory: EventCategory = {
-        id: catForm.value.category.replace(' ', '') + Math.abs(Math.random() * 100),
+        id: catForm.value.category.replace(' ', ''),
         category: catForm.value.category,
         img: './assets/images/merchant/nopic',
         services: this.tempServeCategories,

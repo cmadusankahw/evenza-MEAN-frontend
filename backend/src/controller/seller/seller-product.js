@@ -17,20 +17,20 @@ sellerProduct.use(bodyParser.urlencoded({ extended: false }));
 
 //get list of products
 sellerProduct.get('/get',checkAuth, (req, res, next) => {
-  Product.find({'user_id': req.userData.user_id},function (err, prods) {
+  Product.find({'user_id': req.userData.user_id}).then ( (prods) => {
     console.log(prods);
-    if (err) return handleError(err => {
-      res.status(500).json(
-        { message: 'No Products Found!'}
-        );
-    });
     res.status(200).json(
       {
         message: 'product list recieved successfully!',
         products: prods
       }
     );
-  });
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json(
+      { message: 'No Products Found!'}
+      );
+  })
 });
 
 module.exports = sellerProduct;

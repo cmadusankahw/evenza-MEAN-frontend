@@ -1,5 +1,5 @@
 <div
-  class="container-fluid"
+  class="container-fluid "
   *ngIf="!editmode && !removed && !orderUser && product"
 >
   <div class="row f-image">
@@ -115,7 +115,7 @@
   </div>
 
   <hr />
-  <div class="row" *ngIf="product">
+  <div class="row sdetails" *ngIf="product">
     <div class="col-md-7 content-text">
       {{ product ? product.description : "..." }}
       <br />

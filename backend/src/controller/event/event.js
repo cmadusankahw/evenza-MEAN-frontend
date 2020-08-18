@@ -113,19 +113,19 @@ event.get('/get',checkAuth, (req, res) => {
  //get selected event
  event.get('/get/:id', (req, res) => {
 
-   Event.findOne({ event_id: req.params.id }, function (err,event) {
-     if (err) return handleError(() => {
-       res.status(500).json(
-         { message: 'Error while loading event Details! Please try another time!'}
-         );
-     });
+   Event.findOne({ event_id: req.params.id }).then ((event) => {
      res.status(200).json(
        {
          message: 'event recieved successfully!',
          event: event
        }
      );
-   });
+   }).catch( err => {
+     console.log(err);
+     res.status(500).json(
+      { message: 'Error while loading event Details! Please try another time!'}
+      );
+   })
  });
 
 //cancel an event

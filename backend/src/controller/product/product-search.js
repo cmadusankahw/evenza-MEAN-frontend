@@ -17,13 +17,22 @@ productSearch.use(bodyParser.urlencoded({ extended: false }));
 //search products for general results
 productSearch.post('/all', (req, res, next) => {
 
-  Product.find({product_category: req.body.category,
-                price: {$lte: req.body.maxPrice},
-                pay_on_delivery:req.body.payOnDelivery,
-                rating: {$gte: req.body.userRating},
-                'availability': true,
-                'inventory': {$gte: 1}})
-  .then(result => {
+  var Query =  Product.find({ product_category: req.body.category,
+                              price: {$lte: req.body.maxPrice},
+                              pay_on_delivery:req.body.payOnDelivery,
+                              rating: {$gte: req.body.userRating},
+                              'availability': true,
+                              'inventory': {$gte: 1}});
+
+  if ( req.body.category == ' all') {
+      Query =  Product.find({
+               price: {$lte: req.body.maxPrice},
+               rating: {$gte: req.body.userRating},
+               'availability': true,
+               'inventory': {$gte: 1}});
+  }
+
+  Query.exec().then(result => {
       res.status(200).json({
         message: 'products recieved successfully!',
         products: result

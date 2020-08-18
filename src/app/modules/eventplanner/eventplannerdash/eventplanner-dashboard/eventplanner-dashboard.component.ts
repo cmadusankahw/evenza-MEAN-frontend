@@ -10,6 +10,8 @@ import { AuthService } from '../../../auth/auth.service';
 import { Router, NavigationStart } from '@angular/router';
 import { ServiceProviderService } from 'src/app/modules/serviceprovider/serviceprovider.service';
 import { SellerService } from 'src/app/modules/seller/seller.service';
+import { EventService } from 'src/app/modules/event/event.service';
+import { ScheduleAlert } from 'src/app/modules/event/event.model';
 
 
 @Component({
@@ -21,6 +23,7 @@ export class EventplannerDashboardComponent implements OnInit, OnDestroy {
 
   // subscription
   private eventPlannerSub: Subscription;
+  private alertSub: Subscription;
 
   // recieved Event Planner
   eventPlanner: EventPlanner;
@@ -55,6 +58,7 @@ export class EventplannerDashboardComponent implements OnInit, OnDestroy {
               private router: Router, private authService: AuthService,
               private serviceProviderservice: ServiceProviderService,
               private sellerService: SellerService,
+              private eventService: EventService,
               private _snackBar: MatSnackBar) {
 
     // hadeling booking state changed notification
@@ -101,6 +105,18 @@ export class EventplannerDashboardComponent implements OnInit, OnDestroy {
     this.eventPlannerSub = this.authService.getEventPlannerUpdateListener().subscribe(
       ePlanner => {
         this.eventPlanner = ePlanner;
+        this.eventService.getAllAlerts();
+        this.alertSub = this.eventService.getalertsUpdatedListener()
+          .subscribe((alerts: ScheduleAlert[]) => {
+            for (const alert of alerts) {
+              this._snackBar.open('Task: ' + alert.heading + ' Scheduled on ' + alert.date.slice(0, 10) + ' at '
+                + alert.date.slice(11, 16) + ' is Due!', 'Dismiss', {
+                duration: 5000,
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+              });
+            }
+          });
       });
   }
 

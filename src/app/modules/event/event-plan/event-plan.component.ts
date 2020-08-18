@@ -5,7 +5,8 @@ import { EventService } from '../event.service';
 import { ActivatedRoute } from '@angular/router';
 
 import { TheEvent, Service, Task, Product, Category } from '../event.model';
-import { printData } from '../../eventplanner/eventplanner.model';
+import { ProductService } from '../../product/product.service';
+import { ServiceService } from '../../service/service.service';
 
 @Component({
   selector: 'app-event-plan',
@@ -45,7 +46,10 @@ export class EventPlanComponent implements OnInit, OnDestroy {
   // generating today date
   today = new Date().toISOString();
 
-  constructor(private eventService: EventService, private route: ActivatedRoute) {
+  constructor(private eventService: EventService,
+              private route: ActivatedRoute,
+              private serviceService: ServiceService,
+              private productService: ProductService) {
     this.eventId = route.snapshot.params.id;
   }
 
@@ -133,5 +137,17 @@ export class EventPlanComponent implements OnInit, OnDestroy {
     }
     return output;
   }
+
+  // set service to view dtails
+   sendService(service) {
+    this.serviceService.setService(service);
+  }
+
+   // set product to view dtails
+   sendProduct(product) {
+    this.productService.setProduct(product);
+  }
+
+
 
 }

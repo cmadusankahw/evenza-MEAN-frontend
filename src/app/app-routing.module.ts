@@ -69,6 +69,8 @@ const routes: Routes = [
   { path: 'contactus', component: ContactUsComponent },
   { path: 'services', component: SearchServicesComponent },
   { path: 'products', component: SearchProductsComponent },
+  { path: 'service/:id', component: ServiceDetailsComponent },
+  { path: 'product/:id', component: ProductDetailsComponent },
   { path: 'terms', component: TeramsConditionsComponent },
   { path: 'inquery', component: PlannerChatComponent },
   { path: 'print/booking/:id', component: BookingNoteComponent },

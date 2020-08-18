@@ -9,9 +9,9 @@ const multer = require ("multer");
 
 // express app imports
 const serviceSearch = require("./service-search");
-const serviceBooking = require("./service-search");
-const serviceAppoint = require("./service-search");
-const servicePromotion = require("./service-search");
+const serviceBooking = require("./service-booking");
+const serviceAppoint = require("./service-appoint");
+const servicePromotion = require("./service-promotion");
 const serviceRating = require("./service-search");
 const serviceCat = require("./service-cat");
 const serviceLocation = require("./service-location");
@@ -71,7 +71,7 @@ service.post('/add',checkAuth, (req, res) => {
       console.log(lastid);
       if (err) return handleError(() => {
         res.status(500).json({
-          message: 'Error occured while getting product ID details!'
+          message: 'Error occured while getting service ID details!'
         });
       });
     }).then( () => {
@@ -87,7 +87,8 @@ service.post('/add',checkAuth, (req, res) => {
           result: result
         });
       })
-      .catch(()=>{
+      .catch((err)=>{
+        console.log(err);
         res.status(500).json({
           message: 'Service creation was unsuccessfull! Please try Again!'
         });
@@ -162,57 +163,57 @@ service.delete('/remove/:id',checkAuth, (req, res) => {
 
 //get list of services
 service.get('/get', (req, res) => {
-  Service.find({available_booking: true},function (err, services) {
+  Service.find({available_booking: true}).then( (services) => {
     console.log(services);
-    if (err) return handleError(() => {
-      res.status(500).json(
-        { message: 'No matching Services Found! Please check your filters again!'}
-        );
-    });
     res.status(200).json(
       {
         message: 'Product list recieved successfully!',
         services: services
       }
     );
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json(
+      { message: 'No matching Services Found! Please check your filters again!'}
+      );
   });
 });
 
 //get list of service provider only services to service provider's business profile
 service.get('/get/sp',checkAuth, (req, res) => {
-  Service.find({ user_id: req.userData.user_id },function (err, services) {
+  Service.find({ user_id: req.userData.user_id }).then( (services) => {
     delete services['user_id'];
     console.log(services);
-    if (err) return handleError(() => {
-      res.status(500).json(
-        { message: 'No matching Services Found! Please try again!'}
-        );
-    });
     res.status(200).json(
       {
         message: 'Product list recieved successfully!',
         services: services
       }
     );
-  });
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json(
+      { message: 'No matching Services Found! Please try again!'}
+      );
+  })
 });
 
 //get selected service
 service.get('/get/:id', (req, res) => {
 
-  Service.findOne({ service_id: req.params.id }, function (err,service) {
-    if (err) return handleError(() => {
-      res.status(500).json(
-        { message: 'Error while loading service details! Please try another time!'}
-        );
-    });
+  Service.findOne({ service_id: req.params.id }).then( (service) => {
     res.status(200).json(
       {
         message: 'Service recieved successfully!',
         service: service
       }
     );
-  });
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json(
+      { message: 'Error while loading service details! Please try another time!'}
+      );
+  })
 });
 
 module.exports = service;

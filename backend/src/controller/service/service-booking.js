@@ -262,26 +262,26 @@ serviceBooking.post('/event', (req, res, next) => {
 
 //get list of bookings
 serviceBooking.get('/get',checkAuth, (req, res, next) => {
-  Booking.find({state: 'pending'},function (err, bookings) {
+  Booking.find({state: 'pending'}).then ( (bookings) => {
     console.log(bookings);
-    if (err) return handleError(err => {
-      res.status(500).json(
-        { message: 'No bookings Found!'}
-        );
-    });
     res.status(200).json(
       {
         message: 'booking list recieved successfully!',
         bookings: bookings
       }
     );
-  });
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json(
+      { message: 'No bookings Found!'}
+      );
+  })
 });
 
 
 // create custom HTML
 function createHTML(content) {
-    const message = mailHeader.mailHeader +  "<h3> You have new "+ mailType + " on " + content.service_name + "</h3><hr><h4>" + mailType + " ID : <b> " +
+    const message = mailHeader.mailHeader +  "<h3> You have new Booking on " + content.service_name + "</h3><hr><h4> Booking ID : <b> " +
     content.booking_id
     + "</b></h4><h4>Booked Date : <b> " +
    content.from_date.slice(0,10)

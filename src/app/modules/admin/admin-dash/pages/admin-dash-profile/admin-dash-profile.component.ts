@@ -55,15 +55,17 @@ export class AdminDashProfileComponent implements OnInit, OnDestroy {
     this.image = null;
   }
 
-  changeUserPassword(pwordForm: NgForm) {
-    if (pwordForm.invalid) {
-      console.log('Form invalid');
+    // reset password
+    changeUserPassword(pwordForm: NgForm) {
+      if (pwordForm.invalid) {
+        console.log('Form invalid');
+      }
+      if (pwordForm.value.new_password1 !== pwordForm.value.new_password2) {
+        this.dialog.open(ErrorComponent, { data: { message: 'Passwords do not match! Please try again!' } });
+      } else {
+        this.authService.changeUserPassword(pwordForm.value.current_password , pwordForm.value.new_password1);
+      }
     }
-    if ( pwordForm.value.new_password1 !== pwordForm.value.new_password2) {
-      this.dialog.open(ErrorComponent, {data: {message: 'Passwords do not match! Please try again!'}});
-    }
-   // this.serviceProviderService.changeUserPassword(currentPword, newPword);
-  }
 
   // edit user
   editUser(editForm: NgForm) {

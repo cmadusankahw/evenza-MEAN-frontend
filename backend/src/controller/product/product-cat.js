@@ -49,16 +49,17 @@ productCat.post('/remove',checkAuth, (req, res, next) => {
 //get product categories
 productCat.get('/get', (req, res, next) => {
 
-  ProductCategories.find(function (err, categories) {
+  ProductCategories.find().then ( (categories) => {
     console.log(categories);
-    if (err) return handleError(err);
     res.status(200).json(
       {
         message: 'Product categories recieved successfully!',
         categories: categories
       }
     );
-  });
+  }).catch ( err => {
+    console.log(err);
+  })
 });
 
 module.exports = productCat;

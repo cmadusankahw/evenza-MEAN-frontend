@@ -221,16 +221,27 @@
         <div class="deactivate text-center pt-2">
           <div class="row">
             <div class="col-md-8">
-              <p> <b> Deactivate your Merchant Account <br> (this action can't be undone) :</b></p>
+              <p>
+                <b>
+                  Deactivate your Merchant Account <br />
+                  (this action can't be undone) :</b
+                >
+              </p>
             </div>
             <div class="col-md-4">
-              <button class="btn btn-md" mdbBtn mdbWavesEffect color="red" (click) = "cancelModal.show()">
+              <button
+                class="btn btn-md"
+                mdbBtn
+                mdbWavesEffect
+                color="red"
+                (click)="cancelModal.show()"
+              >
                 Deactivate Account
               </button>
             </div>
           </div>
         </div>
-        <hr>
+        <hr />
       </div>
     </div>
   </section>
@@ -818,17 +829,20 @@
             <p>
               <b>
                 Please Note: Please perform this action If necessarily required.
-               <span style="color: red;"> this action can't be undone! </span>
-               <br>
-               Once deacivated, all your Business Profile, Services or Products will be removed from the system.
-               <br>
-               Please enter your NIC to deativate
+                <span style="color: red;"> this action can't be undone! </span>
+                <br />
+                Once deacivated, all your Business Profile, Services or Products
+                will be removed from the system.
+                <br />
+                Please enter your NIC to deativate
               </b>
             </p>
-            <mat-form-field style="width:90%">
+            <mat-form-field style="width: 90%;">
               <mat-label> You NIC</mat-label>
-              <input matInput required #nicTyped [(ngModel)] = "nict">
-              <mat-error *ngIf="nicTyped.invalid"> Your NIC required </mat-error>
+              <input matInput required #nicTyped [(ngModel)]="nict" />
+              <mat-error *ngIf="nicTyped.invalid">
+                Your NIC required
+              </mat-error>
             </mat-form-field>
           </div>
         </div>

@@ -145,20 +145,19 @@ authMerchant.delete('/remove:id',checkAuth, (req, res, next) => {
 // get merchant logged in
 authMerchant.get('/get',checkAuth, (req, res, next) => {
   console.log(req.userData);
-  Merchant.findOne({ user_id: req.userData.user_id}, function (err,merchant) {
-    if (err) return handleError(err => {
-      res.status(500).json(
-        {
-          message: 'Couldn\'t recieve Merchant Details! Please check your connetion'
-        });
-    });
+  Merchant.findOne({ user_id: req.userData.user_id}).then( (merchant) => {
     res.status(200).json(
       {
         message: 'Merchant recieved successfully!',
         merchant: merchant
       }
     );
-  });
+  }).catch( err => {
+    res.status(500).json(
+      {
+        message: 'Couldn\'t recieve Merchant Details! Please check your connetion'
+      });
+  })
 });
 
 // get merchant logged in
@@ -183,22 +182,21 @@ authMerchant.get('/get/:id',checkAuth, (req, res, next) => {
 authMerchant.get('/get/all',checkAuth, (req, res, next) => {
   var Query =  Merchant.find();
 
-  Query.exec( function (err,merchant) {
+  Query.exec().then( (merchant) => {
     console.log(merchant);
-    if (err) return handleError(err => {
-      console.log(err);
-      res.status(500).json(
-        {
-          message: 'Couldn\'t recieve Merchant Details! Please check your connetion'
-        });
-    });
     res.status(200).json(
       {
         message: 'Merchants recieved successfully!',
         merchants: merchant
       }
     );
-  });
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json(
+      {
+        message: 'Couldn\'t recieve Merchant Details! Please check your connetion'
+      });
+  })
 });
 
 

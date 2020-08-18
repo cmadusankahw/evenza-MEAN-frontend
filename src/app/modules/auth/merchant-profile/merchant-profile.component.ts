@@ -33,9 +33,9 @@ export class MerchantProfileComponent implements OnInit, OnDestroy {
 
 
   constructor(private authService: AuthService,
-              public dialog: MatDialog,
-              public datepipe: DatePipe,
-              private router: Router) { }
+    public dialog: MatDialog,
+    public datepipe: DatePipe,
+    private router: Router) { }
 
   ngOnInit() {
     this.authService.getMerchant();
@@ -53,14 +53,16 @@ export class MerchantProfileComponent implements OnInit, OnDestroy {
     this.image = null;
   }
 
+  // reset password
   changeUserPassword(pwordForm: NgForm) {
     if (pwordForm.invalid) {
       console.log('Form invalid');
     }
     if (pwordForm.value.new_password1 !== pwordForm.value.new_password2) {
       this.dialog.open(ErrorComponent, { data: { message: 'Passwords do not match! Please try again!' } });
+    } else {
+      this.authService.changeUserPassword(pwordForm.value.current_password, pwordForm.value.new_password1);
     }
-    // this.serviceProviderService.changeUserPassword(currentPword, newPword);
   }
 
   // edit user
@@ -125,7 +127,7 @@ export class MerchantProfileComponent implements OnInit, OnDestroy {
 
   // deactivate merchant profile
   public deactivateAccount() {
-    if ( this.nict === this.serviceProvider.nic) {
+    if (this.nict === this.serviceProvider.nic) {
       this.authService.deativateAccount(this.serviceProvider.user_id);
     } else {
       this.dialog.open(ErrorComponent, { data: { message: 'Incorrect NIC! Please try Again' } });

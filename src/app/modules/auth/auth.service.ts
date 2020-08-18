@@ -76,7 +76,7 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
   // get methods
 
@@ -568,29 +568,41 @@ export class AuthService {
 
   // user profile change password
   public changeUserPassword(
-    userType: string,
-    currentPword: string,
-    newPword: string
+    currentPass: string,
+    newPass: string
   ) {
-
+    this.http
+      .post<{ message: string }>(this.url + 'auth/password/reset', { currentPass, newPass })
+      .subscribe(
+        (recievedData) => {
+          console.log(recievedData.message);
+          this.signOut();
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate(['/']);
+          this.dialog.open(SuccessComponent, {
+            data: { message: recievedData.message },
+          });
+        }
+      );
   }
 
   // deactivate merchant profile
   public deativateAccount(userId: string) {
     this.http
-    .delete<{ message: string }>(this.url + 'auth/merchant/remove/' + userId)
-    .subscribe(
-      (recievedData) => {
-        console.log(recievedData.message);
-        this.signOut();
-        this.dialog.open(SuccessComponent, {
-          data: { message: recievedData.message },
-        });
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+      .delete<{ message: string }>(this.url + 'auth/merchant/remove/' + userId)
+      .subscribe(
+        (recievedData) => {
+          console.log(recievedData.message);
+          this.signOut();
+          this.dialog.open(SuccessComponent, {
+            data: { message: recievedData.message },
+          });
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 
   // add a new Merchant Temp

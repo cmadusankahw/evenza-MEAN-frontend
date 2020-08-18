@@ -164,39 +164,39 @@ product.delete('/remove/:id',checkAuth, (req, res, next) => {
 //get list of products for search
 product.get('/get', (req, res, next) => {
   Product.find({'availability': true,
-                'inventory': {$gte: 1}},function (err, products) {
+                'inventory': {$gte: 1}}).then ( (products) => {
     console.log(products);
-    if (err) return handleError(err => {
-      res.status(500).json(
-        { message: 'No matching Products Found! Please check your filters again!'}
-        );
-    });
     res.status(200).json(
       {
         message: 'Product list recieved successfully!',
         products: products
       }
     );
-  });
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json(
+      { message: 'No matching Products Found! Please check your filters again!'}
+      );
+  })
 });
 
 //get list of products to seller's business profile
 product.get('/get/seller',checkAuth, (req, res, next) => {
-  Product.find({ user_id: req.userData.user_id },function (err, products) {
+  Product.find({ user_id: req.userData.user_id }).then( (products) => {
     delete products['user_id'];
     console.log(products);
-    if (err) return handleError(err => {
-      res.status(500).json(
-        { message: 'No matching Products Found! Please try again'}
-        );
-    });
     res.status(200).json(
       {
         message: 'Seller Product list recieved successfully!',
         products: products
       }
     );
-  });
+  }).then( err => {
+    console.log(err);
+    res.status(500).json(
+      { message: 'No matching Products Found! Please try again'}
+      );
+  })
 });
 
 
@@ -204,19 +204,19 @@ product.get('/get/seller',checkAuth, (req, res, next) => {
 //get selected product
 product.get('/get/:id', (req, res, next) => {
 
-  Product.findOne({ product_id: req.params.id }, function (err,product) {
-    if (err) return handleError(err => {
-      res.status(500).json(
-        { message: 'Error while loading product Details! Please try another time!'}
-        );
-    });
+  Product.findOne({ product_id: req.params.id }).then ( (product) => {
     res.status(200).json(
       {
         message: 'product recieved successfully!',
         product: product
       }
     );
-  });
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json(
+      { message: 'Error while loading product Details! Please try another time!'}
+      );
+  })
 });
 
 

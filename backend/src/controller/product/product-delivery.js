@@ -32,16 +32,17 @@ productDelivery.delete('/remove/:id',checkAuth, (req, res, next) => {
 //get delivery services
 productDelivery.get('/get', (req, res, next) => {
 
-  DeliveryService.find(function (err, deliveryServices) {
+  DeliveryService.find().then ( (deliveryServices) => {
     console.log(deliveryServices);
-    if (err) return handleError(err);
     res.status(200).json(
       {
         message: 'Delivery Services recieved successfully!',
         deliveryServices: deliveryServices
       }
     );
-  });
+  }).catch( err => {
+    console.log(err);
+  })
 });
 
 //get delivery services

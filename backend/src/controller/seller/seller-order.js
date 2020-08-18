@@ -55,13 +55,7 @@ sellerOrder.get('/get',checkAuth, (req, res, next) => {
 
 //get selected order
 sellerOrder.get('/get/:id',checkAuth, (req, res, next) => {
-  Order.findOne({ 'order_id': req.params.id }, function (err,recievedOrder) {
-    if (err) return handleError(err => {
-      console.log(err);
-      res.status(500).json(
-        { message: 'Error while loading Order Details! Please Retry!'}
-        );
-    });
+  Order.findOne({ 'order_id': req.params.id }).then( (recievedOrder) => {
     console.log(recievedOrder);
     res.status(200).json(
       {
@@ -69,7 +63,12 @@ sellerOrder.get('/get/:id',checkAuth, (req, res, next) => {
         order: recievedOrder
       }
     );
-  });
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json(
+      { message: 'Error while loading Order Details! Please Retry!'}
+      );
+  })
 });
 
 

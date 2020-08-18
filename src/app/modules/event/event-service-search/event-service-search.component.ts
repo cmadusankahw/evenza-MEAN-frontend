@@ -28,8 +28,9 @@ export class EventServiceSearchComponent implements OnInit, OnDestroy {
   private bookingSub: Subscription;
   private locationSub: Subscription;
 
+  // recieved services
   public services: Service[] = [];
-  public bookings: Booking[] = [];
+  // recieved service categories
   public categories: ServiceCategories[] = [];
   // retrived from emitting
   public eventId: string;
@@ -45,21 +46,16 @@ export class EventServiceSearchComponent implements OnInit, OnDestroy {
   public islogged = true; // must be updated with backend call
   // recieved locations !!!!!!!!!!! edit
   public recievedLocations: { location: BusinessLocation, business: string }[] = [];
-  // search query
-  public bookingTime = {
-    fromDate: this.today,
-    toDate: this.today,
-    fromTime: { hour: 8, minute: 0 },
-    toTime: { hour: 18, minute: 0 }
-  };
 
-  // temp variables for serching purposes
+
+  // tsearch query
   ratings = 0;
   priceStart = 0;
-  priceEnd = 49999;
-  priceEndStatic = 49999;
+  priceEnd = 199999;
+  priceEndStatic = 199999;
   payOnMeetQuery = true;
-  selectedCategory = 'Recently Booked';
+  selectedCategory = 'all';
+
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
@@ -72,7 +68,8 @@ export class EventServiceSearchComponent implements OnInit, OnDestroy {
   model: any;
 
   constructor(private breakpointObserver: BreakpointObserver,
-              public serviceService: ServiceService, private eventService: EventService) { }
+              public serviceService: ServiceService,
+              private eventService: EventService) { }
 
 
   @ViewChild('instance', { static: true }) instance: NgbTypeahead;
@@ -82,10 +79,16 @@ export class EventServiceSearchComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // get emitted filters
     this.eventId = this.eventService.getSelectedEvent(); // for an overall search
-
     // get relavant emitted filters
     this.filter = this.eventService.getSelectedFilteration();
-
+    if (this.filter) {
+          this.eventId = this.filter.eventId; // for a specific filtered search
+          this.selectedCategory = this.filter.category;
+          this.priceEnd = this.filter.allocated_budget;
+          this.priceEndStatic = this.filter.allocated_budget;
+          this.searchServices();
+          console.log(this.services);
+    }
     // get serviceproviders' locations
     this.serviceService.getLocations();
     this.locationSub = this.serviceService.getLocationsUpdateListener()
@@ -93,18 +96,6 @@ export class EventServiceSearchComponent implements OnInit, OnDestroy {
         this.recievedLocations = recievedData;
         console.log(this.recievedLocations);
       });
-
-    // search and list filtered services
-    if (this.filter) {
-      // setting filters
-      this.eventId = this.filter.eventId; // for a specific filtered search
-      this.selectedCategory = this.filter.category;
-      this.priceEnd = this.filter.allocated_budget;
-      this.priceEndStatic = this.filter.allocated_budget;
-      setTimeout(() => {
-        this.searchServices();
-      }, 700);
-    }
   }
 
   ngOnDestroy() {
@@ -156,7 +147,6 @@ export class EventServiceSearchComponent implements OnInit, OnDestroy {
     this.searchedServiceSub = this.serviceService.getSearchedEventServiceUpdatedListener()
       .subscribe((recievedData: Service[]) => {
         this.services = recievedData;
-        console.log(this.services);
       });
   }
 

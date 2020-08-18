@@ -35,16 +35,17 @@ eventCat.get('/get', (req, res) => {
 //get event category
 eventCat.get('/get/:id', (req, res) => {
 
-  EventCategories.findOne({id: req.params.id },function (err, category) {
+  EventCategories.findOne({id: req.params.id }).then ( (category) => {
     console.log(category);
-    if (err) return handleError(err);
     res.status(200).json(
       {
         message: 'event category recieved successfully!',
         category: category
       }
     );
-  });
+  }).catch( err=> {
+    console.log(err);
+  })
 });
 
 // create event category

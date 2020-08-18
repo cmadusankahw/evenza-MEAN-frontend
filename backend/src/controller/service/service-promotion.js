@@ -1,5 +1,6 @@
 //model imports
 const checkAuth = require("../../middleware/auth-check");
+const Service = require ("../../model/service/service.model");
 
 //dependency imports
 const express = require("express");
@@ -18,7 +19,7 @@ servicePromotions.use(bodyParser.urlencoded({ extended: false }));
 // add a promotion to a product
 servicePromotions.post('/add',checkAuth, (req, res, next) => {
 
-  Product.findOneAndUpdate({ service_id: req.body.serviceId },{
+  Service.findOneAndUpdate({ service_id: req.body.serviceId },{
     $push: {promotions: req.body.promotion}
   }).then( (result) => {
     console.log(result);

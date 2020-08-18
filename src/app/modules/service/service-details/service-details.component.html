@@ -1,5 +1,5 @@
 <div
-  class="container-fluid"
+  class="container-fluid "
   *ngIf="!editmode && !removed && !bookUser && service"
 >
   <div class="row f-image">
@@ -121,7 +121,7 @@
   </div>
 
   <hr />
-  <div class="row" *ngIf="service">
+  <div class="row sdetails" *ngIf="service">
     <div class="col-md-7 content-text">
       {{ service ? service.description : "Loading..." }}
       <br />

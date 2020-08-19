@@ -44,6 +44,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     this.authService.getMerchants();
     this.merchantSub = this.authService.getMerchansUpdateListener().subscribe(
       merchants => {
+        console.log(merchants);
         if (merchants) {
           this.recievedMerchants = merchants;
           console.log(this.recievedMerchants);

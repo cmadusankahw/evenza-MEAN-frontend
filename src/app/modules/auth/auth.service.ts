@@ -28,7 +28,7 @@ export class AuthService {
   private userUpdated = new Subject<User[]>();
   private lastIdUpdated = new Subject<string>();
   private adminUpdated = new Subject<Admin>();
-  private merchantsUpdated = new Subject<any[]>();
+  private merchantsUpdated = new Subject<Merchant[]>();
   private idverifyUpdated = new Subject<IdVerifications[]>();
   private businessverifyUpdated = new Subject<BusinessVerifications[]>();
 
@@ -36,7 +36,7 @@ export class AuthService {
   private merchant: Merchant;
   private eventPlanner: EventPlanner;
   // recieved merchants
-  private merchants: any[] = [];
+  private merchants: Merchant[] = [];
   // recieved users
   private users: User[] = [];
   // for merchant data passing
@@ -146,8 +146,8 @@ export class AuthService {
   // get all merchants list for admin
   public getMerchants() {
     this.http
-      .get<{ message: string; merchants: any[] }>(
-        this.url + 'auth/merchant/get/all'
+      .get<{ message: string; merchants: Merchant[] }>(
+        this.url + 'auth/merchant/all'
       )
       .subscribe((recievedMerchant) => {
         this.merchants = recievedMerchant.merchants;

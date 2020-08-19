@@ -179,24 +179,25 @@ authMerchant.get('/get/:id',checkAuth, (req, res, next) => {
 });
 
 // get all moerchants for admin
-authMerchant.get('/get/all',checkAuth, (req, res, next) => {
+authMerchant.get('/all',checkAuth, (req, res, next) => {
   var Query =  Merchant.find();
 
-  Query.exec().then( (merchant) => {
+  Query.exec( function (err,merchant) {
     console.log(merchant);
+    if (err) return handleError(err => {
+      console.log(err);
+      res.status(500).json(
+        {
+          message: 'Couldn\'t recieve Merchant Details! Please check your connetion'
+        });
+    });
     res.status(200).json(
       {
         message: 'Merchants recieved successfully!',
         merchants: merchant
       }
     );
-  }).catch( err => {
-    console.log(err);
-    res.status(500).json(
-      {
-        message: 'Couldn\'t recieve Merchant Details! Please check your connetion'
-      });
-  })
+  });
 });
 
 

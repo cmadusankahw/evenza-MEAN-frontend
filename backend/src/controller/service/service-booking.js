@@ -82,6 +82,9 @@ serviceBooking.post('/add',checkAuth, (req, res, next) => {
   let reqBooking = req.body;
   let serviceProviderId;
 
+  // starting transactions
+  session.startTransaction();
+
   // generate id
   Booking.find().select('booking_id').sort('booking_id').then( (bookings) => {
     if(bookings.length){

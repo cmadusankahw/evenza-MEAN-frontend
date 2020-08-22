@@ -69,9 +69,9 @@ export class SpServiceOrdersReportComponent implements OnInit, OnDestroy {
             }
           }
 
-          this.url1 = this.sproviderFilter(this.url1);
-          this.url2 = this.sproviderFilter(this.url2);
-          this.url3 = this.sproviderFilter(this.url3);
+          this.url1 = this.sproviderDateFilter(this.url1);
+          this.url2 = this.sproviderDateFilter(this.url2);
+          this.url3 = this.sproviderDateFilter(this.url3);
         });
     }
   }
@@ -84,6 +84,14 @@ export class SpServiceOrdersReportComponent implements OnInit, OnDestroy {
 
   public sproviderFilter(url: string) {
     const queryString = '&filter={"serviceProvider.serviceProvider_id":"' + this.spId + '"}';
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
+  }
+
+  // apply report filters
+  public sproviderDateFilter(url: string) {
+    const queryString = '&filter={"serviceProvider.serviceProvider_id":"'+ this.spId
+    +'",from_date:{$gte:ISODate("' + this.serviceOrder.from_date.toISOString().slice(0,10) + '")},to_date:{$lte:ISODate("' +
+    this.serviceOrder.to_date.toISOString().slice(0,10) + '")}}';
     return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
   }
 

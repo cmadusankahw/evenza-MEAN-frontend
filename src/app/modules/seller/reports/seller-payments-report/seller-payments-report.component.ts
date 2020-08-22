@@ -84,9 +84,9 @@ export class SellerPaymentsReportComponent implements OnInit, OnDestroy {
       console.log(this.earnings);
       console.log(data.message);
 
-      this.url1 = this.sellerFilter(this.url1);
+      this.url1 = this.sellerDateFilter(this.url1);
       this.url2 = this.sellerPaymentFilter(this.url2);
-      this.url3 = this.sellerFilter(this.url3);
+      this.url3 = this.sellerDateFilter(this.url3);
     });
   }
 
@@ -102,9 +102,23 @@ export class SellerPaymentsReportComponent implements OnInit, OnDestroy {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
   }
 
+  // apply report filters
+  public sellerDateFilter(url: string) {
+    const queryString = '&filter={"seller.seller_id":"'+ this.spId
+    +'",created_date:{$gte:ISODate("' + this.paymentEarning.from_date.toISOString().slice(0,10) + '")}}';
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
+  }
+
   // applying report filters
   public sellerPaymentFilter(url: string) {
     const queryString = '&filter={"payment_details.user_id":"'+ this.spId +'"}';
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
+  }
+
+   // apply report filters
+   public sellerPaymentDateFilter(url: string) {
+    const queryString = '&filter={"payment_details.user_id":"'+ this.spId
+    +'","payment_details.pays.paid_date":{$gte:ISODate("' + this.paymentEarning.from_date.toISOString().slice(0,10) + '")}}';
     return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
   }
 

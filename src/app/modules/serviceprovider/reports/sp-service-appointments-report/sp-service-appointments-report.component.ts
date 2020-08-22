@@ -63,9 +63,9 @@ export class SpServiceAppointmentsReportComponent implements OnInit, OnDestroy {
             }
           }
 
-          this.url1 = this.sproviderFilter(this.url1);
-          this.url2 = this.sproviderFilter(this.url2);
-          this.url3 = this.sproviderFilter(this.url3);
+          this.url1 = this.sproviderDateFilter(this.url1);
+          this.url2 = this.sproviderDateFilter(this.url2);
+          this.url3 = this.sproviderDateFilter(this.url3);
         });
       console.log(this.ServiceAppoint);
     }
@@ -82,6 +82,14 @@ export class SpServiceAppointmentsReportComponent implements OnInit, OnDestroy {
     const queryString = '&filter={"serviceProvider.serviceProvider_id":"' + this.spId + '"}';
     return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
   }
+
+  // apply report filters
+  public sproviderDateFilter(url: string) {
+    const queryString = '&filter={"serviceProvider.serviceProvider_id":"'+ this.spId
+    +'",appointed_date:{$gte:ISODate("' + this.ServiceAppoint.from_date.toISOString().slice(0,10) + '")}}';
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
+  }
+
 
   // print the report
   public printReport(content: string, title: string) {

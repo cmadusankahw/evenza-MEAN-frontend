@@ -10,7 +10,7 @@ const appointmntSchema = mongoose.Schema(
     service_category: {type: String, required: true},
     event_name: {type: String, required: true},
     business_name: {type: String, required: true},
-    created_date: {type: String, required: true},
+    created_date: {type: Date, required: true},
     state: {type: String, required: true},
     appointed_date: {type: String, required: true},
     comment: {type: String},

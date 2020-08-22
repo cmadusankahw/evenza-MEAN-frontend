@@ -82,9 +82,9 @@ export class SpPaymentsReportComponent implements OnInit, OnDestroy {
       console.log(this.pays);
       console.log(this.earnings);
       console.log(data.message);
-      this.url1 = this.sproviderFilter(this.url1);
+      this.url1 = this.sproviderDateFilter(this.url1);
       this.url2 = this.sproviderPaymentFilter(this.url2);
-      this.url3 = this.sproviderFilter(this.url3);
+      this.url3 = this.sproviderDateFilter(this.url3);
     });
   }
 
@@ -94,18 +94,30 @@ export class SpPaymentsReportComponent implements OnInit, OnDestroy {
     }
   }
 
-// to be modified
-  public sproviderFilter(url: string) {
+// apply report filters
+  public sproviderDateFilter(url: string) {
     const queryString = '&filter={"serviceProvider.serviceProvider_id":"'+ this.spId
-    +',from_date:{$gte:' + this.paymentEarning.from_date.toISOString().slice(0,10) + '},to_date:{$lte:' +
-    this.paymentEarning.to_date.toISOString().slice(0,10) + '}"}';
+    +'",from_date:{$gte:ISODate("' + this.paymentEarning.from_date.toISOString().slice(0,10) + '")},to_date:{$lte:ISODate("' +
+    this.paymentEarning.to_date.toISOString().slice(0,10) + '")}}';
     return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
   }
 
-  public sproviderPaymentFilter(url: string) {
-    const queryString = '&filter={"payment_details.user_id":"'+
-    this.spId +',from_date:{$gte:' + this.paymentEarning.from_date.toISOString().slice(0,10) + '},to_date:{$lte:' +
-    this.paymentEarning.to_date.toISOString().slice(0,10) + '}"}';
+    // applying report filters
+    sproviderFilter(url: string) {
+      const queryString = '&filter={"serviceProvider.serviceProvider_id":"' + this.spId + '"}';
+      return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
+    }
+
+    // applying report filters
+    sproviderPaymentFilter(url: string) {
+        const queryString = '&filter={"payment_details.user_id":"' + this.spId + '"}';
+        return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
+    }
+
+ // apply report filters
+  public sproviderPaymentDateFilter(url: string) {
+    const queryString = '&filter={"payment_details.user_id":"'+ this.spId
+    +'","payment_details.pays.paid_date":{$gte:ISODate("' + this.paymentEarning.from_date.toISOString().slice(0,10) + '")}}';
     return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
   }
 

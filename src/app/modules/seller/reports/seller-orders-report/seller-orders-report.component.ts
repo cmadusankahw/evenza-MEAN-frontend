@@ -70,9 +70,9 @@ export class SellerOrdersReportComponent implements OnInit, OnDestroy {
             this.cancelled.push(p);
           }
         }
-        this.url1 = this.sellerFilter(this.url1);
-        this.url2 = this.sellerFilter(this.url2);
-        this.url3 = this.sellerFilter(this.url3);
+        this.url1 = this.sellerDateFilter(this.url1);
+        this.url2 = this.sellerDateFilter(this.url2);
+        this.url3 = this.sellerDateFilter(this.url3);
       });
     }
   }
@@ -89,12 +89,12 @@ export class SellerOrdersReportComponent implements OnInit, OnDestroy {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
   }
 
-  // apply chart filters
-  public sellerUserFilter(url: string) {
-    const queryString = '&filter={"user_id":"' + this.spId + '"}';
+  // apply report filters
+  public sellerDateFilter(url: string) {
+    const queryString = '&filter={"seller.seller_id":"'+ this.spId
+    +'",created_date:{$gte:ISODate("' + this.productOrder.from_date.toISOString().slice(0,10) + '")}}';
     return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
   }
-
 
   // print the report
   public printReport(content: string, title: string) {

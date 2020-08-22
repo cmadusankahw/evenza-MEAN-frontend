@@ -17,7 +17,7 @@ adminLocation.use(bodyParser.urlencoded({ extended: false }));
 // get service locations
 adminLocation.get('/get/m', checkAuth, (req, res, next) => {
 
-  var Query = Merchant.find().select('business.location business.title');
+  var Query = Merchant.find({'business.location' : {$exists: true }}).select('business.location business.title');
 
   Query.exec().then((result) => {
     console.log(result);
@@ -36,7 +36,7 @@ adminLocation.get('/get/m', checkAuth, (req, res, next) => {
 // get event locations
 adminLocation.get('/get/e', checkAuth, (req, res, next) => {
 
-  var Query = Event.find().select('location event_title');
+  var Query = Event.find({location: {$exists: true} }).select('location event_title');
 
   Query.exec().then((result) => {
     console.log(result);

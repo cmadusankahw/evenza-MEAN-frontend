@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material';
 import { SuccessComponent } from 'src/app/success/success.component';
 import { ErrorComponent } from 'src/app/error/error.component';
 import { refactorDate, calcDateDuration } from '../../event/event.model';
+import { AuthService } from '../../auth/auth.service';
 
 declare let paypal: any;
 
@@ -84,6 +85,8 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   image03: File;
   image03Url: any = './assets/images/merchant/nopic.png';
 
+  // check athentication
+  public isAuthenticated = true;
 
   // paypal integration
   paypalConfig = {
@@ -113,13 +116,15 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
   addScript = false;
 
   constructor(private router: Router,
-              public serviceService: ServiceService,
+              private serviceService: ServiceService,
+              private authService: AuthService,
               public datepipe: DatePipe,
               public dialog: MatDialog) { }
 
   ngOnInit() {
     // get the service
     this.serviceService.getService();
+    this.isAuthenticated = this.authService.getisAuth();
     this.serviceSub = this.serviceService.getServiceUpdateListener()
       .subscribe((recievedService: Service) => {
         if (recievedService) {
@@ -265,6 +270,7 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
     this.totalAmount = newRate - promotion;
     this.totalPromotion = promotion;
     this.payAmount = newRate / 10;
+    this.payPalAmount = +((this.payAmount / 190).toFixed(2));
     return newRate;
   }
 

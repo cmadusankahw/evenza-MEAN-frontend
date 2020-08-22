@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "evenza-backend-project",
+  "private_key_id": "ac2f7cc9125009ba4033be63e7283cc874bd9805",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCnh0Pp1DUCE8Bf\nY6r3ByNu4WNVPzTxxLAYzUbdvPWhrrWs3E+3LZD+P01VkqaD7cjXBN0yxCOSSedN\n4PPn7kccdTbX7xNoBknEDqRfuH20OWn6+jQ4Q3eZGvnjKFEe4COA7grtPY5M2QgF\nrehomYOeCh/JoaVt1HcbI4iBOofvz6Whfcst4/iuF5wI75m5+Hqrw0fUFca6DdEd\ncVqyTkLl+ppIGiWfccy/CebftR/i6sItIR8uoXbkEXgJ/hibKoTrTC50GpdjxvqV\nMi8FgG0uxlv8s+nVuteRSYRomDC4tyidNhEzwCBUPaPgd+rJ41v+KGsJ4hdvwXp6\nQmWPT3wJAgMBAAECggEACmXDScpxZckbCfCSJlXLlbCobRyIqS63bTqkWNPG/Ptu\nbCWaTvilhJoiLxr0ecCy0+GJ5wI0YPp0QCmjibQIttPxjPJaJn0pa+Eqw4QcTSi5\nEqofvpQ1YovBkZ8pdbych35+sB2/bLaVoGCcSY2plQ/0zBtbvJbQs57/dGHRGQmU\n6h9UJmmW59DO37wXludCcTT9cESP6ccaCI8zxewHEVbJhajp++TYhaBWs0v2A117\nWSu0dln9WKY8oaEcRroVvPW2dJ0aMsNovHHOaSK736bDUu3bmE9TUS2JUeIoO095\n9o6QrpatNpgvv1Tkc4OGJsLQfuX0tM0Xr/lkor2mQQKBgQDftK2dMiUhuFOpB4bm\nIlzEUWfPYRyDWpDa/0TxtMwmqAZesAV8lNcChTdmiJpag0b+Cqe0E7WjGrA9BtQr\n6KTS+w+JW1P1jViSMO8lUBdTGU+rrU0bbc+vLgPi3Si7CovH2SnOG27H703ubsNM\nTrl10XxaM3OSSCZMQZ8zAhU3eQKBgQC/tnuCzvtFhDZDmEX4in7FRXdXxKK2Tsb0\n8YESeWoBeGappPSdqWhhyDpkKsEw2d2PqpL+iKABkLLwD8yP59bjHyD1Ih5ZFv+z\nM9wkvn745Cy07IvP7/bDBqsGL/zv2EsU3E8GMWA+GcNpEV7JEIRUnNRkkCohqkco\nvc8fCFD1EQKBgQCps7KQsV2huuccLu2S3zZoZyjNFOpAaw/AUi3G/lRwbr6GThmb\nbH2/F7fzPGV7jGLqjMKzxM/hr3lKkkeaF54RvwsGNBX5DQTHwf9o2t0W2PirT4hS\n6nbGea3RB9zCJznqnT8tb3oWid8gpT3aQU5HpmcjNizSJ5GF/7H5S/c0YQKBgBB8\nnPqO2kUMLa56den93xEP/Edr/aI3/BwseLEiB9/AfvOv3+l/HB7snTjoBF0zHz6v\nqJyDG1+HFhxW/3yQr4YwsyDhokJ/G9ZJa3EtgLXeyYl1nkBvnoT/Gc4aamIl868D\nkzgxHtm4VXm/qKsZ5IdyRUGwtC7Y+e2jBSDiEjRBAoGBAL9W7oqw3SKtpbrDyKHc\n8gD1nURRNbh7nFyvL2XndnppLeRYfQpmQMcHN6TR1cKh3PxO63m2YNCKw2JYuaNK\nfYsP7a9iis/2jDCjcF9renlRwmZfNIWC6R7cENfVHYSyR6ldF0tDaRJIeOOOY2Cz\nBzeQb8TEBfI7A1Ur8xX0toz4\n-----END PRIVATE KEY-----\n",
+  "client_email": "evenza-images-upload-service@evenza-backend-project.iam.gserviceaccount.com",
+  "client_id": "104727729713490922360",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/evenza-images-upload-service%40evenza-backend-project.iam.gserviceaccount.com"
+}

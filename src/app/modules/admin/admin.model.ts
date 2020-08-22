@@ -174,3 +174,7 @@ export function printCanvas(content: string, title: string): string {
   return linkHref;
 }
 
+// reporting filters
+export function addDateFilters(fromDate: string, toDate: string, text: string) {
+  // text += "&filter={from_date:'"+ fromDate}
+}

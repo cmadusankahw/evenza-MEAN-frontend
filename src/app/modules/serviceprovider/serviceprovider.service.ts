@@ -210,18 +210,20 @@ export class ServiceProviderService {
     // loop through bookings
     if (this.bookingStat) {
       for (const book of this.bookingStat) {
-        const earning: Earnings = {
-          transaction_id: book.booking_id,
-          booking_id: book.booking_id,
-          service_booked: book.service_name,
-          earned_date: book.created_date.slice(0, 10),
-          earned_time: book.created_date.slice(11, 16),
-          payment_type: 'card',
-          commission_due: (book.amount * 5) / 100,
-          amount_paid: book.amount_paid,
-          amount: book.amount,
+        if (book.state !== 'cancelled') {
+          const earning: Earnings = {
+            transaction_id: book.booking_id,
+            booking_id: book.booking_id,
+            service_booked: book.service_name,
+            earned_date: book.created_date.slice(0, 10),
+            earned_time: book.created_date.slice(11, 16),
+            payment_type: 'card',
+            commission_due: (book.amount * 5) / 100,
+            amount_paid: book.amount_paid,
+            amount: book.amount,
+          };
+          earnings.push(earning);
         };
-        earnings.push(earning);
       }
     }
     setTimeout(() => {

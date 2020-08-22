@@ -150,18 +150,20 @@ export class SellerService {
     // loop through bookings
     if (this.orderStat) {
       for (const order of this.orderStat) {
-        const earning: Earnings = {
-          order_id: order.order_id,
-          product_id: order.product_id,
-          product: order.product,
-          earned_date: order.created_date.slice(0, 10),
-          earned_time: order.created_date.slice(11, 16),
-          payment_type: 'card',
-          commission_due: (order.amount * 5) / 100,
-          amount_paid: order.amount_paid,
-          amount: order.amount,
-        };
-        earnings.push(earning);
+        if (order.state !== 'cancelled') {
+          const earning: Earnings = {
+            order_id: order.order_id,
+            product_id: order.product_id,
+            product: order.product,
+            earned_date: order.created_date.slice(0, 10),
+            earned_time: order.created_date.slice(11, 16),
+            payment_type: 'card',
+            commission_due: (order.amount * 5) / 100,
+            amount_paid: order.amount_paid,
+            amount: order.amount,
+          };
+          earnings.push(earning);
+        }
       }
     }
     setTimeout(() => {

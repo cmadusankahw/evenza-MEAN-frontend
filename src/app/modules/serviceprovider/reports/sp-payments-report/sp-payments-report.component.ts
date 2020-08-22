@@ -94,19 +94,20 @@ export class SpPaymentsReportComponent implements OnInit, OnDestroy {
     }
   }
 
-
+// to be modified
   public sproviderFilter(url: string) {
-    const queryString = '&filter={"serviceProvider.serviceProvider_id":"'+ this.spId +'"}';
+    const queryString = '&filter={"serviceProvider.serviceProvider_id":"'+ this.spId
+    +',from_date:{$gte:' + this.paymentEarning.from_date.toISOString().slice(0,10) + '},to_date:{$lte:' +
+    this.paymentEarning.to_date.toISOString().slice(0,10) + '}"}';
     return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
   }
 
   public sproviderPaymentFilter(url: string) {
-    const queryString = '&filter={"payment_details.user_id":"'+ this.spId +'"}';
+    const queryString = '&filter={"payment_details.user_id":"'+
+    this.spId +',from_date:{$gte:' + this.paymentEarning.from_date.toISOString().slice(0,10) + '},to_date:{$lte:' +
+    this.paymentEarning.to_date.toISOString().slice(0,10) + '}"}';
     return this.sanitizer.bypassSecurityTrustResourceUrl(url + queryString);
   }
-
-
-
 
   // print the report
   public printReport(content: string, title: string) {

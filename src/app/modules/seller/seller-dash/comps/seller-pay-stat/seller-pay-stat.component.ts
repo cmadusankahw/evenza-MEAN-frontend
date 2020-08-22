@@ -121,4 +121,12 @@ export class SellerPayStatComponent implements OnInit {
     }
   }
 
+   // change paypal amount
+   payPalAmountChange(amount: number) {
+    this.payPalAmount = +((amount / 190).toFixed(2));
+    if (amount > this.due_amount) {
+      this.pay_amount = this.due_amount;
+    }
+  }
+
 }

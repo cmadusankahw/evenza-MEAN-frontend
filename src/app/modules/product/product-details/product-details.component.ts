@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { Product, ProductCategories, QuantityTypes, Order, DeliveryService, Promotion } from '../product.model';
 import { ProductService } from '../product.service';
 import { MatDialog } from '@angular/material';
+import { AuthService } from '../../auth/auth.service';
 
 declare let paypal: any;
 
@@ -75,6 +76,9 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   start = new Date();
   end = new Date();
 
+  // chck user authentication
+  public isAuthenticated = true;
+
   // paypal integration
   paypalConfig = {
     env: 'sandbox',
@@ -103,13 +107,15 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   addScript = false;
 
   constructor(private router: Router,
-              public productService: ProductService,
+              private productService: ProductService,
+              private authService: AuthService,
               public dialog: MatDialog,
               public datepipe: DatePipe) { }
 
   ngOnInit() {
     // get the product
     this.productService.getProduct();
+    this.isAuthenticated = this.authService.getisAuth();
     this.productSub = this.productService.getProductUpdateListener()
       .subscribe((recievedProduct: Product) => {
         if (recievedProduct) {
@@ -278,6 +284,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.totalPromotion = discount;
     this.totalAmount = (price * quantity) + this.delService.delivery_rate - discount;
     this.payAmount = this.totalAmount / 10;
+    this.payPalAmount = +((this.payAmount / 190).toFixed(2));
   }
 
 

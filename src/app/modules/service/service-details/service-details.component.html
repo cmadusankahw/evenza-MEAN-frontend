@@ -105,7 +105,7 @@
     </div>
 
     <!--if only shown to users-->
-    <div class="col-md-5 edit-cls" *ngIf="!isowner">
+    <div class="col-md-5 edit-cls" *ngIf="!isowner && isAuthenticated">
       <a
         mdbBtn
         color="secondary"
@@ -118,6 +118,9 @@
         >Book Now</a
       >
     </div>
+    <div class="col-md-5 edit-cls pt-3" *ngIf="!isowner && !isAuthenticated">
+      <p>Sorry! you need to sign up first, to Book this!</p>
+     </div>
   </div>
 
   <hr />
@@ -961,14 +964,14 @@
                     class="amount-input"
                     [(ngModel)]="payAmount"
                     name="amount_paid"
-                    (change)="payPalAmount = (payAmount / 190)"
+                    (change) = "payAmount> totalAmount ? payAmount = totalAmount: (totalAmount/10) > payAmount ? payAmount =(totalAmount/10) : null"
                   />
                 </mat-form-field>
                 <mat-error *ngIf="payInput2.invalid">
                   Please Enter a valid amount ( Min: Rs.{{
-                    totalAmount / 10
+                    (totalAmount / 10).toFixed(2)
                   }}
-                  Max: Rs.{{ totalAmount }} )
+                  Max: Rs.{{ totalAmount.toFixed(2) }} )
                 </mat-error>
               </div>
             </div>
@@ -980,7 +983,7 @@
             <div class="pay-dispaly pd-top-min" style="text-align: right;">
               <p style="margin: 0px;">Total Amount:</p>
               <span class="payment-cls">
-                <b> Rs. {{ totalAmount }}</b></span
+                <b> Rs. {{ totalAmount.toFixed(2) }}</b></span
               >
             </div>
 
@@ -991,7 +994,7 @@
             >
               <p style="margin: 0px;">Discounts:</p>
               <span class="payment-cls-promo">
-                <b> Rs. -{{ totalPromotion }}</b></span
+                <b> Rs. -{{ totalPromotion.toFixed(2) }}</b></span
               >
             </div>
 
@@ -1002,7 +1005,7 @@
             >
               <p style="margin: 0px;">Now Paying:</p>
               <span class="payment-cls">
-                <b> Rs. {{ totalAmount }}</b></span
+                <b> Rs. {{ totalAmount.toFixed(2) }}</b></span
               >
             </div>
 
@@ -1015,7 +1018,7 @@
               <span class="payment-cls-min">
                 <b>
                   Rs.
-                  {{ totalAmount >= payAmount ? payAmount : totalAmount }}</b
+                  {{ totalAmount >= payAmount ? payAmount.toFixed(2) : totalAmount.toFixed(2) }}</b
                 ></span
               >
             </div>
@@ -1030,7 +1033,7 @@
                 <b>
                   Rs.
                   {{
-                    totalAmount - payAmount > 0 ? totalAmount - payAmount : 0
+                    totalAmount - payAmount > 0 ? (totalAmount - payAmount).toFixed(2) : 0
                   }}</b
                 ></span
               >
@@ -1053,8 +1056,8 @@
         </div>
         <hr />
 
-        <div class="btns row container-fluid text-center">
-          <button
+        <div class="btns text-center">
+            <button
             mdbBtn
             color="secondary"
             class="btn btn-md"
@@ -1077,9 +1080,9 @@
           >
             Cancel
           </button>
-          <div style="margin-left: 15px; margin-right: 15px;" id="paybtn">
-            Paypal Checkout
           </div>
+        <div class="text-center" style="margin-left: 15px; margin-right: 15px;" id="paybtn">
+          Paypal Checkout
         </div>
       </div>
     </form>

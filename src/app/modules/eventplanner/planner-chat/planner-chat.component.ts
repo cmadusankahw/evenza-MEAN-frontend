@@ -33,7 +33,9 @@ export class PlannerChatComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.usertype = this._chatService.getUser();
+    if (this._chatService.getUser()) {
+      this.usertype = this._chatService.getUser();
+    }
     this.defineRoomList();
   }
 

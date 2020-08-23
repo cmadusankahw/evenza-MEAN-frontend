@@ -135,14 +135,15 @@ adminPayment.post('/add', checkAuth, (req, res, next) => {
   var paymentDetails;
   var i = 0;
   var merchantIndex = 0;
-  var paysIndex = -1;
+  var paysIndex = 0;
 
   Query.exec().then((result) => {
     console.log(result);
     paymentDetails = result.payment_details;
     for (let pd of paymentDetails) {
-      if (pd.user_id = req.userData.user_id) {
+      if (pd.user_id == req.userData.user_id) {
         merchantIndex = i;
+        paysIndex= -1;
         for (let p of pd.pays) {
           paysIndex++;
         }

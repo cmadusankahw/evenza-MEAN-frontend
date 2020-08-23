@@ -31,26 +31,37 @@ authMerchant.post('/signup', (req, res, next) => {
     .then (result => {
       // adding initial subscription
       // PROTOCOL - first Month No Subscription FEE
-      Admin.updateOne({},{
-        $push : { payment_details: {user_id: result.user_id,
-                                    user_type: result.user_type,
-                                    first_name: result.first_name,
-                                    last_name: result.last_name,
-                                    email: result.email,
-                                    pays: [{
-                                      timestamp: {type: year,
-                                      month:month + 1},
-                                      paid_date: tDate,
-                                      paid_amount: 0,
-                                      due_amount: 0,
-                                    }]} }
-      }).then( fs => {
-        console.log(fs);
-        res.status(200).json({
-          message: 'Merchant added successfully!'
+      Admin.findOne({}).select('subscription_fee'). then( fee => {
+        Admin.updateOne({},{
+          $push : { payment_details: {user_id: result.user_id,
+                                      user_type: result.user_type,
+                                      first_name: result.first_name,
+                                      last_name: result.last_name,
+                                      email: result.email,
+                                      pays: [{
+                                        timestamp: {year: year,
+                                        month:month + 1 },
+                                        paid_date: tDate,
+                                        paid_amount: 0,
+                                        due_amount: fee.subscription_fee ,
+                                      }]} }
+        }).then( fs => {
+          console.log(fs);
+          res.status(200).json({
+            message: 'Merchant added successfully!'
+          });
+        }).catch( err => {
+          console.log(err);
+          res.status(500).json({
+            message: 'Merchant sign up was not successfull! Please try again!'
+          });
         });
-      })
-
+      }).catch( err => {
+        console.log(err);
+        res.status(500).json({
+          message: 'Merchant sign up was not successfull! Please try again!'
+        });
+      });
     })
     .catch( err => {
       console.log(err);
@@ -94,14 +105,14 @@ authMerchant.post('/edit',checkAuth, (req, res, next) => {
 
 
 // remove a merchant when profile deactivation (remove merchant, their services and products) *********************
-authMerchant.delete('/remove:id',checkAuth, (req, res, next) => {
+authMerchant.delete('/remove/:id',checkAuth, (req, res, next) => {
 
   var removeMerchantQuery =  Merchant.deleteOne({user_id: req.params.id});
   var removeUserQuery =  User.deleteOne({user_id: req.params.id});
-  var removeServiceQuery = Service.delete({user_id: req.params.id});
-  var removeProductQuery = Product.delete({user_id: req.params.id});
+  var removeServiceQuery = Service.deleteMany({user_id: req.params.id});
+  var removeProductQuery = Product.deleteMany({user_id: req.params.id});
 
-  removeUserQuery.exec().thrn ( () => {
+  removeUserQuery.exec().then ( () => {
   removeMerchantQuery.exec().then( () => {
     removeServiceQuery.exec().then( () => {
       removeProductQuery.exec().then ( ()=> {

@@ -35,7 +35,7 @@ export class EventCardComponent implements OnInit {
     this.eventService.getEvents();
     this.eventSub = this.eventService.getEventsUpdatedListener()
       .subscribe((recievedEvents: EventCard[]) => {
-        if (recievedEvents) {
+        if (recievedEvents.length) {
           this.events = recievedEvents;
           this.eventDetails = { eventId: recievedEvents[0].event_id, eventName: recievedEvents[0].event_title };
           console.log(this.events);

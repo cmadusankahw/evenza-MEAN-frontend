@@ -108,4 +108,13 @@ export class AdminPaymentsComponent implements OnInit, OnDestroy {
     return lastPay;
   }
 
+   // get last payment details
+   getTotalPayData(payment: MerchantPayments): number {
+    let total = 0;
+    for (var pay of payment.pays) {
+      total += pay.paid_amount;
+    }
+    return total;
+  }
+
 }

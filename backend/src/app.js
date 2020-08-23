@@ -3,9 +3,11 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require("path");
 require('dotenv').config();
+const expressOasGenerator = require('express-oas-generator');
 
 // creting an exporess app
 const app = express();
+expressOasGenerator.init(app, {});
 
 //import app segments
 const auth = require('./controller/auth/auth');

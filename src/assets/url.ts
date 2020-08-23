@@ -4,7 +4,5 @@ export function getUrl(): string {
 }
 
 export function getSocketUrl(): string {
-  return 'https://evenza-backend-project.df.r.appspot.com/';
+  return 'https://evenza-backend-project.df.r.appspot.com';
 }
-
-

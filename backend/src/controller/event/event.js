@@ -128,7 +128,7 @@ event.get('/get',checkAuth, (req, res) => {
    })
  });
 
-//cancel an event
+// update an event
 event.post('/edit',checkAuth, (req, res) => {
   Event.updateOne({'event_id': req.body.event_id}, {
     event_title: req.body.event_title,
@@ -159,7 +159,7 @@ event.post('/edit',checkAuth, (req, res) => {
 
 //cancel an event
 event.post('/remove',checkAuth, (req, res) => {
-  Event.findOneAndUpdate({'event_id': req.body.event_id}, {
+  Event.findOneAndUpdate({'event_id': req.body.eventId}, {
     state: 'cancelled'
   }).then(
     result => {
@@ -279,7 +279,7 @@ event.get('/confirm/:id', (req, res) => {
 // create event invitation HTML with confirmation link
 function createHTML(content, pid, eventId) {
    const message =  mailHeader.mailHeader + "<h3> Invitation </h3><br> Dear Sir/Madam, <br><br>" + content
-   +"<br><br> Click below link to confirm your participation:<hr> <b> <a href='https://tranquil-shore-24102.herokuapp.com/api/event/confirm/"+ pid + '_' + eventId + "' target='_blank'> Conirm My Participation</a></br>"
+   +"<br><br> Click below link to confirm your participation:<hr> <b> <a href='https://evenza-backend-project.df.r.appspot.com/api/event/confirm/"+ pid + '_' + eventId + "' target='_blank'> Conirm My Participation</a></br>"
    + "<div> <hr> Thank You, <br> Your Sincere, <br><br> Event Organizer at Evenza</div>" + mailFooter.mailFooter
    return message;
   }
@@ -288,7 +288,7 @@ function createHTML(content, pid, eventId) {
 
     // create cancelrequest HTML
 function createCancelHTML(eventTitle, fromDate, toDate) {
-  const message =  mailHeader.mailHeader + "<h3> Cancellation Notice! </h3><br> Dear Sir/Madam," +
+  const message =  mailHeader.mailHeader + "<h3> Cancellation Notice! </h3><br> Dear Sir/Madam,"
   +"<br><br> <b> The Event : "+ eventTitle +"</b> which is to be held from " + fromDate.slice(0,10) + " to "+  toDate.slice(0,10) + " , was cancelled due to an unavoidable reason."  + "<br><br>"
   + "<div> <hr> Thank You for your understanding,,<br> <br> Your Sincere, <br><br> Event Organizer at Evenza</div>"  + mailFooter.mailFooter
   return message;

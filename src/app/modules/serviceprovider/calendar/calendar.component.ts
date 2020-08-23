@@ -31,12 +31,19 @@ export class CalendarComponent implements OnInit {
 
   // subscription
   private calendarBookingSub: Subscription;
+  private serviceNamesSub: Subscription;
 
   calendarEvents: CalendarBooking[] = [];
 
   // creating event modal
   fullDayEvent = false;
   eventTitle: string;
+
+  // recieved service ID
+  serviceId: string = '';
+
+  // recieved service names
+  serviceNames: any[] = [];
 
 
   constructor(private serviceProviderService: ServiceProviderService,
@@ -50,6 +57,13 @@ export class CalendarComponent implements OnInit {
         this.calendarEvents = recievedBookings;
         console.log(this.calendarEvents);
       });
+
+    this.serviceService.getServiceNames();
+    this.serviceNamesSub = this.serviceService.getServiceNamesUpdatedListener()
+    .subscribe((recieved: any[]) => {
+      this.serviceNames = recieved;
+      console.log(this.serviceNames);
+    });
   }
 
 
@@ -90,7 +104,7 @@ export class CalendarComponent implements OnInit {
   createCalendarEvent(newEvent: CalendarBooking) {
     const booking: Booking = {
       booking_id: 'B0',
-      service_id: 'SPBook',
+      service_id: this.serviceId,
       event_id: 'SPBook',
       service_name: 'SPBook',
       service_category: 'SPBook',

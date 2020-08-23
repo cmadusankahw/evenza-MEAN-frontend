@@ -107,7 +107,7 @@
           <div class="col-md-7 profile-text">
             <span>
               {{
-                eventPlanner
+                eventPlanner.date_of_birth
                   ? eventPlanner.date_of_birth.slice(0, 10)
                   : "Loading..."
               }}</span
@@ -377,7 +377,7 @@
                   [matDatepicker]="picker"
                   required
                   name="date_of_birth"
-                  [ngModel]="eventPlanner.date_of_birth"
+                  [(ngModel)]="dob"
                   #birthday="ngModel"
                 />
                 <mat-datepicker-toggle
@@ -386,7 +386,7 @@
                 ></mat-datepicker-toggle>
                 <mat-datepicker
                   #picker
-                  [startAt]="eventPlanner.date_of_birth"
+                  [startAt]="dob"
                 ></mat-datepicker>
                 <mat-error *ngIf="birthday.invalid"
                   >Please select your Birthday</mat-error

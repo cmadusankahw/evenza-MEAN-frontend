@@ -13,7 +13,7 @@ const serviceSearch = require("./service-search");
 const serviceBooking = require("./service-booking");
 const serviceAppoint = require("./service-appoint");
 const servicePromotion = require("./service-promotion");
-const serviceRating = require("./service-search");
+const serviceRating = require("./service-rating");
 const serviceCat = require("./service-cat");
 const serviceLocation = require("./service-location");
 
@@ -135,7 +135,7 @@ service.post('/edit',checkAuth, (req, res) => {
     service_name: req.body.service_name,
     business_name:  req.body.business_name,
     description: req.body.description,
-    service_category: req.body.product_category,
+    service_category: req.body.service_category,
     available_booking: req.body.available_booking,
     available_appoints: req.body.available_appoints,
     rating: req.body.rating,
@@ -189,6 +189,24 @@ service.get('/get', (req, res) => {
       {
         message: 'Product list recieved successfully!',
         services: services
+      }
+    );
+  }).catch( err => {
+    console.log(err);
+    res.status(500).json(
+      { message: 'No matching Services Found! Please check your filters again!'}
+      );
+  });
+});
+
+
+//get list of services
+service.get('/snames',checkAuth, (req, res) => {
+  Service.find({user_id: req.userData.user_id }).select('service_name service_id').then( (services) => {
+    console.log(services);
+    res.status(200).json(
+      {
+        serviceNames: services
       }
     );
   }).catch( err => {

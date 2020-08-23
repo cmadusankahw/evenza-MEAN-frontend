@@ -71,7 +71,7 @@ authPlanner.get('/get',checkAuth, (req, res, next) => {
         eventPlanner: planner
       }
     );
-  }).then ( err =>{
+  }).catch ( err =>{
     console.log(err);
     res.status(500).json(
       {

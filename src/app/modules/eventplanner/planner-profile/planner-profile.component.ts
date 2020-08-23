@@ -30,6 +30,8 @@ export class PlannerProfileComponent implements OnInit, OnDestroy {
   // edit profile mode
   editmode = false;
 
+  dob = new Date();
+
   // recieved event planner
   eventPlanner: EventPlanner;
 
@@ -44,6 +46,7 @@ export class PlannerProfileComponent implements OnInit, OnDestroy {
     this.eventPlannerSub = this.authService.getEventPlannerUpdateListener().subscribe(
       planner => {
         this.eventPlanner = planner;
+        this.dob = new Date(this.eventPlanner.date_of_birth);
       });
 
   }
@@ -84,7 +87,7 @@ export class PlannerProfileComponent implements OnInit, OnDestroy {
         address_line2: editForm.value.address_line2,
         postal_code: editForm.value.postal_code,
         gender: editForm.value.gender,
-        date_of_birth: editForm.value.date_of_birth,
+        date_of_birth: this.dob.toISOString(),
         reg_date: this.eventPlanner.reg_date,
       };
       console.log(planner);

@@ -4,7 +4,20 @@
     <b> Booking Calendar</b>
   </h4>
   <hr />
-
+  <div class="text-center">
+    <h5> Select Service to Place a Calendar Reservation: </h5>
+    <br>
+    <mat-form-field style="width:80%">
+      <mat-label>Select a Service</mat-label>
+      <mat-select matNativeControl required [(ngModel)]="serviceId" name="service_select">
+        <mat-option [value]="sname.service_id" *ngFor="let sname of serviceNames">
+          {{sname.service_name}}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+    <br>
+  </div>
+  <hr>
   <!--calendar-->
   <div class="row">
     <div class="col-md-8">

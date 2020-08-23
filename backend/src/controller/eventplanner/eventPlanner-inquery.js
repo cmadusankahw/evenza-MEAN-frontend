@@ -18,7 +18,7 @@ eventPlannerInquery.use(bodyParser.urlencoded({ extended: false }));
 // REST API
 
 //get list of inqueries
-eventPlannerInquery.get('/get',checkAuth, (req, res, next) => {
+eventPlannerInquery.get('/get', (req, res, next) => {
   Inquery.find().then( (inquries) => {
     console.log(inquries);
     res.status(200).json(

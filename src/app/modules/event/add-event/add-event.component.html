@@ -67,7 +67,7 @@
                       <input
                         matInput
                         [matDatepicker]="picker1"
-                        required
+                        [required] = "!editmode"
                         [min]="tday"
                         name="from_date"
                         [(ngModel)]="dates.fromDate"
@@ -106,7 +106,7 @@
                       <input
                         matInput
                         [matDatepicker]="picker2"
-                        required
+                        [required] = "!editmode"
                         [min]="tday"
                         name="to_date"
                         [(ngModel)]="dates.toDate"

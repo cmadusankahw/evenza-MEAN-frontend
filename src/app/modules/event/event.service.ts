@@ -172,7 +172,7 @@ export class EventService {
 
   // removing an event category
   public removeCategory(id: string) {
-    this.http.post<{ message: string }>(this.url + 'event/cat/remove', id)
+    this.http.post<{ message: string }>(this.url + 'event/cat/remove', {id})
       .subscribe((recievedData) => {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
@@ -247,7 +247,7 @@ export class EventService {
   // all pending servies and prodcuts will be sent with cancell requests
   // all participants will be sent a cancellation notice
   public cancelEvent(eventId: string) {
-    this.http.post<{ message: string }>(this.url + 'event/remove', eventId)
+    this.http.post<{ message: string }>(this.url + 'event/remove', {eventId})
       .subscribe((recievedData) => {
         this.dialog.open(SuccessComponent, { data: { message: recievedData.message } });
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;

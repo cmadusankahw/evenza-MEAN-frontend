@@ -308,7 +308,7 @@ export class ProductService {
   // remove a category by admin
   public removeCategory(cat: string) {
     this.http
-      .post<{ message: string }>(this.url + 'product/cat/remove', cat)
+      .post<{ message: string }>(this.url + 'product/cat/remove', {cat})
       .subscribe((res) => {
         this.dialog.open(SuccessComponent, {
           data: { message: 'Product Category deleted!' },

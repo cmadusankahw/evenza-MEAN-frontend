@@ -23,7 +23,7 @@
       <div class="col-md-1"></div>
       <div class="col">
         <a role="button" mdbWavesEffect (click)="sidea.click()">
-          <img src="{{ sideAUrl }}" alt="front side" class="img-cls" />
+          <img [src]="sideAUrl" alt="front side" class="img-cls" />
         </a>
         <input
           type="file"
@@ -37,7 +37,7 @@
       <div class="col-md-1"></div>
       <div class="col">
         <a role="button" mdbWavesEffect (click)="sideb.click()">
-          <img src="{{ sideBUrl }}" alt="front side" class="img-cls" />
+          <img [src]="sideBUrl" alt="front side" class="img-cls" />
         </a>
         <input
           type="file"

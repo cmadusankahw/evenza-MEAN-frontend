@@ -35,6 +35,8 @@ export class ServiceService {
   private categoriesUpdated = new Subject<ServiceCategories[]>();
   private bookingsUpdated = new Subject<Booking[]>();
   private locationsUpdated = new Subject<any[]>();
+  private serviceNamesUpdated = new Subject<any[]>();
+
 
   // to add services
   private services: Service[] = [];
@@ -126,6 +128,17 @@ export class ServiceService {
       .subscribe((categoriesList) => {
         this.categories = categoriesList.categories;
         this.categoriesUpdated.next([...this.categories]);
+      });
+  }
+
+ // get categories list
+  public getServiceNames() {
+    this.http
+      .get<{ serviceNames: {service_name: string, service_id: string}[] }>(
+        this.url + 'service/snames'
+      )
+      .subscribe((recieved) => {
+        this.serviceNamesUpdated.next(recieved.serviceNames);
       });
   }
 
@@ -299,7 +312,7 @@ export class ServiceService {
   // remove a category by admin
   public removeCategory(cat: string) {
     this.http
-      .post<{ message: string }>(this.url + 'service/cat/remove', cat)
+      .post<{ message: string }>(this.url + 'service/cat/remove', {cat})
       .subscribe((res) => {
         this.dialog.open(SuccessComponent, {
           data: { message: 'Service Category deleted!' },
@@ -597,6 +610,11 @@ export class ServiceService {
   public getLocationsUpdateListener() {
     return this.locationsUpdated.asObservable();
   }
+
+  public getServiceNamesUpdatedListener() {
+    return this.serviceNamesUpdated.asObservable();
+  }
+
 
 
   // realtime notifications with socket.io

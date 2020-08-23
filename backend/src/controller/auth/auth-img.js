@@ -5,6 +5,7 @@ const checkAuth = require("../../middleware/auth-check");
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require ("multer");
+const uploadImage = require('../../../helpers/helpers');
 
 //express app declaration
 const authImg = express();
@@ -33,6 +34,16 @@ const storage = multer.diskStorage({
   }
 });
 
+
+// google cloud storage image uploads
+const multerMid = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024,
+  },
+})
+
+
 //middleware
 authImg.use(bodyParser.json());
 authImg.use(bodyParser.urlencoded({ extended: false }));
@@ -40,29 +51,68 @@ authImg.use(bodyParser.urlencoded({ extended: false }));
 //REST API
 
 // add profile pic for user
-authImg.post('/add',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
-  const url = req.protocol + '://' + req.get("host");
-  imagePath = url+ "/images/merchant/" +  req.files[0].filename;
-  res.status(200).json({
-    profile_pic: imagePath
-  });
+authImg.post('/add',checkAuth, multerMid.array("images[]"), async (req, res, next) => {
+  try {
+    let imagePath;
+    imagePath = await uploadImage(req.files[0]);
+    console.log('uploaded to google cloud', imagePath);
+    res
+      .status(200)
+      .json({
+        profile_pic: imagePath
+      });
+  } catch (error) {
+    console.log(error);
+    res
+    .status(500)
+    .json({
+      message: "Upload was unsuccessful",
+    });
+  }
 });
 
 // add merchant business profile photos
-authImg.post('/mul',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
-  const url = req.protocol + '://' + req.get("host");
-  let imagePaths = [];
-  for (let f of req.files){
-    imagePaths.push(url+ "/images/merchant/"+ f.filename);
+authImg.post('/mul',checkAuth, multerMid.array("images[]"), async (req, res, next) => {
+  try {
+    let imagePaths = [];
+    for (let f of req.files) {
+      imagePaths.push(await uploadImage(f));
+    }
+    console.log('uploaded to google cloud', imagePaths);
+    res
+      .status(200)
+      .json({
+        imagePaths: imagePaths
+      });
+  } catch (error) {
+    console.log(error);
+    res
+    .status(500)
+    .json({
+      message: "Upload was unsuccessful",
+    });
   }
-  res.status(200).json({imagePaths: imagePaths});
 });
 
 // add merchant photos a single image only
-authImg.post('/single',checkAuth, multer({storage:storage}).single("images"), (req, res, next) => {
-  const url = req.protocol + '://' + req.get("host");
-    imagePath = url+ "/images/merchant/"  + f.filename;
-  res.status(200).json({imagePath: imagePath});
+authImg.post('/single',checkAuth, multerMid.single("images"), async (req, res, next) => {
+  try {
+    let imagePath;
+    imagePath = await uploadImage(req.file);
+    console.log('uploaded to google cloud', imagePath);
+    res
+      .status(200)
+      .json({
+        imagePath: imagePath
+      });
+  } catch (error) {
+    console.log(error);
+    res
+    .status(500)
+    .json({
+      message: "Upload was unsuccessful",
+    });
+  }
 });
 
 

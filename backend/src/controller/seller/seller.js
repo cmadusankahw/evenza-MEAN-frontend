@@ -14,6 +14,7 @@ const selOrder = require("./seller-order");
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require ("multer");
+const uploadImage = require('../../../helpers/helpers');
 
 //express app declaration
 const seller = express();
@@ -41,6 +42,14 @@ const storage = multer.diskStorage({
   }
 });
 
+// google cloud storage image uploads
+const multerMid = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024,
+  },
+})
+
 //middleware
 seller.use(bodyParser.json());
 seller.use(bodyParser.urlencoded({ extended: false }));
@@ -54,16 +63,26 @@ seller.use('/product', selProduct);
 // REST API
 
 // add seller photos
-seller.post('/img/add',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
-    const url = req.protocol + '://' + req.get("host");
+seller.post('/img/add',checkAuth, multerMid.array("images[]"), async (req, res, next) => {
+  try {
     let imagePaths = [];
-    for (let f of req.files){
-      imagePaths.push(url+ "/images/merchant/" + f.filename);
+    for (let f of req.files) {
+      imagePaths.push(await uploadImage(f));
     }
-    res.status(200).json({
-      imagePaths: imagePaths
+    console.log('uploaded to google cloud', imagePaths);
+    res
+      .status(200)
+      .json({
+        imagePaths: imagePaths
+      });
+  } catch (error) {
+    console.log(error);
+    res
+    .status(500)
+    .json({
+      message: "Upload was unsuccessful",
     });
-
+  }
 });
 
 

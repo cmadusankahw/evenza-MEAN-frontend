@@ -14,6 +14,7 @@ const productSearch = require("./product-search");
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require ("multer");
+const uploadImage = require('../../../helpers/helpers');
 
 //express app declaration
 const product = express();
@@ -41,6 +42,14 @@ const storage = multer.diskStorage({
     cb(null, name + '-' + Date.now() + '.' + ext);
   }
 });
+
+// google cloud storage image uploads
+const multerMid = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024,
+  },
+})
 
 
 //middleware
@@ -97,16 +106,26 @@ product.post('/add',checkAuth, (req, res, next) => {
  });
 
 // add product photos
-product.post('/img/add',checkAuth, multer({storage:storage}).array("images[]"), (req, res, next) => {
-    const url = req.protocol + '://' + req.get("host");
+product.post('/img/add',checkAuth, multerMid.array("images[]"),async (req, res, next) => {
+  try {
     let imagePaths = [];
-    for (let f of req.files){
-      imagePaths.push(url+ "/images/products/" + f.filename);
+    for (let f of req.files) {
+      imagePaths.push(await uploadImage(f));
     }
-    res.status(200).json({
-      imagePaths: imagePaths
+    console.log('uploaded to google cloud', imagePaths);
+    res
+      .status(200)
+      .json({
+        imagePaths: imagePaths
+      });
+  } catch (error) {
+    console.log(error);
+    res
+    .status(500)
+    .json({
+      message: "Upload was unsuccessful",
     });
-
+  }
 });
 
 //edit product

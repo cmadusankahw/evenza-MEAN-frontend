@@ -5,6 +5,7 @@ const checkAuth = require("../../middleware/auth-check");
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require("multer");
+const uploadImage = require('../../../helpers/helpers');
 
 //express app declaration
 const adminImg = express();
@@ -32,20 +33,41 @@ const storage = multer.diskStorage({
   }
 });
 
+// google cloud storage image uploads
+const multerMid = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024,
+  },
+})
+
+
 //middleware
 adminImg.use(bodyParser.json());
 adminImg.use(bodyParser.urlencoded({ extended: false }));
 
 // add admin photos
-adminImg.post('/add', checkAuth, multer({ storage: storage }).array("images[]"), (req, res, next) => {
-  const url = req.protocol + '://' + req.get("host");
-  let image01Path, image02Path, image03Path = null;
-  let imagePaths = [];
-  for (let f of req.files) {
-    imagePaths.push(url + "/images/admin/" + f.filename);
+adminImg.post('/add', checkAuth, multerMid.array("images[]"), async (req, res, next) => {
+  try {
+    let imagePaths = [];
+    for (let f of req.files) {
+      imagePaths.push(await uploadImage(f));
+    }
+    console.log('uploaded to google cloud', imagePaths);
+    res
+      .status(200)
+      .json({
+        message: "Upload was successful",
+        imagePaths: imagePaths
+      });
+  } catch (error) {
+    console.log(error);
+    res
+    .status(500)
+    .json({
+      message: "Upload was unsuccessful",
+    });
   }
-  res.status(200).json({ imagePaths: imagePaths });
-
 });
 
 module.exports = adminImg;

@@ -5,6 +5,7 @@ const checkAuth = require("../../middleware/auth-check");
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require ("multer");
+const uploadImage = require('../../../helpers/helpers');
 
 //express app declaration
 const eventImg = express();
@@ -33,6 +34,13 @@ const storage = multer.diskStorage({
   }
 });
 
+// google cloud storage image uploads
+const multerMid = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024,
+  },
+})
 
 //middleware
 eventImg.use(bodyParser.json());
@@ -42,25 +50,47 @@ eventImg.use(bodyParser.urlencoded({ extended: false }));
 // REST API
 
 // add a single photo
-eventImg.post('/add',checkAuth, multer({storage:storage}).array("images[]"), (req, res) => {
-  const url = req.protocol + '://' + req.get("host");
-  const imagePath = (url+ "/images/events/" + req.files[0].filename);
-  console.log(imagePath);
-  res.status(200).json({
-    imagePath: imagePath
-  });
+eventImg.post('/add',checkAuth, multerMid.array("images[]"), async (req, res, next) => {
+  try {
+    let imagePath;
+    imagePath = await uploadImage(req.files[0]);
+    console.log('uploaded to google cloud', imagePath);
+    res
+      .status(200)
+      .json({
+        imagePath: imagePath
+      });
+  } catch (error) {
+    console.log(error);
+    res
+    .status(500)
+    .json({
+      message: "Upload was unsuccessful",
+    });
+  }
 });
 
 // add multiple photos
-eventImg.post('/mul',checkAuth, multer({storage:storage}).array("images[]"), (req, res) => {
-  const url = req.protocol + '://' + req.get("host");
-  let imagePaths = [];
-  for (let f of req.files){
-    imagePaths.push(url+ "/images/events/" + f.filename);
+eventImg.post('/mul',checkAuth, multerMid.array("images[]"), async (req, res, next) => {
+  try {
+    let imagePaths = [];
+    for (let f of req.files) {
+      imagePaths.push(await uploadImage(f));
+    }
+    console.log('uploaded to google cloud', imagePaths);
+    res
+      .status(200)
+      .json({
+        imagePaths: imagePaths
+      });
+  } catch (error) {
+    console.log(error);
+    res
+    .status(500)
+    .json({
+      message: "Upload was unsuccessful",
+    });
   }
-  res.status(200).json({
-    imagePaths: imagePaths
-  });
 });
 
 

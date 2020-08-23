@@ -1,5 +1,5 @@
 const util = require('util')
-const gc = require('./config/')
+const gc = require('../config/index')
 const bucket = gc.bucket('evenza-image-uploads')
 /**
  *
@@ -10,7 +10,7 @@ const bucket = gc.bucket('evenza-image-uploads')
  *   "originalname" and "buffer" as keys
  */
 
-export const uploadImage = (file) => new Promise((resolve, reject) => {
+ const uploadImage = (file) => new Promise((resolve, reject) => {
   const { originalname, buffer } = file
 
   const blob = bucket.file(originalname.replace(/ /g, "_"))
@@ -18,9 +18,9 @@ export const uploadImage = (file) => new Promise((resolve, reject) => {
     resumable: false
   })
   blobStream.on('finish', () => {
-    const publicUrl = format(
-      `https://storage.googleapis.com/${bucket.name}/${blob.name}`
-    )
+    const publicUrl =
+      `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+
     resolve(publicUrl)
   })
   .on('error', () => {
@@ -28,3 +28,5 @@ export const uploadImage = (file) => new Promise((resolve, reject) => {
   })
   .end(buffer)
 })
+
+module.exports = uploadImage;

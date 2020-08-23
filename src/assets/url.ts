@@ -1,7 +1,10 @@
+
 export function getUrl(): string {
-  return 'http://localhost:3000/api/';
+  return 'https://evenza-backend-project.df.r.appspot.com/api/';
 }
 
 export function getSocketUrl(): string {
-  return 'http://localhost:3000';
+  return 'https://evenza-backend-project.df.r.appspot.com/';
 }
+
+

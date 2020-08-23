@@ -6,6 +6,7 @@ const checkAuth = require("../../middleware/auth-check");
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require ("multer");
+const uploadImage = require('../../../helpers/helpers');
 
 // express app imports
 const serviceSearch = require("./service-search");
@@ -42,6 +43,13 @@ const storage = multer.diskStorage({
   }
 });
 
+// google cloud storage image uploads
+const multerMid = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024,
+  },
+})
 
 //middleware
 service.use(bodyParser.json());
@@ -97,14 +105,26 @@ service.post('/add',checkAuth, (req, res) => {
 });
 
 // add service photos
-service.post('/img/add',checkAuth, multer({storage:storage}).array("images[]"), (req, res) => {
-    const url = req.protocol + '://' + req.get("host");
+service.post('/img/add',checkAuth, multerMid.array("images[]"), async (req, res, next) => {
+  try {
     let imagePaths = [];
-    for (let f of req.files){
-      imagePaths.push(url+ "/images/services/" + f.filename);
+    for (let f of req.files) {
+      imagePaths.push(await uploadImage(f));
     }
-    res.status(200).json({imagePaths: imagePaths});
-
+    console.log('uploaded to google cloud', imagePaths);
+    res
+      .status(200)
+      .json({
+        imagePaths: imagePaths
+      });
+  } catch (error) {
+    console.log(error);
+    res
+    .status(500)
+    .json({
+      message: "Upload was unsuccessful",
+    });
+  }
 });
 
 //edit service

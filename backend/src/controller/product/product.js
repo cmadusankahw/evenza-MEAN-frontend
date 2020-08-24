@@ -183,7 +183,7 @@ product.delete('/remove/:id',checkAuth, (req, res, next) => {
 //get list of products for search
 product.get('/get', (req, res, next) => {
   Product.find({'availability': true,
-                'inventory': {$gte: 1}}).then ( (products) => {
+                'inventory': {$gte: 1}}).sort({rating: -1}).then ( (products) => {
     console.log(products);
     res.status(200).json(
       {

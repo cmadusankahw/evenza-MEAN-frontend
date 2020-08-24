@@ -51,6 +51,4 @@ export class PlannerEventDetailsReportComponent implements OnInit {
 
   }
 
-
-
 }

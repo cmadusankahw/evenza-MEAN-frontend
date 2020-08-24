@@ -14,7 +14,7 @@ serviceSearch.use(bodyParser.urlencoded({ extended: false }));
 
 // REST API
 
-//search services // need to modify to compare dates
+//search services 
 serviceSearch.post('/all', (req, res, next) => {
   Service.aggregate([
                 // step 1 : matching filters from service model
@@ -30,6 +30,7 @@ serviceSearch.post('/all', (req, res, next) => {
                       foreignField : "service_id",
                       as : "bookings"
                   }},
+	       {$sort: {"rating": -1} }
               ])
   .then (finalResult => {
       res.status(200).json({
@@ -52,13 +53,13 @@ serviceSearch.post('/event', (req, res, next) => {
                               "rate": {$lte: req.body.maxPrice},
                               "pay_on_meet":req.body.payOnMeet,
                               "rating": {$gte: req.body.userRating},
-                              "available_booking": true});
+                              "available_booking": true}).sort({"rating": -1});;
 
   // create query depend on category
   if ( req.body.category == 'all') {
     Query = Service.find({"rate": {$lte: req.body.maxPrice},
                           "rating": {$gte: req.body.userRating},
-                          "available_booking": true});
+                          "available_booking": true}).sort({"rating": -1});;
   }
 
   Query.exec().then (finalResult => {

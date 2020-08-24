@@ -183,7 +183,7 @@ service.delete('/remove/:id',checkAuth, (req, res) => {
 
 //get list of services
 service.get('/get', (req, res) => {
-  Service.find({available_booking: true}).then( (services) => {
+  Service.find({available_booking: true}).sort({rating: -1}).then( (services) => {
     console.log(services);
     res.status(200).json(
       {
@@ -200,7 +200,7 @@ service.get('/get', (req, res) => {
 });
 
 
-//get list of services
+//get list of service names
 service.get('/snames',checkAuth, (req, res) => {
   Service.find({user_id: req.userData.user_id }).select('service_name service_id').then( (services) => {
     console.log(services);

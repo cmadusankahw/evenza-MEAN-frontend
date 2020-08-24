@@ -22,7 +22,7 @@ productSearch.post('/all', (req, res, next) => {
                               pay_on_delivery:req.body.payOnDelivery,
                               rating: {$gte: req.body.userRating},
                               'availability': true,
-                              'inventory': {$gte: 1}});
+                              'inventory': {$gte: 1}}).sort({rating: -1});
 
   if ( req.body.category == ' all') {
       Query =  Product.find({

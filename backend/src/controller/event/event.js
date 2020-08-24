@@ -279,7 +279,7 @@ event.get('/confirm/:id', (req, res) => {
 // create event invitation HTML with confirmation link
 function createHTML(content, pid, eventId) {
    const message =  mailHeader.mailHeader + "<h3> Invitation </h3><br> Dear Sir/Madam, <br><br>" + content
-   +"<br><br> Click below link to confirm your participation:<hr> <b> <a href='https://evenza-backend-project.df.r.appspot.com/api/event/confirm/"+ pid + '_' + eventId + "' target='_blank'> Conirm My Participation</a></br>"
+   +"<br><br> Click below link to confirm your participation:<hr> <b> <a href='http://localhost:3000/api/event/confirm/"+ pid + '_' + eventId + "' target='_blank'> Conirm My Participation</a></br>"
    + "<div> <hr> Thank You, <br> Your Sincere, <br><br> Event Organizer at Evenza</div>" + mailFooter.mailFooter
    return message;
   }

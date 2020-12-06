@@ -1,6 +1,6 @@
 # Evenza - Smart Event Management & Resourcing Platform
 
-This is my Third Year Design & Development Project
+**Evenza - Smart Event Management and Resourcing Platform** is my software design and development individual final project, which brings a unique solution to capture the process of event planning and management in a methodical way.
 
 Frontend was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.8 with `Angular Material` and `Angular MDBoostrap`. Progressive Web App generated with `Angular PWA`
 

@@ -14,6 +14,10 @@ necessary resources & service providers within the same platform. The project al
 most of the basic to advanced functionalities required for an event-planner. It addresses
 the current problems we face while planning an event, and provides a full-functional end-to-end solution to achieve a well-organized, timely and within the budget event with with maintaining resources and quality with the best services avaialable.
 
+### API Documentation
+
+View API Documentation: [Evenza Docs] (https://cmadusankahw.github.io/evenza-docs/)
+
 ## Development server
 
 Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

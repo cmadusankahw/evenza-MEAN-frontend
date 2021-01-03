@@ -43,13 +43,13 @@ Thank you!
 
 ## Project Screenshots
 
-![ScreenShot](screenshots/0.png) | ![ScreenShot](screenshots/1.jpg) | ![ScreenShot](screenshots/2.jpg)
-![ScreenShot](screenshots/3.jpg) | ![ScreenShot](screenshots/4.jpg) | ![ScreenShot](screenshots/1.png)
-![ScreenShot](screenshots/2.png) | ![ScreenShot](screenshots/3.png) | ![ScreenShot](screenshots/4.png)
-![ScreenShot](screenshots/5.png) | ![ScreenShot](screenshots/6.png) | ![ScreenShot](screenshots/7.png)
-![ScreenShot](screenshots/8.png) | ![ScreenShot](screenshots/9.png) | ![ScreenShot](screenshots/10.png)
-![ScreenShot](screenshots/11.png) | ![ScreenShot](screenshots/12.png) | ![ScreenShot](screenshots/13.png)
-![ScreenShot](screenshots/14.png) | ![ScreenShot](screenshots/15.png) | ![ScreenShot](screenshots/16.png)
-![ScreenShot](screenshots/17.png) | ![ScreenShot](screenshots/18.png) | ![ScreenShot](screenshots/19.png)
-![ScreenShot](screenshots/20.png) | ![ScreenShot](screenshots/21.png) | ![ScreenShot](screenshots/22.png)
-![ScreenShot](screenshots/23.png) | ![ScreenShot](screenshots/24.png) | ![ScreenShot](screenshots/25.png)
+<img src="screenshots/0.png" width="270"/> <img src="screenshots/1.jpg" width="270"/> <img src="screenshots/2.jpg" width="270"/>
+<img src="screenshots/3.jpg" width="270"/> <img src="screenshots/4.jpg" width="270"/> <img src="screenshots/1.png" width="270"/>
+<img src="screenshots/2.png" width="270"/> <img src="screenshots/3.png" width="270"/> <img src="screenshots/4.png" width="270"/>
+<img src="screenshots/5.png" width="270"/> <img src="screenshots/6.png" width="270"/> <img src="screenshots/7.png" width="270"/>
+<img src="screenshots/8.png" width="270"/> <img src="screenshots/9.png" width="270"/> <img src="screenshots/10.png" width="270"/>
+<img src="screenshots/11.png" width="270"/> <img src="screenshots/12.png" width="270"/> <img src="screenshots/13.png" width="270"/>
+<img src="screenshots/14.png" width="270"/> <img src="screenshots/15.png" width="270"/> <img src="screenshots/16.png" width="270"/>
+<img src="screenshots/17.png" width="270"/> <img src="screenshots/18.png" width="270"/> <img src="screenshots/19.png" width="270"/>
+<img src="screenshots/20.png" width="270"/> <img src="screenshots/21.png" width="270"/> <img src="screenshots/22.png" width="270"/>
+<img src="screenshots/23.png" width="270"/> <img src="screenshots/24.png" width="270"/> <img src="screenshots/25.png" width="270"/>

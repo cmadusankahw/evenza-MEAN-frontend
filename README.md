@@ -16,7 +16,9 @@ the current problems we face while planning an event, and provides a full-functi
 
 ### API Documentation
 
-View API Documentation: [Evenza Docs] (https://cmadusankahw.github.io/evenza-docs/)
+View API Documentation: [Evenza Docs](https://cmadusankahw.github.io/evenza-docs/)
+
+---
 
 ## Development server
 

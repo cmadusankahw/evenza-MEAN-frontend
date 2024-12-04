@@ -1,34 +1,48 @@
 <div class="container-fluid text-center justify-content-center">
-
   <h5 class="pd-top-min">
     <mat-icon>credit_card</mat-icon>
-   <b> Business registration(BR)</b>
+    <b> Business registration(BR)</b>
   </h5>
-  <hr>
-  <p>Upload clear images of the <b>Front Side</b> and the <b>Back Side</b> seperate, of the <b>Business registrattion(BA)</b></p>
-  <br>
+  <hr />
+  <p>
+    Upload clear images of the <b>Front Side</b> and the
+    <b>Back Side</b> seperate, of the <b>Business registrattion(BA)</b>
+  </p>
+  <br />
 
-    <div class="row">
-      <div class="col-md-1"></div>
-      <div class="col">
-        <a role="button" mdbWavesEffect (click)="sidea.click()">
-          <img [src]="brsA" alt="front side" class="img-cls">
-        </a>
-        <input type="file" hidden="true" id="sidea" #sidea (change)="onSideAUploaded($event)">
-        <p><b>Side A</b></p>
-      </div>
-      <div class="col-md-1"></div>
-      <div class="col">
-        <a role="button" mdbWavesEffect (click)="sideb.click()">
-          <img [src]="brsB" alt="front side"  class="img-cls">
-        </a>
-        <input type="file" hidden="true" id="sideb" #sideb (change)="onSideBUploaded($event)">
-        <p><b>Side B</b></p>
-      </div>
-      <div class="col-md-1"></div>
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col">
+      <a role="button" mdbWavesEffect (click)="sidea.click()">
+        <img [src]="braAUrl" alt="front side" class="img-cls" />
+      </a>
+      <input
+        type="file"
+        hidden="true"
+        id="sidea"
+        #sidea
+        (change)="onSideAUploaded($event)"
+      />
+      <p><b>Side A</b></p>
     </div>
+    <div class="col-md-1"></div>
+    <div class="col">
+      <a role="button" mdbWavesEffect (click)="sideb.click()">
+        <img [src]="braBUrl" alt="front side" class="img-cls" />
+      </a>
+      <input
+        type="file"
+        hidden="true"
+        id="sideb"
+        #sideb
+        (change)="onSideBUploaded($event)"
+      />
+      <p><b>Side B</b></p>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
 
- <!--
+  <!--
  <div class="certification">
  <h5 class="pd-top-min">
   <mat-icon>library_books</mat-icon>
@@ -61,11 +75,17 @@
    </div>
   </div>
 </div>-->
-<hr>
- <div class="row">
-      <button class="btn btn-md bt-center" mdbBtn role="button" color="secondary" mdbWavesEffect (click)= "verifyBusiness()">
-        Submit for Verification
-      </button>
-    </div>
-
+  <hr />
+  <div class="row">
+    <button
+      class="btn btn-md bt-center"
+      mdbBtn
+      role="button"
+      color="secondary"
+      mdbWavesEffect
+      (click)="verifyBusiness()"
+    >
+      Submit for Verification
+    </button>
+  </div>
 </div>

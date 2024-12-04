@@ -1,5 +1,5 @@
 .hdr {
-  background-size: cover;;
+  background-size: cover;
   width:100%;
 }
 
@@ -40,7 +40,7 @@
 
 .feature-img{
   width:100%;
-  height:70vh;
+  height:75vh;
 }
 
 .link-box{
@@ -65,5 +65,17 @@
 @media screen and (max-width: 600px) {
   .feature-img{
     width:400%;
+    height:100vh;
+  }
+
+  .mobile {
+    margin-left:10px;
+    margin-right:10px;
+  }
+
+  .txtimg{
+    text-align:center;
+    padding-left:15px;
+    padding-right:15px;
   }
 }

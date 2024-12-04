@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { Product, ProductCategories, QuantityTypes, Order, DeliveryService, Promotion } from '../product.model';
 import { ProductService } from '../product.service';
 import { MatDialog } from '@angular/material';
+import { AuthService } from '../../auth/auth.service';
 
 declare let paypal: any;
 
@@ -18,11 +19,11 @@ declare let paypal: any;
 export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   // subscription
-  private productSub: Subscription ;
-  private categorySub: Subscription ;
+  private productSub: Subscription;
+  private categorySub: Subscription;
   private deliveryServiceSub: Subscription;
   // created date
-  private today = new Date();
+  public today = new Date();
 
   // service is editable by parent comp
   @Input() public isowner = false;
@@ -40,7 +41,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   // order enabled
   public orderUser = false;
   // recieved product
-  public product: Product;
+  public product: any;
   // recieved categories
   public categories: ProductCategories[] = [];
   // recieved quantities
@@ -50,10 +51,12 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   // delivery service of the product
   public delService: DeliveryService;
   // created promotion
-  public promotion: Promotion = { from_date: '',
-                                  to_date: '',
-                                  title: 'New Promotion',
-                                  precentage: 0 };
+  public promotion: Promotion = {
+    from_date: '',
+    to_date: '',
+    title: 'New Promotion',
+    precentage: 0
+  };
 
   // images to upload
   image01: File;
@@ -73,6 +76,9 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   start = new Date();
   end = new Date();
 
+  // chck user authentication
+  public isAuthenticated = true;
+
   // paypal integration
   paypalConfig = {
     env: 'sandbox',
@@ -82,16 +88,16 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     },
     commit: true,
     payment: (data, actions) => {
-      return actions.payment.create ( {
+      return actions.payment.create({
         payment: {
           transactions: [
-            {amount: { total: this.payPalAmount , currency: 'USD'}}
+            { amount: { total: this.payPalAmount, currency: 'USD' } }
           ]
         }
       });
     },
-    onAuthorize : (data, actions) => {
-      return actions.payment.execute().then ( payment => {
+    onAuthorize: (data, actions) => {
+      return actions.payment.execute().then(payment => {
         // make order if the payment is successed
         document.getElementById('placeOrder').click();
       });
@@ -101,69 +107,71 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   addScript = false;
 
   constructor(private router: Router,
-              public productService: ProductService,
+              private productService: ProductService,
+              private authService: AuthService,
               public dialog: MatDialog,
               public datepipe: DatePipe) { }
 
   ngOnInit() {
-   // get the product
-      this.productService.getProduct();
-      this.productSub = this.productService.getProductUpdateListener()
-        .subscribe((recievedProduct: Product) => {
-          if (recievedProduct) {
-            this.product = recievedProduct;
-            console.log(this.product);
-            this.removed = false;
-            this.editmode = false;
+    // get the product
+    this.productService.getProduct();
+    this.isAuthenticated = this.authService.getisAuth();
+    this.productSub = this.productService.getProductUpdateListener()
+      .subscribe((recievedProduct: Product) => {
+        if (recievedProduct) {
+          this.product = recievedProduct;
+          console.log(this.product);
+          this.removed = false;
+          this.editmode = false;
 
-             // import delivery services
-            this.productService.getDeliveryServices();
-            this.deliveryServiceSub = this.productService.getdeliveryServicesUpdateListener()
-               .subscribe((recievedData: DeliveryService[]) => {
-               this.deliveryServices = recievedData;
-               console.log(this.deliveryServices);
-               this.delService = this.getDeliveryService(this.product.delivery_service);
+          // import delivery services
+          this.productService.getDeliveryServices();
+          this.deliveryServiceSub = this.productService.getdeliveryServicesUpdateListener()
+            .subscribe((recievedData: DeliveryService[]) => {
+              this.deliveryServices = recievedData;
+              console.log(this.deliveryServices);
+              this.delService = this.getDeliveryService(this.product.delivery_service);
             });
 
-            if (this.editable === true) {
-              // import categories
-                this.productService.getCategories();
-                this.categorySub = this.productService.getCategoriesUpdateListener()
-                  .subscribe((recievedData: ProductCategories[]) => {
-                  this.categories = recievedData;
-                  console.log(this.categories);
+          if (this.editable === true) {
+            // import categories
+            this.productService.getCategories();
+            this.categorySub = this.productService.getCategoriesUpdateListener()
+              .subscribe((recievedData: ProductCategories[]) => {
+                this.categories = recievedData;
+                console.log(this.categories);
               });
 
             // import quantity types
-                this.quantities = this.productService.getQuantities();
+            this.quantities = this.productService.getQuantities();
 
-              }
-
-            // check for recieved eventId
-            if (this.eventId) {
-                console.log(this.eventId);
-              }
           }
-    });
+
+          // check for recieved eventId
+          if (this.eventId) {
+            console.log(this.eventId);
+          }
+        }
+      });
 
   }
 
   addPaypal() {
-    if(!this.addScript) {
-      this.addPaypalScript().then( () =>{
-        paypal.Button.render( this.paypalConfig, '#paybtn');
+    if (!this.addScript) {
+      this.addPaypalScript().then(() => {
+        paypal.Button.render(this.paypalConfig, '#paybtn');
       });
     }
   }
 
   addPaypalScript() {
     this.addScript = true;
-    return new Promise( ( resolve, reject) => {
-      let scriptTagelement = document.createElement('script');
+    return new Promise((resolve, reject) => {
+      const scriptTagelement = document.createElement('script');
       scriptTagelement.src = 'https://www.paypalobjects.com/api/checkout.js';
       scriptTagelement.onload = resolve;
       document.body.appendChild(scriptTagelement);
-    })
+    });
   }
 
   ngOnDestroy() {
@@ -183,7 +191,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   // create an order
-  createOrder(orderForm: NgForm ) {
+  createOrder(orderForm: NgForm) {
     if (orderForm.invalid) {
       console.log('Form Invalid');
     } else {
@@ -206,13 +214,13 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         commission_due: this.totalAmount / 10,
         amount_paid: orderForm.value.amount_paid,
         delivery_service: this.getDeliveryService(this.product.delivery_service)
-        };
+      };
 
       if (this.eventId) {
-          order.event_id = this.eventId;
-          this.productService.createEventOrder(order);
+        order.event_id = this.eventId;
+        this.productService.createEventOrder(order);
       } else {
-          this.productService.createOrder(order);
+        this.productService.createOrder(order);
       }
       console.log(order);
       this.orderUser = !this.orderUser;
@@ -227,33 +235,33 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     } else {
       const product: Product = {
         product_id: this.product.product_id,
-        business_name:  this.product.business_name,
+        business_name: this.product.business_name,
         product: updateProductForm.value.product,
         product_category: updateProductForm.value.category,
         qty_type: updateProductForm.value.quantity_type,
         description: updateProductForm.value.description,
         created_date: this.product.created_date,
         availability: this.product.availability,
-        inventory:  updateProductForm.value.inventory,
+        inventory: updateProductForm.value.inventory,
         rating: this.product.rating,
         reviews: this.product.reviews,
         promotions: this.product.promotions,
         no_of_ratings: this.product.no_of_ratings,
         no_of_orders: this.product.no_of_orders,
         delivery_service: updateProductForm.value.delivery_service,
-        price:  updateProductForm.value.price,
-        pay_on_delivery:  this.product.pay_on_delivery,
-        image_01:  this.product.image_01,
-        image_02:  this.product.image_02,
-        image_03:  this.product.image_03,
-        };
+        price: updateProductForm.value.price,
+        pay_on_delivery: this.product.pay_on_delivery,
+        image_01: this.product.image_01,
+        image_02: this.product.image_02,
+        image_03: this.product.image_03,
+      };
       this.productService.updateProduct(product, [this.image01, this.image02, this.image03]);
       this.productSub = this.productService.getProductUpdateListener()
-      .subscribe((recievedProduct: Product) => {
-        console.log(recievedProduct);
-        this.product = recievedProduct;
-        this.clearImages();
-      });
+        .subscribe((recievedProduct: Product) => {
+          console.log(recievedProduct);
+          this.product = recievedProduct;
+          this.clearImages();
+        });
       console.log('Product updated successfully!');
       this.editmode = false;
     }
@@ -276,6 +284,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.totalPromotion = discount;
     this.totalAmount = (price * quantity) + this.delService.delivery_rate - discount;
     this.payAmount = this.totalAmount / 10;
+    this.payPalAmount = +((this.payAmount / 190).toFixed(2));
   }
 
 
@@ -292,7 +301,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   // to be modified later (optional function)
   showBprofile() {
-   // this.router.navigate(['/sp/bprofile']);
+    // this.router.navigate(['/sp/bprofile']);
   }
 
   // add new promotion
@@ -318,22 +327,22 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     };
   }
 
-    // image 02 uploading
-    onImage02Uploaded(event: Event) {
-      const file = (event.target as HTMLInputElement).files[0];
-      const mimeType = file.type;
-      if (mimeType.match(/image\/*/) == null) {
-        return;
-      }
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.image02 = file;
-        this.image02Url = reader.result;
-      };
+  // image 02 uploading
+  onImage02Uploaded(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    const mimeType = file.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
     }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.image02 = file;
+      this.image02Url = reader.result;
+    };
+  }
 
-      // image 03 uploading
+  // image 03 uploading
   onImage03Uploaded(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
     const mimeType = file.type;

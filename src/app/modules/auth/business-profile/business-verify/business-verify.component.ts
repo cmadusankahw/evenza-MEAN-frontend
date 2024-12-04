@@ -26,7 +26,7 @@ export class BusinessVerifyComponent implements OnInit, OnDestroy {
   }
 
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.braAUrl = './assets/images/merchant/nopic.png';
     this.braBUrl = './assets/images/merchant/nopic.png';
 
@@ -35,48 +35,48 @@ export class BusinessVerifyComponent implements OnInit, OnDestroy {
   }
 
   verifyBusiness() {
-      if (this.brsA || this.brsB ) {
+    if (this.brsA || this.brsB) {
 
-        const businessVerify: BusinessVerification = {
-          business_isverified: true,
-          br_side_a: './assets/images/merchant/nopic.png',
-          br_side_b : './assets/images/merchant/bopic.png',
-        };
-        this.authService.BusinessVerify(businessVerify, [this.brsA, this.brsB]);
-      } else {
-        this.dialog.open(ErrorComponent, {data: {message: 'Please upload both sides of the BR!'}});
-      }
+      const businessVerify: BusinessVerification = {
+        business_isverified: true,
+        br_side_a: './assets/images/merchant/nopic.png',
+        br_side_b: './assets/images/merchant/bopic.png',
+      };
+      this.authService.BusinessVerify(businessVerify, [this.brsA, this.brsB]);
+    } else {
+      this.dialog.open(ErrorComponent, { data: { message: 'Please upload both sides of the BR!' } });
+    }
   }
 
 
-    // sideA pic uploading
-    onSideAUploaded(event: Event) {
-      const file = (event.target as HTMLInputElement).files[0];
-      const mimeType = file.type;
-      if (mimeType.match(/image\/*/) == null) {
-        return;
-      }
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.brsA = file;
-        this.braAUrl = reader.result;
-      };
+  // sideA pic uploading
+  onSideAUploaded(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    const mimeType = file.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
     }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.brsA = file;
+      this.braAUrl = reader.result;
+    };
+  }
 
-      // sideB pic uploading
-      onSideBUploaded(event: Event) {
-        const file = (event.target as HTMLInputElement).files[0];
-        const mimeType = file.type;
-        if (mimeType.match(/image\/*/) == null) {
-          return;
-        }
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-          this.brsB = file;
-          this.braBUrl = reader.result;
-        };
-      }
+  // sideB pic uploading
+  onSideBUploaded(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    const mimeType = file.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
+    }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.brsB = file;
+      this.braBUrl = reader.result;
+    };
+  }
 
 }

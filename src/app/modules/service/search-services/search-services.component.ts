@@ -4,12 +4,9 @@ import { Observable, Subject, merge } from 'rxjs';
 import { map, shareReplay, debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
-
-
-import {Service, ServiceCategories, ServiceQuery, Booking } from '../service.model';
+import { Service, ServiceCategories, ServiceQuery, Booking } from '../service.model';
 import { ServiceService } from '../service.service';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
-import { NgForm } from '@angular/forms';
 import { BusinessLocation } from '../../auth/auth.model';
 import { refactorDate } from '../../event/event.model';
 import { EventPlannerService } from '../../eventplanner/eventplanner.service';
@@ -23,8 +20,8 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
 
 
   // subscription
-  private serviceSub: Subscription ;
-  private categorySub: Subscription ;
+  private serviceSub: Subscription;
+  private categorySub: Subscription;
   private searchedServiceSub: Subscription;
   private bookingSub: Subscription;
   private locationSub: Subscription;
@@ -63,13 +60,15 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
   ];
 
   // recieved locations !!!!!!!!!!! edit
-  recievedLocations: {location: BusinessLocation, business: string}[]  = [];
+  recievedLocations: { location: BusinessLocation, business: string }[] = [];
 
   // search query
-  bookingTime = { fromDate: this.today,
-            toDate: this.today,
-            fromTime: {hour: 8, minute: 0},
-            toTime: {hour: 18, minute: 0}};
+  bookingTime = {
+    fromDate: this.today,
+    toDate: this.today,
+    fromTime: { hour: 8, minute: 0 },
+    toTime: { hour: 18, minute: 0 }
+  };
 
   ratings = 0;
   priceStart = 0;
@@ -82,10 +81,10 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
 
   constructor(private breakpointObserver: BreakpointObserver,
               public serviceService: ServiceService,
-              private eventPlannerService: EventPlannerService) {}
+              private eventPlannerService: EventPlannerService) { }
 
 
-  @ViewChild('instance', {static: true}) instance: NgbTypeahead;
+  @ViewChild('instance', { static: true }) instance: NgbTypeahead;
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 
@@ -94,24 +93,24 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
     this.serviceService.getServices();
     this.serviceSub = this.serviceService.getservicesUpdateListener()
       .subscribe((recievedServices: Service[]) => {
-          this.services = recievedServices;
-          console.log(this.services);
-  });
+        this.services = recievedServices;
+        console.log(this.services);
+      });
 
-   // import categories
+    // import categories
     this.serviceService.getCategories();
     this.categorySub = this.serviceService.getCategoriesUpdateListener()
-     .subscribe((recievedData: ServiceCategories[]) => {
-     this.categories = recievedData;
-     console.log(this.categories);
- });
+      .subscribe((recievedData: ServiceCategories[]) => {
+        this.categories = recievedData;
+        console.log(this.categories);
+      });
 
     this.serviceService.getLocations();
     this.locationSub = this.serviceService.getLocationsUpdateListener()
-      .subscribe((recievedData: {location: BusinessLocation, business: string}[]) => {
-      this.recievedLocations = recievedData;
-      console.log(this.recievedLocations);
-    });
+      .subscribe((recievedData: { location: BusinessLocation, business: string }[]) => {
+        this.recievedLocations = recievedData;
+        console.log(this.recievedLocations);
+      });
   }
 
   ngOnDestroy() {
@@ -157,31 +156,31 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
       maxPrice: this.priceEnd,
       payOnMeet: this.payOnMeetQuery,
       userRating: this.ratings,
-      fromDate: refactorDate(this.bookingTime.fromDate, this.bookingTime.fromTime) ,
-      toDate: refactorDate(this.bookingTime.fromDate, this.bookingTime.fromTime) ,
+      fromDate: refactorDate(this.bookingTime.fromDate, this.bookingTime.fromTime),
+      toDate: refactorDate(this.bookingTime.fromDate, this.bookingTime.fromTime),
     };
     console.log(searchQuery);
     this.serviceService.searchServices(searchQuery);
     this.searchedServiceSub = this.serviceService.getSearchedServiceUpdatedListener()
-    .subscribe((recievedData: Service[]) => {
-    this.services = recievedData;
-    console.log(this.services);
-   });
+      .subscribe((recievedData: Service[]) => {
+        this.services = recievedData;
+        console.log(this.services);
+      });
   }
 
 
   // set service to view details
   sendService(service: Service) {
     this.success = this.serviceService.setService(service);
-   }
+  }
 
- // send user details to the inquery for
- emitUser() {
-  this.eventPlannerService.setUser('');
- }
+  // send user details to the inquery for
+  emitUser() {
+    this.eventPlannerService.setUser('');
+  }
 
 
-   // get available list of services
+  // get available list of services
   changeSettings(fromDate: string, toDate: string) {
     const tDate = new Date(toDate);
     const fDate = new Date(fromDate);
@@ -190,24 +189,24 @@ export class SearchServicesComponent implements OnInit, OnDestroy {
 
     this.serviceService.getBookings();
     this.bookingSub = this.serviceService.getBookingsUpdateListener()
-    .subscribe((recievedData: Booking[]) => {
-      console.log(recievedData);
-      for (const book of recievedData) {
-        const bookfDate = new Date(book.from_date);
-        const booktDate = new Date(book.to_date);
-        console.log(tDate, fDate, bookfDate, booktDate);
-        if (bookfDate >= fDate && booktDate <= tDate) {
-          if (!serviceIds.includes(book.service_id)) {
-            serviceIds.push(book.service_id);
+      .subscribe((recievedData: Booking[]) => {
+        console.log(recievedData);
+        for (const book of recievedData) {
+          const bookfDate = new Date(book.from_date);
+          const booktDate = new Date(book.to_date);
+          console.log(tDate, fDate, bookfDate, booktDate);
+          if (bookfDate >= fDate && booktDate <= tDate) {
+            if (!serviceIds.includes(book.service_id)) {
+              serviceIds.push(book.service_id);
+            }
           }
         }
-      }
-      console.log(serviceIds);
-      for (const sid of serviceIds) {
-        this.services.filter(s => s.service_id === sid);
-      }
-      console.log('final', this.services);
-   });
+        console.log(serviceIds);
+        for (const sid of serviceIds) {
+          this.services.filter(s => s.service_id === sid);
+        }
+        console.log('final', this.services);
+      });
   }
 
 }

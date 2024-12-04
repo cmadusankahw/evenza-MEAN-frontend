@@ -22,8 +22,8 @@ export class CardDetailsComponent implements OnInit {
 
   }
 
-   // send business verify details
-   updateCardDetails() {
+  // send business verify details
+  updateCardDetails() {
     this.cardDetailsEmit.emit(this.carddetails);
     console.log(this.carddetails);
   }

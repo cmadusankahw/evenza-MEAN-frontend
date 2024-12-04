@@ -1,5 +1,4 @@
-
-  <mdb-card>
+<mdb-card>
   <mdb-card-header class="purple white-text text-center py-4">
     <h2>
       You are Almost Done!
@@ -9,7 +8,11 @@
   <!--Card content-->
   <mdb-card-body class="px-lg-5 pt-0">
     <!-- Form -->
-    <form style="color: #757575;" (submit)="signupUser(signupform)" #signupform="ngForm">
+    <form
+      style="color: #757575;"
+      (submit)="signupUser(signupform)"
+      #signupform="ngForm"
+    >
       <br />
       <div class="text-center p-md-3">
         <p>Fill below details to continue Sign Up as a Merchant..</p>
@@ -19,10 +22,11 @@
         <mat-form-field class="mfield">
           <mat-label>Your Business Type</mat-label>
           <mat-select
-          required
-          name="user_type"
-          #merchantSelect="ngModel"
-          ngModel>
+            required
+            name="user_type"
+            #merchantSelect="ngModel"
+            ngModel
+          >
             <mat-option value="serviceProvider">
               <mat-icon aria-label="">emoji_people</mat-icon>
               Service Provider</mat-option
@@ -32,77 +36,95 @@
               Product Seller</mat-option
             >
           </mat-select>
-          <mat-error *ngIf="merchantSelect.invalid">Select Business Type</mat-error>
+          <mat-error *ngIf="merchantSelect.invalid"
+            >Select Business Type</mat-error
+          >
         </mat-form-field>
 
         <mat-form-field class="mfield">
-          <input matInput
-          placeholder="Your NIC"
-          required
-          pattern="^([0-9]{9}[x|X|v|V]|[0-9]{12})$"
-          name="nic"
-          #nic="ngModel"
-          ngModel />
+          <input
+            matInput
+            placeholder="Your NIC"
+            required
+            pattern="^([0-9]{9}[x|X|v|V]|[0-9]{12})$"
+            name="nic"
+            #nic="ngModel"
+            ngModel
+          />
           <mat-error *ngIf="nic.invalid">Please Provide a valid NIC</mat-error>
         </mat-form-field>
 
         <mat-form-field class="mfield">
           <mat-label>Your Gender</mat-label>
-          <mat-select
-          required
-          name="gender"
-          #gender="ngModel"
-          ngModel>
+          <mat-select required name="gender" #gender="ngModel" ngModel>
             <mat-option value="male">Male</mat-option>
             <mat-option value="female">Female</mat-option>
             <mat-option value="none">Prefer Not to Say</mat-option>
           </mat-select>
-          <mat-error *ngIf="gender.invalid">Please Select your Gender</mat-error>
+          <mat-error *ngIf="gender.invalid"
+            >Please Select your Gender</mat-error
+          >
         </mat-form-field>
 
         <mat-form-field class="mfield">
           <mat-label>Your BirthDay</mat-label>
-          <input matInput
-          [matDatepicker]="picker"
-          required
-          name="birthday"
-          #birthDay="ngModel"
-          ngModel
+          <input
+            matInput
+            [matDatepicker]="picker"
+            required
+            name="birthday"
+            #birthDay="ngModel"
+            ngModel
           />
           <mat-datepicker-toggle
             matSuffix
             [for]="picker"
           ></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
-          <mat-error *ngIf="birthDay.invalid">Please Select your BirthDay</mat-error>
+          <mat-error *ngIf="birthDay.invalid"
+            >Please Select your BirthDay</mat-error
+          >
         </mat-form-field>
 
         <mat-form-field class="mfield">
-          <input matInput type="text" placeholder="Address Line 1"
-          required
-          name="address1"
-          #address1="ngModel"
-          ngModel>
-          <mat-error *ngIf="address1.invalid">Your address is required</mat-error>
-        </mat-form-field>
-        <br>
-        <mat-form-field class="mfield">
-          <input matInput type="text"
-          placeholder="Address Line 2"
-          name="address2"
-          ngModel>
-        </mat-form-field>
-          <br>
-          <mat-form-field class="mfield">
-          <input matInput type="number"
-          placeholder="Postal/Zip Code"
-          required
-          maxlength="6"
-          name="postalCode"
-          #postalCode ="ngModel"
-          ngModel
+          <input
+            matInput
+            type="text"
+            placeholder="Address Line 1"
+            required
+            name="address1"
+            #address1="ngModel"
+            ngModel
+          />
+          <mat-error *ngIf="address1.invalid"
+            >Your address is required</mat-error
           >
-          <mat-error *ngIf="postalCode.invalid">Postal code is required</mat-error>
+        </mat-form-field>
+        <br />
+        <mat-form-field class="mfield">
+          <input
+            matInput
+            type="text"
+            placeholder="Address Line 2"
+            name="address2"
+            ngModel
+          />
+        </mat-form-field>
+        <br />
+        <mat-form-field class="mfield">
+          <input
+            matInput
+            type="number"
+            placeholder="Postal/Zip Code"
+            required
+            maxlength="6"
+            name="postalCode"
+            #postalCode="ngModel"
+            ngModel
+          />
+          <mat-error *ngIf="postalCode.invalid"
+            >Postal code is required</mat-error
+          >
         </mat-form-field>
       </div>
 
@@ -147,23 +169,42 @@
   </mdb-card-body>
 </mdb-card>
 
-
-
 <!--Identity Verify Modal-->
-<div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document" style="overflow-y: initial !important">
+<div
+  mdbModal
+  #basicModal="mdbModal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog"
+    role="document"
+    style="overflow-y: initial !important;"
+  >
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="basicModal.hide()"
+        >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel">Verify your Identity</h4>
+        <h4 class="modal-title w-100" id="myModalLabel">
+          Verify your Identity
+        </h4>
       </div>
-      <div class="modal-body " style="height: 500px; overflow-y: auto;">
-        <app-id-verify ></app-id-verify>
+      <div class="modal-body" style="height: 500px; overflow-y: auto;">
+        <app-id-verify></app-id-verify>
       </div>
       <div class="modal-footer">
-        <button  mdbBtn color="link" (click)="basicModal.hide()" mdbWavesEffect>Close</button>
+        <button mdbBtn color="link" (click)="basicModal.hide()" mdbWavesEffect>
+          Close
+        </button>
       </div>
     </div>
   </div>

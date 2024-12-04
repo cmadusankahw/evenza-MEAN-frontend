@@ -1,120 +1,40 @@
 <div class="container-fluid pd-top">
   <h4>
     <mat-icon>library_books</mat-icon>
-   <b> Booking Calendar</b>
+    <b> Booking Calendar</b>
   </h4>
+  <hr />
+  <div class="text-center">
+    <h5> Select Service to Place a Calendar Reservation: </h5>
+    <br>
+    <mat-form-field style="width:80%">
+      <mat-label>Select a Service</mat-label>
+      <mat-select matNativeControl required [(ngModel)]="serviceId" name="service_select">
+        <mat-option [value]="sname.service_id" *ngFor="let sname of serviceNames">
+          {{sname.service_name}}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+    <br>
+  </div>
   <hr>
-
   <!--calendar-->
   <div class="row">
     <div class="col-md-8">
       <full-calendar
-      #calendar
-      defaultView="dayGridMonth"
-      [header]="{
-        left: 'prev,next',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-      }"
-      [plugins]="calendarPlugins"
-      [weekends]="calendarWeekends"
-      [events]="calendarEvents"
-      [selectable]="true"
-      (select)="handleSelect($event)"
-    ></full-calendar>
-    </div>
-  </div>
-
-</div>
-
-<button style="display:hidden;" id="eventCreate" (click) ="calderBooking.show()"></button>
-
-
-<!--add  payment method Modal-->
-<div
-  mdbModal
-  #calderBooking="mdbModal"
-  class="modal fade"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="myBasicModalLabel"
-  [config]="{ backdrop: false, ignoreBackdropClick: true }"
-  aria-hidden="true"
->
-  <div
-    class="modal-dialog modal-dialog-centered modal-lg"
-    role="document"
-    style="overflow-y: initial !important"
-  >
-    <div class="modal-content">
-      <div class="modal-header">
-        <button
-          type="button"
-          class="close pull-right"
-          aria-label="Close"
-          id="cardDetailsModalClose"
-          (click)="calderBooking.hide()"
-        >
-          <span aria-hidden="true">×</span>
-        </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
-          Create New event
-        </h4>
-      </div>
-      <div class="modal-body text-center" style="height: 400px; overflow-y: auto;" >
-        <form #createCalendarForm="ngForm">
-        <h5 class="pd-top"><b> Provide below details to create a new event </b></h5>
-        <hr>
-        <div class="row">
-          <div class="col-md-3">
-            <mdb-icon fas icon="envelope"></mdb-icon> <span> Event Title</span>
-          </div>
-          <div class="col-md-9">
-            <mat-form-field class="service-full-width">
-              <mat-label> Enter event title </mat-label>
-              <input matInput
-              required
-              [(ngModel)]="eventTitle"
-              name="business_contact"
-              #addBusinessContact>
-              <mat-error *ngIf="addBusinessContact.invalid">Please provide an event name</mat-error>
-            </mat-form-field>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-3">
-            <mdb-icon fas icon="envelope"></mdb-icon> <span> Full Day Event </span>
-          </div>
-          <div class="col-md-9 pd-top">
-              <mat-checkbox [checked] ="fullDayEvent"> This is a full Day Event </mat-checkbox>
-          </div>
-        </div>
-        <hr>
-        <div class="btns text-center">
-          <button type="submit" mdbBtn mdbWavesEffect color="secondary" text="white"
-          (click)="createCalendarEvent()" (click) = "calderBooking.hide()">
-            Create Event
-          </button>
-          <button  mdbBtn mdbWavesEffect color="secondary" text="white" (click) = "calderBooking.hide()">
-            Cancel
-          </button>
-        </div>
-      </form>
-      </div>
-
-      <div class="modal-footer">
-        <button
-          mdbBtn
-          color="link"
-          (click)="calderBooking.hide()"
-          mdbWavesEffect
-        >
-          Close
-        </button>
-      </div>
+        #calendar
+        defaultView="dayGridMonth"
+        [header]="{
+          left: 'prev,next',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+        }"
+        [plugins]="calendarPlugins"
+        [weekends]="calendarWeekends"
+        [events]="calendarEvents"
+        [selectable]="true"
+        (select)="handleSelect($event)"
+      ></full-calendar>
     </div>
   </div>
 </div>
-
-

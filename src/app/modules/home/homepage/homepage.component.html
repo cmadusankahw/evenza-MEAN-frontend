@@ -1,118 +1,193 @@
-
 <!--header-->
- <!--Section: Content-->
+<!--Section: Content-->
 
-  <div style="position:relative;">
-    <mdb-carousel class="carousel slide carousel-fade cimg" [animation]="'fade'" >
-     <mdb-carousel-item>
-       <div class="view w-100">
-         <img class="d-block w-100" src="./assets/images/back/home.jpg" alt="Feature Image 1" class="feature-img">
-         <div class="mask rgba-black-light waves-light" mdbWavesEffect></div>
-       </div>
-     </mdb-carousel-item>
-     <mdb-carousel-item>
-       <div class="view w-100">
-         <img class="d-block w-100" src="./assets/images/back/home2.jpg" alt="Feature Image 2" class="feature-img">
-         <div class="mask rgba-black-strong waves-light" mdbWavesEffect></div>
-       </div>
-     </mdb-carousel-item>
-     <mdb-carousel-item>
-       <div class="view w-100">
-         <img class="d-block w-100" src="./assets/images/back/home3.jpg" alt="Feature Image 3" class="feature-img">
-         <div class="mask rgba-black-slight waves-light" mdbWavesEffect></div>
-       </div>
-     </mdb-carousel-item>
-     <mdb-carousel-item>
-       <div class="view w-100">
-         <img class="d-block w-100" src="./assets/images/back/home4.jpg" alt="Feature Image 4" class="feature-img">
-         <div class="mask rgba-black-slight waves-light" mdbWavesEffect></div>
-       </div>
-     </mdb-carousel-item>
-   </mdb-carousel>
-   </div>
- <!--Grid row-->
- <div class="row container-fluid justify-content-center text-center text-white" style="position:absolute; z-index:10; top:35%; left:0; right:0; bottom:0;">
+<div style="position: relative;">
+  <mdb-carousel class="carousel slide carousel-fade cimg" [animation]="'fade'">
+    <mdb-carousel-item>
+      <div class="view w-100">
+        <img
+          class="d-block w-100"
+          src="./assets/images/back/home.jpg"
+          alt="Feature Image 1"
+          class="feature-img"
+        />
+        <div class="mask rgba-black-light waves-light" mdbWavesEffect></div>
+      </div>
+    </mdb-carousel-item>
+    <mdb-carousel-item>
+      <div class="view w-100">
+        <img
+          class="d-block w-100"
+          src="./assets/images/back/home2.jpg"
+          alt="Feature Image 2"
+          class="feature-img"
+        />
+        <div class="mask rgba-black-strong waves-light" mdbWavesEffect></div>
+      </div>
+    </mdb-carousel-item>
+    <mdb-carousel-item>
+      <div class="view w-100">
+        <img
+          class="d-block w-100"
+          src="./assets/images/back/home3.jpg"
+          alt="Feature Image 3"
+          class="feature-img"
+        />
+        <div class="mask rgba-black-slight waves-light" mdbWavesEffect></div>
+      </div>
+    </mdb-carousel-item>
+    <mdb-carousel-item>
+      <div class="view w-100">
+        <img
+          class="d-block w-100"
+          src="./assets/images/back/home4.jpg"
+          alt="Feature Image 4"
+          class="feature-img"
+        />
+        <div class="mask rgba-black-slight waves-light" mdbWavesEffect></div>
+      </div>
+    </mdb-carousel-item>
+  </mdb-carousel>
+</div>
+<!--Grid row-->
+<div
+  class="row justify-content-center text-center text-white txtimg"
+  style="
+    position: absolute;
+    z-index: 10;
+    top: 35%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  "
+>
+  <!--Grid column-->
+  <div class="col-xl-8 col-md-10 mb-4 mb-md-0">
+    <img src="./assets/images/logos/navbar.png" />
 
-   <!--Grid column-->
-   <div class="col-xl-8 col-md-10 mb-4 mb-md-0">
+    <h2 class="font-weight-bold pd-top-min">
+      <b>Event Management Made Eaze! </b>
+    </h2>
 
-       <img src="./assets/images/logos/navbar.png">
+    <p class="pd-side">
+      Plan your next event, Find resourcers and manage it smoothly with Evenza,
+      the smart event management and resourcing platform...
+    </p>
 
-       <h2 class="font-weight-bold pd-top-min"><b>Event Management Made Eaze! </b></h2>
+    <a
+      mdbBtn
+      mdbWavesEffect
+      class="btn btn-lg"
+      color="purple"
+      text="white"
+      role="button"
+      routerLink = "/register"
+      ><i class="fas fa-clone left"></i> Join Today..</a
+    >
+    <a
+      mdbBtn
+      mdbWavesEffect
+      class="btn btn-lg"
+      color="white"
+      outline="yes"
+      role="button"
+      routerLink = "/login"
+      ><i class="fas fa-clone left"></i> Sign In..</a
+    >
+    <div class="pd-top"></div>
+  </div>
+  <!--Grid column-->
+</div>
+<!--Grid row-->
 
-       <p class="pd-side"> Plan your next event, Find resourcers and manage it smoothly with Evenza, the smart event management and resourcing platform...</p>
-
-       <a  mdbBtn mdbWavesEffect class="btn btn-lg" color="secondary" text="white" role="button"><i class="fas fa-clone left"></i> Find more..</a>
-       <div class="pd-top"></div>
-
-   </div>
-   <!--Grid column-->
- </div>
- <!--Grid row-->
-
- <div class="pd-top-min">
-   <div class="container text-center">
-    <h1 class="font-weight-bold">Plan your <span style="color:darkmagenta;"> Next Event </span> with Us!</h1>
-    <h5 class="font-weight-bold"><span style="color:purple;"> Evenza </span> is a smart automative solution for your event management & resourcing easily...</h5>
-   </div>
-   <div class="container text-center pd-top-min">
-     <div class="row container-fluid">
-     <div class="col-md-5">
-        <h2 class="font-weight-bold"> <b> Event Management!</b></h2>
-        <h4> <b> That's what we expert at!</b></h4>
+<div class="pd-top-min">
+  <div class="container text-center">
+    <h1 class="font-weight-bold">
+      Plan your <span style="color: darkmagenta;"> Next Event </span> with Us!
+    </h1>
+    <h5 class="font-weight-bold">
+      <span style="color: purple;"> Evenza </span> is a smart
+      solution to manage your event smarter & easily...
+    </h5>
+  </div>
+  <div class="container text-center pd-top-min">
+    <div class="row container-fluid">
+      <div class="col-md-5">
+        <h2 class="font-weight-bold"><b> Event Management!</b></h2>
+        <h4><b> That's what we expert at!</b></h4>
         <div class="row">
-          <div class="col-md-6" style="text-align:right;">
-
-
-              <div class="col-md-2 link-box shadow text-center"  mdbWavesEffect  [routerLink]="" >
-                <a>  <div class="link-icon"> <mdb-icon fas icon="calendar-alt"></mdb-icon> </div>
-                  <p> <b>Schedule & Plan Events</b></p> </a>
+          <div class="col-md-6" style="text-align: right;">
+            <div
+              class="col-md-2 link-box shadow text-center"
+              mdbWavesEffect
+              [routerLink]=""
+            >
+              <a>
+                <div class="link-icon">
+                  <mdb-icon fas icon="calendar-alt"></mdb-icon>
+                </div>
+                <p><b>Schedule & Plan Events</b></p>
+              </a>
             </div>
 
-
-
-
-              <div class="col-md-2 link-box shadow text-center"  mdbWavesEffect  [routerLink]="" >
-                <a>  <div class="link-icon"> <mdb-icon fas icon="book"></mdb-icon> </div>
-                  <p> <b>Find & Book Service Providers</b></p> </a>
+            <div
+              class="col-md-2 link-box shadow text-center"
+              mdbWavesEffect
+              [routerLink]=""
+            >
+              <a>
+                <div class="link-icon">
+                  <mdb-icon fas icon="book"></mdb-icon>
+                </div>
+                <p><b>Find & Book Service Providers</b></p>
+              </a>
             </div>
-
-
-
           </div>
 
-          <div class="col-md-6" style="text-align:left;">
-
-              <div class="col-md-2 link-box shadow text-center"  mdbWavesEffect  [routerLink]="" >
-                <a>  <div class="link-icon"> <mdb-icon fas icon="user-friends"></mdb-icon> </div>
-                  <p> <b>Manage Participants</b></p> </a>
+          <div class="col-md-6" style="text-align: left;">
+            <div
+              class="col-md-2 link-box shadow text-center"
+              mdbWavesEffect
+              [routerLink]=""
+            >
+              <a>
+                <div class="link-icon">
+                  <mdb-icon fas icon="user-friends"></mdb-icon>
+                </div>
+                <p><b>Manage Participants</b></p>
+              </a>
             </div>
 
-
-
-              <div class="col-md-2 link-box shadow text-center"  mdbWavesEffect  [routerLink]="" >
-                <a>  <div class="link-icon"> <mdb-icon fas icon="box-open"></mdb-icon> </div>
-                  <p> <b>Order Products & Services </b></p> </a>
+            <div
+              class="col-md-2 link-box shadow text-center"
+              mdbWavesEffect
+              [routerLink]=""
+            >
+              <a>
+                <div class="link-icon">
+                  <mdb-icon fas icon="box-open"></mdb-icon>
+                </div>
+                <p><b>Order Products & Services </b></p>
+              </a>
             </div>
-
-
-
           </div>
         </div>
-     </div>
-     <div class="col-md-7">
-        <img src= "./assets/images/home/main.png" style="margin:10px; width:100%">
-     </div>
+      </div>
+      <div class="col-md-7">
+        <img
+          src="./assets/images/home/main.png"
+          style="margin: 10px; width: 100%;"
+        />
+      </div>
     </div>
-   </div>
- </div>
+  </div>
+</div>
 
 <div class="container my-5 py-5">
-
   <!--upcoming event section-->
-    <app-event-news></app-event-news>
+  <app-event-news></app-event-news>
 
-  <hr>
+  <hr />
 
   <!--download evenza app section-->
   <section class="px-md-5 mx-md-5 text-center dark-grey-text pd-top-min">
@@ -123,10 +198,15 @@
         <h3 class="font-weight-bold">Evenza for Mobile!</h3>
 
         <p class="text-muted">
-          Evena Mobile app is now available. Your event planner is a one tap away! Download the app now!!
+          Evena Mobile app is now available. Your event planner is a one tap
+          away! Download the app now!!
         </p>
 
-        <a mdbBtn class="btn btn-purple btn-md ml-0"  role="button" mdbWavesEffect
+        <a
+          mdbBtn
+          class="btn btn-purple btn-md ml-0"
+          role="button"
+          mdbWavesEffect
           >Download now<i class="fa fa-gem ml-2"></i
         ></a>
       </div>
@@ -134,119 +214,138 @@
 
       <!--Grid column-->
       <div class="col-md-5 mb-4 mb-md-0">
-        <img
-          src="./assets/images/home/appsm.png"
-          class="img-fluid"
-          alt=""
-        />
+        <img src="./assets/images/home/appsm.png" class="img-fluid" alt="" />
       </div>
       <!--Grid column-->
     </div>
     <!--Grid row-->
   </section>
 
-  <hr>
-    <!--Contact Us -->
-    <section class="px-md-5 mx-md-5 text-center dark-grey-text pd-top-min">
+  <hr />
+  <!--Contact Us -->
+  <section class="px-md-5 mx-md-5 text-center dark-grey-text pd-top-min">
+    <h3 class="font-weight-bold">Contact Us</h3>
+    <br />
+    <!--Grid row-->
+    <div class="row text-center">
+      <!--Grid column-->
+      <div class="col-lg-4 col-md-12 mb-4 mb-md-0">
+        <i class="fas fa-map-marker-alt fa-2x purple-text"></i>
 
-      <h3 class="font-weight-bold">Contact Us</h3>
-      <br>
-      <!--Grid row-->
-      <div class="row text-center">
+        <p class="font-weight-bold my-3">Address</p>
 
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-12 mb-4 mb-md-0">
-
-          <i class="fas fa-map-marker-alt fa-2x purple-text"></i>
-
-          <p class="font-weight-bold my-3">Address</p>
-
-          <p class="text-muted">TringoLab Solutions, Weligama, Matara</p>
-
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
-
-            <i class="fas fa-phone fa-2x purple-text"></i>
-
-            <p class="font-weight-bold my-3">Phone number</p>
-
-            <p class="text-muted">+ (94) 71 972 5562</p>
-
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
-
-            <i class="fas fa-envelope fa-2x purple-text"></i>
-
-            <p class="font-weight-bold my-3">E-mail</p>
-
-            <p class="text-muted">hello@evenza.biz</p>
-
-        </div>
-        <!--Grid column-->
-
+        <p class="text-muted">TringoLab Solutions, Weligama, Matara</p>
       </div>
-      <!--Grid row-->
+      <!--Grid column-->
 
+      <!--Grid column-->
+      <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+        <i class="fas fa-phone fa-2x purple-text"></i>
 
-    </section>
-    <!--Section: Content-->
-<hr>
+        <p class="font-weight-bold my-3">Phone number</p>
+
+        <p class="text-muted">+ (94) 71 972 5562</p>
+      </div>
+      <!--Grid column-->
+
+      <!--Grid column-->
+      <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+        <i class="fas fa-envelope fa-2x purple-text"></i>
+
+        <p class="font-weight-bold my-3">E-mail</p>
+
+        <p class="text-muted">hello@evenza.biz</p>
+      </div>
+      <!--Grid column-->
+    </div>
+    <!--Grid row-->
+  </section>
+  <!--Section: Content-->
+  <hr />
+
+  <section class="text-center py-5 pd-top-min text-center">
+    <h3 class="font-weight-bold">Evenza API</h3>
+    <div class="text-center pt-4">
+      <p> Subscribe to evenza Services Today.. View Evenza <b> API Documentations..</b></p>
+      <p> Note: Developer Accounts will be available soon.. </p>
+      <a
+          mdbBtn
+          class="btn btn-purple btn-md ml-0"
+          role="button"
+          mdbWavesEffect
+          href="https://cmadusankahw.github.io/evenza-docs"
+          target="_blank"
+          >View documentation<i class="fa fa-gem ml-2"></i
+        ></a>
+    </div>
+  </section>
 
   <!--Clients Area-->
   <section class="text-center py-5 pd-top-min">
-
-    <p class="mb-4 pb-2 lead font-weight-bold">Trusted by 1 000 000 + Event Organizers</p>
+    <p class="mb-4 pb-2 lead font-weight-bold">
+      Trusted by 1 000 000 + Event Organizers
+    </p>
 
     <!-- Logo carousel -->
-    <div  class="carousel slide" >
+    <div class="carousel slide">
       <div class="carousel-inner">
         <!-- First slide -->
         <div class="carousel-item active">
           <!--Grid row-->
           <div class="row">
-
             <!--First column-->
-            <div class="col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
-              <img src="https://mdbootstrap.com/img/Photos/Template/5.png" class="img-fluid px-4" alt="Logo">
+            <div
+              class="col-lg-3 col-md-6 d-flex align-items-center justify-content-center"
+            >
+              <img
+                src="https://mdbootstrap.com/img/Photos/Template/5.png"
+                class="img-fluid px-4"
+                alt="Logo"
+              />
             </div>
             <!--/First column-->
 
             <!--Second column-->
-            <div class="col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
-              <img src="https://mdbootstrap.com/img/Photos/Template/7.png" class="img-fluid px-4" alt="Logo">
+            <div
+              class="col-lg-3 col-md-6 d-flex align-items-center justify-content-center"
+            >
+              <img
+                src="https://mdbootstrap.com/img/Photos/Template/7.png"
+                class="img-fluid px-4"
+                alt="Logo"
+              />
             </div>
             <!--/Second column-->
 
             <!--Third column-->
-            <div class="col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
-              <img src="https://mdbootstrap.com/img/Photos/Template/6.png" class="img-fluid px-4" alt="Logo">
+            <div
+              class="col-lg-3 col-md-6 d-flex align-items-center justify-content-center"
+            >
+              <img
+                src="https://mdbootstrap.com/img/Photos/Template/6.png"
+                class="img-fluid px-4"
+                alt="Logo"
+              />
             </div>
             <!--/Third column-->
 
             <!--Fourth column-->
-            <div class="col-lg-3 col-md-6 d-flex align-items-center justify-content-center">
-              <img src="https://mdbootstrap.com/img/Photos/Template/9.png" class="img-fluid px-4" alt="Logo">
+            <div
+              class="col-lg-3 col-md-6 d-flex align-items-center justify-content-center"
+            >
+              <img
+                src="https://mdbootstrap.com/img/Photos/Template/9.png"
+                class="img-fluid px-4"
+                alt="Logo"
+              />
             </div>
             <!--/Fourth column-->
-
           </div>
           <!--/Grid row-->
         </div>
         <!-- First slide -->
-
       </div>
-
     </div>
     <!-- Logo carousel -->
-
   </section>
-
-
-
 </div>

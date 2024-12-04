@@ -1,65 +1,70 @@
 <div class="text-center container pd-top">
   <div class="top-content container-fluid">
-  <h3>Planing an event never been eazy as today!</h3>
-  <div class="create-event">
-    <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" text="white"
-    routerLink="/planner/event/select">
-      <mdb-icon fas icon="plus"> </mdb-icon> Create New Event
-    </button>
+    <h3>Planing an event never been eazy as today!</h3>
+    <div class="create-event">
+      <button
+        class="btn btn-md"
+        mdbBtn
+        mdbWavesEffect
+        color="secondary"
+        text="white"
+        routerLink="/planner/event/select"
+      >
+        <mdb-icon fas icon="plus"> </mdb-icon> Create New Event
+      </button>
+    </div>
   </div>
-</div>
-  <hr>
-  <div class="hide-btn" (click) = "showCards = !showCards" *ngIf="showCards">
-   <a>Hide Instructions..</a></div>
-   <div class="hide-btn" (click) = "showCards = !showCards" *ngIf="!showCards">
-    <a>Show Instructions..</a></div>
+  <hr />
+  <div class="hide-btn" (click)="showCards = !showCards" *ngIf="showCards">
+    <a>Hide Instructions..</a>
+  </div>
+  <div class="hide-btn" (click)="showCards = !showCards" *ngIf="!showCards">
+    <a>Show Instructions..</a>
+  </div>
   <div class="row container-fluid" #cards *ngIf="showCards">
     <div class="col-md-3 step">
       <div class="step-card shadow">
-         <div class="card-no shadow">
-            1
-         </div>
-             <img class="card-icon" src="./assets/images/events/step/1.jpg">
-           <br>
-          <b> Start creating your Event.. </b>
+        <div class="card-no shadow">
+          1
+        </div>
+        <img class="card-icon" src="./assets/images/events/step/1.jpg" />
+        <br />
+        <b> Start creating your Event.. </b>
       </div>
     </div>
     <div class="col-md-3 step">
       <div class="step-card shadow">
         <div class="card-no shadow">
           2
-       </div>
-       <img class="card-icon" src="./assets/images/events/step/2.png">
-         <br>
-         <b>Go with smart plan or customize yourself.. </b>
+        </div>
+        <img class="card-icon" src="./assets/images/events/step/2.png" />
+        <br />
+        <b>Go with smart plan or customize yourself.. </b>
       </div>
     </div>
     <div class="col-md-3 step">
       <div class="step-card shadow">
         <div class="card-no shadow">
-           3
+          3
         </div>
-        <img class="card-icon" src="./assets/images/events/step/3.png">
-          <br>
-          <b>Tick services, products you want..</b>
-     </div>
+        <img class="card-icon" src="./assets/images/events/step/3.png" />
+        <br />
+        <b>Tick services, products you want..</b>
+      </div>
     </div>
     <div class="col-md-3 step">
-     <div class="step-card shadow">
-      <div class="card-no shadow">
-         4
-      </div>
-      <img class="card-icon" src="./assets/images/events/step/4.jpg">
-        <br>
+      <div class="step-card shadow">
+        <div class="card-no shadow">
+          4
+        </div>
+        <img class="card-icon" src="./assets/images/events/step/4.jpg" />
+        <br />
         <b>Let Evenza find everything for you..</b>
-   </div>
+      </div>
+    </div>
   </div>
-
-  </div>
-
 </div>
 
 <div class="container pd-top-min">
   <app-event-card></app-event-card>
 </div>
-

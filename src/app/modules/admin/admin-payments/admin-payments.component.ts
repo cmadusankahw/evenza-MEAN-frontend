@@ -44,18 +44,18 @@ export class AdminPaymentsComponent implements OnInit, OnDestroy {
   constructor(private adminService: AdminService) { }
 
   ngOnInit() {
-     // get admin for child comp use
-   this.adminService.getAdminPayments();
-   this.paymentDataSub = this.adminService.getMerchantPaymentsUpdateListener().subscribe(
-     payments => {
-       if (payments) {
-         this.recievedPayments = payments;
-         console.log(this.recievedPayments);
-         this.dataSource = new MatTableDataSource(this.addPayments(this.recievedPayments, this.userType));
-         this.dataSource.paginator = this.paginator;
-         this.dataSource.sort = this.sort;
-      }
-     });
+    // get admin for child comp use
+    this.adminService.getAdminPayments();
+    this.paymentDataSub = this.adminService.getMerchantPaymentsUpdateListener().subscribe(
+      payments => {
+        if (payments) {
+          this.recievedPayments = payments;
+          console.log(this.recievedPayments);
+          this.dataSource = new MatTableDataSource(this.addPayments(this.recievedPayments, this.userType));
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
+      });
   }
 
   ngOnDestroy() {
@@ -106,6 +106,15 @@ export class AdminPaymentsComponent implements OnInit, OnDestroy {
       lastPay = pay;
     }
     return lastPay;
+  }
+
+   // get last payment details
+   getTotalPayData(payment: MerchantPayments): number {
+    let total = 0;
+    for (var pay of payment.pays) {
+      total += pay.paid_amount;
+    }
+    return total;
   }
 
 }

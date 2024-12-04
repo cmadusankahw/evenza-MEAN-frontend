@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false;
 
   // get signed user type
-  headerDetails: {userType: string, userName: string, profilePic: string};
+  headerDetails: { userType: string, userName: string, profilePic: string };
 
 
 
@@ -40,11 +40,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
           console.log(headerDetails);
           this.userIsAuthenticated = this.authService.getisAuth();
           this.authSubs = this.authService.getAuhStatusListener().subscribe(
-          isAuthenticated => {
-            this.userIsAuthenticated = isAuthenticated;
-            console.log(isAuthenticated);
-          }
-        );
+            isAuthenticated => {
+              this.userIsAuthenticated = isAuthenticated;
+              console.log(isAuthenticated);
+            }
+          );
         }
       }
     );
@@ -90,7 +90,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   // send user details to the inquery for
   emitUser(userType: string) {
-      this.eventPlannerService.setUser(userType);
+    this.eventPlannerService.setUser(userType);
   }
 
 

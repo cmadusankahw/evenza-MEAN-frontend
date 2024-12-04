@@ -2,293 +2,338 @@
   <h5>
     <mat-icon>money</mat-icon>
     <b>
-    Total Paid
-  </b></h5>
-  <br>
-  <div class="pay-amt">
-    Rs. {{total_paid}}
-  </div>
-  <hr>
+      Total Paid
+    </b>
+  </h5>
+  <br />
+  <div class="pay-amt">Rs. {{ total_paid }}</div>
+  <hr />
   <h5>
     <mat-icon>money</mat-icon>
     <b>
-    Due Payments
-  </b></h5>
-  <br>
-  <div class="pay-amt">
-    Rs. {{due_amount}}
-  </div>
+      Due Payments
+    </b>
+  </h5>
+  <br />
+  <div class="pay-amt">Rs. {{ due_amount }}</div>
   <div class="pay-text">
     <span>Payment Due by </span>
-  <br>
-  <span class="pay-date"> {{due_date}}</span>
+    <br />
+    <span class="pay-date"> {{ due_date }}</span>
   </div>
   <div class="pay-btn">
-    <button mdbBtn color="secondary" mdbWavesEffect class="btn btn-md" class="button" (click) ="addPaypal()" (click) = "makePaymentModal.show()">
+    <button
+      mdbBtn
+      color="secondary"
+      mdbWavesEffect
+      class="btn btn-md"
+      class="button"
+      (click)="addPaypal()"
+      (click)="makePaymentModal.show()"
+    >
       Make Payment
     </button>
-    <button mdbBtn color="primary" outline="yes" mdbWavesEffect class="btn btn-md" class="button" (click) = "payHistory.show()">
+    <button
+      mdbBtn
+      color="primary"
+      outline="yes"
+      mdbWavesEffect
+      class="btn btn-md"
+      class="button"
+      (click)="payHistory.show()"
+    >
       View History
     </button>
   </div>
-  <hr>
+  <hr />
   <div class="text-center">
-    <button mdbBtn mdbWavesEffect role="buton" class="btn btn-secondary btn-md cnt-center" (click)="earnings.show()">
+    <button
+      mdbBtn
+      mdbWavesEffect
+      role="buton"
+      class="btn btn-secondary btn-md cnt-center"
+      (click)="earnings.show()"
+    >
       View All Earnings
     </button>
-    <hr>
-</div>
+    <hr />
+  </div>
 
-
-<!--View Earnings Modal-->
-<div
-  mdbModal
-  #earnings="mdbModal"
-  class="modal fade"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="myBasicModalLabel"
-  [config]="{ backdrop: false, ignoreBackdropClick: true }"
-  aria-hidden="true"
-
->
+  <!--View Earnings Modal-->
   <div
-    class="modal-dialog modal-dialog-centered modal-lg"
-    role="document"
-    style="overflow-y: initial !important"
+    mdbModal
+    #earnings="mdbModal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myBasicModalLabel"
+    [config]="{ backdrop: false, ignoreBackdropClick: true }"
+    aria-hidden="true"
   >
-    <div class="modal-content">
-      <div class="modal-header">
-        <button
-          type="button"
-          class="close pull-right"
-          aria-label="Close"
-          (click)="earnings.hide()"
-        >
-          <span aria-hidden="true">×</span>
-        </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
-          <mat-icon>money</mat-icon> Your earnings
-        </h4>
-      </div>
+    <div
+      class="modal-dialog modal-dialog-centered modal-lg"
+      role="document"
+      style="overflow-y: initial !important;"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <button
+            type="button"
+            class="close pull-right"
+            aria-label="Close"
+            (click)="earnings.hide()"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel">
+            <mat-icon>money</mat-icon> Your earnings
+          </h4>
+        </div>
 
-      <div class="modal-body " style="height: 400px; overflow-y: auto;">
+        <div class="modal-body" style="height: 400px; overflow-y: auto;">
+          <app-earnings></app-earnings>
+        </div>
 
-        <app-earnings></app-earnings>
-
-      </div>
-
-      <div class="modal-footer">
-        <button
-          mdbBtn
-          color="link"
-          (click)="earnings.hide()"
-          mdbWavesEffect
-        >
-          Close
-        </button>
+        <div class="modal-footer">
+          <button mdbBtn color="link" (click)="earnings.hide()" mdbWavesEffect>
+            Close
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-
-
-<!--Make Paymnt Modal-->
-<div
-  mdbModal
-  #makePaymentModal="mdbModal"
-  class="modal fade"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="myBasicModalLabel"
-  [config]="{ backdrop: false, ignoreBackdropClick: true }"
-  aria-hidden="true"
-
->
+  <!--Make Paymnt Modal-->
   <div
-    class="modal-dialog modal-dialog-centered modal-lg"
-    role="document"
-    style="overflow-y: initial !important"
+    mdbModal
+    #makePaymentModal="mdbModal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myBasicModalLabel"
+    [config]="{ backdrop: false, ignoreBackdropClick: true }"
+    aria-hidden="true"
   >
-    <div class="modal-content">
-      <div class="modal-header">
-        <button
-          type="button"
-          class="close pull-right"
-          aria-label="Close"
-          (click)="makePaymentModal.hide()"
-        >
-          <span aria-hidden="true">×</span>
-        </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
-          <mat-icon>money</mat-icon>Make a Payment
-        </h4>
-      </div>
-
-      <div class="modal-body" style="height: 400px; overflow-y: auto;">
-        <div class="text-center">
-        <h4 style="font-weight:bold; color: darkmagenta;"> Your Subscription : Rs. {{subscription}} : Monthly </h4>
-        <hr>
-        <h5><b> Please make your due payments below </b></h5>
-        <br>
-      </div>
-        <div class="row">
-          <div class="col-md-5" style="color:darkslategray;  text-align:right;">
-            Due date:
-          </div>
-          <div class="col-md-7">
-            <span style="font-weight:bold; color:darkgray;"> {{due_date}}</span>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-5" style="color:darkslategray; text-align:right;">
-            Due Amount (Rs.):
-          </div>
-          <div class="col-md-7">
-            <span style="font-weight:bold; color:darkslategray;"> {{due_amount}}</span>
-          </div>
-        </div>
-        <hr>
-        <div class= "text-center">
-          <h5> Make Payment: </h5>
+    <div
+      class="modal-dialog modal-dialog-centered modal-lg"
+      role="document"
+      style="overflow-y: initial !important;"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <button
+            type="button"
+            class="close pull-right"
+            aria-label="Close"
+            (click)="makePaymentModal.hide()"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel">
+            <mat-icon>money</mat-icon>Make a Payment
+          </h4>
         </div>
 
-        <div class="make-payment container-fluid">
+        <div class="modal-body" style="height: 400px; overflow-y: auto;">
+          <div class="text-center">
+            <h4 style="font-weight: bold; color: darkmagenta;">
+              Your Subscription : Rs. {{ subscription }} : Monthly
+            </h4>
+            <hr />
+            <h5><b> Please make your due payments below </b></h5>
+            <br />
+          </div>
           <div class="row">
-            <div class="col-md-7">
-              <mat-form-field style="width:90%;">
-                <mat-label>
-                  <mat-icon>money</mat-icon>
-                  Pay Amount</mat-label>
-                <input matInput type="number" [(ngModel)]="pay_amount" name="pay_amt" required (change) ="payPalAmount = (pay_amount/190).toFixed(2)">
-              </mat-form-field>
+            <div
+              class="col-md-5 sm-6 tcenter"
+              style="color: darkslategray; text-align: right;"
+            >
+              Due date:
+            </div>
+            <div class="col-md-7 sm-6 tcenter">
+              <span style="font-weight: bold; color: darkgray;">
+                {{ due_date }}</span
+              >
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div
+              class="col-md-5 sm-6 tcenter"
+              style="color: darkslategray; text-align: right;"
+            >
+              Due Amount (Rs.):
+            </div>
+            <div class="col-md-7 sm-6 tcenter">
+              <span style="font-weight: bold; color: darkslategray;">
+                {{ due_amount }}</span
+              >
+            </div>
+          </div>
+          <hr />
+          <div class="text-center">
+            <h5>Make Payment:</h5>
+          </div>
+
+          <div class="make-payment container-fluid">
+            <div class="row">
+              <div class="col-md-7">
+                <mat-form-field style="width: 90%;">
+                  <mat-label>
+                    <mat-icon>money</mat-icon>
+                    Pay Amount</mat-label
+                  >
+                  <input
+                    matInput
+                    type="number"
+                    [(ngModel)]="pay_amount"
+                    name="pay_amt"
+                    required
+                    (change)="payPalAmountChange(pay_amount)"
+                  />
+                </mat-form-field>
               </div>
             </div>
             <div class="col text-center">
-              <button class="btn-md" mdbBtn mdbWavesEffect color="primary" (click) ="makePayment(pay_amount)" id="placeOrder">
+              <button
+                class="btn-md"
+                mdbBtn
+                mdbWavesEffect
+                color="primary"
+                (click)="makePayment(pay_amount)"
+                id="placeOrder"
+              >
                 Make Payment
               </button>
-              <div style="margin-left:15px; margin-right:15px;" id="paybtn"
-              > Paypal Checkout</div>
+              <div style="margin-left: 15px; margin-right: 15px;" id="paybtn">
+                Paypal Checkout
+              </div>
             </div>
-
+          </div>
         </div>
 
-
-      </div>
-
-      <div class="modal-footer">
-        <button
-          mdbBtn
-          color="link"
-          (click)="makePaymentModal.hide()"
-          mdbWavesEffect
-        >
-          Close
-        </button>
+        <div class="modal-footer">
+          <button
+            mdbBtn
+            color="link"
+            (click)="makePaymentModal.hide()"
+            mdbWavesEffect
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-
-<!--View payments Modal-->
-<div
-  mdbModal
-  #payHistory="mdbModal"
-  class="modal fade"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="myBasicModalLabel"
-  [config]="{ backdrop: false, ignoreBackdropClick: true }"
-  aria-hidden="true"
-
->
+  <!--View payments Modal-->
   <div
-    class="modal-dialog modal-dialog-centered modal-lg"
-    role="document"
-    style="overflow-y: initial !important"
+    mdbModal
+    #payHistory="mdbModal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myBasicModalLabel"
+    [config]="{ backdrop: false, ignoreBackdropClick: true }"
+    aria-hidden="true"
   >
-    <div class="modal-content">
-      <div class="modal-header">
-        <button
-          type="button"
-          class="close pull-right"
-          aria-label="Close"
-          (click)="payHistory.hide()"
-        >
-          <span aria-hidden="true">×</span>
-        </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
-          <mat-icon>money</mat-icon> Payment History
-        </h4>
+    <div
+      class="modal-dialog modal-dialog-centered modal-lg"
+      role="document"
+      style="overflow-y: initial !important;"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <button
+            type="button"
+            class="close pull-right"
+            aria-label="Close"
+            (click)="payHistory.hide()"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel">
+            <mat-icon>money</mat-icon> Payment History
+          </h4>
+        </div>
+
+        <div class="modal-body" style="height: 400px; overflow-y: auto;">
+          <mat-form-field>
+            <mat-label>
+              <mat-icon>search</mat-icon>
+              Search Earnings</mat-label
+            >
+            <input
+              matInput
+              (keyup)="applyFilter($event)"
+              placeholder="Ex. Gunapala"
+            />
+          </mat-form-field>
+
+          <div class="mat-elevation-z8">
+            <table
+              class="table-responsive"
+              mat-table
+              [dataSource]="dataSource"
+              matSort
+            >
+              <!-- ID Column -->
+              <ng-container matColumnDef="Year">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Year</th>
+                <td mat-cell *matCellDef="let row">{{ row.timestamp.year }}</td>
+                <td></td>
+              </ng-container>
+
+              <!-- Progress Column -->
+              <ng-container matColumnDef="Month">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Month</th>
+                <td mat-cell *matCellDef="let row">
+                  {{ row.timestamp.month }}
+                </td>
+                <td></td>
+              </ng-container>
+
+              <!-- Color Column -->
+              <ng-container matColumnDef="due">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Due (Rs.)
+                </th>
+                <td mat-cell *matCellDef="let row" style="text-align: center;">
+                  {{ row.due_amount }}
+                </td>
+              </ng-container>
+
+              <!-- Action Column -->
+              <ng-container matColumnDef="paid">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Amount Paid (Rs.)
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <span style="color: darkslateblue;">
+                    <b> {{ row.paid_amount }} </b></span
+                  >
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            mdbBtn
+            color="link"
+            (click)="payHistory.hide()"
+            mdbWavesEffect
+          >
+            Close
+          </button>
+        </div>
       </div>
-
-      <div class="modal-body " style="height: 400px; overflow-y: auto;">
-
-
-<mat-form-field>
-
-  <mat-label>
-    <mat-icon>search</mat-icon>
-    Search Earnings</mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Gunapala">
-</mat-form-field>
-
-<div class="mat-elevation-z8">
-  <table class="table-responsive" mat-table [dataSource]="dataSource" matSort>
-
-    <!-- ID Column -->
-    <ng-container matColumnDef="Year">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Year </th>
-      <td mat-cell *matCellDef="let row"> {{row.timestamp.year}} </td>
-      <td></td>
-    </ng-container>
-
-    <!-- Progress Column -->
-    <ng-container matColumnDef="Month">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Month </th>
-      <td mat-cell *matCellDef="let row"> {{row.timestamp.month}}</td>
-      <td></td>
-    </ng-container>
-
-
-    <!-- Color Column -->
-    <ng-container matColumnDef="due">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Due (Rs.) </th>
-      <td mat-cell *matCellDef="let row" style="text-align:center;" > {{row.due_amount}} </td>
-    </ng-container>
-
-     <!-- Action Column -->
-     <ng-container matColumnDef="paid">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount Paid (Rs.) </th>
-      <td mat-cell *matCellDef="let row">
-      <span style="color:darkslateblue;"> <b> {{row.paid_amount}} </b></span> </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
-    </tr>
-
-  </table>
-
-  <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
-</div>
-
-</div>
-
-<div class="modal-footer">
-  <button
-    mdbBtn
-    color="link"
-    (click)="payHistory.hide()"
-    mdbWavesEffect
-  >
-    Close
-  </button>
-</div>
-</div>
-</div>
+    </div>
+  </div>
 </div>

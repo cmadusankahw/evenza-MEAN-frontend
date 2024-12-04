@@ -14,7 +14,7 @@ import { ServiceService } from '../service.service';
 export class ServiceCardComponent implements OnInit, OnDestroy {
 
   // subscription
-  private serviceSub: Subscription ;
+  private serviceSub: Subscription;
 
   // service card ownership
   @Input() isowner = false;
@@ -39,22 +39,22 @@ export class ServiceCardComponent implements OnInit, OnDestroy {
               public serviceService: ServiceService) { }
 
   ngOnInit() {
-     // get the service
-     if (this.isowner){
+    // get the service
+    if (this.isowner) {
       this.serviceService.getServiceProviderServices();
       this.serviceSub = this.serviceService.getServiceProviderServiceUpdateListener()
         .subscribe((recievedServices: Service[]) => {
-            this.services = recievedServices;
-            console.log(this.services);
-      });
-     } else {
+          this.services = recievedServices;
+          console.log(this.services);
+        });
+    } else {
       this.serviceService.getServices();
       this.serviceSub = this.serviceService.getservicesUpdateListener()
         .subscribe((recievedServices: Service[]) => {
-            this.services = recievedServices;
-            console.log(this.services);
-      });
-     }
+          this.services = recievedServices;
+          console.log(this.services);
+        });
+    }
 
   }
 
@@ -67,6 +67,6 @@ export class ServiceCardComponent implements OnInit, OnDestroy {
   // set selectedservice to view details
   sendService(service: Service) {
     this.success = this.serviceService.setService(service);
-   }
+  }
 
 }

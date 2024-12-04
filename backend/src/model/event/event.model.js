@@ -10,7 +10,7 @@ const eventsSchema = mongoose.Schema(
     event_category: {type: String, required: true},
     from_date: {type: Date, required: true},
     to_date: {type: Date, required: true},
-    created_date: {type: String, required: true},
+    created_date: {type: Date, required: true},
     location: {type: {
               lat: {type: Number, required: true},
               lang: {type: Number, required: true},

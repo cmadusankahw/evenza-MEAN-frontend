@@ -1,7 +1,6 @@
 <div class="container p-md-2" *ngIf="carddetails">
-
-       <!-- <script src='https://js.stripe.com/v2/' type='text/javascript'></script> -->
-       <!--<form accept-charset="UTF-8" action="/"
+  <!-- <script src='https://js.stripe.com/v2/' type='text/javascript'></script> -->
+  <!--<form accept-charset="UTF-8" action="/"
         class="require-validation" data-cc-on-file="false"
         data-stripe-publishable-key="pk_bQQaTxnaZlzv4FnnuZ28LFHccVSaj"
          id="payment-form" method="post"
@@ -10,72 +9,123 @@
           <input name="_method" type="hidden" value="PUT" />
           <input name="authenticity_token" type="hidden" value="qLZ9cScer7ZxqulsUWazw4x3cSEzv899SP/7ThPCOV8=" />
         </div> -->
-        <form #cardDetailsForm = "ngForm">
-          <div class='form-row'>
+  <form #cardDetailsForm="ngForm">
+    <div class="form-row">
+      <div class="col-md-12 form-group required">
+        <label class="control-label">Name on Card</label>
+        <input
+          mdbInput
+          class="form-control"
+          name="name_on_card"
+          [(ngModel)]="carddetails.name_on_card"
+        />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-6 form-group required">
+        <label class="control-label">Bank </label>
+        <input
+          mdbInput
+          class="form-control"
+          name="bank"
+          [(ngModel)]="carddetails.bank"
+        />
+      </div>
 
-            <div class='col-md-12 form-group required'>
-              <label class='control-label'>Name on Card</label>
-              <input mdbInput class='form-control'  name="name_on_card" [(ngModel)]="carddetails.name_on_card" >
-            </div>
-          </div>
-          <div class='form-row'>
-
-            <div class='col-md-6 form-group required'>
-              <label class='control-label'>Bank </label>
-              <input mdbInput class='form-control'  name="bank" [(ngModel)]="carddetails.bank">
-            </div>
-
-            <div class='col-md-6 form-group required'>
-              <label class='control-label'>Branch </label>
-              <input mdbInput class='form-control'   name="branch" [(ngModel)]="carddetails.branch">
-            </div>
-          </div>
-          <hr>
-          <div class='form-row'>
-            <div class='col-md-12 form-group  required'>
-              <label class='control-label' for="cardnum" >Card Number</label>
-              <input mdbInput autocomplete='off' class='form-control card-number'  id= "cardnum"  name="card_no" [(ngModel)]="carddetails.card_no">
-            </div>
-          </div>
-          <div class='form-row'>
-            <div class='col-md-4 form-group cvc required'>
-              <label class='control-label' for="cvc">CVC</label>
-              <input mdbInput autocomplete='off' class='form-control card-cvc' id="cvc" placeholder='ex. 311' size='4' type='text'  name="cvc_no" [(ngModel)]="carddetails.cvc_no">
-            </div>
-            <div class='col-md-4 form-group expiration required'>
-              <label class='control-label' for="dateDetails">Expiration</label>
-              <input  mdbInput class='form-control card-expiry-month' id="dateDetails" placeholder='MM' size='2' type='text'  name="exp_month" [(ngModel)]="carddetails.exp_month">
-            </div>
-            <div class='col-md-4 form-group expiration required'>
-              <label class='control-label' for="yearDetails"> </label>
-              <input mdbInput class='form-control card-expiry-year' id="yearDetails" placeholder='YYYY' size='4' type='text'  name="exp_year" [(ngModel)]="carddetails.exp_year">
-            </div>
-          </div>
-          <hr>
-          <div class="container">
-            <img src="./assets/images/other/pay.png" alt="pay methods">
-          </div>
-          <hr>
-          <div class='form-row'>
-            <div class='col-md-12 form-group text-center'>
-              <button mdbBtn mdbWavesEffect class='btn btn-secondary' (click)="updateCardDetails()">Save Changes</button>
-            </div>
-          </div>
-          <div class='form-row' >
-            <div class='col-md-12 error form-group hide'>
-              <div class='alert-danger alert'>
-                Please correct the errors and try again.
-              </div>
-            </div>
-          </div>
-
-        </form>
-
-
+      <div class="col-md-6 form-group required">
+        <label class="control-label">Branch </label>
+        <input
+          mdbInput
+          class="form-control"
+          name="branch"
+          [(ngModel)]="carddetails.branch"
+        />
+      </div>
+    </div>
+    <hr />
+    <div class="form-row">
+      <div class="col-md-12 form-group required">
+        <label class="control-label" for="cardnum">Card Number</label>
+        <input
+          mdbInput
+          autocomplete="off"
+          class="form-control card-number"
+          id="cardnum"
+          name="card_no"
+          [(ngModel)]="carddetails.card_no"
+        />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-4 form-group cvc required">
+        <label class="control-label" for="cvc">CVC</label>
+        <input
+          mdbInput
+          autocomplete="off"
+          class="form-control card-cvc"
+          id="cvc"
+          placeholder="ex. 311"
+          size="4"
+          type="text"
+          name="cvc_no"
+          [(ngModel)]="carddetails.cvc_no"
+        />
+      </div>
+      <div class="col-md-4 form-group expiration required">
+        <label class="control-label" for="dateDetails">Expiration</label>
+        <input
+          mdbInput
+          class="form-control card-expiry-month"
+          id="dateDetails"
+          placeholder="MM"
+          size="2"
+          type="text"
+          name="exp_month"
+          [(ngModel)]="carddetails.exp_month"
+        />
+      </div>
+      <div class="col-md-4 form-group expiration required">
+        <label class="control-label" for="yearDetails"> </label>
+        <input
+          mdbInput
+          class="form-control card-expiry-year"
+          id="yearDetails"
+          placeholder="YYYY"
+          size="4"
+          type="text"
+          name="exp_year"
+          [(ngModel)]="carddetails.exp_year"
+        />
+      </div>
+    </div>
+    <hr />
+    <div class="container">
+      <img src="./assets/images/other/pay.png" alt="pay methods" />
+    </div>
+    <hr />
+    <div class="form-row">
+      <div class="col-md-12 form-group text-center">
+        <button
+          mdbBtn
+          mdbWavesEffect
+          class="btn btn-secondary"
+          (click)="updateCardDetails()"
+        >
+          Save Changes
+        </button>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-12 error form-group hide">
+        <div class="alert-danger alert">
+          Please correct the errors and try again.
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
 
 <div class="container p-md-2" *ngIf="!carddetails">
-
   <!-- <script src='https://js.stripe.com/v2/' type='text/javascript'></script> -->
   <!--<form accept-charset="UTF-8" action="/"
    class="require-validation" data-cc-on-file="false"
@@ -86,66 +136,99 @@
      <input name="_method" type="hidden" value="PUT" />
      <input name="authenticity_token" type="hidden" value="qLZ9cScer7ZxqulsUWazw4x3cSEzv899SP/7ThPCOV8=" />
    </div> -->
-   <form #cardDetailsForm = "ngForm">
-     <div class='form-row'>
+  <form #cardDetailsForm="ngForm">
+    <div class="form-row">
+      <div class="col-md-12 form-group required">
+        <label class="control-label">Name on Card</label>
+        <input mdbInput class="form-control" name="name_on_card" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-6 form-group required">
+        <label class="control-label">Bank </label>
+        <input mdbInput class="form-control" name="bank" />
+      </div>
 
-       <div class='col-md-12 form-group required'>
-         <label class='control-label'>Name on Card</label>
-         <input mdbInput class='form-control'  name="name_on_card"  >
-       </div>
-     </div>
-     <div class='form-row'>
-
-       <div class='col-md-6 form-group required'>
-         <label class='control-label'>Bank </label>
-         <input mdbInput class='form-control'  name="bank" >
-       </div>
-
-       <div class='col-md-6 form-group required'>
-         <label class='control-label'>Branch </label>
-         <input mdbInput class='form-control'   name="branch" >
-       </div>
-     </div>
-     <hr>
-     <div class='form-row'>
-       <div class='col-md-12 form-group  required'>
-         <label class='control-label' for="cardnum" >Card Number</label>
-         <input mdbInput autocomplete='off' class='form-control card-number'  id= "cardnum"  name="card_no" >
-       </div>
-     </div>
-     <div class='form-row'>
-       <div class='col-md-4 form-group cvc required'>
-         <label class='control-label' for="cvc">CVC</label>
-         <input mdbInput autocomplete='off' class='form-control card-cvc' id="cvc" placeholder='ex. 311' size='4' type='text'  name="cvc_no" >
-       </div>
-       <div class='col-md-4 form-group expiration required'>
-         <label class='control-label' for="dateDetails">Expiration</label>
-         <input  mdbInput class='form-control card-expiry-month' id="dateDetails" placeholder='MM' size='2' type='text'  name="exp_month" >
-       </div>
-       <div class='col-md-4 form-group expiration required'>
-         <label class='control-label' for="yearDetails"> </label>
-         <input mdbInput class='form-control card-expiry-year' id="yearDetails" placeholder='YYYY' size='4' type='text'  name="exp_year" >
-       </div>
-     </div>
-     <hr>
-     <div class="container">
-       <img src="./assets/images/other/pay.png" alt="pay methods">
-     </div>
-     <hr>
-     <div class='form-row'>
-       <div class='col-md-12 form-group text-center'>
-         <button mdbBtn mdbWavesEffect class='btn btn-secondary' (click)="updateCardDetails()">Save Changes</button>
-       </div>
-     </div>
-     <div class='form-row' >
-       <div class='col-md-12 error form-group hide'>
-         <div class='alert-danger alert'>
-           Please correct the errors and try again.
-         </div>
-       </div>
-     </div>
-
-   </form>
-
-
+      <div class="col-md-6 form-group required">
+        <label class="control-label">Branch </label>
+        <input mdbInput class="form-control" name="branch" />
+      </div>
+    </div>
+    <hr />
+    <div class="form-row">
+      <div class="col-md-12 form-group required">
+        <label class="control-label" for="cardnum">Card Number</label>
+        <input
+          mdbInput
+          autocomplete="off"
+          class="form-control card-number"
+          id="cardnum"
+          name="card_no"
+        />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-4 form-group cvc required">
+        <label class="control-label" for="cvc">CVC</label>
+        <input
+          mdbInput
+          autocomplete="off"
+          class="form-control card-cvc"
+          id="cvc"
+          placeholder="ex. 311"
+          size="4"
+          type="text"
+          name="cvc_no"
+        />
+      </div>
+      <div class="col-md-4 form-group expiration required">
+        <label class="control-label" for="dateDetails">Expiration</label>
+        <input
+          mdbInput
+          class="form-control card-expiry-month"
+          id="dateDetails"
+          placeholder="MM"
+          size="2"
+          type="text"
+          name="exp_month"
+        />
+      </div>
+      <div class="col-md-4 form-group expiration required">
+        <label class="control-label" for="yearDetails"> </label>
+        <input
+          mdbInput
+          class="form-control card-expiry-year"
+          id="yearDetails"
+          placeholder="YYYY"
+          size="4"
+          type="text"
+          name="exp_year"
+        />
+      </div>
+    </div>
+    <hr />
+    <div class="container">
+      <img src="./assets/images/other/pay.png" alt="pay methods" />
+    </div>
+    <hr />
+    <div class="form-row">
+      <div class="col-md-12 form-group text-center">
+        <button
+          mdbBtn
+          mdbWavesEffect
+          class="btn btn-secondary"
+          (click)="updateCardDetails()"
+        >
+          Save Changes
+        </button>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-12 error form-group hide">
+        <div class="alert-danger alert">
+          Please correct the errors and try again.
+        </div>
+      </div>
+    </div>
+  </form>
 </div>

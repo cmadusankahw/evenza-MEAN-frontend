@@ -19,31 +19,29 @@ import { Merchant } from '../auth.model';
 export class MerchantProfileComponent implements OnInit, OnDestroy {
 
   private merchantSubs: Subscription;
-
   // edit profile mode
-  editmode = false;
-
+  public editmode = false;
   // enabling ctomization only if it is the owner
   @Input() isowner: boolean;
-
   // bprofile data binding
-  serviceProvider: Merchant;
-
-   // image to upload
-   image: File;
-   imageUrl: any = './assets/images/merchant/nopic.png';
+  public serviceProvider: Merchant;
+  // enterd nic for deactivation
+  public nict = '';
+  // image to upload
+  public image: File;
+  public imageUrl: any = './assets/images/merchant/nopic.png';
 
 
   constructor(private authService: AuthService,
-              public dialog: MatDialog,
-              public datepipe: DatePipe,
-              private router: Router) { }
+    public dialog: MatDialog,
+    public datepipe: DatePipe,
+    private router: Router) { }
 
   ngOnInit() {
     this.authService.getMerchant();
-    this.merchantSubs = this.authService.getMerchantUpdateListener().subscribe (
+    this.merchantSubs = this.authService.getMerchantUpdateListener().subscribe(
       merchant => {
-          this.serviceProvider = merchant;
+        this.serviceProvider = merchant;
       });
   }
 
@@ -55,14 +53,16 @@ export class MerchantProfileComponent implements OnInit, OnDestroy {
     this.image = null;
   }
 
+  // reset password
   changeUserPassword(pwordForm: NgForm) {
     if (pwordForm.invalid) {
       console.log('Form invalid');
     }
-    if ( pwordForm.value.new_password1 !== pwordForm.value.new_password2) {
-      this.dialog.open(ErrorComponent, {data: {message: 'Passwords do not match! Please try again!'}});
+    if (pwordForm.value.new_password1 !== pwordForm.value.new_password2) {
+      this.dialog.open(ErrorComponent, { data: { message: 'Passwords do not match! Please try again!' } });
+    } else {
+      this.authService.changeUserPassword(pwordForm.value.current_password, pwordForm.value.new_password1);
     }
-   // this.serviceProviderService.changeUserPassword(currentPword, newPword);
   }
 
   // edit user
@@ -87,42 +87,51 @@ export class MerchantProfileComponent implements OnInit, OnDestroy {
         reg_date: this.serviceProvider.reg_date,
         id_verification: this.serviceProvider.id_verification,
         business: this.serviceProvider.business
-        };
+      };
       this.authService.updateMerchant(merchant, this.image);
       this.merchantSubs = this.authService.getMerchantUpdateListener()
-      .subscribe((recievedMerchant: Merchant) => {
-        console.log(recievedMerchant);
-        this.serviceProvider = recievedMerchant;
-      });
+        .subscribe((recievedMerchant: Merchant) => {
+          console.log(recievedMerchant);
+          this.serviceProvider = recievedMerchant;
+        });
       console.log('Merchant updated successfully!');
       editForm.resetForm();
       this.editmode = false;
       setTimeout(() => {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
-        if (this.serviceProvider.user_type === 'serviceProvider'){
+        if (this.serviceProvider.user_type === 'serviceProvider') {
           this.router.navigate(['/sp/dash/profile']);
         }
-        if (this.serviceProvider.user_type === 'seller'){
+        if (this.serviceProvider.user_type === 'seller') {
           this.router.navigate(['/sel/dash/profile']);
         }
       }, 1200);
     }
   }
 
-    // profile pic uploading
-    onImageUploaded(event: Event) {
-      const file = (event.target as HTMLInputElement).files[0];
-      const mimeType = file.type;
-      if (mimeType.match(/image\/*/) == null) {
-        return;
-      }
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.image = file;
-        this.imageUrl = reader.result;
-      };
+  // profile pic uploading
+  onImageUploaded(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    const mimeType = file.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
     }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.image = file;
+      this.imageUrl = reader.result;
+    };
+  }
+
+  // deactivate merchant profile
+  public deactivateAccount() {
+    if (this.nict === this.serviceProvider.nic) {
+      this.authService.deativateAccount(this.serviceProvider.user_id);
+    } else {
+      this.dialog.open(ErrorComponent, { data: { message: 'Incorrect NIC! Please try Again' } });
+    }
+  }
 
 }

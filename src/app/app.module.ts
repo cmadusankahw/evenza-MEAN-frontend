@@ -1,14 +1,16 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
-import { InputsModule,
-        InputUtilitiesModule,
-        WavesModule,
-        ButtonsModule,
-        ModalModule,
-        TableModule,
-        ChartsModule,
-        CarouselModule } from 'angular-bootstrap-md';
+import {
+  InputsModule,
+  InputUtilitiesModule,
+  WavesModule,
+  ButtonsModule,
+  ModalModule,
+  TableModule,
+  ChartsModule,
+  CarouselModule,
+} from 'angular-bootstrap-md';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -30,19 +32,23 @@ import { CreditCardDirectivesModule } from 'angular-cc-library';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import { NgbModule, NgbDropdownModule, NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import {
+  NgbModule,
+  NgbDropdownModule,
+  NgbProgressbarModule,
+} from '@ng-bootstrap/ng-bootstrap';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import {MatSliderModule} from '@angular/material/slider';
+import { MatSliderModule } from '@angular/material/slider';
 import { DatePipe } from '@angular/common';
 import { AgmCoreModule } from '@agm/core';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { QuillModule } from 'ngx-quill';
 import { QRCodeModule } from 'angularx-qrcode';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-import {MatTabsModule} from '@angular/material/tabs';
-
+import { MatTabsModule } from '@angular/material/tabs';
+import { getSocketUrl } from 'src/assets/url';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -129,9 +135,6 @@ import { BookingNoteComponent } from './modules/eventplanner/booking-note/bookin
 import { LocationSearchComponent } from './modules/service/location-search/location-search.component';
 import { EventSelectComponent } from './modules/event/event-select/event-select.component';
 import { TeramsConditionsComponent } from './modules/home/terams-conditions/terams-conditions.component';
-import { ParticipantListComponent } from './modules/event/docs/participant-list/participant-list.component';
-import { EventInvitationComponent } from './modules/event/docs/event-invitation/event-invitation.component';
-import { EventAgendaComponent } from './modules/event/docs/event-agenda/event-agenda.component';
 import { AddEventComponent } from './modules/event/add-event/add-event.component';
 import { CreateTaskComponent } from './modules/event/create-task/create-task.component';
 import { AdminDashboardComponent } from './modules/admin/admin-dash/admin-dashboard/admin-dashboard.component';
@@ -169,10 +172,11 @@ import { SellerPaymentsReportComponent } from './modules/seller/reports/seller-p
 import { SellerProductDetailsReportComponent } from './modules/seller/reports/seller-product-details-report/seller-product-details-report.component';
 import { SellerBusinessForecastComponent } from './modules/seller/reports/seller-business-forecast/seller-business-forecast.component';
 import { PlannerEventDetailsReportComponent } from './modules/eventplanner/reports/planner-event-details-report/planner-event-details-report.component';
+import { EventRegFormComponent } from './modules/event/event-reg-form/event-reg-form.component';
+
 
 // socket io ocnfiguration
-const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
-
+const config: SocketIoConfig = { url: getSocketUrl(), options: {} };
 
 @NgModule({
   declarations: [
@@ -255,9 +259,6 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     LocationSearchComponent,
     EventSelectComponent,
     TeramsConditionsComponent,
-    ParticipantListComponent,
-    EventInvitationComponent,
-    EventAgendaComponent,
     AddEventComponent,
     CreateTaskComponent,
     AdminDashboardComponent,
@@ -295,12 +296,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     SellerProductDetailsReportComponent,
     SellerBusinessForecastComponent,
     PlannerEventDetailsReportComponent,
-
-
-
-
-
-
+    EventRegFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -354,17 +350,16 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     QuillModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyB4MIX31RUspo9HAkq90KM3W3Ltyw4UIx0',
-      libraries: ['places']
-    })
-
+      libraries: ['places'],
+    }),
   ],
   schemas: [NO_ERRORS_SCHEMA],
   providers: [
     DatePipe,
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ErrorComponent, SuccessComponent]
+  entryComponents: [ErrorComponent, SuccessComponent],
 })
-export class AppModule { }
+export class AppModule {}

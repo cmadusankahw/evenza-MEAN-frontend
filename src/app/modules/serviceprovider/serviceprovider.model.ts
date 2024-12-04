@@ -218,4 +218,3 @@ export interface AppointmentReport {
   service_name: string;
   service_id: string;
 }
-

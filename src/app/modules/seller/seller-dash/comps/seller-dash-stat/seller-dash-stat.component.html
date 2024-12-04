@@ -4,26 +4,27 @@
     <!-- Card -->
     <mdb-card class="stat-card">
       <mat-card-body>
-      <div  class="row rgba-white-slight waves-light" mdbWavesEffect>
-        <!-- Card no -->
-        <div class="col-md-3 col-sm-3 col-xs-3 br-back stat-num">
-          <span class="stat-no">
-            {{orderCounts ? orderCounts.pending_orders : 0}}
-          </span>
-        </div>
+        <div class="row rgba-white-slight waves-light" mdbWavesEffect>
+          <!-- Card no -->
+          <div class="col-md-3 col-sm-3 col-xs-3 br-back stat-num">
+            <span class="stat-no">
+              {{ orderCounts ? orderCounts.pending_orders : 0 }}
+            </span>
+          </div>
 
-        <div class="col-md-9 stat-text">
-
-          <span class="stat-title">
-            New Orders
-          </span>
-          <hr />
-          Latest order on:
-          <br />
-          <span class="date-text">{{orderCounts ? orderCounts.last_order_date: ''}}</span>
+          <div class="col-md-9 stat-text">
+            <span class="stat-title">
+              New Orders
+            </span>
+            <hr />
+            Latest order on:
+            <br />
+            <span class="date-text">{{
+              orderCounts ? orderCounts.last_order_date : ""
+            }}</span>
+          </div>
         </div>
-      </div>
-    </mat-card-body>
+      </mat-card-body>
     </mdb-card>
     <!-- Card -->
   </div>
@@ -36,7 +37,7 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 ar-back stat-num">
           <span class="stat-no">
-            {{orderCounts? orderCounts.delivered_orders: 0}}
+            {{ orderCounts ? orderCounts.delivered_orders : 0 }}
           </span>
         </div>
 
@@ -45,9 +46,11 @@
             Delivered Orders
           </span>
           <hr />
-            Last order on:
+          Last order on:
           <br />
-          <span class="date-text">{{orderCounts ? orderCounts.last_delivery_date : ''}}</span>
+          <span class="date-text">{{
+            orderCounts ? orderCounts.last_delivery_date : ""
+          }}</span>
         </div>
       </div>
     </mdb-card>
@@ -62,7 +65,7 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 cb-back stat-num">
           <span class="stat-no">
-            {{orderCounts ? orderCounts.cancelled_orders : 0}}
+            {{ orderCounts ? orderCounts.cancelled_orders : 0 }}
           </span>
         </div>
 
@@ -73,7 +76,9 @@
           <hr />
           Cancelled on:
           <br />
-          <span class="date-text">{{orderCounts? orderCounts.last_cancelled_date: ''}}</span>
+          <span class="date-text">{{
+            orderCounts ? orderCounts.last_cancelled_date : ""
+          }}</span>
         </div>
       </div>
     </mdb-card>
@@ -88,7 +93,7 @@
         <!-- Card no -->
         <div class="col-md-3 col-sm-3 col-xs-3 er-back stat-num">
           <span class="stat-no">
-            {{orderCounts ? orderCounts.inventory : 0}}
+            {{ orderCounts ? orderCounts.inventory : 0 }}
           </span>
         </div>
 
@@ -99,7 +104,9 @@
           <hr />
           Latest Modified:
           <br />
-          <span class="date-text">{{orderCounts ?  orderCounts.lasT_modified_date : ''}}</span>
+          <span class="date-text">{{
+            orderCounts ? orderCounts.lasT_modified_date : ""
+          }}</span>
         </div>
       </div>
     </mdb-card>

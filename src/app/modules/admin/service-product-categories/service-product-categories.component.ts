@@ -37,33 +37,33 @@ export class ServiceProductCategoriesComponent implements OnInit, OnDestroy {
   newCategory: string = '';
 
 
-  constructor( private serviceService: ServiceService, private productService : ProductService) { }
+  constructor(private serviceService: ServiceService, private productService: ProductService) { }
 
   ngOnInit() {
-     // get admin for child comp use
-    if ( this.categoryType === 'service') {
-     this.serviceService.getCategories();
-     this.categorySub = this.serviceService.getCategoriesUpdateListener().subscribe(
-      cat => {
-        if (cat) {
-          this.categories = cat;
-          console.log(this.categories);
-          this.dataSource = new MatTableDataSource(this.categories);
-          this.dataSource.paginator = this.paginator;
-        }
-      });
+    // get admin for child comp use
+    if (this.categoryType === 'service') {
+      this.serviceService.getCategories();
+      this.categorySub = this.serviceService.getCategoriesUpdateListener().subscribe(
+        cat => {
+          if (cat) {
+            this.categories = cat;
+            console.log(this.categories);
+            this.dataSource = new MatTableDataSource(this.categories);
+            this.dataSource.paginator = this.paginator;
+          }
+        });
     } else if (this.categoryType === 'product') {
       this.productService.getCategories();
       this.categorySub = this.productService.getCategoriesUpdateListener().subscribe(
-       cat => {
-         if (cat) {
-           this.categories = cat;
-           console.log(this.categories);
-           this.dataSource = new MatTableDataSource(this.categories);
-           this.dataSource.paginator = this.paginator;
+        cat => {
+          if (cat) {
+            this.categories = cat;
+            console.log(this.categories);
+            this.dataSource = new MatTableDataSource(this.categories);
+            this.dataSource.paginator = this.paginator;
 
-         }
-       });
+          }
+        });
     }
   }
 
@@ -82,20 +82,20 @@ export class ServiceProductCategoriesComponent implements OnInit, OnDestroy {
   }
 
 
-// add categories
+  // add categories
   addCategory(id: string) {
-    if (this.categoryType === 'service'){
+    if (this.categoryType === 'service') {
       console.log(id);
       this.serviceService.addCategory(id);
-    } else if (this.categoryType === 'product'){
+    } else if (this.categoryType === 'product') {
       this.productService.addCategory(id);
     }
   }
 
   removeCategory(id: string) {
-    if (this.categoryType === 'service'){
+    if (this.categoryType === 'service') {
       this.serviceService.removeCategory(id);
-    } else if (this.categoryType === 'product'){
+    } else if (this.categoryType === 'product') {
       this.productService.removeCategory(id);
     }
   }

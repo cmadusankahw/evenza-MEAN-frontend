@@ -17,29 +17,29 @@ import { ProductService } from 'src/app/modules/product/product.service';
 export class SellerDashboardComponent implements OnInit, OnDestroy {
 
   showSubMenu = false;
-   // navigation
-   home = 'txt-white row';
-   bprofile = 'txt-white row';
-   orders = 'txt-white row';
-   inventory = 'txt-white row';
-   reports = 'txt-white row';
-   profile = 'txt-white row';
+  // navigation
+  home = 'txt-white row';
+  bprofile = 'txt-white row';
+  orders = 'txt-white row';
+  inventory = 'txt-white row';
+  reports = 'txt-white row';
+  profile = 'txt-white row';
 
 
-   private headerSubs: Subscription;
+  private headerSubs: Subscription;
 
-       // snack bars for notification display
+  // snack bars for notification display
   private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
   // recieved merchant
-  headerDetails: {userType: string, userName: string, profilePic: string};
+  headerDetails: { userType: string, userName: string, profilePic: string };
 
-    // create new product
-    editmode = true;
+  // create new product
+  editmode = true;
 
 
-    isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
       shareReplay()
@@ -50,28 +50,25 @@ export class SellerDashboardComponent implements OnInit, OnDestroy {
               private _snackBar: MatSnackBar,
               private productService: ProductService) {
 
-               // handeling booking created notification
-                this.productService.newOrderCreated()
-                .subscribe(data => {
-                  this._snackBar.open('New Order on ' + data.product
-                + ' Placed! quantity:  ' + data.quantity , 'Dismiss', {
-                  duration: 5000,
-                  horizontalPosition: this.horizontalPosition,
-                  verticalPosition: this.verticalPosition,
-                  });
-                  this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-                  this.router.onSameUrlNavigation = 'reload';
-                  this.router.navigate(['/sel/dash']);
-                });
+    // handeling booking created notification
+    this.productService.newOrderCreated()
+      .subscribe(data => {
+        this._snackBar.open('New Order on ' + data.product
+          + ' Placed! quantity:  ' + data.quantity, 'Dismiss', {
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+      });
 
-               }
+  }
 
   ngOnInit() {
     this.routerEvents();
     this.authService.getHeaderDetails();
-    this.headerSubs = this.authService.getHeaderDetailsListener().subscribe (
+    this.headerSubs = this.authService.getHeaderDetailsListener().subscribe(
       merchant => {
-          this.headerDetails = merchant;
+        this.headerDetails = merchant;
       });
   }
 
@@ -95,10 +92,10 @@ export class SellerDashboardComponent implements OnInit, OnDestroy {
         } else if (e.url === '/sp/dash/reports') {
           this.navReports();
         } else if (e.url === '/sp/dash/profile') {
-        this.navProfile();
-    }
-    }
-  });
+          this.navProfile();
+        }
+      }
+    });
   }
 
   navHome() {
@@ -108,27 +105,27 @@ export class SellerDashboardComponent implements OnInit, OnDestroy {
 
   navBprofile() {
     this.bprofile = 'txt-white row active-nav';
-    this.home = this.orders = this.inventory  = this.profile = this.reports = 'txt-white row';
+    this.home = this.orders = this.inventory = this.profile = this.reports = 'txt-white row';
   }
 
   navOrders() {
     this.orders = 'txt-white row active-nav';
-    this.bprofile = this.home = this.inventory  = this.profile = this.reports = 'txt-white row';
+    this.bprofile = this.home = this.inventory = this.profile = this.reports = 'txt-white row';
   }
 
   navInventory() {
     this.inventory = 'txt-white row active-nav';
-    this.bprofile = this.orders = this.home  = this.profile = this.reports = 'txt-white row';
+    this.bprofile = this.orders = this.home = this.profile = this.reports = 'txt-white row';
   }
 
   navReports() {
     this.reports = 'txt-white row active-nav';
-    this.bprofile = this.orders = this.inventory = this.home = this.profile  = 'txt-white row';
+    this.bprofile = this.orders = this.inventory = this.home = this.profile = 'txt-white row';
   }
 
   navProfile() {
     this.profile = 'txt-white row active-nav';
-    this.bprofile = this.orders = this.inventory  = this.home = this.reports = 'txt-white row';
+    this.bprofile = this.orders = this.inventory = this.home = this.reports = 'txt-white row';
   }
 
 

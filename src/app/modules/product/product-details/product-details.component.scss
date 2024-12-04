@@ -219,7 +219,7 @@
 .review{
   margin:12px;
   padding:10px;
-  background-color:lightgray;
+  background-color:rgb(238, 238, 238);
   border-radius:12px;
 }
 
@@ -234,4 +234,19 @@
   font-weight: bold;
   font-size: 24px;
   color:darkslateblue;
+}
+
+
+@media screen and (max-width: 600px) {
+  .review{
+    margin:0px;
+    margin-top:10px;
+    margin-bottom:10px;
+    border-radius:7px;
+  }
+
+  .sdetails{
+    text-align:center;
+  }
+
 }

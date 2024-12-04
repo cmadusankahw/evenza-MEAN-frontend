@@ -1,106 +1,142 @@
-<mat-sidenav-container class="sidenav-container" >
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
-
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
     <!--profile pic-->
     <div class="pd-img">
-      <img [src]="headerDetails ? headerDetails.profilePic: './assets/images/headerDetails/nopic.png'" alt="headerDetails Pic" class="img-thumbnail " style="border-radius:50%;">
-      <h5 class="txt-white pd-top-min text-center"> {{headerDetails ? headerDetails.userName: 'Loading..'}} </h5>
+      <img
+        [src]="
+          headerDetails
+            ? headerDetails.profilePic
+            : './assets/images/headerDetails/nopic.png'
+        "
+        alt="headerDetails Pic"
+        class="img-thumbnail"
+        style="border-radius: 50%;"
+      />
+      <h5 class="txt-white pd-top-min text-center">
+        {{ headerDetails ? headerDetails.userName : "Loading.." }}
+      </h5>
     </div>
 
-    <mat-nav-list >
-        <a class="txt-white row" mat-list-item [ngClass] ="home"
-        (click)="navHome()"  routerLink="/sp/dash">
-            <div class="col-md-11 side-start " >
-              <mat-icon >home</mat-icon>
-              <span class="side-text">  Home</span>
-            </div>
-            <div class="ol-md-1 side-end">
-            <mat-icon >arrow_right</mat-icon>
-          </div>
-        </a>
-
-
-
-      <a class="txt-white row" mat-list-item  [ngClass] ="bprofile"
-      (click)="navBprofile()"    routerLink="/sp/dash/bprofile">
+    <mat-nav-list>
+      <a
+        class="txt-white row"
+        mat-list-item
+        [ngClass]="home"
+        (click)="navHome()"
+        routerLink="/sp/dash"
+      >
         <div class="col-md-11 side-start">
-          <mat-icon >business_centert</mat-icon>
-          <span class="side-text">  Business Profile</span>
+          <mat-icon>home</mat-icon>
+          <span class="side-text"> Home</span>
         </div>
         <div class="ol-md-1 side-end">
-        <mat-icon >arrow_right</mat-icon>
-      </div>
+          <mat-icon>arrow_right</mat-icon>
+        </div>
       </a>
 
-
-      <a class="txt-white row" mat-list-item [ngClass] ="bookings"
-      (click)="navBookings()"  routerLink="/sp/dash/bookings">
+      <a
+        class="txt-white row"
+        mat-list-item
+        [ngClass]="bprofile"
+        (click)="navBprofile()"
+        routerLink="/sp/dash/bprofile"
+      >
         <div class="col-md-11 side-start">
-          <mat-icon >bookmarks</mat-icon>
-          <span class="side-text">  Bookings</span>
+          <mat-icon>business_centert</mat-icon>
+          <span class="side-text"> Business Profile</span>
         </div>
         <div class="ol-md-1 side-end">
-        <mat-icon >arrow_right</mat-icon>
-      </div>
+          <mat-icon>arrow_right</mat-icon>
+        </div>
       </a>
 
-
-
-      <a class="txt-white row" mat-list-item  [ngClass] ="appoints"
-      (click)="navAppoints()" routerLink="/sp/dash/appoints">
+      <a
+        class="txt-white row"
+        mat-list-item
+        [ngClass]="bookings"
+        (click)="navBookings()"
+        routerLink="/sp/dash/bookings"
+      >
         <div class="col-md-11 side-start">
-          <mat-icon >phone_locked</mat-icon>
-          <span class="side-text">  Appointments</span>
+          <mat-icon>bookmarks</mat-icon>
+          <span class="side-text"> Bookings</span>
         </div>
         <div class="ol-md-1 side-end">
-        <mat-icon >arrow_right</mat-icon>
-      </div>
+          <mat-icon>arrow_right</mat-icon>
+        </div>
       </a>
 
-
-
-      <a class="txt-white row" mat-list-item [ngClass] ="calendar"
-      (click)="navCalendar()"  routerLink="/sp/dash/calendar">
+      <a
+        class="txt-white row"
+        mat-list-item
+        [ngClass]="appoints"
+        (click)="navAppoints()"
+        routerLink="/sp/dash/appoints"
+      >
         <div class="col-md-11 side-start">
-          <mat-icon >calendar_today</mat-icon>
-          <span class="side-text">  Booking Calendar</span>
+          <mat-icon>phone_locked</mat-icon>
+          <span class="side-text"> Appointments</span>
         </div>
         <div class="ol-md-1 side-end">
-        <mat-icon >arrow_right</mat-icon>
-      </div>
+          <mat-icon>arrow_right</mat-icon>
+        </div>
       </a>
 
-
-
-      <a class="txt-white row" mat-list-item [ngClass] ="reports"
-      (click)="navReports()"  routerLink="/sp/dash/reports">
+      <a
+        class="txt-white row"
+        mat-list-item
+        [ngClass]="calendar"
+        (click)="navCalendar()"
+        routerLink="/sp/dash/calendar"
+      >
         <div class="col-md-11 side-start">
-          <mat-icon >library_books</mat-icon>
-          <span class="side-text">  Report Wizard</span>
+          <mat-icon>calendar_today</mat-icon>
+          <span class="side-text"> Booking Calendar</span>
         </div>
         <div class="ol-md-1 side-end">
-        <mat-icon >arrow_right</mat-icon>
-      </div>
+          <mat-icon>arrow_right</mat-icon>
+        </div>
       </a>
 
-
-
-      <a class="txt-white row" mat-list-item [ngClass] ="profile"
-      (click)="navProfile()" routerLink="/sp/dash/profile">
+      <a
+        class="txt-white row"
+        mat-list-item
+        [ngClass]="reports"
+        (click)="navReports()"
+        routerLink="/sp/dash/reports"
+      >
         <div class="col-md-11 side-start">
-          <mat-icon >perm_identity</mat-icon>
-          <span class="side-text">  My Profile</span>
+          <mat-icon>library_books</mat-icon>
+          <span class="side-text"> Report Wizard</span>
         </div>
         <div class="ol-md-1 side-end">
-        <mat-icon >arrow_right</mat-icon>
-      </div>
+          <mat-icon>arrow_right</mat-icon>
+        </div>
       </a>
 
+      <a
+        class="txt-white row"
+        mat-list-item
+        [ngClass]="profile"
+        (click)="navProfile()"
+        routerLink="/sp/dash/profile"
+      >
+        <div class="col-md-11 side-start">
+          <mat-icon>perm_identity</mat-icon>
+          <span class="side-text"> My Profile</span>
+        </div>
+        <div class="ol-md-1 side-end">
+          <mat-icon>arrow_right</mat-icon>
+        </div>
+      </a>
     </mat-nav-list>
-
   </mat-sidenav>
 
   <!--dashboard content-->
@@ -111,10 +147,13 @@
         aria-label="Toggle sidenav"
         mat-icon-button
         (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
+        *ngIf="isHandset$ | async"
+      >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>Howday! {{headerDetails ? headerDetails.userName: 'Loading..'}} </span>
+      <span
+        >Howday! {{ headerDetails ? headerDetails.userName : "Loading.." }}
+      </span>
     </mat-toolbar>
 
     <!--dashboard content-->
@@ -124,7 +163,3 @@
     <!--end dashboard content-->
   </mat-sidenav-content>
 </mat-sidenav-container>
-
-
-
-

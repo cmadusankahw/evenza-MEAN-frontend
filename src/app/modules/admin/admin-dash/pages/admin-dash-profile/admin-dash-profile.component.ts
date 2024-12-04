@@ -19,19 +19,14 @@ import { NgForm } from '@angular/forms';
 export class AdminDashProfileComponent implements OnInit, OnDestroy {
 
   private merchantSubs: Subscription;
-
   // edit profile mode
   editmode = false;
-
   // enabling ctomization only if it is the owner
   isowner = true;
-
   // bprofile data binding
   admin: Admin;
-
   // card details
   cardDetails: CardDetails;
-
    // image to upload
    image: File;
    imageUrl: any = './assets/images/merchant/nopic.png';
@@ -60,15 +55,17 @@ export class AdminDashProfileComponent implements OnInit, OnDestroy {
     this.image = null;
   }
 
-  changeUserPassword(pwordForm: NgForm) {
-    if (pwordForm.invalid) {
-      console.log('Form invalid');
+    // reset password
+    changeUserPassword(pwordForm: NgForm) {
+      if (pwordForm.invalid) {
+        console.log('Form invalid');
+      }
+      if (pwordForm.value.new_password1 !== pwordForm.value.new_password2) {
+        this.dialog.open(ErrorComponent, { data: { message: 'Passwords do not match! Please try again!' } });
+      } else {
+        this.authService.changeUserPassword(pwordForm.value.current_password , pwordForm.value.new_password1);
+      }
     }
-    if ( pwordForm.value.new_password1 !== pwordForm.value.new_password2) {
-      this.dialog.open(ErrorComponent, {data: {message: 'Passwords do not match! Please try again!'}});
-    }
-   // this.serviceProviderService.changeUserPassword(currentPword, newPword);
-  }
 
   // edit user
   editUser(editForm: NgForm) {
@@ -86,6 +83,7 @@ export class AdminDashProfileComponent implements OnInit, OnDestroy {
         address_line2: editForm.value.address_line2,
         postal_code: editForm.value.postal_code,
         gender: editForm.value.gender,
+        subscription_fee: this.admin.subscription_fee,
         card_details: this.cardDetails,
         payment_details: this.admin.payment_details,
         };

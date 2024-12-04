@@ -1,0 +1,103 @@
+1. Event Planner
+
+/planner/
+
+      /booking  /get  /get:id   /review:id  - update booking review data   (review: body.msg  order_id: params.id)
+
+      /order /get  /get:id  /review:id   - update order review data (review: body.msg  order_id: params.id)
+
+      /appoint   /get /get:id  (appoint_id: params.id)
+
+      /inquery  /add  /remove  /get  /get:id  (id: params.id   add - new Inquery - user_id set in backend)
+
+      /img /add - (upload images src/assets/images/planner)
+
+/mail   - send a custom email
+
+/id/get - get looged in seller ID - for report generation
+
+
+2. Event
+
+/event/
+
+  /add (event object - add new event)   (post)
+
+  /edit   edit with event_id   (post)
+
+          event_title: req.body.event_title,
+          description: req.body.description,
+          event_type:  req.body.event_type,
+          event_category:  req.body.event_category,
+          from_date:  req.body.from_date,
+          to_date:  req.body.to_date,
+          location: req.body.location,
+          no_of_participants:  req.body.no_of_participants,
+          total_budget:  req.body.total_budget,
+          service_categories: req.body.service_categories,
+          product_categories: req.body.product_categories,
+          feature_img:  req.body.feature_img,
+          state:  'unpublished',
+          social_links:  req.body.social_links,
+
+
+  /remove   remove with event_id  (post, event_id in body)
+
+  /publish  find event by event_id -> change state: published    (post)
+            sendMail( participants[] -> name, email)
+
+  /get get list of events with host.user_id
+
+  /get:id  get a selected event with event_id
+
+  /confirm:id   (get)  event_id + _ + participant_id  -> splitted and updated
+
+  /publish:id (get) event_id  -> participants - informed with cncel mail
+
+  /tasks/
+        /add -> (post) newTask event_id -> new tasks is pushed to task list of the event   res: msg 200, 500
+
+        /edit -> (post) - update a single task editedTask event_id -> task will be replace with the newTask to event.event_segments.tasks array   res: msg 200, 500
+eventId
+        // automated schedule check and notify (every1 hour)
+
+ /plan/
+      /update -> event_id tasks -> update event.event_segments.tasks with new tasks array  res: (update status, message) 200,500
+
+/cat/
+    /add eventCategory - > EventCategory updated (post) res: msg 200,500
+    /remove id -> deleteOne (post) res: msg: 200,500
+
+/participants/
+  /update  (post) -> event_id invitation participants ->  res: msg 200,500
+
+/alerts/
+  /get:id event_id -> res: alerts: recievedAlerts msg: 200,500  (get)
+
+/img/
+  /add add single image multer res: 200,500 msg
+  /mul add multiple image multer res: 200,500 msg
+
+
+3. Auth
+
+
+4. Product
+
+get req
+Get a Product:  /api/product/get/:id
+Get list of products:  /api/product/get
+Get list of Payment types: /api/product/get/pt
+Get list of Quantity Types: /api/product/get/qt
+Get list of Product Categories: /api/product/get/cat
+Get list of Delivery Services: /api/product/get/delivery
+Search for products : /api/product/search
+Get list of Products created by specific seller: /api/product/get/seller
+
+post req
+Add new product: /api/product/add
+Add product images: /api/product/add/img
+Edit product: /api/product/edit
+
+delete req
+Delete Product: /api/product/edit/:id

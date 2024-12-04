@@ -34,18 +34,18 @@ export class SellerEarningsComponent implements OnInit, OnDestroy {
   noOfBookings = 0;
 
 
-  constructor(private sellerService: SellerService) {}
+  constructor(private sellerService: SellerService) { }
 
   ngOnInit() {
     this.sellerService.getEarnings();
     this.orderSub = this.sellerService.getEarningsUpdateListener()
-          .subscribe((res: Earnings[]) => {
-              if (res) {
-                this.earninigs = res;
-                this.dataSource = new MatTableDataSource(this.earninigs);
-                this.dataSource.paginator = this.paginator;
-                this.dataSource.sort = this.sort;
-              }
+      .subscribe((res: Earnings[]) => {
+        if (res) {
+          this.earninigs = res;
+          this.dataSource = new MatTableDataSource(this.earninigs);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
       });
   }
 

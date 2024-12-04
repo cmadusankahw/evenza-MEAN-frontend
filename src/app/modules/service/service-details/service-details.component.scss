@@ -220,7 +220,7 @@
 .review{
   margin:12px;
   padding:10px;
-  background-color:lightgray;
+  background-color:rgb(238, 238, 238);
   border-radius:12px;
 }
 
@@ -229,4 +229,20 @@
   background-color: rgb(254, 211, 255);
   padding:10px;
   margin:12px;
+}
+
+
+@media screen and (max-width: 600px) {
+  .review{
+    margin:0px;
+    margin-top:10px;
+    margin-bottom:10px;
+    border-radius:7px;
+  }
+
+
+  .sdetails{
+    text-align:center;
+  }
+
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -28,18 +28,18 @@ export class EarningsComponent implements OnInit, OnDestroy {
   earninigs: Earnings[];
 
 
-  constructor(private serviceProviderService: ServiceProviderService) {}
+  constructor(private serviceProviderService: ServiceProviderService) { }
 
   ngOnInit() {
     this.serviceProviderService.getEarnings();
     this.bookingSub = this.serviceProviderService.getEarningstUpdatedListener()
-          .subscribe((res: Earnings[]) => {
-              if (res) {
-                this.earninigs = res;
-                this.dataSource = new MatTableDataSource(this.earninigs);
-                this.dataSource.paginator = this.paginator;
-                this.dataSource.sort = this.sort;
-              }
+      .subscribe((res: Earnings[]) => {
+        if (res) {
+          this.earninigs = res;
+          this.dataSource = new MatTableDataSource(this.earninigs);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
       });
   }
 

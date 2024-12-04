@@ -93,9 +93,6 @@ spreport.post('/appoint',checkAuth, (req, res, next) => {
         '$match': {
           'appointed_date': {
             '$gte': new Date(reqFromDate)
-          },
-          'appointed_date': {
-            '$lte': new Date(reqToDate)
           }
         }
       }, {

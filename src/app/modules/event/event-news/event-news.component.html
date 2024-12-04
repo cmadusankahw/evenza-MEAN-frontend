@@ -1,24 +1,29 @@
 <!--Section: Content-->
-<section class="magazine-section dark-grey-text ">
-
+<section class="magazine-section dark-grey-text">
   <!-- Section heading -->
-  <h3 class="text-center font-weight-bold mb-4 pb-2">Events Happening near You</h3>
+  <h3 class="text-center font-weight-bold mb-4 pb-2">
+    Events Happening Now
+  </h3>
   <!-- Section description -->
-  <p class="text-center w-responsive mx-auto mb-5">Find the amazing events happening near you.
-     They all are managed through Evenza, the smart event management and resourcing platform...</p>
+  <p class="text-center w-responsive mx-auto mb-5">
+    Find events happening near you. They all are planned through
+    Evenza, the smart event management and resourcing platform...
+  </p>
 
   <!-- Grid row -->
-  <div class="row">
-
+  <div class="row" *ngIf="events.length">
     <!-- Grid column -->
     <div class="col-lg-6 col-md-12 mb-4">
-
       <!-- Featured news -->
       <div class="single-news">
-
         <!-- Image -->
         <div class="view overlay rounded z-depth-1-half mb-4">
-          <img mdbWavesEffect class="img-fluid" src="{{events[0].feature_img}}" alt="Sample image">
+          <img
+            mdbWavesEffect
+            class="img-fluid"
+            src="{{ events[0].feature_img }}"
+            alt="Sample image"
+          />
           <a>
             <div class="mask rgba-white-slight"></div>
           </a>
@@ -26,88 +31,86 @@
 
         <!-- Data -->
         <div class="news-data d-flex justify-content-between">
-          <a href="#!" class="purple-text" *ngFor="let feature of events[0].features">
-            <h6 class="font-weight-bold"><i class="fas fa-utensils pr-2"></i>{{feature}}</h6>
+          <a
+            href="#!"
+            class="purple-text"
+          >
+            <h6 class="font-weight-bold">
+              <i class="fas fa-utensils pr-2"></i>{{ events[0].event_category }}
+            </h6>
           </a>
-
         </div>
 
         <!--Details -->
-        <h3 class="font-weight-bold dark-grey-text mb-3 pd-top-min"><a>{{events[0].event_title}}</a></h3>
+        <h3 class="font-weight-bold dark-grey-text mb-3 pd-top-min">
+          <a>{{ events[0].event_title }}</a>
+        </h3>
 
         <!--event date-->
-        <p class="font-weight-bold dark-grey-text"><i class="fas fa-clock pr-2"></i>{{events[0].date}}</p>
+        <p class="font-weight-bold dark-grey-text">
+          <i class="fas fa-clock pr-2"></i>{{ events[0].from_date.slice(0,10) }}
+        </p>
 
-        <p class="dark-grey-text">{{events[0].description}}</p>
-
+        <p class="dark-grey-text">{{ events[0].description.slice(0,15) + '...' }}</p>
       </div>
       <!-- Featured news -->
-
     </div>
     <!-- Grid column -->
 
     <!-- Grid column -->
     <div class="col-lg-6 col-md-12 mb-4">
-
-
-
       <!-- Small news -->
       <div *ngFor="let event of events">
-      <mdb-card class="mg-top">
-        <mdb-card-body>
-          <div mdbWavesEffect class=" single-news">
-
-            <!-- Grid row -->
-            <div class="row">
-
-              <!-- Grid column -->
-              <div class="col-md-3">
-
-                <!--Image-->
-                <div class="view overlay rounded z-depth-1 mb-4">
-                  <img class="img-fluid" src="{{event.feature_img}}"
-                    alt="Sample image">
-                  <a>
-                    <div class="mask rgba-white-slight"></div>
-                  </a>
-                </div>
-
-              </div>
-              <!-- Grid column -->
-
-              <!-- Grid column -->
-              <div class="col-md-9">
-
-                <!-- Excerpt -->
-                <p class="font-weight-bold dark-grey-text">{{event.date}}</p>
-                <div class="d-flex justify-content-between">
-                  <div class="col-11 text-truncate pl-0 mb-3">
-                    <h5 class="dark-grey-text">{{event.event_title}}</h5>
+        <mdb-card class="mg-top">
+          <mdb-card-body>
+            <div mdbWavesEffect class="single-news">
+              <!-- Grid row -->
+              <div class="row">
+                <!-- Grid column -->
+                <div class="col-md-3">
+                  <!--Image-->
+                  <div class="view overlay rounded z-depth-1 mb-4">
+                    <img
+                      class="img-fluid"
+                      src="{{ event.feature_img }}"
+                      alt="Feature image"
+                    />
+                    <a>
+                      <div class="mask rgba-white-slight"></div>
+                    </a>
                   </div>
-                  <a><i class="fas fa-angle-double-right"></i></a>
                 </div>
+                <!-- Grid column -->
 
+                <!-- Grid column -->
+                <div class="col-md-9">
+                  <!-- Excerpt -->
+                  <p class="font-weight-bold dark-grey-text">
+                    {{ event.from_date.slice(0,10) }}
+                  </p>
+                  <div class="d-flex justify-content-between">
+                    <div class="col-11 text-truncate pl-0 mb-3">
+                      <h5 class="dark-grey-text">{{ event.event_title }}</h5>
+                    </div>
+                    <a><i class="fas fa-angle-double-right"></i></a>
+                  </div>
+                </div>
+                <!-- Grid column -->
               </div>
-              <!-- Grid column -->
-
+              <!-- Grid row -->
             </div>
-            <!-- Grid row -->
-
-          </div>
-          <!-- Small news -->
-        </mdb-card-body>
-      </mdb-card>
-      <br>
-    </div>
-
-
-
+            <!-- Small news -->
+          </mdb-card-body>
+        </mdb-card>
+        <br />
+      </div>
     </div>
     <!--Grid column-->
+  </div>
 
+  <div class="pt-4 text-center" style="color:lightgray;">
+    <h4> Oops!!! No any ongoing Events Found.. :(</h4>
   </div>
   <!-- Grid row -->
-
 </section>
 <!--Section: Content-->
-

@@ -41,27 +41,27 @@ export class SellerInventoryComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.productService.getSellerProducts();
     this.productSub = this.productService.getSellerProductUpdateListener()
-          .subscribe((res: Product[]) => {
-            this.products = res;
-            console.log(this.products);
-            if (this.products) {
-              this.dataSource = new MatTableDataSource(this.products);
-              this.dataSource.paginator = this.paginator;
-              this.dataSource.sort = this.sort;
-           }
+      .subscribe((res: Product[]) => {
+        this.products = res;
+        console.log(this.products);
+        if (this.products) {
+          this.dataSource = new MatTableDataSource(this.products);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
       });
     this.productService.getCategories();
     this.categorySub = this.productService.getCategoriesUpdateListener()
-        .subscribe ((res: ProductCategories[]) => {
-          if (res) {
-            this.categories = res;
-            console.log(this.categories);
-          }
+      .subscribe((res: ProductCategories[]) => {
+        if (res) {
+          this.categories = res;
+          console.log(this.categories);
+        }
       });
   }
 
   ngOnDestroy() {
-    if(this.productSub) {
+    if (this.productSub) {
       this.productSub.unsubscribe();
     }
     if (this.categorySub) {

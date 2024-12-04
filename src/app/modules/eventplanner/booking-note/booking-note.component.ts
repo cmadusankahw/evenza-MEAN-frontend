@@ -81,7 +81,7 @@ export class BookingNoteComponent implements OnInit, OnDestroy {
     this.appointment = undefined;
   }
 
-  printIt(content: string, type: string){
+  printIt(content: string, type: string) {
     printData(content, type);
   }
 

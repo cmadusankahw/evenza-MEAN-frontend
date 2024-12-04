@@ -3,7 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
-import {Merchant, MerchantTemp } from '../auth.model';
+import { Merchant, MerchantTemp } from '../auth.model';
 import { AuthService } from '../auth.service';
 
 
@@ -31,10 +31,10 @@ export class SignupMerchantComponent implements OnInit, OnDestroy {
     // router scroll
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
-          return;
+        return;
       }
       window.scrollTo(0, 0);
-  });
+    });
   }
 
   ngOnDestroy() {
@@ -47,23 +47,23 @@ export class SignupMerchantComponent implements OnInit, OnDestroy {
     } else {
 
       const merchant: Merchant = {
-          user_id: this.merchantTemp.user_id,
-          user_type: signupForm.value.user_type,
-          first_name: this.merchantTemp.first_name,
-          last_name: this.merchantTemp.last_name,
-          nic: signupForm.value.nic,
-          profile_pic: './assets/images/merchant/nopic.png',
-          email: this.merchantTemp.email,
-          contact_no: this.merchantTemp.contact_no,
-          address_line1:  signupForm.value.address1,
-          address_line2: signupForm.value.address2,
-          postal_code: signupForm.value.postalCode,
-          gender: signupForm.value.gender,
-          date_of_birth: signupForm.value.birthday,  // check
-          id_verification: {isverified: false, id_sideA: null, id_sideB: null, issuer: null},
-          reg_date: this.merchantTemp.reg_date,
-          business: null
-        };
+        user_id: this.merchantTemp.user_id,
+        user_type: signupForm.value.user_type,
+        first_name: this.merchantTemp.first_name,
+        last_name: this.merchantTemp.last_name,
+        nic: signupForm.value.nic,
+        profile_pic: './assets/images/merchant/nopic.png',
+        email: this.merchantTemp.email,
+        contact_no: this.merchantTemp.contact_no,
+        address_line1: signupForm.value.address1,
+        address_line2: signupForm.value.address2,
+        postal_code: signupForm.value.postalCode,
+        gender: signupForm.value.gender,
+        date_of_birth: signupForm.value.birthday,  // check
+        id_verification: { isverified: false, id_sideA: null, id_sideB: null, issuer: null },
+        reg_date: this.merchantTemp.reg_date,
+        business: null
+      };
       console.log(merchant);
       this.authService.addMerchant(merchant, this.merchantTemp.password);
       signupForm.resetForm();

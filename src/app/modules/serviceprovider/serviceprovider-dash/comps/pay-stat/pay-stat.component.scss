@@ -42,3 +42,9 @@ table {
 td, th {
   width: 25%;
 }
+
+@media screen and (max-width: 600px) {
+  .tcenter{
+    text-align:center !important;
+  }
+}

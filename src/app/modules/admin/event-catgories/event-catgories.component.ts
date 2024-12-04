@@ -10,8 +10,6 @@ import { EventService } from '../../event/event.service';
 import { NgForm } from '@angular/forms';
 import { ServiceService } from '../../service/service.service';
 import { ProductService } from '../../product/product.service';
-import { ServiceCategories } from '../../service/service.model';
-import { ProductCategories } from '../../product/product.model';
 
 @Component({
   selector: 'app-event-catgories',
@@ -20,7 +18,7 @@ import { ProductCategories } from '../../product/product.model';
 })
 export class EventCatgoriesComponent implements OnInit, OnDestroy {
 
-  displayedColumns: string[] = [ 'category', 'action'];
+  displayedColumns: string[] = ['category', 'action'];
   dataSource: MatTableDataSource<EventCategory>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -59,11 +57,11 @@ export class EventCatgoriesComponent implements OnInit, OnDestroy {
 
 
 
-  constructor( private eventService: EventService, private serviceService: ServiceService, private productService: ProductService) { }
+  constructor(private eventService: EventService, private serviceService: ServiceService, private productService: ProductService) { }
 
   ngOnInit() {
-     this.eventService.getEventCategories();
-     this.categorySub = this.eventService.getEventCategoriesUpdatedListener().subscribe(
+    this.eventService.getEventCategories();
+    this.categorySub = this.eventService.getEventCategoriesUpdatedListener().subscribe(
       cat => {
         if (cat) {
           this.categories = cat;
@@ -73,34 +71,40 @@ export class EventCatgoriesComponent implements OnInit, OnDestroy {
         }
       });
 
-     this.serviceService.getCategories();
-     this.serviceCategorySub = this.serviceService.getCategoriesUpdateListener().subscribe(
-       cat => {
-         if (cat) {
-           for ( const c of cat) {
-            this.serviceCategories.push({...c, amt: 0});
-           }
-
-           console.log(this.serviceCategories);
-         }
-       });
-
-     this.productService.getCategories();
-     this.categorySub = this.productService.getCategoriesUpdateListener().subscribe(
-        cat => {
-          if (cat) {
-            for ( const c of cat) {
-              this.productCategories.push({...c, amt: 0});
-             }
-            console.log(this.productCategories);
+    this.serviceService.getCategories();
+    this.serviceCategorySub = this.serviceService.getCategoriesUpdateListener().subscribe(
+      cat => {
+        if (cat) {
+          for (const c of cat) {
+            this.serviceCategories.push({ ...c, amt: 0 });
           }
-        });
+
+          console.log(this.serviceCategories);
+        }
+      });
+
+    this.productService.getCategories();
+    this.categorySub = this.productService.getCategoriesUpdateListener().subscribe(
+      cat => {
+        if (cat) {
+          for (const c of cat) {
+            this.productCategories.push({ ...c, amt: 0 });
+          }
+          console.log(this.productCategories);
+        }
+      });
 
   }
 
   ngOnDestroy() {
     if (this.categorySub) {
       this.categorySub.unsubscribe();
+    }
+    if (this.productCategorySub) {
+      this.productCategorySub.unsubscribe();
+    }
+    if (this.serviceCategorySub) {
+      this.serviceCategorySub.unsubscribe();
     }
   }
 
@@ -115,46 +119,46 @@ export class EventCatgoriesComponent implements OnInit, OnDestroy {
   }
 
 
-// add categories
+  // add categories
   addCategory(catForm: NgForm) {
-      if (catForm.invalid) {
-        console.log('Form Invalid!');
-      } else {
-        const newCatedory: EventCategory = {
-          id:catForm.value.category.replace(' ', '') + Math.abs(Math.random() * 100),
-          category: catForm.value.category,
-          img: './assets/images/merchant/nopic',
-          services: this.tempServeCategories,
-          products: this.tempProdCategories
-        };
-        this.eventService.createCategory(newCatedory, this.image);
-        console.log(newCatedory);
-      }
+    if (catForm.invalid) {
+      console.log('Form Invalid!');
+    } else {
+      const newCatedory: EventCategory = {
+        id: catForm.value.category.replace(' ', ''),
+        category: catForm.value.category,
+        img: './assets/images/merchant/nopic',
+        services: this.tempServeCategories,
+        products: this.tempProdCategories
+      };
+      this.eventService.createCategory(newCatedory, this.image);
+      console.log(newCatedory);
+    }
   }
 
   removeCategory(id: string) {
     this.eventService.removeCategory(id);
   }
 
-    // image 03 uploading
-    onImageUploaded(event: Event) {
-      const file = (event.target as HTMLInputElement).files[0];
-      const mimeType = file.type;
-      if (mimeType.match(/image\/*/) == null) {
-        return;
-      }
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.image = file;
-        this.imgUrl = reader.result;
-      };
+  // image 03 uploading
+  onImageUploaded(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    const mimeType = file.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
     }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.image = file;
+      this.imgUrl = reader.result;
+    };
+  }
 
   addCategoryItem(type: string, cat: string, val: any) {
     val = Number(val);
     if (type === 'service') {
-      this.tempServeCategories.push( {
+      this.tempServeCategories.push({
         id: new Date().toISOString(),
         category: cat,
         precentage: val
@@ -162,7 +166,7 @@ export class EventCatgoriesComponent implements OnInit, OnDestroy {
       console.log(this.tempServeCategories);
     }
     if (type === 'product') {
-      this.tempProdCategories.push( {
+      this.tempProdCategories.push({
         id: new Date().toISOString(),
         category: cat,
         precentage: val
@@ -173,18 +177,18 @@ export class EventCatgoriesComponent implements OnInit, OnDestroy {
 
   checkItem(type: string, cat: string): boolean {
     if (type === 'service') {
-     for (const c of this.tempServeCategories) {
-        if ( c.category === cat){
+      for (const c of this.tempServeCategories) {
+        if (c.category === cat) {
           return true;
         }
-     }
+      }
     }
     if (type === 'product') {
       for (const c of this.tempProdCategories) {
-        if ( c.category === cat){
+        if (c.category === cat) {
           return true;
         }
-     }
+      }
     }
     return false;
   }

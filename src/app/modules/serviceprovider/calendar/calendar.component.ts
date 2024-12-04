@@ -23,7 +23,7 @@ export class CalendarComponent implements OnInit {
 
 
 
-  @ViewChild('calendar', {static: true}) calendarComponent: FullCalendarComponent; // the #calendar in the template
+  @ViewChild('calendar', { static: true }) calendarComponent: FullCalendarComponent; // the #calendar in the template
 
   calendarVisible = true;
   calendarPlugins = [dayGridPlugin, timeGrigPlugin, interactionPlugin, listPlugin];
@@ -31,12 +31,19 @@ export class CalendarComponent implements OnInit {
 
   // subscription
   private calendarBookingSub: Subscription;
+  private serviceNamesSub: Subscription;
 
   calendarEvents: CalendarBooking[] = [];
 
   // creating event modal
   fullDayEvent = false;
   eventTitle: string;
+
+  // recieved service ID
+  serviceId: string = '';
+
+  // recieved service names
+  serviceNames: any[] = [];
 
 
   constructor(private serviceProviderService: ServiceProviderService,
@@ -46,10 +53,17 @@ export class CalendarComponent implements OnInit {
   ngOnInit() {
     this.serviceProviderService.getCalendarBookings();
     this.calendarBookingSub = this.serviceProviderService.getCalendarBookingsUpdatedListener()
-          .subscribe((recievedBookings: CalendarBooking[]) => {
-              this.calendarEvents = recievedBookings;
-              console.log(this.calendarEvents);
+      .subscribe((recievedBookings: CalendarBooking[]) => {
+        this.calendarEvents = recievedBookings;
+        console.log(this.calendarEvents);
       });
+
+    this.serviceService.getServiceNames();
+    this.serviceNamesSub = this.serviceService.getServiceNamesUpdatedListener()
+    .subscribe((recieved: any[]) => {
+      this.serviceNames = recieved;
+      console.log(this.serviceNames);
+    });
   }
 
 
@@ -64,33 +78,33 @@ export class CalendarComponent implements OnInit {
 
 
   handleSelect(event) {
-      const foo = prompt('Enter Booking Title');
-      if (confirm('Would you like to add booking "' + foo + '" from ' + event.start + ' to ' + event.end + ' ?' )) {
-        console.log(event);
-        const newEvent = {
-          title: foo,
-          start: event.start,
-          end: event.end
-        };
-        console.log(newEvent);
-        this.calendarEvents = this.calendarEvents.concat(newEvent);
-        setTimeout( () => {
-          newEvent.start = newEvent.start.toISOString();
-          newEvent.end = newEvent.end.toISOString();
-          this.createCalendarEvent(newEvent);
-          setTimeout (() => {
-            this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-            this.router.onSameUrlNavigation = 'reload';
-            this.router.navigate(['/sp/dash/calendar']);
-          }, 1000);
-        }, 500);
-      }
+    const foo = prompt('Enter Booking Title');
+    if (confirm('Would you like to add booking "' + foo + '" from ' + event.start + ' to ' + event.end + ' ?')) {
+      console.log(event);
+      const newEvent = {
+        title: foo,
+        start: event.start,
+        end: event.end
+      };
+      console.log(newEvent);
+      this.calendarEvents = this.calendarEvents.concat(newEvent);
+      setTimeout(() => {
+        newEvent.start = newEvent.start.toISOString();
+        newEvent.end = newEvent.end.toISOString();
+        this.createCalendarEvent(newEvent);
+        setTimeout(() => {
+          this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+          this.router.onSameUrlNavigation = 'reload';
+          this.router.navigate(['/sp/dash/calendar']);
+        }, 1000);
+      }, 500);
     }
+  }
 
   createCalendarEvent(newEvent: CalendarBooking) {
     const booking: Booking = {
       booking_id: 'B0',
-      service_id: 'SPBook',
+      service_id: this.serviceId,
       event_id: 'SPBook',
       service_name: 'SPBook',
       service_category: 'SPBook',
@@ -107,10 +121,10 @@ export class CalendarComponent implements OnInit {
       amount: 0,
       commission_due: 0,
       amount_paid: 0,
-      };
+    };
     console.log(booking);
     this.serviceService.createCalendarBooking(booking);
-    }
+  }
 
 }
 

@@ -1,0 +1,240 @@
+<div class="container pt-5 shadow pb-5" *ngIf="event">
+  <div class="row f-image ml-3 mr-3">
+    <img
+      class="d-block w-100"
+      [src]="
+        event.feature_img
+          ? event.feature_img
+          : './assets/images/merchant/nopic.png'
+      "
+      alt="Feature image"
+      class="feature-img"
+    />
+  </div>
+
+  <div class="ml-3 mr-3">
+      <div class="top-stat">
+        <div class="content-title">
+          {{ event.event_title }}
+        </div>
+        <div class="open-stat pt-3">
+          <a mdbWavesEffect role="button" (click)="locationModal.show()">
+            <span
+              ><mdb-icon fas icon="map-marker-alt"> </mdb-icon> At
+              {{ event.location.homeTown }}</span
+            >
+          </a>
+        </div>
+
+        <div
+          class="open-stat pt-2"
+          *ngIf="event.from_date.slice(0, 10) != event.to_date.slice(0, 10)"
+        >
+          <span class="date-stat"
+            ><mdb-icon far icon="calendar-alt"> </mdb-icon> From
+            {{ event.from_date.slice(0, 10) }} to
+            {{ event.to_date.slice(0, 10) }}</span
+          >
+        </div>
+
+        <div
+          class="open-stat pt-2"
+          *ngIf="event.from_date.slice(0, 10) == event.to_date.slice(0, 10)"
+        >
+          <span class="date-stat"
+            ><mdb-icon far icon="clock"> </mdb-icon> On
+            {{ event.from_date.slice(0, 10) }}
+          </span>
+          <br />
+          <span class="date-stat"
+            ><mdb-icon far icon="clock"> </mdb-icon> From
+            {{ event.from_date.slice(11, 16) }} to
+            {{ event.to_date.slice(11, 16) }}</span
+          >
+        </div>
+      </div>
+      <hr />
+      <div class="container text-center pt-4 pb-3">
+        <div>
+            <h4> <strong> Registration Form</strong></h4>
+            <p style="color:gray;"> Fill the below details and register for the event..</p>
+            <button class="btn btn-md pt-3" mdbBtn mdbWavesEffect color="secondary" *ngIf="!published">
+              Edit Form </button>
+        </div>
+        <hr>
+        <form
+        #addParticipantForm="ngForm" class="text-center"
+      >
+            <mat-form-field class="service-full-width">
+              <mat-label>First Name</mat-label>
+              <input
+                matInput
+                name="first_name"
+                #firstName="ngModel"
+                required
+                [(ngModel)]= "registerForm.first_name"
+              />
+            </mat-form-field>
+            <mat-error *ngIf="firstName.invalid"
+              >Please enter your first name</mat-error>
+            <br>
+            <mat-form-field class="service-full-width">
+              <mat-label>Last Name</mat-label>
+              <input
+                matInput
+                name="last_name"
+                #lastName="ngModel"
+                required
+                [(ngModel)] ="registerForm.last_name"
+              />
+            </mat-form-field>
+            <mat-error *ngIf="lastName.invalid"
+              >Please enter your last name</mat-error>
+              <br>
+              <mat-form-field class="service-full-width">
+                <mat-label>Your Email Address</mat-label>
+                <input
+                  matInput
+                  type="email"
+                  name="email"
+                  #email="ngModel"
+                  required
+                  [(ngModel)]="registerForm.email"
+                />
+              </mat-form-field>
+              <mat-error *ngIf="email.invalid"
+                >Please enter email address</mat-error>
+                <br>
+                <mat-form-field class="service-full-width">
+                  <mat-label>Your NIC </mat-label>
+                  <input
+                    matInput
+                    name="nic"
+                    #nic="ngModel"
+                    required
+                    [(ngModel)]="registerForm.nic"
+                  />
+                </mat-form-field>
+                <mat-error *ngIf="nic.invalid"
+                  >A Valid ID is required ( NIC/ DL/ Passport ID)</mat-error>
+                  <br>
+                  <mat-form-field class="service-full-width">
+                    <mat-label>Your Contact No</mat-label>
+                    <input
+                      matInput
+                      name="contact_no"
+                      min="10"
+                      max="10"
+                      #contactNo="ngModel"
+                      required
+                      [(ngModel)] = "registerForm.contant_no"
+                    />
+                  </mat-form-field>
+                  <mat-error *ngIf="contactNo.invalid"
+                    >Please enter a valid contact number (10 digits)</mat-error>
+                    <br>
+                    <mat-form-field  class="service-full-width">
+                      <mat-label>Define boundaries..</mat-label>
+                      <mat-select
+                        required
+                        #eventType="ngModel"
+                        [(ngModel)]="registerForm.gender"
+                        name="event_type"
+                      >
+                        <mat-option value="male">
+                          Male
+                        </mat-option>
+                        <mat-option value="female">
+                          Female
+                        </mat-option>
+                        <mat-option value="none">
+                          Prefer Not to Say
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <hr>
+                    <h5> Additional Information</h5>
+                    <br>
+
+                        <mat-form-field class="service-full-width">
+                          <mat-label>Why would you like to Join this event?</mat-label>
+                          <textarea
+                            matInput
+                            name="optional_qestion_1"
+                            placeholder="Enter your answer for this question..."
+                            rows="4"
+                            ngModel
+                          >
+                          </textarea>
+                        </mat-form-field>
+
+                        <div class="btns text-center">
+                          <button class="btn btn-md" mdbBtn mdbWavesEffect color="secondary" (click) = "registerParticipant(addParticipantForm)">
+                          Register </button>
+                          <button class="btn btn-md" mdbBtn mdbWavesEffect color="red" (click) = "addParticipantForm.resetForm()">
+                            Discard </button>
+                        </div>
+
+      </form>
+      </div>
+
+
+      <hr />
+   </div>
+   </div>
+
+
+
+<!--View Location Modal-->
+<div
+mdbModal
+#locationModal="mdbModal"
+class="modal fade"
+tabindex="-1"
+role="dialog"
+aria-labelledby="myBasicModalLabel"
+[config]="{ backdrop: false, ignoreBackdropClick: true }"
+aria-hidden="true"
+>
+<div
+  class="modal-dialog modal-dialog-centered modal-md"
+  role="document"
+  style="overflow-y: initial !important;"
+>
+  <div class="modal-content">
+    <div class="modal-header">
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="locationModal.hide()"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+      <h4 class="modal-title w-100" id="myModalLabel">
+        <mat-icon>service</mat-icon>View event Location
+      </h4>
+    </div>
+
+    <div class="modal-body" style="height: 400px; overflow-y: auto;">
+      <app-location-search
+        [showLoc]="true"
+        [recievedLocation]="
+          event ? event.location : { lat: 0, lang: 0, homeTown: '' }
+        "
+      ></app-location-search>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        mdbBtn
+        color="link"
+        (click)="locationModal.hide()"
+        mdbWavesEffect
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+</div>

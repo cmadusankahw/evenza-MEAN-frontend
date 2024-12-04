@@ -1,23 +1,32 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { MatDialog , MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material';
+import {
+  MatDialog,
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material';
 import { Router } from '@angular/router';
 import * as io from 'socket.io-client';
 
-import { Service, ServiceCategories, ServiceRates, ServiceQuery, Booking, Appointment, EventServiceQuery, Promotion } from './service.model';
+import {
+  Service,
+  ServiceCategories,
+  ServiceRates,
+  ServiceQuery,
+  Booking,
+  Appointment,
+  EventServiceQuery,
+  Promotion,
+} from './service.model';
 import { SuccessComponent } from 'src/app/success/success.component';
-import { Merchant, BusinessLocation } from '../auth/auth.model';
 import { ErrorComponent } from 'src/app/error/error.component';
-
-
+import { getSocketUrl, getUrl } from 'src/assets/url';
 
 @Injectable({ providedIn: 'root' })
-export class ServiceService  {
-
-    // socket connection
-  private socket = io('http://localhost:3000');
-
+export class ServiceService {
+  // subjects : observer pattern
   private serviceUpdated = new Subject<Service>();
   private serviceProviderServiceUpdated = new Subject<Service[]>();
   private searchedServiceUpdated = new Subject<Service[]>();
@@ -26,78 +35,70 @@ export class ServiceService  {
   private categoriesUpdated = new Subject<ServiceCategories[]>();
   private bookingsUpdated = new Subject<Booking[]>();
   private locationsUpdated = new Subject<any[]>();
+  private serviceNamesUpdated = new Subject<any[]>();
+
 
   // to add services
   private services: Service[] = [];
-
-
-   // to add searched services
-   private searchedServices: Service[] = [];
-
-
-   // event realte searched services
-   private searchedEventServices: Service[] = [];
-
+  // to add searched services
+  private searchedServices: Service[] = [];
+  // event realte searched services
+  private searchedEventServices: Service[] = [];
   // list of service provider services
   private serviceProviderServices: Service[] = [];
-
   // to generate quanitties list
   private categories: ServiceCategories[] = [];
-
   // recieved bookings
   private bookings: Booking[] = [];
-
   // recieved locations
   private locations: any[] = [];
-
   // to render selected service
   private service: Service;
-
   // to generate rates list
   private rates: ServiceRates[] = [
-    {id: '1', val: '/Day'},
-    {id: '2', val: '/Hr'},
-    {id: '3', val: '(Fixed'},
+    { id: '1', val: '/Day' },
+    { id: '2', val: '/Hr' },
+    { id: '3', val: '(Fixed' },
   ];
+  // socket connection
+  private socket = io(getSocketUrl());
+  // api url
+  private url = getUrl();
 
-  // api url (to be centralized)
-  url = 'http://localhost:3000/api/';
-
-    // snack bars for notification display
+  // snack bars for notification display
   private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
+  constructor(
+    private http: HttpClient,
+    public dialog: MatDialog,
+    private router: Router,
+    private _snackBar: MatSnackBar
+  ) {}
 
-  constructor(private http: HttpClient,
-              public dialog: MatDialog,
-              private router: Router,
-              private _snackBar: MatSnackBar) { }
+  // get methods
 
-
-// get methods
-
-// get selected service
- getService() {
+  // get selected service
+  public getService() {
     this.serviceUpdated.next(this.service);
- }
-
+  }
 
   // set current service
-  setService(service: Service) {
+  public setService(service: Service) {
     this.service = service;
     this.serviceUpdated.next(this.service);
     return true;
   }
 
   // return current services
-  getUpdatedServices(){
+  public getUpdatedServices() {
     return this.services;
   }
 
-
   // get list of available services
-  getServices() {
-    this.http.get<{ message: string, services: Service[] }>(this.url + 'service/get')
+  public getServices() {
+    this.http
+      .get<{ message: string; services: Service[] }>(this.url + 'service/get')
       .subscribe((serviceList) => {
         this.services = serviceList.services;
         this.servicesUpdated.next([...this.services]);
@@ -105,94 +106,77 @@ export class ServiceService  {
   }
 
   // get list of sellers only prodcts
-  getServiceProviderServices() {
-      this.http.get<{ message: string, services: Service[] }>(this.url + 'service/get/sp')
-        .subscribe((serviceList) => {
-          this.serviceProviderServices = serviceList.services;
-          this.serviceProviderServiceUpdated.next([...this.serviceProviderServices]);
-        });
+  public getServiceProviderServices() {
+    this.http
+      .get<{ message: string; services: Service[] }>(
+        this.url + 'service/get/sp'
+      )
+      .subscribe((serviceList) => {
+        this.serviceProviderServices = serviceList.services;
+        this.serviceProviderServiceUpdated.next([
+          ...this.serviceProviderServices,
+        ]);
+      });
   }
 
   // get categories list
-  getCategories() {
-    this.http.get<{ message: string, categories: ServiceCategories[] }>(this.url + 'service/cat')
-    .subscribe((categoriesList) => {
-     this.categories = categoriesList.categories;
-     this.categoriesUpdated.next([...this.categories]);
-    });
+  public getCategories() {
+    this.http
+      .get<{ message: string; categories: ServiceCategories[] }>(
+        this.url + 'service/cat/get'
+      )
+      .subscribe((categoriesList) => {
+        this.categories = categoriesList.categories;
+        this.categoriesUpdated.next([...this.categories]);
+      });
   }
 
-   // get service rates list
-   getRates() {
+ // get categories list
+  public getServiceNames() {
+    this.http
+      .get<{ serviceNames: {service_name: string, service_id: string}[] }>(
+        this.url + 'service/snames'
+      )
+      .subscribe((recieved) => {
+        this.serviceNamesUpdated.next(recieved.serviceNames);
+      });
+  }
+
+  // get service rates list
+  public getRates() {
     return this.rates;
   }
 
-
-   // get list of bookings
-   getBookings() {
-    this.http.get<{ message: string, bookings: Booking[] }>(this.url + 'service/booking/get')
+  // get list of bookings
+  public getBookings() {
+    this.http
+      .get<{ message: string; bookings: Booking[] }>(
+        this.url + 'service/booking/get'
+      )
       .subscribe((recievedBookings) => {
         this.bookings = recievedBookings.bookings;
         this.bookingsUpdated.next([...this.bookings]);
       });
-    }
+  }
 
-
-    // get list of locations !!!!!!!! edit
-   getLocations() {
-    this.http.get<{ message: string, locations: any[] }>(this.url + 'service/location/get')
+  // get list of locations !!!!!!!! edit
+  public getLocations() {
+    this.http
+      .get<{ message: string; locations: any[] }>(
+        this.url + 'service/location/get'
+      )
       .subscribe((res) => {
         console.log(res.locations);
         this.locations = res.locations;
         this.locationsUpdated.next([...this.locations]);
       });
-    }
-
-
-
-  // listners for subjects
-  getServiceUpdateListener() {
-    return this.serviceUpdated.asObservable();
-  }
-
-  getBookingsUpdateListener() {
-    return this.bookingsUpdated.asObservable();
   }
 
 
-  getSearchedServiceUpdatedListener() {
-    return this.searchedServiceUpdated.asObservable();
-  }
-
-  getSearchedEventServiceUpdatedListener() {
-    return this.searchedEventServiceUpdated.asObservable();
-  }
-
-
-  getServiceProviderServiceUpdateListener() {
-    return this.serviceProviderServiceUpdated.asObservable();
-  }
-
-
-  getservicesUpdateListener() {
-    return this.servicesUpdated.asObservable();
-  }
-
-
-  getCategoriesUpdateListener() {
-    return this.categoriesUpdated.asObservable();
-  }
-
-  getLocationsUpdateListener() {
-    return this.locationsUpdated.asObservable();
-  }
-
-
-
-  // post methods
+  // setters
 
   // add new service
-  addService(service: Service, images: File[]) {
+  public addService(service: Service, images: File[]) {
     const serviceData = new FormData();
     for (const image of images) {
       if (image) {
@@ -200,8 +184,9 @@ export class ServiceService  {
       }
     }
     console.log(serviceData);
-    this.http.post<{imagePaths: string[]}>(this.url + 'service/add/img', serviceData )
-      .subscribe ((recievedImages) => {
+    this.http
+      .post<{ imagePaths: string[] }>(this.url + 'service/img/add', serviceData)
+      .subscribe((recievedImages) => {
         console.log(recievedImages);
         if (recievedImages.imagePaths[0]) {
           service.image_01 = recievedImages.imagePaths[0];
@@ -212,18 +197,24 @@ export class ServiceService  {
         if (recievedImages.imagePaths[2]) {
           service.image_03 = recievedImages.imagePaths[2];
         }
-        this.http.post<{ message: string, result: Service }>(this.url + 'service/add', service)
-        .subscribe((recievedData) => {
-          console.log(recievedData.message);
-          console.log(recievedData.result);
-          this.getServiceProviderServices();
-          this.dialog.open(SuccessComponent, {data: {message: 'Service Successfully Added!'}});
+        this.http
+          .post<{ message: string; result: Service }>(
+            this.url + 'service/add',
+            service
+          )
+          .subscribe((recievedData) => {
+            console.log(recievedData.message);
+            console.log(recievedData.result);
+            this.getServiceProviderServices();
+            this.dialog.open(SuccessComponent, {
+              data: { message: 'Service Successfully Added!' },
+            });
+          });
       });
-    });
   }
 
   // update service
-  updateService(service: Service, images: File[]) {
+  public updateService(service: Service, images: File[]) {
     const serviceData = new FormData();
     const currentImg = [];
     let j = 0;
@@ -235,44 +226,57 @@ export class ServiceService  {
       j++;
     }
     console.log(serviceData);
-    this.http.post<{imagePaths: string[]}>(this.url + 'service/add/img', serviceData )
-      .subscribe ((recievedImages) => {
-      console.log(recievedImages);
-      recievedImages.imagePaths.find((img) => {
-        if ( currentImg.includes(2) ) {
-          service.image_03 = img;
-          currentImg.pop();
-        } else if ( currentImg.includes(1)) {
+    this.http
+      .post<{ imagePaths: string[] }>(this.url + 'service/img/add', serviceData)
+      .subscribe((recievedImages) => {
+        console.log(recievedImages);
+        recievedImages.imagePaths.find((img) => {
+          if (currentImg.includes(2)) {
+            service.image_03 = img;
+            currentImg.pop();
+          } else if (currentImg.includes(1)) {
             service.image_02 = img;
             currentImg.pop();
-        } else if ( currentImg.includes(0)) {
+          } else if (currentImg.includes(0)) {
             service.image_01 = img;
             currentImg.pop();
-        }
+          }
+        });
+        this.http
+          .post<{ message: string; result: Service }>(
+            this.url + 'service/edit',
+            service
+          )
+          .subscribe((recievedData) => {
+            console.log(recievedData.message);
+            console.log(recievedData.result);
+            this.service = service;
+            this.serviceUpdated.next(this.service);
+            this.getServiceProviderServices();
+            this.dialog.open(SuccessComponent, {
+              data: { message: 'Service Successfully Updated!' },
+            });
+          });
       });
-      this.http.post<{ message: string, result: Service }>(this.url + 'service/edit', service)
-      .subscribe((recievedData) => {
-        console.log(recievedData.message);
-        console.log(recievedData.result);
-        this.service = service;
-        this.serviceUpdated.next(this.service);
-        this.getServiceProviderServices();
-        this.dialog.open(SuccessComponent, {data: {message: 'Service Successfully Updated!'}});
-    });
-  });
   }
 
   // remove service
-  removeService(serviceId: string) {
+  public removeService(serviceId: string) {
     console.log(serviceId);
-    this.http.delete<{ message: string }>(this.url + 'service/edit/' + serviceId)
+    this.http
+      .delete<{ message: string }>(this.url + 'service/edit/' + serviceId)
       .subscribe((recievedData) => {
-        const updatedServices = this.serviceProviderServices.filter(prod => prod.service_id !== serviceId);
+        const updatedServices = this.serviceProviderServices.filter(
+          (prod) => prod.service_id !== serviceId
+        );
         this.serviceProviderServices = updatedServices;
-        this.serviceProviderServiceUpdated.next([...this.serviceProviderServices]);
+        this.serviceProviderServiceUpdated.next([
+          ...this.serviceProviderServices,
+        ]);
         console.log(recievedData.message);
-        this.dialog.open(SuccessComponent,
-          {data: {message: 'Service has Removed!'}});
+        this.dialog.open(SuccessComponent, {
+          data: { message: 'Service has Removed!' },
+        });
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
         this.router.navigate(['/sp/dash/bprofile']);
@@ -280,17 +284,20 @@ export class ServiceService  {
           duration: 2500,
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,
-          });
+        });
       });
   }
 
-
   // add new category by admin
-  addCategory(category: string) {
-    this.http.post<{ message: string }>(this.url + 'service/cat/add', { val: category})
-    .subscribe((res) => {
-        this.dialog.open(SuccessComponent,
-        {data: {message: 'New Service Category has Created!'}});
+  public addCategory(category: string) {
+    this.http
+      .post<{ message: string }>(this.url + 'service/cat/add', {
+        val: category,
+      })
+      .subscribe((res) => {
+        this.dialog.open(SuccessComponent, {
+          data: { message: 'New Service Category has Created!' },
+        });
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
         this.router.navigate(['/admin/categories']);
@@ -298,104 +305,150 @@ export class ServiceService  {
           duration: 2500,
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,
-          });
-    });
+        });
+      });
   }
 
   // remove a category by admin
-  removeCategory(cat: string) {
-    this.http.post<{ message: string }>(this.url + 'service/cat/remove', cat)
-    .subscribe((res) => {
-        this.dialog.open(SuccessComponent,
-        {data: {message: 'Service Category deleted!'}});
-        const updatedCategories = this.categories.filter(catr => catr.val !== cat);
+  public removeCategory(cat: string) {
+    this.http
+      .post<{ message: string }>(this.url + 'service/cat/remove', {cat})
+      .subscribe((res) => {
+        this.dialog.open(SuccessComponent, {
+          data: { message: 'Service Category deleted!' },
+        });
+        const updatedCategories = this.categories.filter(
+          (catr) => catr.val !== cat
+        );
         this.categories = updatedCategories;
         this.categoriesUpdated.next([...this.categories]);
         this._snackBar.open('Category has removed!', 'Dismiss', {
           duration: 2500,
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,
-          });
-    });
+        });
+      });
   }
-
 
   // search services
-  searchServices(searchQuery: ServiceQuery) {
-    this.http.post<{ message: string, services: Service[] }>(this.url + 'service/search', searchQuery)
-    .subscribe((serviceList) => {
-      this.searchedServices = serviceList.services;
-      this.searchedServiceUpdated.next([...this.searchedServices]);
-      console.log(serviceList.message);
-    });
+  public searchServices(searchQuery: ServiceQuery) {
+    this.http
+      .post<{ message: string; services: Service[] }>(
+        this.url + 'service/search/all',
+        searchQuery
+      )
+      .subscribe((serviceList) => {
+        this.searchedServices = serviceList.services;
+        this.searchedServiceUpdated.next([...this.searchedServices]);
+        console.log(serviceList.message);
+      });
   }
 
-    // search event related services
-    searchEventServices(searchQuery: EventServiceQuery) {
-      this.http.post<{ message: string, services: Service[] }>(this.url + 'service/event/search', searchQuery)
+  // search event related services
+  public searchEventServices(searchQuery: EventServiceQuery) {
+    this.http
+      .post<{ message: string; services: Service[] }>(
+        this.url + 'service/search/event',
+        searchQuery
+      )
       .subscribe((serviceList) => {
         this.searchedEventServices = serviceList.services;
         this.searchedEventServiceUpdated.next([...this.searchedEventServices]);
         console.log(serviceList.message);
       });
-    }
+  }
 
-    // rating a product
-    rateService(id: string, rate: number, review: string) {
-      this.http.post<{ message: string }>(this.url + 'service/rating/add', {id,  rate, review})
+  // rating a product
+  public rateService(id: string, rate: number, review: string) {
+    this.http
+      .post<{ message: string }>(this.url + 'service/rating/add', {
+        id,
+        rate,
+        review,
+      })
       .subscribe((recievedData) => {
         console.log(recievedData.message);
-        this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
-    });
-    }
-
+        this.dialog.open(SuccessComponent, {
+          data: { message: recievedData.message },
+        });
+      });
+  }
 
   // add promotion
-  addPromotion(promotion: Promotion, serviceId: string ) {
-    this.http.post<{ message: string }>(this.url + 'service/promotion/add', {promotion, serviceId})
-    .subscribe((recievedData) => {
-      console.log(recievedData.message);
-      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-      this.router.onSameUrlNavigation = 'reload';
-      this.router.navigate(['/sp/dash/bprofile']);
-      this.dialog.open(SuccessComponent, {data: {message: recievedData.message}});
-  });
+  public addPromotion(promotion: Promotion, serviceId: string) {
+    this.http
+      .post<{ message: string }>(this.url + 'service/promotion/add', {
+        promotion,
+        serviceId,
+      })
+      .subscribe((recievedData) => {
+        console.log(recievedData.message);
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate(['/sp/dash/bprofile']);
+        this.dialog.open(SuccessComponent, {
+          data: { message: recievedData.message },
+        });
+      });
   }
 
   // create new booking
-  createBooking(booking: Booking) {
-          this.checkAvailability(booking.from_date,
-          booking.to_date,
-          booking.service_id)
-          .subscribe ( availabilityState => {
-            console.log(availabilityState);
-            if (availabilityState.availability) {
-              this.http.post<{ message: string, bookingId: string }>(this.url + 'service/booking/add', booking)
-              .subscribe((recievedData) => {
-                console.log(recievedData.message);
-                this.router.navigate(['/print/booking/' + recievedData.bookingId]);
-                this.sendBooking(booking.service_name, booking.from_date.slice(0,10), booking.to_date.slice(0,10));
-                this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
+  public createBooking(booking: Booking) {
+    this.checkAvailability(
+      booking.from_date,
+      booking.to_date,
+      booking.service_id
+    ).subscribe((availabilityState) => {
+      console.log(availabilityState);
+      if (availabilityState.availability) {
+        this.http
+          .post<{ message: string; bookingId: string }>(
+            this.url + 'service/booking/add',
+            booking
+          )
+          .subscribe((recievedData) => {
+            console.log(recievedData.message);
+            this.router.navigate(['/print/booking/' + recievedData.bookingId]);
+            this.sendBooking(
+              booking.service_name,
+              booking.from_date.slice(0, 10),
+              booking.to_date.slice(0, 10)
+            );
+            this.dialog.open(SuccessComponent, {
+              data: {
+                message:
+                  'Booking Successfull! Your Booking Id: ' +
+                  recievedData.bookingId,
+              },
             });
-            } else {
-              this.dialog.open(ErrorComponent, {data: {message: 'Selected dates are already booked! Please try again'}});
-
-            }
-          } );
+          });
+      } else {
+        this.dialog.open(ErrorComponent, {
+          data: {
+            message: 'Selected dates are already booked! Please try again',
+          },
+        });
+      }
+    });
   }
 
-
   // create new event related booking
-  createEventBooking(booking: Booking) {
-           this.checkAvailability(booking.from_date,
-           booking.to_date,
-           booking.service_id)
-           .subscribe ( availabilityState => {
-             if (availabilityState.availability) {
-            this.http.post<{ message: string, bookingId: string }>(this.url + 'service/booking/add', booking)
-            .subscribe((recievedData) => {
-               console.log(recievedData.message);
-               this.http.post<{ message: string }>(this.url + 'service/booking/event', {
+  public createEventBooking(booking: Booking) {
+    this.checkAvailability(
+      booking.from_date,
+      booking.to_date,
+      booking.service_id
+    ).subscribe((availabilityState) => {
+      if (availabilityState.availability) {
+        this.http
+          .post<{ message: string; bookingId: string }>(
+            this.url + 'service/booking/add',
+            booking
+          )
+          .subscribe((recievedData) => {
+            console.log(recievedData.message);
+            this.http
+              .post<{ message: string }>(this.url + 'service/booking/event', {
                 event_id: booking.event_id,
                 service_id: booking.service_id,
                 service_name: booking.service_name,
@@ -405,111 +458,213 @@ export class ServiceService  {
                 spent_budget: booking.amount,
                 booking_from_date: booking.from_date,
                 booking_to_date: booking.to_date,
-               })
-               .subscribe((recievedMsg) => {
-                 console.log(recievedMsg.message);
-                 this.router.navigate(['/print/booking/' + recievedData.bookingId]);
-                 this.sendBooking(booking.service_name, booking.from_date.slice(0,10), booking.to_date.slice(0,10));
-                 this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
-             });
-            });
-         } else {
-          this.dialog.open(ErrorComponent, {data: {message: 'Selected dates are already booked! Please try again'}});
-        }
-           });
-   }
+              })
+              .subscribe((recievedMsg) => {
+                console.log(recievedMsg.message);
+                this.router.navigate([
+                  '/print/booking/' + recievedData.bookingId,
+                ]);
+                this.sendBooking(
+                  booking.service_name,
+                  booking.from_date.slice(0, 10),
+                  booking.to_date.slice(0, 10)
+                );
+                this.dialog.open(SuccessComponent, {
+                  data: {
+                    message:
+                      'Booking Successfull! Your Booking Id: ' +
+                      recievedData.bookingId,
+                  },
+                });
+              });
+          });
+      } else {
+        this.dialog.open(ErrorComponent, {
+          data: {
+            message: 'Selected dates are already booked! Please try again',
+          },
+        });
+      }
+    });
+  }
 
-   // create new calendar booking
-   createCalendarBooking(booking: Booking) {
-    this.checkAvailability(booking.from_date,
-                                          booking.to_date,
-                                          booking.service_id)
-      .subscribe ((recievedAvailability) => {
-        if (recievedAvailability.availability) {
-          this.http.post<{ message: string, bookingId: string }>(this.url + 'service/calbooking/add', booking)
+  // create new calendar booking
+  public createCalendarBooking(booking: Booking) {
+        this.http
+          .post<{ message: string; bookingId: string }>(
+            this.url + 'service/booking/cal/add',
+            booking
+          )
           .subscribe((recievedData) => {
             console.log(recievedData.message);
-            this.dialog.open(SuccessComponent, {data: {message: 'Booking Successfull! Your Booking Id: ' + recievedData.bookingId}});
+            this.dialog.open(SuccessComponent, {
+              data: {
+                message:
+                  'Booking Successfull! Your Booking Id: ' +
+                  recievedData.bookingId,
+              },
+            });
           });
-        }
-        else {
-          this.dialog.open(ErrorComponent,
-            {data: {message: 'Sorry! The Service not available on selected Dates'}});
-        }
-    });
-}
+  }
 
   // create new appointment
-   createAppointment(appointment: Appointment) {
-      this.http.post<{ message: string, appointId: string }>(this.url + 'service/appoint/add', appointment)
+  public createAppointment(appointment: Appointment) {
+    this.http
+      .post<{ message: string; appointId: string }>(
+        this.url + 'service/appoint/add',
+        appointment
+      )
       .subscribe((recievedData) => {
         console.log(recievedData.message);
         this.router.navigate(['/print/appoint/' + recievedData.appointId]);
-        this.sendAppointment(appointment.service_name, appointment.appointed_date.slice(0,10), appointment.appointed_date.slice(11,16));
-        this.dialog.open(SuccessComponent, {data: {message: 'Appointment Successfull! Your Appointment Id: ' + recievedData.appointId}});
-    });
+        this.sendAppointment(
+          appointment.service_name,
+          appointment.appointed_date.slice(0, 10),
+          appointment.appointed_date.slice(11, 16)
+        );
+        this.dialog.open(SuccessComponent, {
+          data: {
+            message:
+              'Appointment Successfull! Your Appointment Id: ' +
+              recievedData.appointId,
+          },
+        });
+      });
   }
 
-    // create new  event related appointment
-    createEventAppointment(appointment: Appointment) {
-      this.http.post<{ message: string, appointId: string }>(this.url + 'service/appoint/add', appointment)
+  // create new  event related appointment
+  public createEventAppointment(appointment: Appointment) {
+    this.http
+      .post<{ message: string; appointId: string }>(
+        this.url + 'service/appoint/add',
+        appointment
+      )
       .subscribe((recievedData) => {
-        this.http.post<{ message: string }>(this.url + 'service/appoint/event', {
-          event_id: appointment.event_id,
-          service_id: appointment.service_id,
-          appoint_id: appointment.appoint_id,
-          service_name: appointment.service_name,
-          service_category: appointment.service_category,
-          appointed_date: appointment.appointed_date,
-         })
-         .subscribe((recievedMsg) => {
-        console.log(recievedMsg.message);
-        this.router.navigate(['/print/appoint/' + recievedData.appointId]);
-        this.sendAppointment(appointment.service_name, appointment.appointed_date.slice(0,10), appointment.appointed_date.slice(11,16));
-        this.dialog.open(SuccessComponent, {data: {message: 'Appointment Successfull! Your Appointment Id: ' + recievedData.appointId}});
-    });
-  });
+        this.http
+          .post<{ message: string }>(this.url + 'service/appoint/event', {
+            event_id: appointment.event_id,
+            service_id: appointment.service_id,
+            appoint_id: appointment.appoint_id,
+            service_name: appointment.service_name,
+            service_category: appointment.service_category,
+            appointed_date: appointment.appointed_date,
+          })
+          .subscribe((recievedMsg) => {
+            console.log(recievedMsg.message);
+            this.router.navigate(['/print/appoint/' + recievedData.appointId]);
+            this.sendAppointment(
+              appointment.service_name,
+              appointment.appointed_date.slice(0, 10),
+              appointment.appointed_date.slice(11, 16)
+            );
+            this.dialog.open(SuccessComponent, {
+              data: {
+                message:
+                  'Appointment Successfull! Your Appointment Id: ' +
+                  recievedData.appointId,
+              },
+            });
+          });
+      });
   }
 
   // check booking availability
-  checkAvailability(fromDate: string, toDate: string, serviceId: string) {
+  public checkAvailability(fromDate: string, toDate: string, serviceId: string) {
     console.log(fromDate, toDate);
-    return this.http.post<{ message: string, availability: boolean }>(this.url + 'service/booking/check', {fromDate, toDate, serviceId});
+    return this.http.post<{ message: string; availability: boolean }>(
+      this.url + 'service/booking/check',
+      { fromDate, toDate, serviceId }
+    );
   }
+
+
+   // listners for subjects
+   public getServiceUpdateListener() {
+    return this.serviceUpdated.asObservable();
+  }
+
+  public getBookingsUpdateListener() {
+    return this.bookingsUpdated.asObservable();
+  }
+
+  public getSearchedServiceUpdatedListener() {
+    return this.searchedServiceUpdated.asObservable();
+  }
+
+  public getSearchedEventServiceUpdatedListener() {
+    return this.searchedEventServiceUpdated.asObservable();
+  }
+
+  public getServiceProviderServiceUpdateListener() {
+    return this.serviceProviderServiceUpdated.asObservable();
+  }
+
+  public getservicesUpdateListener() {
+    return this.servicesUpdated.asObservable();
+  }
+
+  public getCategoriesUpdateListener() {
+    return this.categoriesUpdated.asObservable();
+  }
+
+  public getLocationsUpdateListener() {
+    return this.locationsUpdated.asObservable();
+  }
+
+  public getServiceNamesUpdatedListener() {
+    return this.serviceNamesUpdated.asObservable();
+  }
+
+
 
   // realtime notifications with socket.io
 
   // trigger booking created event realtime for interested listeners
-    newBookingCreated(){
-      let observable = new Observable<{service: string, fromDate: string , toDate: string}>(observer => {
-          this.socket.on('booking add', (data) => {
-              observer.next(data);
-          });
-          return () => {this.socket.disconnect(); };
+  public newBookingCreated() {
+    const observable = new Observable<{
+      service: string;
+      fromDate: string;
+      toDate: string;
+    }>((observer) => {
+      this.socket.on('booking add', (data) => {
+        observer.next(data);
       });
-      return observable;
-  }
-
-  // emit socket once a booking is created
-  sendBooking(service: string, fromDate: string, toDate: string) {
-        this.socket.emit('booking-add', {service, fromDate, toDate});
-  }
-
-   // emit socket once a booking is created
-  sendAppointment(service: string, appointedDate: string, appointedtime: string) {
-        this.socket.emit('booking-add', {service, appointedDate, appointedtime});
-  }
-
-  // appointment handeling
-  newApointCreated(){
-    let observable = new Observable<{service: string, appointedDate: string , appointedTime: string}>(observer => {
-        this.socket.on('appoint add', (data) => {
-            observer.next(data);
-        });
-        return () => {this.socket.disconnect(); };
+      return () => {
+        this.socket.disconnect();
+      };
     });
     return observable;
   }
 
+  // emit socket once a booking is created
+  public sendBooking(service: string, fromDate: string, toDate: string) {
+    this.socket.emit('booking-add', { service, fromDate, toDate });
+  }
+
+  // emit socket once a booking is created
+  public sendAppointment(
+    service: string,
+    appointedDate: string,
+    appointedtime: string
+  ) {
+    this.socket.emit('appoint-add', { service, appointedDate, appointedtime });
+  }
+
+  // appointment handeling
+  public newApointCreated() {
+    const observable = new Observable<{
+      service: string;
+      appointedDate: string;
+      appointedTime: string;
+    }>((observer) => {
+      this.socket.on('appoint add', (data) => {
+        observer.next(data);
+      });
+      return () => {
+        this.socket.disconnect();
+      };
+    });
+    return observable;
+  }
 
 }

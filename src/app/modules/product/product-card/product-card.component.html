@@ -1,62 +1,74 @@
-<div class="pd-top-min" *ngIf="isowner" >
-  <button mdbBtn mdbWavesEffect color="secondary" class="btn btn-md" (click)= "productDetailsShow.show()" style="margin-bottom:20px; margin-left:0px;">
+<div class="pd-top-min" *ngIf="isowner">
+  <button
+    mdbBtn
+    mdbWavesEffect
+    color="secondary"
+    class="btn btn-md"
+    (click)="productDetailsShow.show()"
+    style="margin-bottom: 20px; margin-left: 0px;"
+  >
     + Add New Product
   </button>
 </div>
 <div class="card-deck" *ngIf="hasData()">
   <!-- Card -->
 
-                <mdb-card *ngFor="let prod of products">
+  <mdb-card *ngFor="let prod of products">
+    <div class="view overlay waves-light" mdbWavesEffect>
+      <!-- Card img -->
+      <mdb-card-img
+        src="{{ prod.image_01 }}"
+        [alt]="prod.product"
+      ></mdb-card-img>
+      <a>
+        <div class="mask rgba-white-slight"></div>
+      </a>
+    </div>
+    <!--Card content-->
+    <mdb-card-body>
+      <!--Title-->
+      <mdb-card-title>
+        <h4>{{ prod.product }}</h4>
+      </mdb-card-title>
 
-                  <div class="view overlay waves-light" mdbWavesEffect>
-                    <!-- Card img -->
-                    <mdb-card-img src={{prod.image_01}} [alt]="prod.product"></mdb-card-img>
-                    <a>
-                      <div class="mask rgba-white-slight"></div>
-                    </a>
-                  </div>
-                  <!--Card content-->
-                  <mdb-card-body>
-                    <!--Title-->
-                    <mdb-card-title>
-                      <h4>{{prod.product}}</h4>
-                    </mdb-card-title>
+      <!--Text-->
+      <mdb-card-text>
+        {{ prod.description.slice(0, 14) + "..." }}
+        <hr />
+      </mdb-card-text>
 
-                    <!--Text-->
-                    <mdb-card-text> {{prod.description.slice(0,14)+ '...'}}
-                      <hr>
+      <div>
+        <div class="left-notify" *ngIf="!isowner">
+          <span style="font-size: 20px; font-weight: bold;"
+            >Rs.{{ prod.price }}</span
+          >
+        </div>
+        <div class="left-btn">
+          <a
+            mdbBtn
+            color="secondary"
+            class="btn btn-md"
+            mdbWavesEffect
+            (click)="sendProduct(prod)"
+            (click)="productDetails.show()"
+          >
+            <span *ngIf="isowner"> More Details </span>
+            <span *ngIf="!isowner"> Order Now </span>
+          </a>
+        </div>
 
-                    </mdb-card-text>
+        <div class="right-notify" *ngIf="isowner">
+          <mdb-icon fas icon="bookmark"> </mdb-icon>{{ prod.no_of_orders }}
+          <mdb-icon fas icon="star"> </mdb-icon>{{ prod.rating }}
+        </div>
+      </div>
+    </mdb-card-body>
+  </mdb-card>
+</div>
 
-                    <div>
-                      <div class="left-notify" *ngIf="!isowner">
-                        <span style="font-size:20px; font-weight:bold;">Rs.{{prod.price}}</span>
-                      </div>
-                      <div class="left-btn">
-                        <a mdbBtn color="secondary" class="btn btn-md" mdbWavesEffect
-                        (click)= "sendProduct(prod)" (click)="productDetails.show()">
-                          <span *ngIf="isowner"> More Details </span>
-                          <span *ngIf="!isowner"> Order Now </span>
-                        </a>
-                      </div>
-
-                      <div class="right-notify" *ngIf="isowner">
-                        <mdb-icon fas icon="bookmark"> </mdb-icon>{{prod.no_of_orders}}
-                        <mdb-icon fas icon="star"> </mdb-icon>{{prod.rating}}
-                      </div>
-
-
-                    </div>
-
-                  </mdb-card-body>
-                </mdb-card>
-
-  </div>
-
-  <div class="container-fluid text-center" *ngIf="!hasData()">
-    <p>No Products Found</p>
-  </div>
-
+<div class="container-fluid text-center" *ngIf="!hasData()">
+  <p>No Products Found</p>
+</div>
 
 <!--View Service Modal-->
 <div
@@ -66,13 +78,13 @@
   tabindex="-1"
   role="dialog"
   aria-labelledby="myBasicModalLabel"
-  [config]="{ backdrop: false, ignoreBackdropClick: true, show:success }"
+  [config]="{ backdrop: false, ignoreBackdropClick: true, show: success }"
   aria-hidden="true"
 >
   <div
     class="modal-dialog modal-dialog-centered modal-lg"
     role="document"
-    style="overflow-y: initial !important"
+    style="overflow-y: initial !important;"
   >
     <div class="modal-content">
       <div class="modal-header">
@@ -80,27 +92,28 @@
           type="button"
           class="close pull-right"
           aria-label="Close"
-          (click)="success=false"
+          (click)="success = false"
           (click)="productDetails.hide()"
         >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
+        <h4 class="modal-title w-100" id="myModalLabel">
           <mat-icon>service</mat-icon>Product Details
         </h4>
       </div>
 
-      <div class="modal-body " style="height: 500px; overflow-y: auto;">
-
-        <app-product-details [isowner]="isowner" [islogged] = "islogged" ></app-product-details>
-
+      <div class="modal-body" style="height: 500px; overflow-y: auto;">
+        <app-product-details
+          [isowner]="isowner"
+          [islogged]="islogged"
+        ></app-product-details>
       </div>
 
       <div class="modal-footer">
         <button
           mdbBtn
           color="link"
-          (click)="success=false"
+          (click)="success = false"
           (click)="productDetails.hide()"
           mdbWavesEffect
         >
@@ -110,7 +123,6 @@
     </div>
   </div>
 </div>
-
 
 <!--View Product Modal-->
 <div
@@ -122,12 +134,11 @@
   aria-labelledby="myBasicModalLabel"
   [config]="{ backdrop: false, ignoreBackdropClick: true }"
   aria-hidden="true"
-
 >
   <div
     class="modal-dialog modal-dialog-centered modal-lg"
     role="document"
-    style="overflow-y: initial !important"
+    style="overflow-y: initial !important;"
   >
     <div class="modal-content">
       <div class="modal-header">
@@ -139,15 +150,15 @@
         >
           <span aria-hidden="true">×</span>
         </button>
-        <h4 class="modal-title w-100" id="myModalLabel" >
+        <h4 class="modal-title w-100" id="myModalLabel">
           <mat-icon>add</mat-icon> Create New Product
         </h4>
       </div>
 
-      <div class="modal-body " style="height: 450px; overflow-y: auto;">
-
-        <app-add-new-product [businessName] = "businessName"></app-add-new-product>
-
+      <div class="modal-body" style="height: 450px; overflow-y: auto;">
+        <app-add-new-product
+          [businessName]="businessName"
+        ></app-add-new-product>
       </div>
 
       <div class="modal-footer">

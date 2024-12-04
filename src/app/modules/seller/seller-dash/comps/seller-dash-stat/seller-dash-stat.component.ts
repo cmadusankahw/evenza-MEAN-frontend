@@ -16,33 +16,33 @@ export class SellerDashStatComponent implements OnInit, OnDestroy {
   private dashStatSub: Subscription;
 
 
- orderCounts: DashStat;
+  orderCounts: DashStat;
 
   constructor(private sellerService: SellerService) { }
 
   ngOnInit() {
     this.sellerService.getreportData();
     this.reportStatSub = this.sellerService.getReportDataUpdateListener()
-           .subscribe((recievedData: boolean) => {
-             if(recievedData) {
-               this.sellerService.getDashStat();
-               this.dashStatSub = this.sellerService.getDashStatUpdateListener()
-               .subscribe ( (recievedStat: DashStat) => {
-                 this.orderCounts = recievedStat;
-                 console.log(this.orderCounts);
-               })
-             }
-       });
-   }
+      .subscribe((recievedData: boolean) => {
+        if (recievedData) {
+          this.sellerService.getDashStat();
+          this.dashStatSub = this.sellerService.getDashStatUpdateListener()
+            .subscribe((recievedStat: DashStat) => {
+              this.orderCounts = recievedStat;
+              console.log(this.orderCounts);
+            });
+        }
+      });
+  }
 
-   ngOnDestroy() {
-     if (this.dashStatSub) {
-       this.dashStatSub.unsubscribe();
-     }
-     if (this.reportStatSub) {
+  ngOnDestroy() {
+    if (this.dashStatSub) {
+      this.dashStatSub.unsubscribe();
+    }
+    if (this.reportStatSub) {
       this.reportStatSub.unsubscribe();
     }
-   }
+  }
 
 
 }

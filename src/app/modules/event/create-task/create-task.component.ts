@@ -15,15 +15,15 @@ export class CreateTaskComponent implements OnInit {
 
   @Input() recievedTask: Task;
 
-   // exporting business location data
-   @Output() taskEmmit = new EventEmitter<Task>();
+  // exporting business location data
+  @Output() taskEmmit = new EventEmitter<Task>();
 
   // created task
   start = this.today;
   end = this.today;
   @Input() eventId: string;
-  fromTime = {hour: this.today.getHours(), minute: this.today.getMinutes()};
-  toTime = {hour: this.today.getHours(), minute: this.today.getMinutes()};
+  fromTime = { hour: this.today.getHours(), minute: this.today.getMinutes() };
+  toTime = { hour: this.today.getHours(), minute: this.today.getMinutes() };
   title = 'New Task';
   description = '';
   taskId = '';
@@ -43,29 +43,29 @@ export class CreateTaskComponent implements OnInit {
   // create a new task
   createTask() {
     const task: Task = {
-        task_id: 'task_' + this.title.toLowerCase().replace(' ', '_') + '_' +  Math.floor(Math.random() * 1000).toString(),
-        title: this.title,
-        description: this.description,
-        scheduled_from_date: refactorDate(this.start, this.fromTime),
-        scheduled_to_date: refactorDate(this.end, this.toTime),
-        state: 'pending',
+      task_id: 'task_' + this.title.toLowerCase().replace(' ', '_') + '_' + Math.floor(Math.random() * 1000).toString(),
+      title: this.title,
+      description: this.description,
+      scheduled_from_date: refactorDate(this.start, this.fromTime),
+      scheduled_to_date: refactorDate(this.end, this.toTime),
+      state: 'pending',
     };
     this.eventService.createTask(task, this.eventId); // generate task id and segment id from backend
-    }
+  }
 
-    // send update task details to the parent for updating
-    updateTask() {
-      const task: Task = {
-        task_id: this.recievedTask.task_id,
-        title: this.title,
-        description: this.description,
-        scheduled_from_date: this.recievedTask.scheduled_from_date,
-        scheduled_to_date: this.recievedTask.scheduled_to_date,
-        state: 'pending',
-     };
-      this.taskEmmit.emit(task);
-      console.log(task);
-   }
+  // send update task details to the parent for updating
+  updateTask() {
+    const task: Task = {
+      task_id: this.recievedTask.task_id,
+      title: this.title,
+      description: this.description,
+      scheduled_from_date: this.recievedTask.scheduled_from_date,
+      scheduled_to_date: this.recievedTask.scheduled_to_date,
+      state: 'pending',
+    };
+    this.taskEmmit.emit(task);
+    console.log(task);
+  }
 
 
 

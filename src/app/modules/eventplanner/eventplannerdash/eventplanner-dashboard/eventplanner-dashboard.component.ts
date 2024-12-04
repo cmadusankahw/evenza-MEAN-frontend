@@ -10,6 +10,8 @@ import { AuthService } from '../../../auth/auth.service';
 import { Router, NavigationStart } from '@angular/router';
 import { ServiceProviderService } from 'src/app/modules/serviceprovider/serviceprovider.service';
 import { SellerService } from 'src/app/modules/seller/seller.service';
+import { EventService } from 'src/app/modules/event/event.service';
+import { ScheduleAlert } from 'src/app/modules/event/event.model';
 
 
 @Component({
@@ -19,35 +21,36 @@ import { SellerService } from 'src/app/modules/seller/seller.service';
 })
 export class EventplannerDashboardComponent implements OnInit, OnDestroy {
 
-   // subscription
-   private eventPlannerSub: Subscription ;
+  // subscription
+  private eventPlannerSub: Subscription;
+  private alertSub: Subscription;
 
-   // recieved Event Planner
-   eventPlanner: EventPlanner;
+  // recieved Event Planner
+  eventPlanner: EventPlanner;
 
-   // navigation
-   home = 'txt-white row';
-   events = 'txt-white row';
-   bookings = 'txt-white row';
-   appoints = 'txt-white row';
-   orders = 'txt-white row';
-   profile = 'txt-white row';
-   reports = 'txt-white row';
+  // navigation
+  home = 'txt-white row';
+  events = 'txt-white row';
+  bookings = 'txt-white row';
+  appoints = 'txt-white row';
+  orders = 'txt-white row';
+  profile = 'txt-white row';
+  reports = 'txt-white row';
 
 
-   // side nav controller
-   opened = false;
+  // side nav controller
+  opened = false;
 
-       // snack bars for notification display
+  // snack bars for notification display
   private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-  .pipe(
-    map(result => result.matches),
-    shareReplay()
-  );
+    .pipe(
+      map(result => result.matches),
+      shareReplay()
+    );
 
 
 
@@ -55,52 +58,65 @@ export class EventplannerDashboardComponent implements OnInit, OnDestroy {
               private router: Router, private authService: AuthService,
               private serviceProviderservice: ServiceProviderService,
               private sellerService: SellerService,
+              private eventService: EventService,
               private _snackBar: MatSnackBar) {
 
-                // hadeling booking state changed notification
-                 this.serviceProviderservice.onBookingStateChanged()
-                 .subscribe( data => {
-                   this._snackBar.open('Booking ' + data.bookingId
-                   + ' on ' + data.service
-                   + ' was ' + data.state, 'Dismiss', {
-                   duration: 5000,
-                   horizontalPosition: this.horizontalPosition,
-                   verticalPosition: this.verticalPosition,
-                   });
-                 });
+    // hadeling booking state changed notification
+    this.serviceProviderservice.onBookingStateChanged()
+      .subscribe(data => {
+        this._snackBar.open('Booking ' + data.bookingId
+          + ' on ' + data.service
+          + ' was ' + data.state, 'Dismiss', {
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+      });
 
-                  // hadeling apointment state changed notification
-                 this.serviceProviderservice.onAppointmentStateChanged()
-                  .subscribe( data => {
-                    this._snackBar.open('Appointment ' + data.appointId
-                    + ' on ' + data.service
-                    + ' was ' + data.state, 'Dismiss', {
-                    duration: 5000,
-                    horizontalPosition: this.horizontalPosition,
-                    verticalPosition: this.verticalPosition,
-                    });
-                  });
+    // hadeling apointment state changed notification
+    this.serviceProviderservice.onAppointmentStateChanged()
+      .subscribe(data => {
+        this._snackBar.open('Appointment ' + data.appointId
+          + ' on ' + data.service
+          + ' was ' + data.state, 'Dismiss', {
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+      });
 
-                     // hadeling apointment state changed notification
-                 this.sellerService.onOrderStateChanged()
-                 .subscribe( data => {
-                   this._snackBar.open('Order ' + data.orderId
-                   + ' on ' + data.product
-                   + ' was ' + data.state, 'Dismiss', {
-                   duration: 5000,
-                   horizontalPosition: this.horizontalPosition,
-                   verticalPosition: this.verticalPosition,
-                   });
-                 });
-              }
+    // hadeling apointment state changed notification
+    this.sellerService.onOrderStateChanged()
+      .subscribe(data => {
+        this._snackBar.open('Order ' + data.orderId
+          + ' on ' + data.product
+          + ' was ' + data.state, 'Dismiss', {
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+      });
+  }
 
   ngOnInit() {
     this.routerEvents();
 
     this.authService.getEventPlanner();
-    this.eventPlannerSub = this.authService.getEventPlannerUpdateListener().subscribe (
+    this.eventPlannerSub = this.authService.getEventPlannerUpdateListener().subscribe(
       ePlanner => {
-          this.eventPlanner = ePlanner;
+        this.eventPlanner = ePlanner;
+        this.eventService.getAllAlerts();
+        this.alertSub = this.eventService.getalertsUpdatedListener()
+          .subscribe((alerts: ScheduleAlert[]) => {
+            for (const alert of alerts) {
+              this._snackBar.open('Task: ' + alert.heading + ' Scheduled on ' + alert.date.slice(0, 10) + ' at '
+                + alert.date.slice(11, 16) + ' is Due!', 'Dismiss', {
+                duration: 5000,
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+              });
+            }
+          });
       });
   }
 
@@ -125,36 +141,36 @@ export class EventplannerDashboardComponent implements OnInit, OnDestroy {
           this.navOrders();
         } else if (e.url === '/planner/profile') {
           this.navProfile();
-        }  else if (e.url === '/planner/reports') {
+        } else if (e.url === '/planner/reports') {
           this.navReports();
+        }
       }
-    }
-  });
+    });
   }
 
   navHome() {
     this.home = 'txt-white row active-nav';
-    this.events = this.bookings = this.appoints = this.orders = this.profile  = this.reports = 'txt-white row';
+    this.events = this.bookings = this.appoints = this.orders = this.profile = this.reports = 'txt-white row';
   }
 
   navEvents() {
     this.events = 'txt-white row active-nav';
-    this.home = this.bookings = this.appoints = this.orders = this.profile  = this.reports = 'txt-white row';
+    this.home = this.bookings = this.appoints = this.orders = this.profile = this.reports = 'txt-white row';
   }
 
   navBookings() {
     this.bookings = 'txt-white row active-nav';
-    this.events = this.home = this.appoints = this.orders = this.profile  = this.reports = 'txt-white row';
+    this.events = this.home = this.appoints = this.orders = this.profile = this.reports = 'txt-white row';
   }
 
   navAppoints() {
     this.appoints = 'txt-white row active-nav';
-    this.events = this.bookings = this.home = this.orders = this.profile  = this.reports = 'txt-white row';
+    this.events = this.bookings = this.home = this.orders = this.profile = this.reports = 'txt-white row';
   }
 
   navOrders() {
     this.orders = 'txt-white row active-nav';
-    this.events = this.bookings = this.appoints = this.home = this.profile  = this.reports ='txt-white row';
+    this.events = this.bookings = this.appoints = this.home = this.profile = this.reports = 'txt-white row';
   }
 
   navProfile() {
@@ -164,7 +180,7 @@ export class EventplannerDashboardComponent implements OnInit, OnDestroy {
 
   navReports() {
     this.reports = 'txt-white row active-nav';
-    this.events = this.bookings = this.appoints = this.orders = this.home = this.profile =  'txt-white row';
+    this.events = this.bookings = this.appoints = this.orders = this.home = this.profile = 'txt-white row';
   }
 
 
